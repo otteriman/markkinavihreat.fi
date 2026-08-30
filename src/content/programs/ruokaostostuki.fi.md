@@ -34,7 +34,7 @@ Tämä ei ole yllätys, kun asiaa ajattelee hetken. Tuki on sidottu ostettuun eu
 
 _(Lähde: [Tilastokeskus, kulutustutkimus 2022, kulutusmenot kulutusyksikköä kohden](https://pxdata.stat.fi/PxWeb/pxweb/fi/StatFin/StatFin__ktutk/14pg.px/table/tableViewLayout1/))_
 
-## Nykymallin ongelma:: Tuki kelpaa vain kaupan kassalla
+## Nykymallin ongelma: Tuki kelpaa vain kaupan kassalla
 
 Huono kohdentuminen ei ole ruuan alennetun arvonlisäveron ainoa ongelma. Vaikka se kohdentuisikin paremmin, se olisi silti huono tapa tukea pienituloisia, sillä se kelpaa vain yhteen tarkoitukseen.
 
