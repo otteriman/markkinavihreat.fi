@@ -5,9 +5,11 @@ export interface ProgramParagraph {
    * not prose, and the renderer looks it up rather than displaying it as-is.
    * `video` is a `[video: <youtube-id>]` marker — `text` holds the YouTube
    * video id, not prose.
+   * `image` is a `[kuva: <id>]` marker — `text` holds a registered image id,
+   * not prose.
    * Everything else is `text`.
    */
-  type: 'text' | 'quote' | 'attribution' | 'chart' | 'video'
+  type: 'text' | 'quote' | 'attribution' | 'chart' | 'video' | 'image'
   text: string
 }
 
@@ -68,6 +70,9 @@ const CHART_MARKER = /^\[kuvaaja:\s*([a-z0-9-]+)\]$/
 // "[video: <youtube-id>]" on its own paragraph — embeds that YouTube video.
 // YouTube video ids are base64url (letters, digits, "-", "_").
 const VIDEO_MARKER = /^\[video:\s*([A-Za-z0-9_-]+)\]$/
+// "[kuva: <id>]" on its own paragraph — a marker for a registered image,
+// keyed by id (same convention as CHART_MARKER).
+const IMAGE_MARKER = /^\[kuva:\s*([a-z0-9-]+)\]$/
 
 function splitRawParagraphs(content: string): string[] {
   return content
@@ -83,6 +88,8 @@ function classifyParagraph(raw: string): ProgramParagraph {
   if (chartMatch) return { type: 'chart', text: chartMatch[1] }
   const videoMatch = raw.match(VIDEO_MARKER)
   if (videoMatch) return { type: 'video', text: videoMatch[1] }
+  const imageMatch = raw.match(IMAGE_MARKER)
+  if (imageMatch) return { type: 'image', text: imageMatch[1] }
   return { type: 'text', text: raw }
 }
 

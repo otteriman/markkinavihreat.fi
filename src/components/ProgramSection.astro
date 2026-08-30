@@ -4,6 +4,8 @@ import type { Locale } from '../lib/content'
 import type { ProgramParagraph } from '../lib/programSections'
 import RuokaostostukiAlvChart from './charts/RuokaostostukiAlvChart.astro'
 import YouTubeEmbed from './YouTubeEmbed.astro'
+import ProgramImage from './ProgramImage.astro'
+import type { UiKey } from '../i18n/ui'
 
 // Charts registered for the "[kuvaaja: <id>]" marker (see lib/programSections.ts).
 // Add new chart components here as they're built — a program body referencing
@@ -12,6 +14,14 @@ import YouTubeEmbed from './YouTubeEmbed.astro'
 const CHARTS = {
   'ruokaostostuki-alv': RuokaostostukiAlvChart,
 } as const
+
+// Images registered for the "[kuva: <id>]" marker (see lib/programSections.ts).
+const IMAGES: Record<string, { src: string; altKey: UiKey }> = {
+  'ruuan-alv-esimerkki': {
+    src: '/programs/ruuan_alv/Ruuan_ALV_infografiikka.jpg',
+    altKey: 'image.ruuanAlvEsimerkki.alt',
+  },
+}
 
 interface Props {
   /**
@@ -68,6 +78,12 @@ const styles = TONE_STYLES[tone]
           }
           if (paragraph.type === 'video') {
             return <YouTubeEmbed videoId={paragraph.text} locale={locale} />
+          }
+          if (paragraph.type === 'image') {
+            const image = IMAGES[paragraph.text]
+            if (!image)
+              throw new Error(`Program body references unknown image id "${paragraph.text}"`)
+            return <ProgramImage src={image.src} altKey={image.altKey} locale={locale} />
           }
           if (paragraph.type === 'quote') {
             return (

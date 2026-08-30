@@ -36,6 +36,10 @@ Tämä ei ole yllätys, kun asiaa ajattelee hetken. Tuki on sidottu ostettuun eu
 
 _(Lähde: [Tilastokeskus, kulutustutkimus 2022, kulutusmenot kulutusyksikköä kohden](https://pxdata.stat.fi/PxWeb/pxweb/fi/StatFin/StatFin__ktutk/14pg.px/table/tableViewLayout1/))_
 
+Sama asia näkyy yksittäisellä kuitillakin, ei vain tilastollisena keskiarvona: mitä kalliimpi ostos, sitä suurempi tuki, riippumatta siitä, tarvitseeko ostaja tukea vai ei.
+
+[kuva: ruuan-alv-esimerkki]
+
 ## Nykymallin ongelma - Tuki kelpaa vain kaupan kassalla
 
 Huono kohdentuminen ei ole ruuan alennetun arvonlisäveron ainoa ongelma. Vaikka se kohdentuisikin paremmin, se olisi silti huono tapa tukea pienituloisia, sillä se kelpaa vain yhteen tarkoitukseen.

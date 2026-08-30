@@ -29,6 +29,8 @@ export const ui = {
     'chart.ruokaostostuki.perMonthSuffix': '/kk',
     'chart.ruokaostostuki.tableCaption': 'Ruokaostostuki tuloviidenneksittäin, euroa kuukaudessa',
     'video.embedTitle': 'Upotettu YouTube-video',
+    'image.ruuanAlvEsimerkki.alt':
+      'Infografiikka: 100 euron ravintolaillallisen arvonlisäveron alennuksesta saatava tuki on 12 euroa, kun taas 10 euron päivittäisistä ruokaostoksista tuki on vain 1,20 euroa.',
   },
   sv: {
     'nav.home': 'Hem',
@@ -58,6 +60,8 @@ export const ui = {
     'chart.ruokaostostuki.perMonthSuffix': '/mån',
     'chart.ruokaostostuki.tableCaption': 'Matinköpsstöd per inkomstkvintil, euro per månad',
     'video.embedTitle': 'Inbäddad YouTube-video',
+    'image.ruuanAlvEsimerkki.alt':
+      'Infografik (på finska): stödet från momssänkningen på en 100 euro restaurangmiddag är 12 euro, medan stödet på 10 euro dagliga matinköp bara är 1,20 euro.',
   },
   en: {
     'nav.home': 'Home',
@@ -88,6 +92,8 @@ export const ui = {
     'chart.ruokaostostuki.tableCaption':
       'Food-purchase subsidy by income quintile, euros per month',
     'video.embedTitle': 'Embedded YouTube video',
+    'image.ruuanAlvEsimerkki.alt':
+      'Infographic (in Finnish): the VAT-reduction subsidy on a 100-euro restaurant dinner is 12 euros, while the subsidy on 10 euros of daily groceries is only 1.20 euros.',
   },
 } as const
 
