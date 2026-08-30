@@ -1,9 +1,16 @@
 /**
  * Derives the "ruokaostostuki" numbers shown on the ruokaostostuki program
- * page: how much VAT a Finnish income quintile actually pays on food today,
- * versus what it would pay at the general VAT rate. The gap is the implicit
- * subsidy the reduced food VAT rate hands out — this module is the single
- * source for it, so the body copy and the chart can never drift apart.
+ * page: how much VAT a Finnish income quintile actually paid on food in
+ * 2022, versus what it would have paid that same year at the general VAT
+ * rate. The gap is the implicit subsidy the reduced food VAT rate hands
+ * out — this module is the single source for it, so the body copy and the
+ * chart can never drift apart.
+ *
+ * Both rates are deliberately from 2022, matching the expenditure data's
+ * year — food VAT and the general VAT rate have both changed since (food
+ * 14 % -> 13.5 %, general 24 % -> 25.5 % as of 2026), and mixing a 2022
+ * food rate with the current general rate would overstate the subsidy with
+ * an apples-to-oranges comparison. See FOOD_VAT_RATE_2022 / GENERAL_VAT_RATE_2022.
  *
  * Source data: Tilastokeskus, kulutusmenot kulutusyksikköä kohden vuonna
  * 2022, käyvin hinnoin, luokka "01 Elintarvikkeet ja alkoholittomat juomat".
@@ -51,8 +58,12 @@ export function deriveVatBreakdown(
  * see AGENTS.md on not conflating the two.
  */
 export const FOOD_VAT_RATE_2022 = 0.14
-/** Finland's current general VAT rate, used as the comparison point throughout. */
-export const GENERAL_VAT_RATE = 0.255
+/**
+ * Finland's general VAT rate in 2022 (it rose to 25.5 % only in 2024) — the
+ * comparison point for FOOD_VAT_RATE_2022, so both halves of the calculation
+ * come from the same year. Not the current general rate.
+ */
+export const GENERAL_VAT_RATE_2022 = 0.24
 
 // Tilastokeskus, kulutusmenot kulutusyksikköä kohden 2022 (see module docs).
 const LOW_QUINTILE_GROSS_EXPENDITURE = 2848
@@ -60,8 +71,16 @@ const HIGH_QUINTILE_GROSS_EXPENDITURE = 5034
 
 export function ruokaostostukiBreakdowns(): Record<'low' | 'high', VatBreakdown> {
   return {
-    low: deriveVatBreakdown(LOW_QUINTILE_GROSS_EXPENDITURE, FOOD_VAT_RATE_2022, GENERAL_VAT_RATE),
-    high: deriveVatBreakdown(HIGH_QUINTILE_GROSS_EXPENDITURE, FOOD_VAT_RATE_2022, GENERAL_VAT_RATE),
+    low: deriveVatBreakdown(
+      LOW_QUINTILE_GROSS_EXPENDITURE,
+      FOOD_VAT_RATE_2022,
+      GENERAL_VAT_RATE_2022,
+    ),
+    high: deriveVatBreakdown(
+      HIGH_QUINTILE_GROSS_EXPENDITURE,
+      FOOD_VAT_RATE_2022,
+      GENERAL_VAT_RATE_2022,
+    ),
   }
 }
 

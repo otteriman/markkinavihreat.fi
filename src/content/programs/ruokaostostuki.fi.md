@@ -28,13 +28,13 @@ Me esitämme, että ruoka siirretään yleiseen 25,5 prosentin arvonlisäverokan
 
 Tilastokeskuksen kulutustutkimuksen mukaan pienituloisin viidennes suomalaisista käytti vuonna 2022 ruokaan ja alkoholittomiin juomiin noin 2 848 euroa kulutusyksikköä kohden, ja suurituloisin viidennes noin 5 034 euroa.
 
-Kun tästä puretaan tuolloin voimassa ollut ruoan 14 prosentin arvonlisävero ja lasketaan, paljonko veroa maksettaisiin nykyisellä 25,5 prosentin yleisellä kannalla, saadaan tuen suuruus: pienituloisin viidennes sai tukea noin 287 euroa vuodessa, suurituloisin noin 508 euroa. Kuukautta kohden tämä on noin 24 euroa pienituloisimmalle ja 42 euroa suurituloisimmalle — nämä ovat kaaviossa näkyvät luvut. **Suurituloisin viidennes saa siis ruokaostoksiin tukea lähes kaksinkertaisesti pienituloisimpaan verrattuna.**
+Kun tästä puretaan vuonna 2022 voimassa ollut ruoan 14 prosentin arvonlisävero ja lasketaan, paljonko veroa olisi maksettu samana vuonna voimassa olleella 24 prosentin yleisellä kannalla, saadaan tuen suuruus: pienituloisin viidennes sai tukea noin 250 euroa vuodessa, suurituloisin noin 442 euroa. Kuukautta kohden tämä on noin 21 euroa pienituloisimmalle ja 37 euroa suurituloisimmalle — nämä ovat kaaviossa näkyvät luvut. **Suurituloisin viidennes saa siis ruokaostoksiin tukea lähes kaksinkertaisesti pienituloisimpaan verrattuna.**
 
 Luvut on laskettu kulutusyksikköä kohden, joka on kotitalouden koon mukaan vakioitu mittayksikkö (ensimmäinen aikuinen 1,0, muut aikuiset 0,5, lapset 0,3) — puhumme yllä ja kaaviossa yksinkertaisuuden vuoksi "henkilöstä", vaikka tarkka mittayksikkö on kulutusyksikkö. Tämä ei muuta johtopäätöstä: koska mittayksikkö on jo vakioitu kotitalouden koon mukaan, vertailu pienituloisimman ja suurituloisimman viidenneksen välillä on reilu riippumatta siitä, kuinka suuria tai pieniä kotitalouksia kussakin ryhmässä on.
 
 Tämä ei ole yllätys, kun asiaa ajattelee hetken. Tuki on sidottu ostettuun euromäärään, ei ostajan tulotasoon. Mitä enemmän rahaa käytät ruokaan, sitä enemmän tukea saat, ja suurituloiset käyttävät ruokaan enemmän rahaa kuin pienituloiset. Tukimuoto, jonka piti auttaa pienituloisia, onkin johtanut siihen että eniten tuetaan suurituloisia. Toteutus on siis pielessä.
 
-_(Lähde: [Tilastokeskus, kulutustutkimus 2022, kulutusmenot kulutusyksikköä kohden](https://pxdata.stat.fi/PxWeb/pxweb/fi/StatFin/StatFin__ktutk/14pg.px/table/tableViewLayout1/))_
+_(Lähde: [Tilastokeskus, kulutustutkimus 2022, kulutusmenot kulutusyksikköä kohden](https://pxdata.stat.fi/PxWeb/pxweb/fi/StatFin/StatFin__ktutk/14pg.px/table/tableViewLayout1/). Verokannat vuodelta 2022: ruoan alv 14 %, yleinen alv 24 %.)_
 
 Sama asia näkyy yksittäisellä kuitillakin, ei vain tilastollisena keskiarvona: mitä kalliimpi ostos, sitä suurempi tuki, riippumatta siitä, tarvitseeko ostaja tukea vai ei.
 

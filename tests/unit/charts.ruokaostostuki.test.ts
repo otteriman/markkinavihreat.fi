@@ -10,28 +10,28 @@ function round(n: number) {
 }
 
 describe('deriveVatBreakdown', () => {
-  it('backs VAT out of a VAT-inclusive figure and derives the general-rate gap', () => {
-    const result = deriveVatBreakdown(2848, 0.14, 0.255)
+  it('backs VAT out of a VAT-inclusive figure and derives the general-rate gap (2022 rates)', () => {
+    const result = deriveVatBreakdown(2848, 0.14, 0.24)
     expect(round(result.netExpenditure)).toBe(2498)
     expect(round(result.vatPaid)).toBe(350)
-    expect(round(result.vatAtGeneralRate)).toBe(637)
-    expect(round(result.subsidy)).toBe(287)
+    expect(round(result.vatAtGeneralRate)).toBe(600)
+    expect(round(result.subsidy)).toBe(250)
   })
 
   it('matches the high-quintile figures', () => {
-    const result = deriveVatBreakdown(5034, 0.14, 0.255)
+    const result = deriveVatBreakdown(5034, 0.14, 0.24)
     expect(round(result.netExpenditure)).toBe(4416)
     expect(round(result.vatPaid)).toBe(618)
-    expect(round(result.vatAtGeneralRate)).toBe(1126)
-    expect(round(result.subsidy)).toBe(508)
+    expect(round(result.vatAtGeneralRate)).toBe(1060)
+    expect(round(result.subsidy)).toBe(442)
   })
 })
 
 describe('ruokaostostukiBreakdowns', () => {
-  it('derives both quintiles from the Tilastokeskus 2022 figures', () => {
+  it('derives both quintiles from the Tilastokeskus 2022 figures at 2022 VAT rates', () => {
     const { low, high } = ruokaostostukiBreakdowns()
-    expect(round(low.subsidy)).toBe(287)
-    expect(round(high.subsidy)).toBe(508)
+    expect(round(low.subsidy)).toBe(250)
+    expect(round(high.subsidy)).toBe(442)
   })
 
   it('produces the page headline ratio of about 1.77x', () => {
