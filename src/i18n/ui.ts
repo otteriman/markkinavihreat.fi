@@ -21,14 +21,13 @@ export const ui = {
     'contact.mediaHeading': 'Yhteystiedot medialle',
     'chart.ruokaostostuki.title': 'Ruokaostostuki tuloviidenneksittäin',
     'chart.ruokaostostuki.desc':
-      'Pylväskaavio, joka vertaa ruoan alennetusta arvonlisäverokannasta koituvaa ruokaostostukea pienituloisimman ja suurituloisimman tuloviidenneksen välillä. Tarkat luvut ovat kaavion alla olevassa taulukossa.',
-    'chart.ruokaostostuki.lowLabel': 'I Pienituloisin 20 %',
-    'chart.ruokaostostuki.highLabel': 'V Suurituloisin 20 %',
-    'chart.ruokaostostuki.paidLabel': 'Maksettu alv',
-    'chart.ruokaostostuki.subsidyLabel': 'Ruokaostostuki',
-    'chart.ruokaostostuki.totalLabel': 'yleisellä kannalla',
-    'chart.ruokaostostuki.tableCaption':
-      'Ruokaostostuki tuloviidenneksittäin, euroa kulutusyksikköä kohden vuodessa',
+      'Pylväskaavio, joka vertaa ruoan alennetusta arvonlisäverokannasta koituvan kuukausittaisen ruokaostostuen suuruutta pienituloisimman ja suurituloisimman tuloviidenneksen välillä. Tarkat luvut ovat kaavion alla olevassa taulukossa.',
+    'chart.ruokaostostuki.lowLabel': 'Pienituloisin 20 %',
+    'chart.ruokaostostuki.highLabel': 'Suurituloisin 20 %',
+    'chart.ruokaostostuki.perPersonSuffix': '(per henkilö)',
+    'chart.ruokaostostuki.subsidyLabel': 'Tuki',
+    'chart.ruokaostostuki.perMonthSuffix': '/kk',
+    'chart.ruokaostostuki.tableCaption': 'Ruokaostostuki tuloviidenneksittäin, euroa kuukaudessa',
   },
   sv: {
     'nav.home': 'Hem',
@@ -50,14 +49,13 @@ export const ui = {
     'contact.mediaHeading': 'Kontaktuppgifter för media',
     'chart.ruokaostostuki.title': 'Matinköpsstödet per inkomstkvintil',
     'chart.ruokaostostuki.desc':
-      'Stapeldiagram som jämför det matinköpsstöd som den sänkta momssatsen på mat ger upphov till, mellan den lägsta och högsta inkomstkvintilen. Exakta siffror finns i tabellen under diagrammet.',
-    'chart.ruokaostostuki.lowLabel': 'I Lägsta 20 %',
-    'chart.ruokaostostuki.highLabel': 'V Högsta 20 %',
-    'chart.ruokaostostuki.paidLabel': 'Betald moms',
-    'chart.ruokaostostuki.subsidyLabel': 'Matinköpsstöd',
-    'chart.ruokaostostuki.totalLabel': 'vid allmän skattesats',
-    'chart.ruokaostostuki.tableCaption':
-      'Matinköpsstöd per inkomstkvintil, euro per konsumtionsenhet och år',
+      'Stapeldiagram som jämför storleken på det månatliga matinköpsstöd som den sänkta momssatsen på mat ger upphov till, mellan den lägsta och högsta inkomstkvintilen. Exakta siffror finns i tabellen under diagrammet.',
+    'chart.ruokaostostuki.lowLabel': 'Lägsta 20 %',
+    'chart.ruokaostostuki.highLabel': 'Högsta 20 %',
+    'chart.ruokaostostuki.perPersonSuffix': '(per person)',
+    'chart.ruokaostostuki.subsidyLabel': 'Stöd',
+    'chart.ruokaostostuki.perMonthSuffix': '/mån',
+    'chart.ruokaostostuki.tableCaption': 'Matinköpsstöd per inkomstkvintil, euro per månad',
   },
   en: {
     'nav.home': 'Home',
@@ -79,14 +77,14 @@ export const ui = {
     'contact.mediaHeading': 'Media contact',
     'chart.ruokaostostuki.title': 'The food-purchase subsidy by income quintile',
     'chart.ruokaostostuki.desc':
-      "Bar chart comparing the implicit subsidy from Finland's reduced food VAT rate between the lowest and highest income quintile. Exact figures are in the table below the chart.",
-    'chart.ruokaostostuki.lowLabel': 'I Lowest 20%',
-    'chart.ruokaostostuki.highLabel': 'V Highest 20%',
-    'chart.ruokaostostuki.paidLabel': 'VAT paid',
-    'chart.ruokaostostuki.subsidyLabel': 'Food-purchase subsidy',
-    'chart.ruokaostostuki.totalLabel': 'at the general rate',
+      "Bar chart comparing the monthly size of the implicit subsidy from Finland's reduced food VAT rate between the lowest and highest income quintile. Exact figures are in the table below the chart.",
+    'chart.ruokaostostuki.lowLabel': 'Lowest 20%',
+    'chart.ruokaostostuki.highLabel': 'Highest 20%',
+    'chart.ruokaostostuki.perPersonSuffix': '(per person)',
+    'chart.ruokaostostuki.subsidyLabel': 'Subsidy',
+    'chart.ruokaostostuki.perMonthSuffix': '/mo',
     'chart.ruokaostostuki.tableCaption':
-      'Food-purchase subsidy by income quintile, euros per consumption unit per year',
+      'Food-purchase subsidy by income quintile, euros per month',
   },
 } as const
 

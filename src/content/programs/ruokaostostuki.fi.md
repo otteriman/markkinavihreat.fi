@@ -26,9 +26,11 @@ Me esitämme, että ruoka siirretään yleiseen 25,5 prosentin arvonlisäverokan
 
 [kuvaaja: ruokaostostuki-alv]
 
-Tilastokeskuksen kulutustutkimuksen mukaan pienituloisin viidennes suomalaisista käytti vuonna 2022 ruokaan ja alkoholittomiin juomiin noin 2 848 euroa kulutusyksikköä kohden, ja suurituloisin viidennes noin 5 034 euroa. 
+Tilastokeskuksen kulutustutkimuksen mukaan pienituloisin viidennes suomalaisista käytti vuonna 2022 ruokaan ja alkoholittomiin juomiin noin 2 848 euroa kulutusyksikköä kohden, ja suurituloisin viidennes noin 5 034 euroa.
 
-Kun tästä puretaan tuolloin voimassa ollut ruoan 14 prosentin arvonlisävero ja lasketaan, paljonko veroa maksettaisiin nykyisellä 25,5 prosentin yleisellä kannalla, saadaan tuen suuruus: pienituloisin viidennes sai tukea noin 287 euroa vuodessa, suurituloisin noin 508 euroa. **Suurituloisin viidennes saa siis ruokaostoksiin tukea lähes kaksinkertaisesti — noin 1,8-kertaisesti — pienituloisimpaan verrattuna.**
+Kun tästä puretaan tuolloin voimassa ollut ruoan 14 prosentin arvonlisävero ja lasketaan, paljonko veroa maksettaisiin nykyisellä 25,5 prosentin yleisellä kannalla, saadaan tuen suuruus: pienituloisin viidennes sai tukea noin 287 euroa vuodessa, suurituloisin noin 508 euroa. Kuukautta kohden tämä on noin 24 euroa pienituloisimmalle ja 42 euroa suurituloisimmalle — nämä ovat kaaviossa näkyvät luvut. **Suurituloisin viidennes saa siis ruokaostoksiin tukea lähes kaksinkertaisesti — noin 1,8-kertaisesti — pienituloisimpaan verrattuna.**
+
+Luvut on laskettu kulutusyksikköä kohden, joka on kotitalouden koon mukaan vakioitu mittayksikkö (ensimmäinen aikuinen 1,0, muut aikuiset 0,5, lapset 0,3) — puhumme yllä ja kaaviossa yksinkertaisuuden vuoksi "henkilöstä", vaikka tarkka mittayksikkö on kulutusyksikkö. Tämä ei muuta johtopäätöstä: koska mittayksikkö on jo vakioitu kotitalouden koon mukaan, vertailu pienituloisimman ja suurituloisimman viidenneksen välillä on reilu riippumatta siitä, kuinka suuria tai pieniä kotitalouksia kussakin ryhmässä on.
 
 Tämä ei ole yllätys, kun asiaa ajattelee hetken. Tuki on sidottu ostettuun euromäärään, ei ostajan tulotasoon. Mitä enemmän rahaa käytät ruokaan, sitä enemmän tukea saat — ja suurituloiset käyttävät ruokaan enemmän rahaa kuin pienituloiset. Tukimuoto, jonka piti auttaa pienituloisia, on rakenteeltaan sellainen, että se auttaa eniten niitä, jotka sitä vähiten tarvitsevat.
 
@@ -46,7 +48,7 @@ Me markkinavihreät emme halua holhota pienituloisia. Emme usko, että valtio ti
 
 Ratkaisu on yksinkertainen: ruoka siirretään yleiseen 25,5% arvonlisäverokantaan, ja koko tuotto maksetaan takaisin ihmisille rahana. Maksu tehtäisiin kuukausittain, samansuuruisena jokaiselle, myös lapsille. Ei hakemuksia, ei tarveharkintaa, ei erillistä byrokratiaa. Käytännössä tämä olisi pienimuotoinen perustulo.
 
-Arvioimme että tilille voisi tulla kuukausittain [karkeasti 25 euroa henkilöä kohden, lapset mukaan lukien](https://www.hs.fi/politiikka/art-2000011644455.html). Arvoimme että tuki parantaisi pienituloisten tuen määrää hieman nykyisestä  suhteessa alennettuun arvonlisäverokantaan, samalla kun se leikkaisi suurituloisen saamaa tukea selvästi.
+Arvioimme että tilille voisi tulla kuukausittain [karkeasti 25 euroa henkilöä kohden, lapset mukaan lukien](https://www.hs.fi/politiikka/art-2000011644455.html). Arvoimme että tuki parantaisi pienituloisten tuen määrää hieman nykyisestä suhteessa alennettuun arvonlisäverokantaan, samalla kun se leikkaisi suurituloisen saamaa tukea selvästi.
 
 Pienituloisten asema siis paranisi, ja lopettaisi nykyisen eettisesti kestämättömän tilanteen missä tuemme voittopuolisesti hyvätuloisten ruokaostoksia. Muutos myös lisää pienituloisten vapautta: raha ei ole korvamerkittyä, ja täten jokainen saa itse päättää käyttääkö sen ruokaan, vuokraan vai johonkin muuhun. Lisäksi koska tuki maksetaan automaationa jokaiselle kansalaiselle, se ei vaadi mitään kyttäävää tai holhoavaa byrokratiaa. Vapautta, ei holhousta!
 
