@@ -33,6 +33,12 @@ export interface ProgramFaqSection {
 
 export type ProgramSection = ProgramHighlightSection | ProgramRequirementSection | ProgramFaqSection
 
+/**
+ * `dark` — the framing/summary bands (bg-metsa).
+ * `light` / `tint` — the alternating pale bands the argument runs through.
+ */
+export type ProgramSectionTone = 'dark' | 'light' | 'tint'
+
 export interface ParsedProgramBody {
   /** Paragraph(s) before the first heading — the hero's lead-in text. */
   leadParagraphs: ProgramParagraph[]
@@ -130,4 +136,30 @@ export function parseProgramBody(body: string): ParsedProgramBody {
   })
 
   return { leadParagraphs: splitRawParagraphs(lead).map(classifyParagraph), sections }
+}
+
+/**
+ * Picks a background tone per section so a program reads as alternating bands.
+ *
+ * The opening and closing highlight bands stay dark — they frame the page. A
+ * program that argues its way through several *unnumbered* sections in between
+ * (problem → solution → threshold, rather than "Vaatimus N/5") would otherwise
+ * render as one long dark wall, so those interior highlights join the numbered
+ * requirements in the light/tint alternation. Programs whose only highlights
+ * are the first and last one are unaffected.
+ *
+ * FAQ sections don't render as a band; they get a tone only to keep the result
+ * index-aligned with `sections`.
+ */
+export function assignSectionTones(sections: ProgramSection[]): ProgramSectionTone[] {
+  const highlights = sections.flatMap((section, i) => (section.type === 'highlight' ? [i] : []))
+  const first = highlights[0]
+  const last = highlights[highlights.length - 1]
+
+  let band = 0
+  return sections.map((section, i) => {
+    if (section.type === 'faq') return 'dark'
+    if (section.type === 'highlight' && (i === first || i === last)) return 'dark'
+    return band++ % 2 === 0 ? 'light' : 'tint'
+  })
 }
