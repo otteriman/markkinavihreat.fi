@@ -7,10 +7,16 @@ export interface ProgramParagraph {
    * video id, not prose.
    * `image` is a `[kuva: <id>]` marker — `text` holds a registered image id,
    * not prose.
+   * `disclosure` is a `[laskelma: <trigger text>]` marker followed by a body
+   * paragraph — renders as a single collapsed accordion item (like an FAQ
+   * entry, but inline within a section rather than its own FAQ block).
+   * `text` holds the body, `question` the trigger text.
    * Everything else is `text`.
    */
-  type: 'text' | 'quote' | 'attribution' | 'chart' | 'video' | 'image'
+  type: 'text' | 'quote' | 'attribution' | 'chart' | 'video' | 'image' | 'disclosure'
   text: string
+  /** Only set for `disclosure` paragraphs — the accordion's trigger text. */
+  question?: string
 }
 
 export interface ProgramHighlightSection {
@@ -73,6 +79,13 @@ const VIDEO_MARKER = /^\[video:\s*([A-Za-z0-9_-]+)\]$/
 // "[kuva: <id>]" on its own paragraph — a marker for a registered image,
 // keyed by id (same convention as CHART_MARKER).
 const IMAGE_MARKER = /^\[kuva:\s*([a-z0-9-]+)\]$/
+// "[laskelma: <trigger text>]" on the first line of a paragraph, followed by
+// the accordion body on the rest of it. Deliberately a distinct marker from
+// FAQ_ITEM's "**Question**" shape — several existing paragraphs across the
+// programs already start with "**bold**" purely for emphasis (e.g. a closing
+// punchline sentence), so reusing that shape per-paragraph would silently
+// turn those into broken accordions.
+const DISCLOSURE_MARKER = /^\[laskelma:\s*(.+?)\]\n([\s\S]+)$/
 
 function splitRawParagraphs(content: string): string[] {
   return content
@@ -90,6 +103,13 @@ function classifyParagraph(raw: string): ProgramParagraph {
   if (videoMatch) return { type: 'video', text: videoMatch[1] }
   const imageMatch = raw.match(IMAGE_MARKER)
   if (imageMatch) return { type: 'image', text: imageMatch[1] }
+  const disclosureMatch = raw.match(DISCLOSURE_MARKER)
+  if (disclosureMatch)
+    return {
+      type: 'disclosure',
+      question: disclosureMatch[1].trim(),
+      text: disclosureMatch[2].trim(),
+    }
   return { type: 'text', text: raw }
 }
 

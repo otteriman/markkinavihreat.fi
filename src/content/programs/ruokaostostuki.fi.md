@@ -26,9 +26,10 @@ Me esitämme, että ruoka siirretään yleiseen 25,5 prosentin arvonlisäverokan
 
 [kuvaaja: ruokaostostuki-alv]
 
-Tilastokeskuksen kulutustutkimuksen mukaan pienituloisin viidennes suomalaisista käytti vuonna 2022 ruokaan ja alkoholittomiin juomiin noin 2 848 euroa kulutusyksikköä kohden, ja suurituloisin viidennes noin 5 034 euroa.
+Ruuan alennetun arvonlisäveron antama rahallinen hyöty oli 2022 pienituloisimmille keskimäärin 21€/kk, ja suurituloisimmille 37€/kk. **Suurituloisimmat saavat siis ruokaostoksiin tukea lähes kaksinkertaisesti pienituloisimpiin verrattuna.**
 
-Kun tästä puretaan vuonna 2022 voimassa ollut ruoan 14 prosentin arvonlisävero ja lasketaan, paljonko veroa olisi maksettu samana vuonna voimassa olleella 24 prosentin yleisellä kannalla, saadaan tuen suuruus: pienituloisin viidennes sai tukea noin 250 euroa vuodessa, suurituloisin noin 442 euroa. Kuukautta kohden tämä on noin 21 euroa pienituloisimmalle ja 37 euroa suurituloisimmalle. **Suurituloisin viidennes saa siis ruokaostoksiin tukea lähes kaksinkertaisesti pienituloisimpaan verrattuna.**
+[laskelma: Kuinka ylläolevat luvut on laskettu?]
+Tilastokeskuksen kulutustutkimuksen mukaan pienituloisin viidennes suomalaisista käytti vuonna 2022 ruokaan ja alkoholittomiin juomiin noin 2 848 euroa kulutusyksikköä kohden, ja suurituloisin viidennes noin 5 034 euroa. Kun tästä puretaan vuonna 2022 voimassa ollut ruoan 14 prosentin arvonlisävero ja lasketaan, paljonko veroa olisi maksettu samana vuonna voimassa olleella 24 prosentin yleisellä kannalla, saadaan tuen suuruus: pienituloisin viidennes sai tukea noin 250 euroa vuodessa, suurituloisin noin 442 euroa. Kuukautta kohden tämä on noin 21 euroa pienituloisimmalle ja 37 euroa suurituloisimmalle.
 
 Luvut on laskettu kulutusyksikköä kohden, joka on kotitalouden koon mukaan vakioitu mittayksikkö (ensimmäinen aikuinen 1,0, muut aikuiset 0,5, lapset 0,3) — puhumme yllä ja kaaviossa yksinkertaisuuden vuoksi "henkilöstä", vaikka tarkka mittayksikkö on kulutusyksikkö. Tämä ei muuta johtopäätöstä: koska mittayksikkö on jo vakioitu kotitalouden koon mukaan, vertailu pienituloisimman ja suurituloisimman viidenneksen välillä on reilu riippumatta siitä, kuinka suuria tai pieniä kotitalouksia kussakin ryhmässä on.
 

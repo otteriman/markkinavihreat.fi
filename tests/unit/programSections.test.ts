@@ -174,6 +174,53 @@ describe('parseProgramBody image markers', () => {
   })
 })
 
+describe('parseProgramBody disclosure markers', () => {
+  it('classifies a "[laskelma: <trigger>]" paragraph as a disclosure, pairing the rest of the paragraph as its answer', () => {
+    const body = `## Osio\n\nLyhyt yhteenveto.\n\n[laskelma: Kuinka luku laskettiin?]\nTässä on laskelma auki kirjoitettuna.`
+    const parsed = parseProgramBody(body)
+    expect(parsed.sections[0]).toMatchObject({
+      type: 'highlight',
+      paragraphs: [
+        { type: 'text', text: 'Lyhyt yhteenveto.' },
+        {
+          type: 'disclosure',
+          question: 'Kuinka luku laskettiin?',
+          text: 'Tässä on laskelma auki kirjoitettuna.',
+        },
+      ],
+    })
+  })
+
+  it('does not treat a paragraph that only has the marker line, with no body, as a disclosure', () => {
+    const body = `## Osio\n\n[laskelma: Kuinka luku laskettiin?]`
+    const parsed = parseProgramBody(body)
+    expect(parsed.sections[0]).toMatchObject({
+      paragraphs: [{ type: 'text', text: '[laskelma: Kuinka luku laskettiin?]' }],
+    })
+  })
+
+  it('does NOT treat an ordinary "**bold**" leading paragraph as a disclosure — only [laskelma: ...] triggers one', () => {
+    // Regression guard: closing-punchline paragraphs across the existing
+    // programs start with "**bold sentence**" purely for emphasis, mixed in
+    // among plain paragraphs (see e.g. lisaa-markkinoita.fi.md and this
+    // program's own "Mitä tästä seuraa" section) — these must keep rendering
+    // as plain text, not collapse into an accordion. Two paragraphs here,
+    // one of which doesn't match FAQ_ITEM's shape, so this reproduces the
+    // real files' mixed-content section shape rather than the (unrelated,
+    // pre-existing) whole-section FAQ heuristic, which only fires when every
+    // paragraph in the section matches.
+    const body = `## Osio\n\nJohdantokappale.\n\n**Tämä on korostettu lause.** Loppuosa tekstistä.`
+    const parsed = parseProgramBody(body)
+    expect(parsed.sections[0]).toMatchObject({
+      type: 'highlight',
+      paragraphs: [
+        { type: 'text', text: 'Johdantokappale.' },
+        { type: 'text', text: '**Tämä on korostettu lause.** Loppuosa tekstistä.' },
+      ],
+    })
+  })
+})
+
 describe('assignSectionTones', () => {
   it('keeps the opening and closing highlight dark and alternates numbered requirements', () => {
     // Shape of "lisaa-markkinoita.fi.md": highlight, 5 requirements, highlight.

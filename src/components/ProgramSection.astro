@@ -5,6 +5,7 @@ import type { ProgramParagraph } from '../lib/programSections'
 import RuokaostostukiAlvChart from './charts/RuokaostostukiAlvChart.astro'
 import YouTubeEmbed from './YouTubeEmbed.astro'
 import ProgramImage from './ProgramImage.astro'
+import ProgramDisclosure from './ProgramDisclosure.astro'
 import type { UiKey } from '../i18n/ui'
 
 // Charts registered for the "[kuvaaja: <id>]" marker (see lib/programSections.ts).
@@ -84,6 +85,16 @@ const styles = TONE_STYLES[tone]
             if (!image)
               throw new Error(`Program body references unknown image id "${paragraph.text}"`)
             return <ProgramImage src={image.src} altKey={image.altKey} locale={locale} />
+          }
+          if (paragraph.type === 'disclosure') {
+            if (!paragraph.question) throw new Error('Disclosure paragraph is missing its question')
+            return (
+              <ProgramDisclosure
+                question={paragraph.question}
+                answer={paragraph.text}
+                proseClass={styles.prose}
+              />
+            )
           }
           if (paragraph.type === 'quote') {
             return (

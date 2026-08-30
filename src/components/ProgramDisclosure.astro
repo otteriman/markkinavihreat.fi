@@ -1,0 +1,24 @@
+---
+import { renderInlineMarkdown } from '../lib/markdown'
+
+interface Props {
+  question: string
+  answer: string
+  /** The surrounding ProgramSection's prose class, so the answer matches its tone. */
+  proseClass: string
+}
+
+const { question, answer, proseClass } = Astro.props
+---
+
+<details class="group border-t border-b border-current/15 py-5">
+  <summary
+    class="flex cursor-pointer list-none items-center justify-between gap-4 font-semibold marker:content-none"
+  >
+    <span set:html={renderInlineMarkdown(question)} />
+    <i
+      class="fa-solid fa-chevron-down shrink-0 text-sm transition-transform group-open:rotate-180"
+      aria-hidden="true"></i>
+  </summary>
+  <div class:list={[proseClass, 'mt-3 opacity-80']} set:html={renderInlineMarkdown(answer)} />
+</details>
