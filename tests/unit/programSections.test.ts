@@ -1,5 +1,9 @@
 import { describe, expect, it } from 'vitest'
-import { parseProgramBody } from '../../src/lib/programSections'
+import {
+  assignSectionTones,
+  parseProgramBody,
+  type ProgramSection,
+} from '../../src/lib/programSections'
 
 const SAMPLE = `Lead paragraph one.
 
@@ -93,5 +97,151 @@ describe('parseProgramBody', () => {
 
   it('returns no sections and empty lead for an empty body', () => {
     expect(parseProgramBody('')).toEqual({ leadParagraphs: [], sections: [] })
+  })
+})
+
+describe('assignSectionTones', () => {
+  it('keeps the opening and closing highlight dark and alternates numbered requirements', () => {
+    // Shape of "lisaa-markkinoita.fi.md": highlight, 5 requirements, highlight.
+    const sections: ProgramSection[] = [
+      { type: 'highlight', heading: 'Intro', paragraphs: [] },
+      {
+        type: 'requirement',
+        label: 'Vaatimus 1 / 5',
+        index: 1,
+        total: 5,
+        heading: '',
+        paragraphs: [],
+      },
+      {
+        type: 'requirement',
+        label: 'Vaatimus 2 / 5',
+        index: 2,
+        total: 5,
+        heading: '',
+        paragraphs: [],
+      },
+      {
+        type: 'requirement',
+        label: 'Vaatimus 3 / 5',
+        index: 3,
+        total: 5,
+        heading: '',
+        paragraphs: [],
+      },
+      {
+        type: 'requirement',
+        label: 'Vaatimus 4 / 5',
+        index: 4,
+        total: 5,
+        heading: '',
+        paragraphs: [],
+      },
+      {
+        type: 'requirement',
+        label: 'Vaatimus 5 / 5',
+        index: 5,
+        total: 5,
+        heading: '',
+        paragraphs: [],
+      },
+      { type: 'highlight', heading: 'Summary', paragraphs: [] },
+    ]
+    expect(assignSectionTones(sections)).toEqual([
+      'dark',
+      'light',
+      'tint',
+      'light',
+      'tint',
+      'light',
+      'dark',
+    ])
+  })
+
+  it('treats a single highlight section as both first and last (dark)', () => {
+    // Shape of the sv/en "Translation coming soon" stubs.
+    const sections: ProgramSection[] = [{ type: 'highlight', heading: 'Stub', paragraphs: [] }]
+    expect(assignSectionTones(sections)).toEqual(['dark'])
+  })
+
+  it('keeps an FAQ section after the closing highlight dark and does not disturb it', () => {
+    // Shape of "palkalla-pitaa-voida-vaurastua.fi.md": highlight, 4 requirements, highlight, faq.
+    const sections: ProgramSection[] = [
+      { type: 'highlight', heading: 'Intro', paragraphs: [] },
+      {
+        type: 'requirement',
+        label: 'Hyöty 1 / 4',
+        index: 1,
+        total: 4,
+        heading: '',
+        paragraphs: [],
+      },
+      {
+        type: 'requirement',
+        label: 'Hyöty 2 / 4',
+        index: 2,
+        total: 4,
+        heading: '',
+        paragraphs: [],
+      },
+      {
+        type: 'requirement',
+        label: 'Hyöty 3 / 4',
+        index: 3,
+        total: 4,
+        heading: '',
+        paragraphs: [],
+      },
+      {
+        type: 'requirement',
+        label: 'Hyöty 4 / 4',
+        index: 4,
+        total: 4,
+        heading: '',
+        paragraphs: [],
+      },
+      { type: 'highlight', heading: 'Summary', paragraphs: [] },
+      { type: 'faq', heading: 'FAQ', items: [] },
+    ]
+    expect(assignSectionTones(sections)).toEqual([
+      'dark',
+      'light',
+      'tint',
+      'light',
+      'tint',
+      'dark',
+      'dark',
+    ])
+  })
+
+  it('alternates interior unnumbered highlights along with numbered requirements', () => {
+    // Shape of "ruokaostostuki": highlight, highlight, highlight, requirement,
+    // highlight, highlight, highlight, faq — first/last stay dark, everything
+    // else (numbered or not) shares one alternating band position.
+    const sections: ProgramSection[] = [
+      { type: 'highlight', heading: 'Mistä on kyse', paragraphs: [] },
+      { type: 'highlight', heading: 'Ongelma kasvaa', paragraphs: [] },
+      { type: 'highlight', heading: 'Vain kaupan kassalla', paragraphs: [] },
+      {
+        type: 'requirement',
+        label: 'Ratkaisu 1 / 1',
+        index: 1,
+        total: 1,
+        heading: '',
+        paragraphs: [],
+      },
+      { type: 'highlight', heading: 'Kynnyskysymys', paragraphs: [] },
+      { type: 'highlight', heading: 'Mitä seuraa', paragraphs: [] },
+      { type: 'faq', heading: 'FAQ', items: [] },
+    ]
+    expect(assignSectionTones(sections)).toEqual([
+      'dark',
+      'light',
+      'tint',
+      'light',
+      'tint',
+      'dark',
+      'dark',
+    ])
   })
 })

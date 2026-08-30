@@ -7,10 +7,7 @@ import ProgramSection from '../ProgramSection.astro'
 import QuoteBand from '../QuoteBand.astro'
 import ShuffleOnLoad from '../ShuffleOnLoad.astro'
 import { parseLocalizedId, type Locale } from '../../lib/content'
-import {
-  parseProgramBody,
-  type ProgramSection as ProgramSectionData,
-} from '../../lib/programSections'
+import { assignSectionTones, parseProgramBody } from '../../lib/programSections'
 import { t } from '../../i18n/ui'
 
 interface Props {
@@ -32,14 +29,7 @@ const citations = await Promise.all(
 
 const JOIN_URL = 'https://www.vihreat.fi/liity/'
 
-// Numbered requirement bands alternate between two backgrounds; the framing
-// intro and closing summary always use the dark highlight band.
-function toneFor(section: ProgramSectionData, requirementPosition: number) {
-  if (section.type === 'requirement') return requirementPosition % 2 === 0 ? 'light' : 'tint'
-  return 'dark'
-}
-
-let requirementPosition = 0
+const tones = assignSectionTones(sections)
 
 // The join CTA belongs on the closing summary, which is the last "highlight"
 // section — not necessarily the last section overall, since an FAQ block (if
@@ -69,7 +59,7 @@ sections.forEach((section, i) => {
         return <ProgramFaq heading={section.heading} items={section.items} />
       }
 
-      const tone = toneFor(section, section.type === 'requirement' ? requirementPosition++ : 0)
+      const tone = tones[i]
       const citation = citations[i]
       return (
         <>
