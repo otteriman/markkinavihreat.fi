@@ -1,0 +1,23 @@
+---
+import type { Locale } from '../lib/content'
+import { t } from '../i18n/ui'
+
+interface Props {
+  /** YouTube video id, e.g. the "IpUvpkl-WfQ" in youtube.com/shorts/IpUvpkl-WfQ. */
+  videoId: string
+  locale: Locale
+}
+
+const { videoId, locale } = Astro.props
+---
+
+<div class="rounded-card mx-auto my-4 aspect-[9/16] max-w-[min(100%,360px)] overflow-hidden">
+  <iframe
+    class="h-full w-full"
+    src={`https://www.youtube-nocookie.com/embed/${videoId}`}
+    title={t(locale, 'video.embedTitle')}
+    loading="lazy"
+    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+    referrerpolicy="strict-origin-when-cross-origin"
+    allowfullscreen></iframe>
+</div>

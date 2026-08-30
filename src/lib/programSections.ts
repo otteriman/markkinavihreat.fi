@@ -3,9 +3,11 @@ export interface ProgramParagraph {
    * `quote`/`attribution` are for an inline pull-quote (`> ...` / `— ...`).
    * `chart` is a `[kuvaaja: <id>]` marker paragraph — `text` holds the chart id,
    * not prose, and the renderer looks it up rather than displaying it as-is.
+   * `video` is a `[video: <youtube-id>]` marker — `text` holds the YouTube
+   * video id, not prose.
    * Everything else is `text`.
    */
-  type: 'text' | 'quote' | 'attribution' | 'chart'
+  type: 'text' | 'quote' | 'attribution' | 'chart' | 'video'
   text: string
 }
 
@@ -63,6 +65,9 @@ const FAQ_ITEM = /^\*\*(.+?)\*\*\s*([\s\S]*)$/
 // component, keyed by id. Anchored to the whole paragraph so an ordinary
 // bracketed aside in body text (e.g. "[jatkuu...]") is never mistaken for one.
 const CHART_MARKER = /^\[kuvaaja:\s*([a-z0-9-]+)\]$/
+// "[video: <youtube-id>]" on its own paragraph — embeds that YouTube video.
+// YouTube video ids are base64url (letters, digits, "-", "_").
+const VIDEO_MARKER = /^\[video:\s*([A-Za-z0-9_-]+)\]$/
 
 function splitRawParagraphs(content: string): string[] {
   return content
@@ -76,6 +81,8 @@ function classifyParagraph(raw: string): ProgramParagraph {
   if (raw.startsWith('—')) return { type: 'attribution', text: raw }
   const chartMatch = raw.match(CHART_MARKER)
   if (chartMatch) return { type: 'chart', text: chartMatch[1] }
+  const videoMatch = raw.match(VIDEO_MARKER)
+  if (videoMatch) return { type: 'video', text: videoMatch[1] }
   return { type: 'text', text: raw }
 }
 

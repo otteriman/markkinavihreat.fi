@@ -28,6 +28,7 @@ export const ui = {
     'chart.ruokaostostuki.subsidyLabel': 'Tuki',
     'chart.ruokaostostuki.perMonthSuffix': '/kk',
     'chart.ruokaostostuki.tableCaption': 'Ruokaostostuki tuloviidenneksittäin, euroa kuukaudessa',
+    'video.embedTitle': 'Upotettu YouTube-video',
   },
   sv: {
     'nav.home': 'Hem',
@@ -56,6 +57,7 @@ export const ui = {
     'chart.ruokaostostuki.subsidyLabel': 'Stöd',
     'chart.ruokaostostuki.perMonthSuffix': '/mån',
     'chart.ruokaostostuki.tableCaption': 'Matinköpsstöd per inkomstkvintil, euro per månad',
+    'video.embedTitle': 'Inbäddad YouTube-video',
   },
   en: {
     'nav.home': 'Home',
@@ -85,6 +87,7 @@ export const ui = {
     'chart.ruokaostostuki.perMonthSuffix': '/mo',
     'chart.ruokaostostuki.tableCaption':
       'Food-purchase subsidy by income quintile, euros per month',
+    'video.embedTitle': 'Embedded YouTube video',
   },
 } as const
 

@@ -3,6 +3,7 @@ import { renderInlineMarkdown } from '../lib/markdown'
 import type { Locale } from '../lib/content'
 import type { ProgramParagraph } from '../lib/programSections'
 import RuokaostostukiAlvChart from './charts/RuokaostostukiAlvChart.astro'
+import YouTubeEmbed from './YouTubeEmbed.astro'
 
 // Charts registered for the "[kuvaaja: <id>]" marker (see lib/programSections.ts).
 // Add new chart components here as they're built — a program body referencing
@@ -64,6 +65,9 @@ const styles = TONE_STYLES[tone]
             if (!Chart)
               throw new Error(`Program body references unknown chart id "${paragraph.text}"`)
             return <Chart locale={locale} />
+          }
+          if (paragraph.type === 'video') {
+            return <YouTubeEmbed videoId={paragraph.text} locale={locale} />
           }
           if (paragraph.type === 'quote') {
             return (

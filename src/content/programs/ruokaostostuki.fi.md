@@ -52,6 +52,10 @@ Arvioimme että tilille voisi tulla kuukausittain [karkeasti 25 euroa henkilöä
 
 Pienituloisten asema siis paranisi, ja lopettaisi nykyisen eettisesti kestämättömän tilanteen missä tuemme voittopuolisesti hyvätuloisten ruokaostoksia. Muutos myös lisää pienituloisten vapautta: raha ei ole korvamerkittyä, ja täten jokainen saa itse päättää käyttääkö sen ruokaan, vuokraan vai johonkin muuhun. Lisäksi koska tuki maksetaan automaationa jokaiselle kansalaiselle, se ei vaadi mitään kyttäävää tai holhoavaa byrokratiaa. Vapautta, ei holhousta!
 
+Katso myös talousvihreiden esitys aiheesta.
+
+[video: IpUvpkl-WfQ]
+
 ## Ilman palautusta emme hyväksy veronkorotusta
 
 Tämä on meille kynnyskysymys: emme hyväksy ruuan arvonlisäveron korottamista yleiselle tasolle, ellei tuotto samalla palauteta ihmisille kuukausittaisena tulona. Ei "myöhemmin katsotaan", ei "kompensoidaan erikseen jossain muussa yhteydessä", palautusmekanismin pitää tulla voimaan täsmälleen samassa hetkessä kuin ruuan arvonlisäveroa korotetaan.

@@ -130,6 +130,28 @@ describe('parseProgramBody chart markers', () => {
   })
 })
 
+describe('parseProgramBody video markers', () => {
+  it('classifies a lone "[video: <id>]" paragraph as a video', () => {
+    const body = `## Osio\n\nKatso video.\n\n[video: IpUvpkl-WfQ]`
+    const parsed = parseProgramBody(body)
+    expect(parsed.sections[0]).toMatchObject({
+      type: 'highlight',
+      paragraphs: [
+        { type: 'text', text: 'Katso video.' },
+        { type: 'video', text: 'IpUvpkl-WfQ' },
+      ],
+    })
+  })
+
+  it('does not treat an ordinary bracketed aside as a video marker', () => {
+    const body = `## Osio\n\n[jatkuu alempana]`
+    const parsed = parseProgramBody(body)
+    expect(parsed.sections[0]).toMatchObject({
+      paragraphs: [{ type: 'text', text: '[jatkuu alempana]' }],
+    })
+  })
+})
+
 describe('assignSectionTones', () => {
   it('keeps the opening and closing highlight dark and alternates numbered requirements', () => {
     // Shape of "lisaa-markkinoita.fi.md": highlight, 5 requirements, highlight.
