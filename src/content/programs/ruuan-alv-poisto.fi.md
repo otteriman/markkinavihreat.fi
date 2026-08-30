@@ -1,6 +1,6 @@
 ---
 locale: fi
-title: Ruuan alennettu ALV kohdentuu epäreilusti.
+title: Ruokaostoksia tuettava reilulla tavalla
 description: Ruoan alennettu arvonlisäverokanta on piilotettu tuki, joka maksaa suurituloisille lähes kaksinkertaisesti pienituloisiin verrattuna. Poistetaan alennus ja maksetaan tuotto suoraan ihmisille kuukausittaisena tulona.
 order: 3
 heroKicker: Markkinavihreät vaativat
