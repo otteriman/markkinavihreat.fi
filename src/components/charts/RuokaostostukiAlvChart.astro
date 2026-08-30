@@ -20,7 +20,7 @@ const breakdowns = ruokaostostukiBreakdowns()
 const VIEW_WIDTH = 600
 const VIEW_HEIGHT = 320
 const BASELINE_Y = 250
-const TOP_PADDING = 60 // room for the "Tuki" eyebrow + the €/kk value above the bar
+const TOP_PADDING = 70 // room for the "Tuki" eyebrow + the €/kk value above the bar
 const PLOT_HEIGHT = BASELINE_Y - TOP_PADDING
 const BAR_WIDTH = 108
 const CORNER_RADIUS = 4 // the rounded data-end at the bar's free (top) end
@@ -106,7 +106,7 @@ const perPersonSuffix = t(locale, 'chart.ruokaostostuki.perPersonSuffix')
 
           <text
             x={col.centerX}
-            y={col.barY - 32}
+            y={col.barY - 42}
             text-anchor="middle"
             fill="var(--color-harmaa)"
             font-size="13"
@@ -118,7 +118,7 @@ const perPersonSuffix = t(locale, 'chart.ruokaostostuki.perPersonSuffix')
 
           <text
             x={col.centerX}
-            y={col.barY - 12}
+            y={col.barY - 16}
             text-anchor="middle"
             fill="var(--color-musta)"
             font-size="22"
