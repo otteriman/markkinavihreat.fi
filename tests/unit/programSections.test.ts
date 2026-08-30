@@ -100,6 +100,36 @@ describe('parseProgramBody', () => {
   })
 })
 
+describe('parseProgramBody chart markers', () => {
+  it('classifies a lone "[kuvaaja: <id>]" paragraph as a chart', () => {
+    const body = `## Osio\n\n[kuvaaja: ruokaostostuki-alv]\n\nMuu kappale.`
+    const parsed = parseProgramBody(body)
+    expect(parsed.sections[0]).toMatchObject({
+      type: 'highlight',
+      paragraphs: [
+        { type: 'chart', text: 'ruokaostostuki-alv' },
+        { type: 'text', text: 'Muu kappale.' },
+      ],
+    })
+  })
+
+  it('does not treat an ordinary bracketed aside as a chart marker', () => {
+    const body = `## Osio\n\n[jatkuu alempana]`
+    const parsed = parseProgramBody(body)
+    expect(parsed.sections[0]).toMatchObject({
+      paragraphs: [{ type: 'text', text: '[jatkuu alempana]' }],
+    })
+  })
+
+  it('rejects an unrecognised id shape (uppercase, spaces) as plain text', () => {
+    const body = `## Osio\n\n[kuvaaja: Not Valid]`
+    const parsed = parseProgramBody(body)
+    expect(parsed.sections[0]).toMatchObject({
+      paragraphs: [{ type: 'text', text: '[kuvaaja: Not Valid]' }],
+    })
+  })
+})
+
 describe('assignSectionTones', () => {
   it('keeps the opening and closing highlight dark and alternates numbered requirements', () => {
     // Shape of "lisaa-markkinoita.fi.md": highlight, 5 requirements, highlight.

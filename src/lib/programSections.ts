@@ -1,6 +1,11 @@
 export interface ProgramParagraph {
-  /** `quote`/`attribution` are for an inline pull-quote (`> ...` / `— ...`); everything else is `text`. */
-  type: 'text' | 'quote' | 'attribution'
+  /**
+   * `quote`/`attribution` are for an inline pull-quote (`> ...` / `— ...`).
+   * `chart` is a `[kuvaaja: <id>]` marker paragraph — `text` holds the chart id,
+   * not prose, and the renderer looks it up rather than displaying it as-is.
+   * Everything else is `text`.
+   */
+  type: 'text' | 'quote' | 'attribution' | 'chart'
   text: string
 }
 
@@ -54,6 +59,10 @@ const LABELED_HEADING = /^[^:]+:\s*(.+)$/
 // "**Question?**" optionally followed by a hard-break and its answer — the
 // authoring convention for FAQ sections (see content/programs/*.md).
 const FAQ_ITEM = /^\*\*(.+?)\*\*\s*([\s\S]*)$/
+// "[kuvaaja: <id>]" on its own paragraph — a marker for a registered chart
+// component, keyed by id. Anchored to the whole paragraph so an ordinary
+// bracketed aside in body text (e.g. "[jatkuu...]") is never mistaken for one.
+const CHART_MARKER = /^\[kuvaaja:\s*([a-z0-9-]+)\]$/
 
 function splitRawParagraphs(content: string): string[] {
   return content
@@ -65,6 +74,8 @@ function splitRawParagraphs(content: string): string[] {
 function classifyParagraph(raw: string): ProgramParagraph {
   if (raw.startsWith('> ')) return { type: 'quote', text: raw.slice(2).trim() }
   if (raw.startsWith('—')) return { type: 'attribution', text: raw }
+  const chartMatch = raw.match(CHART_MARKER)
+  if (chartMatch) return { type: 'chart', text: chartMatch[1] }
   return { type: 'text', text: raw }
 }
 
