@@ -17,12 +17,18 @@ const { locale } = Astro.props
 const breakdowns = ruokaostostukiBreakdowns()
 
 // Chart geometry, in SVG user units (≈ px at the viewBox's natural render size).
+// Square (1:1) canvas — the extra height versus the old 600x320 goes almost
+// entirely into PLOT_HEIGHT (taller bars). TOP_PADDING and the baseline's
+// bottom margin stay the same absolute size as before: they're sized for a
+// fixed text stack (the eyebrow+value above, the two-line label below), not
+// proportional to the canvas.
 const VIEW_WIDTH = 600
-const VIEW_HEIGHT = 320
-const BASELINE_Y = 250
+const VIEW_HEIGHT = 600
+const BOTTOM_MARGIN = 70 // room for the two-line quintile label below the baseline
+const BASELINE_Y = VIEW_HEIGHT - BOTTOM_MARGIN
 const TOP_PADDING = 70 // room for the "Tuki" eyebrow + the €/kk value above the bar
 const PLOT_HEIGHT = BASELINE_Y - TOP_PADDING
-const BAR_WIDTH = 108
+const BAR_WIDTH = 130 // wider than 600x320's 108 to stay well-proportioned against the taller bars
 const CORNER_RADIUS = 4 // the rounded data-end at the bar's free (top) end
 
 // A single series (the monthly subsidy) — no legend needed; the eyebrow label
