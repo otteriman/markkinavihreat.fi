@@ -28,11 +28,11 @@ Me esitämme, että ruoka siirretään yleiseen 25,5 prosentin arvonlisäverokan
 
 Tilastokeskuksen kulutustutkimuksen mukaan pienituloisin viidennes suomalaisista käytti vuonna 2022 ruokaan ja alkoholittomiin juomiin noin 2 848 euroa kulutusyksikköä kohden, ja suurituloisin viidennes noin 5 034 euroa.
 
-Kun tästä puretaan tuolloin voimassa ollut ruoan 14 prosentin arvonlisävero ja lasketaan, paljonko veroa maksettaisiin nykyisellä 25,5 prosentin yleisellä kannalla, saadaan tuen suuruus: pienituloisin viidennes sai tukea noin 287 euroa vuodessa, suurituloisin noin 508 euroa. Kuukautta kohden tämä on noin 24 euroa pienituloisimmalle ja 42 euroa suurituloisimmalle — nämä ovat kaaviossa näkyvät luvut. **Suurituloisin viidennes saa siis ruokaostoksiin tukea lähes kaksinkertaisesti — noin 1,8-kertaisesti — pienituloisimpaan verrattuna.**
+Kun tästä puretaan tuolloin voimassa ollut ruoan 14 prosentin arvonlisävero ja lasketaan, paljonko veroa maksettaisiin nykyisellä 25,5 prosentin yleisellä kannalla, saadaan tuen suuruus: pienituloisin viidennes sai tukea noin 287 euroa vuodessa, suurituloisin noin 508 euroa. Kuukautta kohden tämä on noin 24 euroa pienituloisimmalle ja 42 euroa suurituloisimmalle — nämä ovat kaaviossa näkyvät luvut. **Suurituloisin viidennes saa siis ruokaostoksiin tukea lähes kaksinkertaisesti pienituloisimpaan verrattuna.**
 
 Luvut on laskettu kulutusyksikköä kohden, joka on kotitalouden koon mukaan vakioitu mittayksikkö (ensimmäinen aikuinen 1,0, muut aikuiset 0,5, lapset 0,3) — puhumme yllä ja kaaviossa yksinkertaisuuden vuoksi "henkilöstä", vaikka tarkka mittayksikkö on kulutusyksikkö. Tämä ei muuta johtopäätöstä: koska mittayksikkö on jo vakioitu kotitalouden koon mukaan, vertailu pienituloisimman ja suurituloisimman viidenneksen välillä on reilu riippumatta siitä, kuinka suuria tai pieniä kotitalouksia kussakin ryhmässä on.
 
-Tämä ei ole yllätys, kun asiaa ajattelee hetken. Tuki on sidottu ostettuun euromäärään, ei ostajan tulotasoon. Mitä enemmän rahaa käytät ruokaan, sitä enemmän tukea saat — ja suurituloiset käyttävät ruokaan enemmän rahaa kuin pienituloiset. Tukimuoto, jonka piti auttaa pienituloisia, on rakenteeltaan sellainen, että se auttaa eniten niitä, jotka sitä vähiten tarvitsevat.
+Tämä ei ole yllätys, kun asiaa ajattelee hetken. Tuki on sidottu ostettuun euromäärään, ei ostajan tulotasoon. Mitä enemmän rahaa käytät ruokaan, sitä enemmän tukea saat, ja suurituloiset käyttävät ruokaan enemmän rahaa kuin pienituloiset. Tukimuoto, jonka piti auttaa pienituloisia, onkin johtanut siihen että eniten tuetaan suurituloisia. Toteutus on siis pielessä.
 
 _(Lähde: [Tilastokeskus, kulutustutkimus 2022, kulutusmenot kulutusyksikköä kohden](https://pxdata.stat.fi/PxWeb/pxweb/fi/StatFin/StatFin__ktutk/14pg.px/table/tableViewLayout1/))_
 
@@ -77,16 +77,16 @@ Tule mukaan kanssamme vaatimaan, että tuki menee sinne, minne se on tarkoitettu
 ## Usein kysytyt kysymykset
 
 **Eikö ruuan arvonlisäveron korotus osu kipeimmin pienituloisiin?**
-Yksinään kyllä — juuri siksi emme hyväksy korotusta ilman palautusta. Kun koko tuotto maksetaan takaisin tasasummana, pienituloisen asema säilyy suunnilleen ennallaan, ja suurituloisen tuki pienenee. Palautus on ehto, ei jälkikäteinen lupaus.
+Yksinään kyllä, ja juuri siksi emme hyväksy korotusta ilman palautusta. Kun koko tuotto maksetaan takaisin tasasummana, pienituloisen asema jopa paranee nykytilanteesta, ja suurituloisen saama tarpeeton tuki pienenee. Palautus on ehto, ei jälkikäteinen lupaus.
 
 **Miksi sama summa kaikille eikä kohdennettu tuki vain pienituloisille?**
-Koska tasasumma ei vaadi tarveharkintaa, hakemuksia tai byrokratiaa, ja koska sama euro merkitsee pienituloiselle suhteessa enemmän kuin suurituloiselle. Tarkasti kohdennettu tuki kuulostaa tehokkaammalta, mutta se tarkoittaa aina myös lisää valtaa päättää, kuka tukea "ansaitsee" — sitä emme halua.
+Koska tasasumma ei vaadi tarveharkintaa, hakemuksia tai byrokratiaa, ja koska sama euro merkitsee pienituloiselle suhteessa enemmän kuin suurituloiselle. Tarkasti kohdennettu tuki kuulostaa tehokkaammalta, mutta todellisuudessa se tuottaa ylimääräistä byrokratiaa, ja myös virheitä ja "oikeusmurhia".
 
 **Nouseeko ruuan hinta 12 prosenttia?**
-Verokannan nousu ei automaattisesti tarkoita, että koko korotus siirtyy hintoihin täysimääräisenä — kaupat ja valmistajat kilpailevat asiakkaista, eikä alv-muutosten ole aiemminkaan havaittu siirtyvän hintoihin yksi yhteen. Joka tapauksessa palautus kompensoi vaikutuksen ihmisille rahana, riippumatta siitä, kuinka suuri osa korotuksesta lopulta näkyy kuiteissa.
+Todennäköisesti. Siitä huolimatta, ihmisillä on koronneisiin hintoihin varaa, sillä palautus kompensoi hintojen nousun.
 
 **Miten tämä on vihreää politiikkaa?**
-Kyse on oikeudenmukaisuudesta ja ihmisten vapaudesta päättää omasta rahastaan — emme usko, että valtion pitää holhota, millä ehdoilla tukea voi käyttää. Tämä on myös askel kohti perustuloa, joka on osa Vihreiden pitkäaikaista tavoitetta uudistaa sosiaaliturvaa.
+Kyse on oikeudenmukaisuudesta ja ihmisten vapaudesta päättää omasta rahastaan. Me uskomme ihmisten kykyyn tehdä itseään koskevia päätöksiä, ja haluamme lisätä ihmisten vapautta. Emme usko, että valtion pitää holhota, millä ehdoilla tukea voi käyttää. Lisäksi kyse on oikeudenmukaisuudesta, nykymallissa tuetaan eniten suurituloisia jossa ei ole mitään järkeä. Tämä on myös askel kohti perustuloa, joka on osa Vihreiden pitkäaikaista tavoitetta uudistaa sosiaaliturvaa.
 
 **Mistä luvut ovat?**
-Tilastokeskuksen kulutustutkimuksesta vuodelta 2022, kulutusmenoista kulutusyksikköä kohden. Kulutusyksikkö on kotitalouden koon mukaan vakioitu mittayksikkö (ensimmäinen aikuinen 1,0, muut aikuiset 0,5, lapset 0,3), joten vertailu pienituloisimman ja suurituloisimman viidenneksen välillä on reilu riippumatta kotitalouksien koosta. Emme silti väitä, että jokainen pienituloinen kotitalous voittaisi euroissa uudistuksesta — se riippuu kotitalouden koosta, eikä sitä voi päätellä tästä aineistosta.
+Tilastokeskuksen kulutustutkimuksesta vuodelta 2022, kulutusmenoista kulutusyksikköä kohden. Kulutusyksikkö on kotitalouden koon mukaan vakioitu mittayksikkö (ensimmäinen aikuinen 1,0, muut aikuiset 0,5, lapset 0,3), joten vertailu pienituloisimman ja suurituloisimman viidenneksen välillä on reilu riippumatta kotitalouksien koosta. Sivulla esitetyt luvut ovat viittellisiä, emme ole vielä tehneet tarkempaa simulaatiota vaikutuksista.
