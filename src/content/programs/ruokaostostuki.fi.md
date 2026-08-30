@@ -20,7 +20,7 @@ Kun ruoasta maksetaan vähemmän arvonlisäveroa kuin muusta kulutuksesta, valti
 
 Ongelma ruuan alennetussa verokannassa on että se että koska hyväosaiset käyttävät lähes kaksinkertaisen määrän rahaa ruokaostoksiin, ja täten valtio käytännössä tukee järjestelyllä voittopuolisesti hyväosaisia. Vaikka järjestelmän perustelu on nimenomaan pienituloisten tukemisessa.
 
-Me esitämme, että ruoka siirretään yleiseen 25,5 prosentin arvonlisäverokantaan, ja koko tuotto maksetaan takaisin ihmisille kuukausittaisena, samansuuruisena tulona. Emme kuitenkaan hyväksy korotusta ilman tätä palautusta: tämä on meille ehdoton kynnyskysymys!
+Me esitämme, että ruoka siirretään yleiseen 25,5 prosentin arvonlisäverokantaan, ja koko tuotto maksetaan takaisin ihmisille kuukausittaisena, samansuuruisena tulona. Emme kuitenkaan hyväksy veronkorotusta ilman tätä palautusta: tämä on meille ehdoton kynnyskysymys!
 
 ## Nykymallin ongelma: Tuki kasvaa sitä mukaa kun sen tarve pienenee
 
