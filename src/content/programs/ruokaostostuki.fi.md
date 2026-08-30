@@ -42,7 +42,7 @@ Pienituloinen ihminen tietää itse parhaiten, mihin hänen rahansa juuri nyt ka
 
 Me markkinavihreät emme halua holhota pienituloisia. Emme usko, että valtio tietää paremmin kuin ihminen itse, mihin hänen euronsa kannattaa käyttää. Siksi haluamme muuttaa tuen muotoa, mutta emme sen perimmäistä tarkoitusta.
 
-## Ratkaisu - raha suoraan ihmisille
+## Ratkaisu - Raha suoraan ihmisille
 
 Ratkaisu on yksinkertainen: ruoka siirretään yleiseen 25,5% arvonlisäverokantaan, ja koko tuotto maksetaan takaisin ihmisille rahana. Maksu tehtäisiin kuukausittain, samansuuruisena jokaiselle, myös lapsille. Ei hakemuksia, ei tarveharkintaa, ei erillistä byrokratiaa. Käytännössä tämä olisi pienimuotoinen perustulo.
 
