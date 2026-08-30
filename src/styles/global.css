@@ -58,6 +58,12 @@
   line-height: 0.95;
   letter-spacing: -0.025em;
   font-size: clamp(2.25rem, 5.5vw, 4rem);
+  /* A long single word (Finnish compounds run long) at this clamped size can
+     be wider than a narrow phone screen; without this it overflows the
+     layout horizontally instead of wrapping. overflow-wrap alone doesn't
+     reliably trigger a mid-word break in this scenario — word-break does. */
+  overflow-wrap: break-word;
+  word-break: break-word;
 }
 
 /* The biggest display heading, reserved for page hero h1s. */
@@ -66,6 +72,8 @@
   line-height: 1.05;
   letter-spacing: -0.025em;
   font-size: clamp(2.5rem, 9vw, 5.75rem);
+  overflow-wrap: break-word;
+  word-break: break-word;
 }
 
 /* Small uppercase label, e.g. a hero kicker or a section eyebrow. */

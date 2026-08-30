@@ -157,7 +157,23 @@ const perPersonSuffix = t(locale, 'chart.ruokaostostuki.perPersonSuffix')
     }
   </svg>
 
-  <table class="sr-only">
+  {
+    /*
+      sr-only's `white-space: nowrap` fights table layout: with the sr-only
+      shrink to 1px, an ordinary block honors that instantly, but a <table>
+      under table-layout:auto sizes itself from its content's min-content
+      width first — and nowrap makes that min-content width the full
+      unwrapped row text, so the table renders at its natural content width
+      (here, several hundred px) regardless of the 1px hint, even though
+      clip-path still keeps it invisible. That extra layout width was
+      widening the page's scrollable area on narrow screens. Overriding back
+      to `white-space: normal` (inline, so it beats sr-only's class
+      regardless of stylesheet order) lets the table actually shrink to ~1px
+      like the rest of the sr-only trick assumes — screen readers read the
+      DOM text regardless of this, so nothing here affects accessibility.
+    */
+  }
+  <table class="sr-only" style="white-space: normal;">
     <caption>{t(locale, 'chart.ruokaostostuki.tableCaption')}</caption>
     <thead>
       <tr>

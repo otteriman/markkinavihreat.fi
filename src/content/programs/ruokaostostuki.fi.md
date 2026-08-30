@@ -5,7 +5,7 @@ description: Ruoan alennettu arvonlisäverokanta on piilotettu tuki, joka maksaa
 order: 3
 heroKicker: Markkinavihreät vaativat
 heroLines:
-  - Ruokaostoksia
+  - Ruoka­ostoksia
   - tuettava
   - reilulla tavalla!
 unlisted: true
