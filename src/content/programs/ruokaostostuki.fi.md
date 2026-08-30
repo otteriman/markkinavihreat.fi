@@ -1,68 +1,66 @@
 ---
 locale: fi
-title: Ruokaostostuki kuuluu ihmisille!
+title: Ruuan alennettu ALV kohdentuu epäreilusti.
 description: Ruoan alennettu arvonlisäverokanta on piilotettu tuki, joka maksaa suurituloisille lähes kaksinkertaisesti pienituloisiin verrattuna. Poistetaan alennus ja maksetaan tuotto suoraan ihmisille kuukausittaisena tulona.
 order: 3
 heroKicker: Markkinavihreät vaativat
 heroLines:
-  - Ruokaostostuki
-  - kuuluu ihmisille,
-  - ei kuiteille
+  - Ruokaostoksia
+  - tuettava
+  - reilulla tavalla!
 unlisted: true
 citations: []
 ---
 
-Ruoalla on Suomessa alennettu arvonlisäverokanta. Sitä perustellaan aina samalla tavalla: pienituloisten pitää saada ostaa ruokaa halvemmalla. Kutsumme tätä alennusta **ruokaostostueksi** — koska se on tukea, vaikka sitä ei kukaan koskaan äänestä, budjetoi tai kohdenna kenellekään erikseen.
-
-Ongelma on siinä, että ruokaostostuki ei toimi niin kuin sen väitetään toimivan. Se ei kohdennu pienituloisille. Se kasvaa tulojen mukana — ja siksi suurin osa siitä valuu ihmisille, jotka eivät sitä tarvitse.
+Ruoalla on Suomessa alennettu arvonlisäverokanta. Sitä perustellaan pienituloisten tarpeilla. Ongelma on siinä, että ruuan alennettu verokanta kohdentuu huonosti, sillä tuetaan enemmän hyvätuloisia kuin pienituloisia. Ei ole oikeudenmukaista tai järkevää tukea hyväosaisten ruokaostoksilla tällä tavalla. Esitämme mallia joka on oikeudenmukaisempi, tehokkaampi ja lisäisi ihmisten vapautta.
 
 ## Mistä on kyse
 
-Kun ruoasta maksetaan vähemmän arvonlisäveroa kuin muusta kulutuksesta, valtio luopuu verotuotosta jokaisen ruokaostoksen kohdalla. Tätä eroa nykyisen alennetun kannan ja yleisen verokannan välillä kutsumme ruokaostostueksi: se on juuri yhtä suuri tulonsiirto kuin jos valtio maksaisi saman summan suoraan takaisin jokaisesta ostetusta ruokakassista.
+Kun ruoasta maksetaan vähemmän arvonlisäveroa kuin muusta kulutuksesta, valtio luopuu verotuotosta jokaisen ruokaostoksen kohdalla. Tätä eroa nykyisen alennetun kannan ja yleisen verokannan on käytännössä yksi tuen muoto: alennettu verokanta tuottaa täsmälleen saman lopputuloksen kuin jos kaupan kassalla valtio maksaisi osan ihmisten ruokalaskusta. Alennettu verokanta on tukea, samalla tavalla kuin suurin osa yritystuistakin on alennettuja verokantoja.
 
-Tätä yli miljardin euron vuotuista tulonsiirtoa ei näy yhdessäkään budjettikirjassa, eikä kukaan ole erikseen päättänyt, kenelle se kohdistuu. Se vain tapahtuu, kassalla, aina kun joku ostaa ruokaa — riippumatta siitä, onko ostaja opiskelija vai toimitusjohtaja.
+Ongelma ruuan alennetussa verokannassa on että se että koska hyväosaiset käyttävät lähes kaksinkertaisen määrän rahaa ruokaostoksiin, ja täten valtio käytännössä tukee järjestelyllä voittopuolisesti hyväosaisia. Vaikka järjestelmän perustelu on nimenomaan pienituloisten tukemisessa.
 
-Me esitämme, että ruoka siirretään yleiseen 25,5 prosentin arvonlisäverokantaan, ja koko tuotto maksetaan takaisin ihmisille kuukausittaisena, samansuuruisena tulona. Emme kuitenkaan hyväksy korotusta ilman tätä palautusta — se on meille kynnyskysymys, johon palaamme tuonnempana.
+Me esitämme, että ruoka siirretään yleiseen 25,5 prosentin arvonlisäverokantaan, ja koko tuotto maksetaan takaisin ihmisille kuukausittaisena, samansuuruisena tulona. Emme kuitenkaan hyväksy korotusta ilman tätä palautusta: tämä on meille ehdoton kynnyskysymys!
 
-## Ruokaostostuki kasvaa sitä mukaa kun sen tarve pienenee
+## Nykymallin ongelma: Tuki kasvaa sitä mukaa kun sen tarve pienenee
 
 [kuvaaja: ruokaostostuki-alv]
 
-Tilastokeskuksen kulutustutkimuksen mukaan pienituloisin viidennes suomalaisista käytti vuonna 2022 ruokaan ja alkoholittomiin juomiin noin 2 848 euroa kulutusyksikköä kohden — suurituloisin viidennes noin 5 034 euroa. Luvut on laskettu kulutusyksikköä kohden, eli ne on jo vakioitu kotitalouden koon mukaan, joten vertailu on reilu: tässä ei verrata suuria perheitä pieniin talouksiin, vaan samalla mitalla mitattua kulutusta.
+Tilastokeskuksen kulutustutkimuksen mukaan pienituloisin viidennes suomalaisista käytti vuonna 2022 ruokaan ja alkoholittomiin juomiin noin 2 848 euroa kulutusyksikköä kohden, ja suurituloisin viidennes noin 5 034 euroa. 
 
-Kun tästä puretaan tuolloin voimassa ollut ruoan 14 prosentin arvonlisävero ja lasketaan, paljonko veroa maksettaisiin nykyisellä 25,5 prosentin yleisellä kannalla, saadaan ruokaostostuen suuruus: pienituloisin viidennes sai tukea noin 287 euroa vuodessa, suurituloisin noin 508 euroa. **Suurituloisin viidennes saa siis ruokaostostukea lähes kaksinkertaisesti — noin 1,8-kertaisesti — pienituloisimpaan verrattuna.**
+Kun tästä puretaan tuolloin voimassa ollut ruoan 14 prosentin arvonlisävero ja lasketaan, paljonko veroa maksettaisiin nykyisellä 25,5 prosentin yleisellä kannalla, saadaan tuen suuruus: pienituloisin viidennes sai tukea noin 287 euroa vuodessa, suurituloisin noin 508 euroa. **Suurituloisin viidennes saa siis ruokaostoksiin tukea lähes kaksinkertaisesti — noin 1,8-kertaisesti — pienituloisimpaan verrattuna.**
 
 Tämä ei ole yllätys, kun asiaa ajattelee hetken. Tuki on sidottu ostettuun euromäärään, ei ostajan tulotasoon. Mitä enemmän rahaa käytät ruokaan, sitä enemmän tukea saat — ja suurituloiset käyttävät ruokaan enemmän rahaa kuin pienituloiset. Tukimuoto, jonka piti auttaa pienituloisia, on rakenteeltaan sellainen, että se auttaa eniten niitä, jotka sitä vähiten tarvitsevat.
 
-_(Lähde: Tilastokeskus, kulutustutkimus 2022, kulutusmenot kulutusyksikköä kohden — tarkka taulukkolinkki lisätään. Verokannat: ruoan alv 14 % vuonna 2022, yleinen alv 25,5 % nykyisin.)_
+_(Lähde: [Tilastokeskus, kulutustutkimus 2022, kulutusmenot kulutusyksikköä kohden](https://pxdata.stat.fi/PxWeb/pxweb/fi/StatFin/StatFin__ktutk/14pg.px/table/tableViewLayout1/))_
 
-## Tuki kelpaa vain kaupan kassalla
+## Nykymallin ongelma:: Tuki kelpaa vain kaupan kassalla
 
-Huono kohdentuminen ei ole ruokaostostuen ainoa ongelma. Vaikka se kohdentuisi paremmin, se olisi silti huono tapa tukea pienituloisia — koska se kelpaa vain yhteen tarkoitukseen.
+Huono kohdentuminen ei ole ruuan alennetun arvonlisäveron ainoa ongelma. Vaikka se kohdentuisikin paremmin, se olisi silti huono tapa tukea pienituloisia, sillä se kelpaa vain yhteen tarkoitukseen.
 
-Pienituloinen ihminen tietää itse parhaiten, mihin hänen rahansa juuri nyt kannattaa mennä. Joskus se on ruokaa. Joskus se on vuokra, joka on myöhässä. Joskus lääkkeet, bussilippu tai lapsen harrastusmaksu. Ruokaostostuki ei anna tähän mitään valinnanvaraa: se on tukea, joka kelpaa vain kaupan kassalla, ei mihinkään muualle.
+Pienituloinen ihminen tietää itse parhaiten, mihin hänen rahansa juuri nyt kannattaa käyttää. Joskus se on ruokaa. Joskus se on vuokra, joka on myöhässä. Joskus lääkkeet, bussilippu tai lapsen harrastusmaksu. Ruuan alennettu ALV ei anna tähän mitään valinnanvaraa: se on tukea, joka kelpaa vain kaupan kassalla, ei mihinkään muualle.
 
-Me markkinavihreät emme halua holhota pienituloisia. Emme usko, että valtio tietää paremmin kuin ihminen itse, mihin hänen euronsa kannattaa käyttää. Siksi haluamme muuttaa tuen muotoa — emme sen tarkoitusta.
+Me markkinavihreät emme halua holhota pienituloisia. Emme usko, että valtio tietää paremmin kuin ihminen itse, mihin hänen euronsa kannattaa käyttää. Siksi haluamme muuttaa tuen muotoa, mutta emme sen perimmäistä tarkoitusta.
 
-## Markkinavihreä ratkaisu on maksaa raha suoraan ihmisille
+## Markkinavihreä ratkaisu: raha suoraan ihmisille
 
-Ratkaisu on yksinkertainen: ruoka siirretään yleiseen arvonlisäverokantaan, ja koko tuotto maksetaan takaisin ihmisille rahana, kuukausittain, samansuuruisena jokaiselle — lapset mukaan lukien. Ei hakemuksia, ei tarveharkintaa, ei erillistä byrokratiaa. Käytännössä tämä on pieni perustulo, ja sanomme sen suoraan: se on juuri sitä.
+Ratkaisu on yksinkertainen: ruoka siirretään yleiseen 25,5% arvonlisäverokantaan, ja koko tuotto maksetaan takaisin ihmisille rahana. Maksu tehtäisiin kuukausittain, samansuuruisena jokaiselle, myös lapsille. Ei hakemuksia, ei tarveharkintaa, ei erillistä byrokratiaa. Käytännössä tämä olisi pienimuotoinen perustulo.
 
-Vihreät ovat itse arvioineet, että tilille voisi tulla kuukausittain karkeasti 25 euroa henkilöä kohden, lapset mukaan lukien. _(Lähde tarkistettava ja linkitetään.)_ Tämä on samaa suuruusluokkaa kuin pienituloisimman viidenneksen tämänhetkinen ruokaostostuki — eli uudistus säilyttäisi pienituloisen aseman suunnilleen ennallaan, samalla kun se leikkaisi suurituloisen saamaa tukea selvästi.
+Arvioimme että tilille voisi tulla kuukausittain [karkeasti 25 euroa henkilöä kohden, lapset mukaan lukien](https://www.hs.fi/politiikka/art-2000011644455.html). Arvoimme että tuki parantaisi pienituloisten tuen määrää hieman nykyisestä  suhteessa alennettuun arvonlisäverokantaan, samalla kun se leikkaisi suurituloisen saamaa tukea selvästi.
 
-Sama euro merkitsee pienituloiselle enemmän kuin suurituloiselle. Siksi tasasumma on kohdentumiseltaan parempi kuin hintaan sidottu tuki, vaikka summat euroissa olisivat samat. Ja koska raha ei ole korvamerkittyä, jokainen saa itse päättää, meneekö se ruokaan, vuokraan vai johonkin muuhun — se on vapautta, ei holhousta.
+Pienituloisten asema siis paranisi, ja lopettaisi nykyisen eettisesti kestämättömän tilanteen missä tuemme voittopuolisesti hyvätuloisten ruokaostoksia. Muutos myös lisää pienituloisten vapautta: raha ei ole korvamerkittyä, ja täten jokainen saa itse päättää käyttääkö sen ruokaan, vuokraan vai johonkin muuhun. Lisäksi koska tuki maksetaan automaationa jokaiselle kansalaiselle, se ei vaadi mitään kyttäävää tai holhoavaa byrokratiaa. Vapautta, ei holhousta!
 
-## Ilman palautusta emme hyväksy korotusta
+## Ilman palautusta emme hyväksy veronkorotusta
 
-Tämä on meille kynnyskysymys: emme hyväksy ruuan arvonlisäveron korottamista yleiselle tasolle, ellei tuotto samalla palauteta ihmisille kuukausittaisena tulona. Ei "myöhemmin katsotaan", ei "kompensoidaan erikseen jossain muussa yhteydessä" — palautusmekanismin pitää olla olemassa ja päätetty samassa paketissa kuin korotus itse.
+Tämä on meille kynnyskysymys: emme hyväksy ruuan arvonlisäveron korottamista yleiselle tasolle, ellei tuotto samalla palauteta ihmisille kuukausittaisena tulona. Ei "myöhemmin katsotaan", ei "kompensoidaan erikseen jossain muussa yhteydessä", palautusmekanismin pitää tulla voimaan täsmälleen samassa hetkessä kuin ruuan arvonlisäveroa korotetaan.
 
-Tämä ei ole tekninen yksityiskohta. Se on koko ehdotuksen ydin: emme ehdota ruuan verotuksen kiristämistä, vaan tuen muodon muuttamista. Jos palautus jää tekemättä, koko ehdotus jää tekemättä.
+Tästä emme tingi. Se on koko ehdotuksen ydin: emme halua kiristää ihmisten verotusta, vaan muuttaa tuen muotoa. Jos palautus jää tekemättä, koko ehdotus jää tekemättä.
 
 ## Mitä tästä seuraa
 
-Ruoka yleiseen verokantaan ja tuotto takaisin kuukausittaisena tulona tuottaisi useita hyötyjä yhdellä kertaa. Tuki kohdentuisi paremmin: pienituloisen asema säilyisi suunnilleen ennallaan, suurituloisen tuki pienenisi. Ihmiset saisivat vapauden päättää itse, mihin oma rahansa käytetään — ei valtion sanelemana vain ruokaan. Verojärjestelmä yksinkertaistuisi, kun yksi erityiskohtelu poistuisi. Ja koska kyse on käytännössä pienestä perustulosta, se olisi ensimmäinen konkreettinen askel kohti laajempaa perustulojärjestelmää.
+Ruoka yleiseen verokantaan ja tuotto takaisin kuukausittaisena tulona tuottaisi useita hyötyjä yhdellä kertaa. Tuki kohdentuisi paremmin: pienituloisen asema paranisi, suurituloisen tuki pienenisi. Ihmiset saisivat vapauden päättää itse, mihin omat rahansa käyttävät, ilman valtion sanelua. Verojärjestelmä yksinkertaistuisi, kun yksi erityiskohtelu poistuisi. Ja koska kyse on käytännössä pienestä perustulosta, se olisi ensimmäinen konkreettinen askel kohti aitoa perustuloa ja ihmisten vapauttamista nykyisestä kafkamaisen kyttäävästä bykoratiasosiaaliturvasta.
 
-**Ruokaostostuki ei ole huono ajatus siksi, että pienituloisia ei kannattaisi tukea. Se on huono ajatus siksi, että se tukee väärää ihmistä väärällä tavalla.** Reilumpi, yksinkertaisempi ja vapaampi vaihtoehto on maksaa raha suoraan ihmisille.
+**Ruuan alennettu alv ei ole huono ajatus siksi, että pienituloisia ei kannattaisi tukea. Se on huono ajatus siksi, että se tekee sen huonosti.** Reilumpi, yksinkertaisempi ja vapaampi vaihtoehto on maksaa raha suoraan ihmisille.
 
 Tule mukaan kanssamme vaatimaan, että tuki menee sinne, minne se on tarkoitettu.
 
