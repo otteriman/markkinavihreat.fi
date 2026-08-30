@@ -68,6 +68,7 @@ sections.forEach((section, i) => {
             label={section.type === 'requirement' ? section.label : undefined}
             heading={section.heading}
             paragraphs={section.paragraphs}
+            locale={locale}
           >
             {i === lastHighlightIndex && (
               <a href={JOIN_URL} class="btn-contained-lg mt-10 inline-flex">

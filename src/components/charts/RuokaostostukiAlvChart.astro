@@ -1,0 +1,198 @@
+---
+import { ruokaostostukiBreakdowns, type VatBreakdown } from '../../lib/charts/ruokaostostuki'
+import { formatEuro } from '../../lib/format'
+import type { Locale } from '../../lib/content'
+import { t } from '../../i18n/ui'
+
+interface Props {
+  locale: Locale
+}
+
+// The <title>/<desc> ids below are static because the site only ever embeds
+// this chart once per page — a second instance on the same page would
+// collide. Suffix them with a discriminator if that ever changes.
+
+const { locale } = Astro.props
+
+const breakdowns = ruokaostostukiBreakdowns()
+
+// Chart geometry, in SVG user units (≈ px at the viewBox's natural render size).
+const VIEW_WIDTH = 600
+const VIEW_HEIGHT = 300
+const BASELINE_Y = 250
+const TOP_PADDING = 40 // room for the total-value label above the tallest bar
+const PLOT_HEIGHT = BASELINE_Y - TOP_PADDING
+const BAR_WIDTH = 108
+const SEGMENT_GAP = 3 // the 2px+ surface gap between stacked segments
+const CORNER_RADIUS = 4 // the rounded data-end at the bar's free (top) end
+
+const maxTotal = Math.max(breakdowns.low.vatAtGeneralRate, breakdowns.high.vatAtGeneralRate)
+const scale = PLOT_HEIGHT / maxTotal
+
+interface Column {
+  breakdown: VatBreakdown
+  centerX: number
+  quintileLabel: string
+  paidHeight: number
+  subsidyHeight: number
+  paidY: number
+  subsidyY: number
+}
+
+function columnFor(breakdown: VatBreakdown, centerX: number, quintileLabel: string): Column {
+  const paidHeight = breakdown.vatPaid * scale
+  const subsidyHeight = breakdown.subsidy * scale
+  const paidY = BASELINE_Y - paidHeight
+  const subsidyY = paidY - SEGMENT_GAP - subsidyHeight
+  return { breakdown, centerX, quintileLabel, paidHeight, subsidyHeight, paidY, subsidyY }
+}
+
+const columns: Column[] = [
+  columnFor(breakdowns.low, 190, t(locale, 'chart.ruokaostostuki.lowLabel')),
+  columnFor(breakdowns.high, 410, t(locale, 'chart.ruokaostostuki.highLabel')),
+]
+
+const title = t(locale, 'chart.ruokaostostuki.title')
+const desc = t(locale, 'chart.ruokaostostuki.desc')
+const paidLabel = t(locale, 'chart.ruokaostostuki.paidLabel')
+const subsidyLabel = t(locale, 'chart.ruokaostostuki.subsidyLabel')
+const totalLabel = t(locale, 'chart.ruokaostostuki.totalLabel')
+---
+
+<figure class="my-8">
+  <svg
+    viewBox={`0 0 ${VIEW_WIDTH} ${VIEW_HEIGHT}`}
+    role="img"
+    aria-labelledby="ruokaostostuki-chart-title ruokaostostuki-chart-desc"
+    preserveAspectRatio="xMidYMid meet"
+    style="width: 100%; height: auto; overflow: visible;"
+  >
+    <title id="ruokaostostuki-chart-title">{title}</title>
+    <desc id="ruokaostostuki-chart-desc">{desc}</desc>
+
+    <line
+      x1={40}
+      y1={BASELINE_Y}
+      x2={VIEW_WIDTH - 40}
+      y2={BASELINE_Y}
+      stroke="var(--color-harmaa)"
+      stroke-width="1"></line>
+
+    {
+      columns.map((col) => (
+        <>
+          {/* Bottom segment: VAT paid today. Square at the baseline — not the bar's free end. */}
+          <rect
+            x={col.centerX - BAR_WIDTH / 2}
+            y={col.paidY}
+            width={BAR_WIDTH}
+            height={col.paidHeight}
+            fill="var(--color-vihrea)"
+          />
+
+          {/* Top segment: the implicit subsidy. Rounded at the bar's free (top) end, square where it meets the gap. */}
+          <rect
+            x={col.centerX - BAR_WIDTH / 2}
+            y={col.subsidyY}
+            width={BAR_WIDTH}
+            height={col.subsidyHeight}
+            rx={CORNER_RADIUS}
+            ry={CORNER_RADIUS}
+            fill="var(--color-vihrea-tumma)"
+          />
+          <rect
+            x={col.centerX - BAR_WIDTH / 2}
+            y={col.subsidyY + col.subsidyHeight - CORNER_RADIUS}
+            width={BAR_WIDTH}
+            height={CORNER_RADIUS}
+            fill="var(--color-vihrea-tumma)"
+          />
+
+          <text
+            x={col.centerX}
+            y={col.paidY + col.paidHeight / 2}
+            text-anchor="middle"
+            dominant-baseline="middle"
+            fill="var(--color-musta)"
+            font-size="15"
+            font-weight="600"
+          >
+            {formatEuro(col.breakdown.vatPaid, locale)}
+          </text>
+
+          <text
+            x={col.centerX}
+            y={col.subsidyY + col.subsidyHeight / 2}
+            text-anchor="middle"
+            dominant-baseline="middle"
+            fill="var(--color-kerma)"
+            font-size="15"
+            font-weight="700"
+          >
+            {formatEuro(col.breakdown.subsidy, locale)}
+          </text>
+
+          <text
+            x={col.centerX}
+            y={col.subsidyY - 12}
+            text-anchor="middle"
+            fill="var(--color-harmaa)"
+            font-size="12"
+          >
+            {formatEuro(col.breakdown.vatAtGeneralRate, locale)} {totalLabel}
+          </text>
+
+          <text
+            x={col.centerX}
+            y={BASELINE_Y + 26}
+            text-anchor="middle"
+            fill="var(--color-musta)"
+            font-size="14"
+            font-weight="600"
+          >
+            {col.quintileLabel}
+          </text>
+        </>
+      ))
+    }
+  </svg>
+
+  <figcaption class="mt-4 flex flex-wrap items-center justify-center gap-x-6 gap-y-2 text-sm">
+    <span class="inline-flex items-center gap-2">
+      <span
+        class="h-3 w-3 shrink-0 rounded-sm"
+        style="background-color: var(--color-vihrea)"
+        aria-hidden="true"></span>
+      {paidLabel}
+    </span>
+    <span class="inline-flex items-center gap-2">
+      <span
+        class="h-3 w-3 shrink-0 rounded-sm"
+        style="background-color: var(--color-vihrea-tumma)"
+        aria-hidden="true"></span>
+      {subsidyLabel}
+    </span>
+  </figcaption>
+
+  <table class="sr-only">
+    <caption>{t(locale, 'chart.ruokaostostuki.tableCaption')}</caption>
+    <thead>
+      <tr>
+        <th scope="col"></th>
+        <th scope="col">{paidLabel}</th>
+        <th scope="col">{subsidyLabel}</th>
+      </tr>
+    </thead>
+    <tbody>
+      {
+        columns.map((col) => (
+          <tr>
+            <th scope="row">{col.quintileLabel}</th>
+            <td>{formatEuro(col.breakdown.vatPaid, locale)}</td>
+            <td>{formatEuro(col.breakdown.subsidy, locale)}</td>
+          </tr>
+        ))
+      }
+    </tbody>
+  </table>
+</figure>
