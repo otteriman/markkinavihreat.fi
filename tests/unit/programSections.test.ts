@@ -199,6 +199,23 @@ describe('parseProgramBody disclosure markers', () => {
     })
   })
 
+  it('keeps a single-line-break-separated body intact as one disclosure paragraph', () => {
+    // A blank line would already have split this into a separate raw
+    // paragraph upstream (and out of the disclosure) — a single line break
+    // is how the body carries more than one rendered paragraph.
+    const body = `## Osio\n\n[laskelma: Kuinka luku laskettiin?]\nEnsimmäinen kappale.\nToinen kappale.`
+    const parsed = parseProgramBody(body)
+    expect(parsed.sections[0]).toMatchObject({
+      paragraphs: [
+        {
+          type: 'disclosure',
+          question: 'Kuinka luku laskettiin?',
+          text: 'Ensimmäinen kappale.\nToinen kappale.',
+        },
+      ],
+    })
+  })
+
   it('does NOT treat an ordinary "**bold**" leading paragraph as a disclosure — only [laskelma: ...] triggers one', () => {
     // Regression guard: closing-punchline paragraphs across the existing
     // programs start with "**bold sentence**" purely for emphasis, mixed in
