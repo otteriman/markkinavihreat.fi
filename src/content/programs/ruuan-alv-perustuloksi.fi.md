@@ -12,7 +12,7 @@ unlisted: true
 citations: []
 ---
 
-Ruoalla on Suomessa alennettu arvonlisäverokanta jota perustellaan pienituloisten tarpeilla. Ruuan alennettu verokanta kuitenkin kohdentuu huonosti, ja sillä tuetaan enemmän hyvätuloisia kuin pienituloisia. Ei ole oikeudenmukaista tai järkevää tukea hyväosaisten ruokaostoksilla tällä tavalla.
+Ruoalla on Suomessa alennettu arvonlisäverokanta jota perustellaan pienituloisten tarpeilla. Ruuan alennettu verokannalla kuitenkin tuetaan enemmän hyvätuloisia kuin pienituloisia. Ei ole oikeudenmukaista tai järkevää tukea hyväosaisten ruokaostoksilla tällä tavalla.
 
 Esitämme ruuan alemman arvonlisäverokannan muuttamista pieneksi perustuloksi, joka olisi oikeudenmukaisempi, tehokkaampi ja lisäisi ihmisten vapautta. Muutos myös rahoittaisi itse itsensä.
 
