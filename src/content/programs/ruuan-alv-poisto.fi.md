@@ -1,26 +1,28 @@
 ---
 locale: fi
-title: Ruokaostoksia tuettava reilulla tavalla
-description: Ruoan alennettu arvonlisäverokanta on piilotettu tuki, joka maksaa suurituloisille lähes kaksinkertaisesti pienituloisiin verrattuna. Poistetaan alennus ja maksetaan tuotto suoraan ihmisille kuukausittaisena tulona.
+title: Muutetaan ruuan alv perustuloksi
+description: Haluamme ottaa käyttöön pienen perustulon kustannusneutraalisti, poistamalla ruuan alennetun arvonlisäverokannan ja maksamalla saadun tuoton takaisin ihmisille kuukausittaisena tulona.
 order: 3
-heroKicker: Markkinavihreät vaativat
+heroKicker: Markkinavihreä ehdotus
 heroLines:
-  - Ruoka­ostoksia
-  - tuettava
-  - reilulla tavalla!
+  - Muutetaan
+  - ruuan alv
+  - perustuloksi
 unlisted: true
 citations: []
 ---
 
-Ruoalla on Suomessa alennettu arvonlisäverokanta jota perustellaan pienituloisten tarpeilla. Ongelma on siinä, että ruuan alennettu verokanta kohdentuu huonosti, ja sillä tuetaan enemmän hyvätuloisia kuin pienituloisia. Ei ole oikeudenmukaista tai järkevää tukea hyväosaisten ruokaostoksilla tällä tavalla. Esitämme mallia joka on oikeudenmukaisempi, tehokkaampi ja lisäisi ihmisten vapautta.
+Ruoalla on Suomessa alennettu arvonlisäverokanta jota perustellaan pienituloisten tarpeilla. Ruuan alennettu verokanta kuitenkin kohdentuu huonosti, ja sillä tuetaan enemmän hyvätuloisia kuin pienituloisia. Ei ole oikeudenmukaista tai järkevää tukea hyväosaisten ruokaostoksilla tällä tavalla.
+
+Esitämme ruuan alemman arvonlisäverokannan muuttamista pieneksi perustuloksi, joka olisi oikeudenmukaisempi, tehokkaampi ja lisäisi ihmisten vapautta.
 
 ## Mistä on kyse
 
-Kun ruoasta maksetaan vähemmän arvonlisäveroa kuin muusta kulutuksesta, valtio luopuu verotuotosta jokaisen ruokaostoksen kohdalla. Tätä eroa nykyisen alennetun kannan ja yleisen verokannan on käytännössä yksi tuen muoto: alennettu verokanta tuottaa täsmälleen saman lopputuloksen kuin jos kaupan kassalla valtio maksaisi osan ihmisten ruokalaskusta. Alennettu verokanta on tukea, samalla tavalla kuin suurin osa yritystuistakin on alennettuja verokantoja.
+Kun ruoasta maksetaan vähemmän arvonlisäveroa kuin muusta kulutuksesta, ja täten valtio luopuu osasta verotuottoa jokaisen ruokaostoksen kohdalla. Tätä eroa nykyisen alennetun kannan ja yleisen verokannan on käytännössä yksi tuen muoto: alennettu verokanta tuottaa täsmälleen saman lopputuloksen kuin jos kaupan kassalla valtio maksaisi osan ihmisten ruokalaskusta. Alennettu verokanta on tukea, samalla tavalla kuin suurin osa yritystuistakin on alennettuja verokantoja.
 
-Ongelma ruuan alennetussa verokannassa on että se että koska hyväosaiset käyttävät lähes kaksinkertaisen määrän rahaa ruokaostoksiin, ja täten valtio käytännössä tukee järjestelyllä voittopuolisesti hyväosaisia. Vaikka järjestelmän perustelu on nimenomaan pienituloisten tukemisessa.
+Ongelma ruuan alennetussa verokannassa on että se että hyväosaiset käyttävät lähes kaksinkertaisen määrän rahaa ruokaostoksiin, ja täten valtio käytännössä tukee järjestelyllä voittopuolisesti hyväosaisia. Siitä huolimatta, että alemman verokannan perustelu on nimenomaan pienituloisten tukemisessa.
 
-Me esitämme, että ruoka siirretään yleiseen 25,5 prosentin arvonlisäverokantaan, ja koko tuotto maksetaan takaisin ihmisille kuukausittaisena, samansuuruisena tulona. Emme kuitenkaan hyväksy veronkorotusta ilman tätä palautusta: tämä on meille ehdoton kynnyskysymys!
+Me esitämme, että ruoka siirretään yleiseen 25,5 prosentin arvonlisäverokantaan, ja koko tuotto maksetaan takaisin ihmisille kuukausittaisena, samansuuruisena perustulona. Emme kuitenkaan hyväksy veronkorotusta ilman pienen perustulon käyttöönottoa: tämä on meille ehdoton kynnyskysymys!
 
 ## Nykymallin ongelma - Tuki kasvaa sitä mukaa kun sen tarve pienenee
 
@@ -60,11 +62,11 @@ Katso myös talousvihreiden esitys aiheesta.
 
 [video: IpUvpkl-WfQ]
 
-## Ilman palautusta emme hyväksy veronkorotusta
+## Ilman perustuloa emme hyväksy veronkorotusta
 
-Tämä on meille kynnyskysymys: emme hyväksy ruuan arvonlisäveron korottamista yleiselle tasolle, ellei tuotto samalla palauteta ihmisille kuukausittaisena tulona. Ei "myöhemmin katsotaan", ei "kompensoidaan erikseen jossain muussa yhteydessä", palautusmekanismin pitää tulla voimaan täsmälleen samassa hetkessä kuin ruuan arvonlisäveroa korotetaan.
+Tämä on meille kynnyskysymys: emme hyväksy ruuan arvonlisäveron korottamista yleiselle tasolle, ellei tuotto samalla palauteta ihmisille kuukausittaisena tulona. Ei "myöhemmin katsotaan", ei "kompensoidaan erikseen jossain muussa yhteydessä", kuukausittain maksettavan "ruokaperustulon" pitää tulla voimaan täsmälleen samassa hetkessä kuin ruuan arvonlisäveroa korotetaan.
 
-Tästä emme tingi. Se on koko ehdotuksen ydin: emme halua kiristää ihmisten verotusta, vaan muuttaa tuen muotoa. Jos palautus jää tekemättä, koko ehdotus jää tekemättä.
+Tästä emme tingi. Se on koko ehdotuksen ydin: emme halua kiristää ihmisten verotusta, vaan muuttaa tuen muotoa. Jos perustulo jää tekemättä, koko ehdotus jää tekemättä.
 
 ## Mitä tästä seuraa
 
@@ -77,7 +79,10 @@ Tule mukaan kanssamme vaatimaan, että tuki menee sinne, minne se on tarkoitettu
 ## Usein kysytyt kysymykset
 
 **Eikö ruuan arvonlisäveron korotus osu kipeimmin pienituloisiin?**
-Yksinään kyllä, ja juuri siksi emme hyväksy korotusta ilman palautusta. Kun koko tuotto maksetaan takaisin tasasummana, pienituloisen asema jopa paranee nykytilanteesta, ja suurituloisen saama tarpeeton tuki pienenee. Palautus on ehto, ei jälkikäteinen lupaus.
+Yksinään kyllä, ja juuri siksi emme hyväksy korotusta ilman perustulon käyttöönottoa. Kun koko tuotto maksetaan takaisin verottomana tasasummana, pienituloisen asema jopa paranee nykytilanteesta, ja suurituloisen saama tarpeeton tuki pienenee. Perustulon käyttöönotto on muutoksen ehto, ei jälkikäteinen lupaus.
+
+**Voiko muutaman kympin tuloa kutsua perustuloksi?**
+20-30€ suuruinen perustulo ei tietenkään olisi täydellinen muita tukia korvaava perustulo. Mutta se olisi kuitenkin aivan aito vastikkeeton kaikille kuukausittain maksettava raha, eli hyvin pieni perustulo. Uskomme että perustulon suurin vaikeus on sen luominen, kun järjestelmä on luotu sen laajentaminen on sen jälkeen poliittisesti paljon helpompaa. Vastaava ilmiö tapahtui myös kaivosveron suhteen: sen käyttöönottoa vastutettiin vuosikymmeniä, mutta kun Marinin hallitus lopulta otti käyttöön kaivosveron, Orpon hallitus korotti sitä heti seuraavalla hallituskaudella.
 
 **Miksi sama summa kaikille eikä kohdennettu tuki vain pienituloisille?**
 Koska tasasumma ei vaadi tarveharkintaa, hakemuksia tai byrokratiaa, ja koska sama euro merkitsee pienituloiselle suhteessa enemmän kuin suurituloiselle. Tarkasti kohdennettu tuki kuulostaa tehokkaammalta, mutta todellisuudessa se tuottaa ylimääräistä byrokratiaa, ja myös virheitä ja "oikeusmurhia".
