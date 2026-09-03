@@ -23,12 +23,11 @@ const { kicker, lines, leadParagraphs } = Astro.props
       ))
     }
   </h1>
-  {
-    leadParagraphs.map((paragraph) => (
-      <p
-        class="prose-body mx-auto max-w-[52ch] text-lg font-medium"
-        set:html={renderInlineMarkdown(paragraph.text)}
-      />
-    ))
-  }
+  <div class="mx-auto max-w-[52ch] space-y-4">
+    {
+      leadParagraphs.map((paragraph) => (
+        <p class="prose-body text-lg font-medium" set:html={renderInlineMarkdown(paragraph.text)} />
+      ))
+    }
+  </div>
 </section>
