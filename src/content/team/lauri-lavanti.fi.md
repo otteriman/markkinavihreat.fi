@@ -3,14 +3,15 @@ locale: fi
 name: 'Lauri Lavanti'
 order: 16
 photo: '/images/team/Lauri-Lavanti.jpg'
+candidateBadge: 'Eduskuntavaaliehdokas Uudellamaalla'
 links:
   - type: website
-    url: 'https://laurilavanti.fi/fi/'
-    label: 'laurilavanti.fi'
+    url: 'https://lavanti.fi/fi/'
+    label: 'lavanti.fi'
   - type: mastodon
     url: 'https://mastodon.social/@laurilavanti'
   - type: bluesky
-    url: 'https://bsky.app/profile/laurilavanti.fi'
+    url: 'https://bsky.app/profile/lauri.lavanti.fi'
   - type: threads
     url: 'https://www.threads.com/@laurilavanti'
   - type: linkedin

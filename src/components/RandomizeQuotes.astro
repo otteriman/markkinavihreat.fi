@@ -1,0 +1,37 @@
+---
+interface Props {
+  /**
+   * Selector for the hidden <template> holding the full quote pool — every
+   * available QuoteBand, rendered once server-side so this script can reuse
+   * that markup instead of rebuilding band HTML in JS.
+   */
+  poolSelector: string
+  /**
+   * Selector matching the fixed on-page slots to fill. On each load we pick a
+   * random distinct subset of the pool (one per slot) and drop it in, so the
+   * *set* of quotes varies between visits — not just their order (which is all
+   * ShuffleOnLoad, permuting in place, can do). Slots keep their fixed page
+   * positions and their server-rendered fallback shows when JS is off.
+   */
+  slotSelector: string
+}
+
+const { poolSelector, slotSelector } = Astro.props
+---
+
+<script is:inline define:vars={{ poolSelector, slotSelector }}>
+  const template = document.querySelector(poolSelector)
+  const slots = document.querySelectorAll(slotSelector)
+  if (template && slots.length > 0) {
+    const pool = Array.from(template.content.children)
+    if (pool.length >= slots.length) {
+      for (let i = pool.length - 1; i > 0; i--) {
+        const j = Math.floor(Math.random() * (i + 1))
+        ;[pool[i], pool[j]] = [pool[j], pool[i]]
+      }
+      slots.forEach((slot, i) => {
+        slot.replaceChildren(pool[i].cloneNode(true))
+      })
+    }
+  }
+</script>

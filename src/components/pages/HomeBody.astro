@@ -1,9 +1,9 @@
 ---
-import { getEntry } from 'astro:content'
+import { getCollection, getEntry } from 'astro:content'
 import BaseLayout from '../../layouts/BaseLayout.astro'
 import QuoteBand from '../QuoteBand.astro'
-import ShuffleOnLoad from '../ShuffleOnLoad.astro'
-import { localePath, type Locale } from '../../lib/content'
+import RandomizeQuotes from '../RandomizeQuotes.astro'
+import { forLocale, localePath, type Locale } from '../../lib/content'
 import { home } from '../../i18n/pages'
 
 interface Props {
@@ -14,13 +14,31 @@ const { locale } = Astro.props
 const copy = home[locale]
 const WHATSAPP_URL = 'https://chat.whatsapp.com/DFBhxqTOmLRHqGgUzupy7L'
 
-const citations = await Promise.all(
-  copy.citations.map(async (citation) => {
-    const person = await getEntry('team', `${citation.person}.${locale}`)
-    if (!person) throw new Error(`Citation references unknown team member "${citation.person}"`)
-    return { quote: citation.quote, name: person.data.name, photo: person.data.photo }
-  }),
+// Pool of quote bands drawn from every listed program's citations (see
+// content.config.ts). RandomizeQuotes picks a random distinct subset per load
+// to fill the fixed slots below, so the quotes vary between visits. The first
+// `slots` entries are also rendered server-side as the no-JS fallback.
+const allPrograms = await getCollection('programs')
+const pool = (
+  await Promise.all(
+    forLocale(allPrograms, locale)
+      .filter((program) => !program.data.unlisted)
+      .sort((a, b) => a.data.order - b.data.order)
+      .flatMap((program) => program.data.citations)
+      .map(async (citation) => {
+        const person = await getEntry('team', `${citation.person}.${locale}`)
+        if (!person) throw new Error(`Citation references unknown team member "${citation.person}"`)
+        return {
+          person: citation.person,
+          quote: citation.quote,
+          name: person.data.name,
+          photo: person.data.photo,
+        }
+      }),
+  )
 )
+  // Dedupe by person so one face can't fill two of the four slots on a load.
+  .filter((entry, i, all) => all.findIndex((other) => other.person === entry.person) === i)
 ---
 
 <BaseLayout
@@ -40,13 +58,10 @@ const citations = await Promise.all(
   </section>
 
   {
-    citations[0] && (
-      <QuoteBand
-        class="js-quote-band"
-        name={citations[0].name}
-        photo={citations[0].photo}
-        quote={citations[0].quote}
-      />
+    pool[0] && (
+      <div class="js-quote-slot">
+        <QuoteBand name={pool[0].name} photo={pool[0].photo} quote={pool[0].quote} />
+      </div>
     )
   }
 
@@ -58,13 +73,10 @@ const citations = await Promise.all(
   </section>
 
   {
-    citations[1] && (
-      <QuoteBand
-        class="js-quote-band"
-        name={citations[1].name}
-        photo={citations[1].photo}
-        quote={citations[1].quote}
-      />
+    pool[1] && (
+      <div class="js-quote-slot">
+        <QuoteBand name={pool[1].name} photo={pool[1].photo} quote={pool[1].quote} />
+      </div>
     )
   }
 
@@ -82,13 +94,10 @@ const citations = await Promise.all(
   </section>
 
   {
-    citations[2] && (
-      <QuoteBand
-        class="js-quote-band"
-        name={citations[2].name}
-        photo={citations[2].photo}
-        quote={citations[2].quote}
-      />
+    pool[2] && (
+      <div class="js-quote-slot">
+        <QuoteBand name={pool[2].name} photo={pool[2].photo} quote={pool[2].quote} />
+      </div>
     )
   }
 
@@ -129,13 +138,10 @@ const citations = await Promise.all(
   </section>
 
   {
-    citations[3] && (
-      <QuoteBand
-        class="js-quote-band"
-        name={citations[3].name}
-        photo={citations[3].photo}
-        quote={citations[3].quote}
-      />
+    pool[3] && (
+      <div class="js-quote-slot">
+        <QuoteBand name={pool[3].name} photo={pool[3].photo} quote={pool[3].quote} />
+      </div>
     )
   }
 
@@ -147,5 +153,8 @@ const citations = await Promise.all(
     </a>
   </section>
 
-  <ShuffleOnLoad selector=".js-quote-band" />
+  <template class="js-quote-pool">
+    {pool.map((entry) => <QuoteBand name={entry.name} photo={entry.photo} quote={entry.quote} />)}
+  </template>
+  <RandomizeQuotes poolSelector=".js-quote-pool" slotSelector=".js-quote-slot" />
 </BaseLayout>

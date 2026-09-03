@@ -67,11 +67,11 @@ export const home: Record<Locale, HomeCopy> = {
     ctaPrograms: 'Tutustu ehdotuksiimme',
     framingTitle: 'Mitä markkinavihreys tarkoittaa?',
     framingBody:
-      'Markkinavihreys yhdistää kaksi asiaa, joita ei Suomen puoluekentässä usein näe samassa paketissa: aidon markkinaliberalismin ja kunnianhimoisen ympäristöpolitiikan. Uskomme, että kun ulkoisvaikutukset hinnoitellaan oikein, markkinat ohjaavat resursseja tehokkaammin kuin poliitikkojen mikromanageeraus — ja että tämä sama periaate pätee sekä yritystukien purkamiseen että ilmastopolitiikkaan.',
+      'Markkinavihreys yhdistää kaksi asiaa, joita ei Suomen puoluekentässä usein näe samassa paketissa: aidon markkinaliberalismin ja kunnianhimoisen ympäristöpolitiikan. Uskomme, että kun ulkoisvaikutukset hinnoitellaan oikein, markkinat ohjaavat resursseja tehokkaammin kuin poliitikkojen mikromanageeraus ja että tämä sama periaate pätee sekä yritystukien purkamiseen että ilmastopolitiikkaan.',
     values: [
       {
-        title: 'Markkinat, ei yritystuet',
-        body: 'Puolustamme avointa kilpailua ja uusien toimijoiden markkinoillepääsyä — emme vakiintuneiden yritysten suojelua.',
+        title: 'Markkinat vastaan yritystuet',
+        body: 'Puolustamme avointa kilpailua ja uusien toimijoiden markkinoillepääsyä vakiintuneiden yritysten edunvalvonnan sijasta.',
       },
       {
         title: 'Ulkoisvaikutukset hinnoitellaan',
@@ -79,7 +79,7 @@ export const home: Record<Locale, HomeCopy> = {
       },
       {
         title: 'Sivistys on investointi',
-        body: 'Koulutus ja tutkimus ovat Suomen ainoa kestävä kilpailuetu, ei juokseva kuluerä.',
+        body: 'Koulutus ja tutkimus ovat Suomen ainoa kestävä pitkän aikavälin kilpailuetu.',
       },
       {
         title: 'Liberaali demokratia ei ole kaupan',
@@ -136,7 +136,7 @@ export const home: Record<Locale, HomeCopy> = {
     values: [
       {
         title: 'Marknad, inte företagsstöd',
-        body: 'Vi försvarar öppen konkurrens och nya aktörers tillträde till marknaden — inte skydd för etablerade företag.',
+        body: 'Vi försvarar öppen konkurrens och nya aktörers tillträde till marknaden, inte skydd för etablerade företag.',
       },
       {
         title: 'Externa effekter prissätts',
@@ -144,7 +144,7 @@ export const home: Record<Locale, HomeCopy> = {
       },
       {
         title: 'Bildning är en investering',
-        body: 'Utbildning och forskning är Finlands enda hållbara konkurrensfördel, inte en löpande kostnad.',
+        body: 'Utbildning och forskning är Finlands enda hållbara konkurrensfördel.',
       },
       {
         title: 'Liberal demokrati är inte till salu',
@@ -202,15 +202,15 @@ export const home: Record<Locale, HomeCopy> = {
     values: [
       {
         title: 'Markets, not subsidies',
-        body: 'We defend open competition and market access for new entrants — not protection for incumbent businesses.',
+        body: 'We support open competition and market access for new entrants instead of incumbent business interests.',
       },
       {
         title: 'Price the externalities',
-        body: 'Emissions trading, congestion pricing, and other market-based tools work better than detailed regulation.',
+        body: 'Emissions trading, congestion pricing, and other market-based tools are better than detailed regulation.',
       },
       {
         title: 'Education is an investment',
-        body: "Education and research are Finland's only durable competitive advantage, not a running cost.",
+        body: "Education and research are Finland's only durable long term competitive advantage.",
       },
       {
         title: 'Liberal democracy is not for sale',
