@@ -135,10 +135,11 @@ export async function renderOgPng(
 }
 
 /**
- * Every indexable page that gets an OG image, assembled from the same copy the
- * pages themselves render (i18n/pages.ts + content collections). Must match the
- * set of pages BaseLayout emits og:image for (all non-noindex pages): unlisted
- * programs are noindex, so they're skipped here too.
+ * Every page that gets an OG image, assembled from the same copy the pages
+ * themselves render (i18n/pages.ts + content collections) — including
+ * unlisted programs, so a draft link shared for preview (Slack, WhatsApp,
+ * ...) still renders nicely before the page is published. BaseLayout emits
+ * the og:image meta for every page on the same basis, regardless of noindex.
  *
  * Static pages reuse their visible headline with the fixed brand eyebrow;
  * program pages reuse heroKicker + heroLines (last line already the accent).
@@ -166,7 +167,6 @@ export async function ogPages(): Promise<OgPage[]> {
 
   const programs = await getCollection('programs')
   for (const program of programs) {
-    if (program.data.unlisted) continue
     const { slug, locale } = parseLocalizedId(program.id)
     pages.push({
       locale,

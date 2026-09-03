@@ -1,9 +1,10 @@
 /**
  * Post-build guard for the one OG invariant: every `og:image` a page emits must
  * resolve to a PNG that the same build generated. BaseLayout auto-emits og:image
- * for all non-noindex pages, while ogPages() (src/lib/ogImage.ts) is a
- * hand-maintained catalog — add a page type without adding it there and you get
- * a silent production 404. This scans dist/ and fails the build if that happens.
+ * for every page, including noindex ones, while ogPages() (src/lib/ogImage.ts)
+ * is a hand-maintained catalog — add a page type without adding it there and
+ * you get a silent production 404. This scans dist/ and fails the build if
+ * that happens.
  *
  * Run after `astro build` (see the CI build job). Expects the default base ("/"),
  * i.e. og:image URLs are absolute production URLs under SITE.
