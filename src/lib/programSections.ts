@@ -21,6 +21,8 @@ export interface ProgramParagraph {
 
 export interface ProgramHighlightSection {
   type: 'highlight'
+  /** Set only for a "<label> - <heading>" authored heading (see HIGHLIGHT_LABEL_HEADING). */
+  label?: string
   heading: string
   paragraphs: ProgramParagraph[]
 }
@@ -66,6 +68,12 @@ const REQUIREMENT_HEADING = /^(\S+)\s+(\d+)\/(\d+):\s*(.+)$/
 // "Yhteenveto: ..." / "Summary: ..." — any other "Word: rest" heading. The
 // original site never shows this label in the rendered heading, so we strip it.
 const LABELED_HEADING = /^[^:]+:\s*(.+)$/
+// "Nykymallin ongelma - Tuki kelpaa vain kaupan kassalla" — a highlight heading
+// authored as "<label> - <heading>" renders as a small eyebrow label above the
+// bigger heading, the same visual pattern the numbered requirement bands
+// already use for their "Vaatimus N / 5" label. Requires spaces around the
+// dash so an ordinary hyphenated word within a heading is never split.
+const HIGHLIGHT_LABEL_HEADING = /^(.+?)\s+-\s+(.+)$/
 // "**Question?**" optionally followed by a hard-break and its answer — the
 // authoring convention for FAQ sections (see content/programs/*.md).
 const FAQ_ITEM = /^\*\*(.+?)\*\*\s*([\s\S]*)$/
@@ -168,6 +176,16 @@ export function parseProgramBody(body: string): ParsedProgramBody {
         index: Number(index),
         total: Number(total),
         heading: title,
+        paragraphs,
+      }
+    }
+
+    const highlightLabelMatch = headingLine.match(HIGHLIGHT_LABEL_HEADING)
+    if (highlightLabelMatch) {
+      return {
+        type: 'highlight',
+        label: highlightLabelMatch[1].trim(),
+        heading: highlightLabelMatch[2].trim(),
         paragraphs,
       }
     }

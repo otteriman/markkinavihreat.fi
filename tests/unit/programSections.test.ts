@@ -100,6 +100,29 @@ describe('parseProgramBody', () => {
   })
 })
 
+describe('parseProgramBody highlight label headings', () => {
+  it('splits a "<label> - <heading>" highlight heading into an eyebrow label and heading', () => {
+    const body = `## Nykymallin ongelma - Tuki kelpaa vain kaupan kassalla\n\nKappale.`
+    const parsed = parseProgramBody(body)
+    expect(parsed.sections[0]).toEqual({
+      type: 'highlight',
+      label: 'Nykymallin ongelma',
+      heading: 'Tuki kelpaa vain kaupan kassalla',
+      paragraphs: [{ type: 'text', text: 'Kappale.' }],
+    })
+  })
+
+  it('does not split a heading whose hyphen has no surrounding spaces', () => {
+    const body = `## Co2-päästöt kuriin\n\nKappale.`
+    const parsed = parseProgramBody(body)
+    expect(parsed.sections[0]).toMatchObject({
+      type: 'highlight',
+      heading: 'Co2-päästöt kuriin',
+    })
+    expect((parsed.sections[0] as { label?: string }).label).toBeUndefined()
+  })
+})
+
 describe('parseProgramBody chart markers', () => {
   it('classifies a lone "[kuvaaja: <id>]" paragraph as a chart', () => {
     const body = `## Osio\n\n[kuvaaja: ruokaostostuki-alv]\n\nMuu kappale.`

@@ -65,7 +65,11 @@ sections.forEach((section, i) => {
         <>
           <ProgramSection
             tone={tone}
-            label={section.type === 'requirement' ? section.label : undefined}
+            label={
+              section.type === 'requirement' || section.type === 'highlight'
+                ? section.label
+                : undefined
+            }
             heading={section.heading}
             paragraphs={section.paragraphs}
             locale={locale}
