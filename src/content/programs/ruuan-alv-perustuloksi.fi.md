@@ -1,12 +1,12 @@
 ---
 locale: fi
-title: Muutetaan ruuan alv perustuloksi
-description: Haluamme ottaa käyttöön pienen perustulon kustannusneutraalisti, poistamalla ruuan alennetun arvonlisäverokannan ja maksamalla saadun tuoton takaisin ihmisille kuukausittaisena tulona.
+title: Muutetaan ruoan alv perustuloksi
+description: Haluamme ottaa käyttöön pienen perustulon kustannusneutraalisti, poistamalla ruoan alennetun arvonlisäverokannan ja maksamalla saadun tuoton takaisin ihmisille kuukausittaisena tulona.
 order: 3
 heroKicker: Markkinavihreä ehdotus
 heroLines:
   - Muutetaan
-  - ruuan alv
+  - ruoan alv
   - perustuloksi
 unlisted: true
 citations: []
