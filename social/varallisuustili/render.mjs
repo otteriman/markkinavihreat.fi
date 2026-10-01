@@ -47,25 +47,23 @@ const slides = [
     html: `
       ${top(false)}
       <h1 class="title">Sama palkka.<br><span class="acc">Eri lähtöviiva.</span></h1>
-      <p class="sub">1 000 € palkkaa sijoitukseen:</p>
+      <p class="sub">Varallisuustilillä sijoitat ennen veronmaksua</p>
       <div class="chart">
         <div class="col">
-          <div class="amount">600 €</div>
           <div class="bar">
             <div class="seg tax" style="height:40%"><span>Vero 400 €</span></div>
-            <div class="seg inv" style="height:60%"><span>Sijoitukseen</span></div>
+            <div class="seg inv" style="height:60%"><span>Sijoitukseen<br><b>600 €</b></span></div>
           </div>
           <div class="label">Nyt</div>
         </div>
         <div class="col">
-          <div class="amount big">1 000 €</div>
           <div class="bar">
-            <div class="seg inv" style="height:100%"><span>Sijoitukseen</span></div>
+            <div class="seg inv" style="height:100%"><span>Sijoitukseen<br><b>1 000 €</b></span></div>
           </div>
           <div class="label good">Varallisuustilillä</div>
         </div>
       </div>
-      <p class="note">Vero maksetaan vasta, kun nostat rahat käyttöösi. Esimerkissä veroaste on 40 %.</p>
+      <p class="note">Esimerkki: veroaste 40 %. Vero maksetaan, kun nostat rahat.</p>
       ${foot}`,
   },
   // 2 — when tax is paid
@@ -120,14 +118,15 @@ const css = `
   .sub { font-size:34px; margin-top:22px; color:${C.muted}; }
   .note { font-size:25px; color:${C.muted}; margin-top:auto; padding-top:16px; }
   .foot { font-weight:800; font-size:26px; letter-spacing:.04em; margin-top:18px; opacity:.75; }
-  .chart { flex:1; display:flex; gap:56px; justify-content:center; align-items:flex-end; margin-top:12px; min-height:0; }
+  .chart { flex:1; display:flex; gap:56px; justify-content:center; align-items:flex-end; margin-top:40px; min-height:0; }
   .col { width:380px; display:flex; flex-direction:column; justify-content:flex-end; }
   .amount { font-weight:800; font-size:54px; text-align:center; margin-bottom:10px; }
   .amount.big { color:${C.brand}; font-size:64px; }
   .bar { display:flex; flex-direction:column; justify-content:flex-end; border-radius:20px; overflow:hidden; }
-  .col:nth-child(1) .bar { height:216px; }
-  .col:nth-child(2) .bar { height:360px; }
+  .col:nth-child(1) .bar { height:370px; }
+  .col:nth-child(2) .bar { height:370px; }
   .seg { display:flex; align-items:center; justify-content:center; font-weight:800; font-size:32px; color:${C.kerma}; text-align:center; }
+  .seg b { font-size:52px; font-weight:800; line-height:1.2; }
   .seg.tax { background:${C.terra}; } .seg.inv { background:${C.brand}; }
   .label { text-align:center; font-weight:800; font-size:36px; margin-top:14px; }
   .label.good { color:${C.brand}; }
