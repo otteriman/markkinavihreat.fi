@@ -12,7 +12,7 @@ unlisted: true
 citations: []
 visuals:
   - src: /social/varallisuustili/sama-palkka-eri-lahtoviiva.png
-    alt: Sama 1 000 euron palkka. Nyt siitä menee 400 euroa veroihin ja sijoitukseen jää 600 euroa, varallisuustilillä sijoitat koko 1 000 euroa ennen veronmaksua. Vero maksetaan vasta nostettaessa.
+    alt: Sama 1 000 euron palkka. Nyt siitä menee 300 euroa veroihin ja sijoitukseen jää 700 euroa, varallisuustilillä sijoitat koko 1 000 euroa ennen veronmaksua. Vero maksetaan vasta nostettaessa.
   - src: /social/varallisuustili/vero-vasta-nostettaessa.png
     alt: Varallisuustilin kulku. Palkka siirretään säästöön ennen veroa, tilillä sijoitetaan ja vaihdetaan kohteita ilman veroa, ja vero maksetaan vasta noston yhteydessä.
   - src: /social/varallisuustili/nelja-hyotya.png

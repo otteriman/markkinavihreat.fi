@@ -4,7 +4,7 @@
 //
 //   Run: node social/varallisuustili/render.mjs
 //
-// Numbers are an illustrative round example (1 000 € gross, ~40 % marginal
+// Numbers are an illustrative round example (1 000 € gross, ~30 % marginal
 // tax), not a forecast — each image says so.
 import { readFileSync, mkdirSync } from 'node:fs'
 import { dirname, join } from 'node:path'
@@ -51,8 +51,8 @@ const slides = [
       <div class="chart">
         <div class="col">
           <div class="bar">
-            <div class="seg tax" style="height:40%"><span>Vero 400 €</span></div>
-            <div class="seg inv" style="height:60%"><span>Sijoitukseen<br><b>600 €</b></span></div>
+            <div class="seg tax" style="height:30%"><span>Vero 300 €</span></div>
+            <div class="seg inv" style="height:70%"><span>Sijoitukseen<br><b>700 €</b></span></div>
           </div>
           <div class="label">Nyt</div>
         </div>
@@ -63,7 +63,7 @@ const slides = [
           <div class="label good">Varallisuustilillä</div>
         </div>
       </div>
-      <p class="note">Esimerkki: veroaste 40 %. Vero maksetaan, kun nostat rahat.</p>
+      <p class="note">Esimerkki: veroaste 30 %. Vero maksetaan, kun nostat rahat.</p>
       ${foot}`,
   },
   // 2 — when tax is paid
