@@ -93,7 +93,7 @@ const slides = [
         <li><span class="n">1</span>Isomman alkupääoman, kun sijoitat ennen veroa</li>
         <li><span class="n">2</span>Vapauden sijoittaa mihin haluat</li>
         <li><span class="n">3</span>Vaihdon ilman luovutusvoittoveroa</li>
-        <li><span class="n">4</span>Reilun verotuksen: kulutus verotetaan, ei vaurastumista</li>
+        <li><span class="n">4</span>Samat edut kuin pääomatulojen saajilla.</li>
       </ol>
       `,
   },

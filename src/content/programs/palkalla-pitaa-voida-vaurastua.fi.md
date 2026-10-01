@@ -16,7 +16,7 @@ visuals:
   - src: /social/varallisuustili/vero-vasta-nostettaessa.png
     alt: Varallisuustilin kulku. Palkka siirretään säästöön ennen veroa, tilillä sijoitetaan ja vaihdetaan kohteita ilman veroa, ja vero maksetaan vasta noston yhteydessä.
   - src: /social/varallisuustili/nelja-hyotya.png
-    alt: Palkalla pitää voida vaurastua! Varallisuustilin neljä hyötyä, isompi alkupääoma, vapaus sijoittaa, vaihto ilman luovutusvoittoveroa ja kulutuksen verotus.
+    alt: Palkalla pitää voida vaurastua! Varallisuustilin neljä hyötyä, isompi alkupääoma, vapaus sijoittaa, vaihto ilman luovutusvoittoveroa ja samat edut kuin pääomatulojen saajilla.
 ---
 
 ## Miksi palkalla on niin vaikea vaurastua?
