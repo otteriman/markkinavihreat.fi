@@ -90,10 +90,10 @@ const slides = [
       <h1 class="title">Palkalla pitää<br><span class="acc">voida vaurastua!</span></h1>
       <p class="sub">Varallisuustili tuo palkansaajalle:</p>
       <ol class="list">
-        <li><span class="n">1</span>Isomman alkupääoman, kun sijoitat ennen veroa</li>
+        <li><span class="n">1</span>Isomman alkupääoman: sijoita ennen veroja</li>
         <li><span class="n">2</span>Vapauden sijoittaa mihin haluat</li>
         <li><span class="n">3</span>Vaihdon ilman luovutusvoittoveroa</li>
-        <li><span class="n">4</span>Samat edut kuin pääomatulojen saajilla.</li>
+        <li><span class="n">4</span>Samat edut kuin pääomatulojen saajilla</li>
       </ol>
       `,
   },
