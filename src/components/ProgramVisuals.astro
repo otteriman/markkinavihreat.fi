@@ -1,4 +1,6 @@
 ---
+import { assetPath } from '../lib/content'
+
 interface Props {
   heading: string
   intro: string
@@ -18,14 +20,14 @@ const { heading, intro, downloadLabel, visuals } = Astro.props
         visuals.map((visual) => (
           <li class="flex flex-col gap-3">
             <img
-              src={visual.src}
+              src={assetPath(visual.src)}
               alt={visual.alt}
               width="1080"
               height="1080"
               loading="lazy"
               class="rounded-card w-full shadow-md"
             />
-            <a href={visual.src} download class="text-metsa font-semibold underline">
+            <a href={assetPath(visual.src)} download class="text-metsa font-semibold underline">
               {downloadLabel}
             </a>
           </li>
