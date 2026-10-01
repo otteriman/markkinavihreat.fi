@@ -121,8 +121,8 @@ const css = `
   .amount { font-weight:800; font-size:54px; text-align:center; margin-bottom:10px; }
   .amount.big { color:${C.brand}; font-size:64px; }
   .bar { display:flex; flex-direction:column; justify-content:flex-end; border-radius:20px; overflow:hidden; }
-  .col:nth-child(1) .bar { height:370px; }
-  .col:nth-child(2) .bar { height:370px; }
+  .col:nth-child(1) .bar { height:440px; }
+  .col:nth-child(2) .bar { height:440px; }
   .seg { display:flex; align-items:center; justify-content:center; font-weight:800; font-size:32px; color:${C.kerma}; text-align:center; }
   .seg b { font-size:52px; font-weight:800; line-height:1.2; }
   .seg.tax { background:${C.terra}; } .seg.inv { background:${C.brand}; }
