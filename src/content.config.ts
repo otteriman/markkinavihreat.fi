@@ -76,6 +76,8 @@ const programs = defineCollection({
     // the sitemap — for a page that's ready to link to but not to announce.
     unlisted: z.boolean().default(false),
     citations: z.array(citation).default([]),
+    // Shareable images shown at the very end of the page (paths under /public).
+    visuals: z.array(z.object({ src: z.string(), alt: z.string() })).default([]),
   }),
 })
 

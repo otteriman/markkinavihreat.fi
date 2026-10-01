@@ -3,6 +3,7 @@ import { getEntry, type CollectionEntry } from 'astro:content'
 import BaseLayout from '../../layouts/BaseLayout.astro'
 import ProgramFaq from '../ProgramFaq.astro'
 import ProgramHero from '../ProgramHero.astro'
+import ProgramVisuals from '../ProgramVisuals.astro'
 import ProgramSection from '../ProgramSection.astro'
 import QuoteBand from '../QuoteBand.astro'
 import ShuffleOnLoad from '../ShuffleOnLoad.astro'
@@ -148,6 +149,17 @@ if (faq) jsonLd.push(faq)
           quote={citation.quote}
         />
       ))
+  }
+
+  {
+    program.data.visuals.length > 0 && (
+      <ProgramVisuals
+        heading={t(locale, 'programs.visualsHeading')}
+        intro={t(locale, 'programs.visualsIntro')}
+        downloadLabel={t(locale, 'programs.visualsDownload')}
+        visuals={program.data.visuals}
+      />
+    )
   }
 
   <ShuffleOnLoad selector=".js-quote-band" />
