@@ -5,10 +5,11 @@ interface Props {
   heading: string
   intro: string
   downloadLabel: string
+  shareLabel: string
   visuals: { src: string; alt: string }[]
 }
 
-const { heading, intro, downloadLabel, visuals } = Astro.props
+const { heading, intro, downloadLabel, shareLabel, visuals } = Astro.props
 ---
 
 <section class="bg-surface-green px-4 py-20 sm:px-6 sm:py-28">
@@ -27,12 +28,56 @@ const { heading, intro, downloadLabel, visuals } = Astro.props
               loading="lazy"
               class="rounded-card w-full shadow-md"
             />
-            <a href={assetPath(visual.src)} download class="text-metsa font-semibold underline">
-              {downloadLabel}
-            </a>
+            <div class="flex flex-wrap gap-3">
+              <button
+                type="button"
+                hidden
+                data-share
+                data-src={assetPath(visual.src)}
+                data-title={visual.alt}
+                class="btn-contained-sm cursor-pointer"
+              >
+                <i class="fa-solid fa-share-nodes" aria-hidden="true" />
+                {shareLabel}
+              </button>
+              <a href={assetPath(visual.src)} download data-download class="btn-outline-sm">
+                <i class="fa-solid fa-download" aria-hidden="true" />
+                {downloadLabel}
+              </a>
+            </div>
           </li>
         ))
       }
     </ul>
   </div>
 </section>
+
+<script>
+  // Progressive enhancement: the download link works without JS. Where the
+  // browser can share image files (Web Share API level 2), swap it for a
+  // single share button.
+  const probe = new File([''], 'probe.png', { type: 'image/png' })
+  const canShareFiles =
+    typeof navigator.canShare === 'function' && navigator.canShare({ files: [probe] })
+
+  if (canShareFiles) {
+    document.querySelectorAll<HTMLButtonElement>('[data-share]').forEach((button) => {
+      button.hidden = false
+      button.parentElement
+        ?.querySelector<HTMLElement>('[data-download]')
+        ?.setAttribute('hidden', '')
+      button.addEventListener('click', async () => {
+        const src = button.dataset.src!
+        try {
+          const blob = await (await fetch(src)).blob()
+          const file = new File([blob], src.split('/').pop() ?? 'kuva.png', { type: blob.type })
+          await navigator.share({ files: [file] })
+        } catch (error) {
+          // The user dismissing the share sheet is not an error.
+          if (error instanceof DOMException && error.name === 'AbortError') return
+          window.open(src, '_blank')
+        }
+      })
+    })
+  }
+</script>
