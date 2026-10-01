@@ -37,7 +37,6 @@ const logo = (color) =>
 const top = (dark) => `
   <header class="top"><span class="eyebrow">Markkinavihreät</span>
   <span class="logo-sm">${logo(dark ? '#ffffff' : C.brand)}</span></header>`
-const foot = `<footer class="foot">markkinavihreat.fi</footer>`
 
 const slides = [
   // 1 — same paycheck, different starting line
@@ -46,7 +45,7 @@ const slides = [
     theme: 'light',
     html: `
       ${top(false)}
-      <h1 class="title">Sama palkka.<br><span class="acc">Eri lähtöviiva.</span></h1>
+      <h1 class="title">Palkalla pitää<br><span class="acc">voida vaurastua!</span></h1>
       <p class="sub">Varallisuustilillä sijoitat ennen veronmaksua</p>
       <div class="chart">
         <div class="col">
@@ -64,7 +63,7 @@ const slides = [
         </div>
       </div>
       <p class="note">Esimerkki: veroaste 30 %. Vero maksetaan, kun nostat rahat.</p>
-      ${foot}`,
+      `,
   },
   // 2 — when tax is paid
   {
@@ -80,7 +79,7 @@ const slides = [
         <div class="arrow">↓</div>
         <div class="step"><span class="n">3</span><div><b>Nosto</b><br>Vero maksetaan vasta, kun käytät rahat</div></div>
       </div>
-      ${foot}`,
+      `,
   },
   // 3 — four benefits
   {
@@ -96,7 +95,7 @@ const slides = [
         <li><span class="n">3</span>Vaihdon ilman luovutusvoittoveroa</li>
         <li><span class="n">4</span>Reilun verotuksen: kulutus verotetaan, ei vaurastumista</li>
       </ol>
-      ${foot}`,
+      `,
   },
 ]
 
@@ -117,7 +116,6 @@ const css = `
   .acc { color:${C.brand}; } .theme-dark .acc { color:${C.vihrea}; }
   .sub { font-size:34px; margin-top:22px; color:${C.muted}; }
   .note { font-size:25px; color:${C.muted}; margin-top:auto; padding-top:16px; }
-  .foot { font-weight:800; font-size:26px; letter-spacing:.04em; margin-top:18px; opacity:.75; }
   .chart { flex:1; display:flex; gap:56px; justify-content:center; align-items:flex-end; margin-top:40px; min-height:0; }
   .col { width:380px; display:flex; flex-direction:column; justify-content:flex-end; }
   .amount { font-weight:800; font-size:54px; text-align:center; margin-bottom:10px; }
