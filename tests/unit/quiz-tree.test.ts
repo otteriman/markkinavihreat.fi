@@ -25,13 +25,27 @@ function treeBox(input: TreeInput) {
   }
 }
 
+/** Number of drawn primitives (circles, paths, …) in the given layers. */
 const count = (input: TreeInput, layers: Layer[]) =>
-  treeShapesFor(input).filter((s) => layers.includes(s.layer)).length
+  treeShapesFor(input)
+    .filter((s) => layers.includes(s.layer))
+    .reduce((sum, s) => sum + (s.svg.match(/<(circle|ellipse|rect|line|path)\b/g)?.length ?? 0), 0)
 
 describe('determinism', () => {
   it('gives an identical SVG string for identical input', () => {
     const input = { growth: 0.7, markets: 33, environment: 81, freedom: 12 }
     expect(renderTree(input)).toBe(renderTree({ ...input }))
+  })
+
+  it('gives every shape a unique, stable key', () => {
+    for (const growth of STAGES) {
+      const keys = treeShapesFor({ growth, ...mid }).map((s) => s.key)
+      expect(new Set(keys).size).toBe(keys.length)
+    }
+    // A branch keeps its key from one stage to the next.
+    const before = new Set(treeShapesFor({ growth: 0.5, ...mid }).map((s) => s.key))
+    const after = new Set(treeShapesFor({ growth: 0.6, ...mid }).map((s) => s.key))
+    expect([...before].filter((k) => k.startsWith('b:')).every((k) => after.has(k))).toBe(true)
   })
 
   it('changes when the scores change', () => {

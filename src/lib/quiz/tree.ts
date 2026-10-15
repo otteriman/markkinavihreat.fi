@@ -28,10 +28,22 @@ export interface Box {
   y1: number
 }
 
+/**
+ * One drawn element. `key` is stable across growth stages and scores (a
+ * branch keeps its key as the tree grows), which is what lets the animator
+ * (treeView.ts) morph one stage into the next. Plain elements carry their
+ * numeric attributes in `num`; groups (tag 'g') are placed by `num.tx`,
+ * `num.ty` and scaled by `num.s`, with their content in `inner`.
+ */
 export interface Shape {
   layer: Layer
-  svg: string
+  key: string
+  tag: 'line' | 'circle' | 'ellipse' | 'g'
+  num: Record<string, number>
+  str: Record<string, string>
+  inner?: string
   box: Box
+  svg: string
 }
 
 export const VIEW = { width: 480, height: 400, baseX: 240, groundY: 350 }
@@ -81,6 +93,36 @@ const attrs = (a: Record<string, string | number>) =>
     .map(([k, v]) => `${k}="${typeof v === 'number' ? n(v) : v}"`)
     .join(' ')
 
+/** SVG markup for a shape in a given state; shared with the animator. */
+export function shapeSvg(
+  tag: Shape['tag'],
+  num: Record<string, number>,
+  str: Record<string, string>,
+  inner = '',
+): string {
+  if (tag === 'g') {
+    return `<g transform="translate(${n(num.tx)} ${n(num.ty)}) scale(${Math.round(num.s * 1000) / 1000})">${inner}</g>`
+  }
+  return `<${tag} ${attrs({ ...num, ...str })}/>`
+}
+
+function prim(
+  layer: Layer,
+  key: string,
+  tag: Exclude<Shape['tag'], 'g'>,
+  num: Record<string, number>,
+  str: Record<string, string>,
+  box: Box,
+): Shape {
+  return { layer, key, tag, num, str, box, svg: shapeSvg(tag, num, str) }
+}
+
+/** A group drawn in local coordinates around (0, 0) and placed at (tx, ty). */
+function group(layer: Layer, key: string, tx: number, ty: number, inner: string, box: Box): Shape {
+  const num = { tx, ty, s: 1 }
+  return { layer, key, tag: 'g', num, str: {}, inner, box, svg: shapeSvg('g', num, {}, inner) }
+}
+
 /** Size of the tree from its base to the top of its crown, in viewBox units. */
 export const treeHeight = (growth: number) => 60 + 240 * clamp01(growth)
 
@@ -100,6 +142,7 @@ export const fruitCount = (growth: number) => {
 // --- the tree -----------------------------------------------------------------
 
 interface Segment {
+  key: string
   x1: number
   y1: number
   x2: number
@@ -140,6 +183,7 @@ function skeleton(depth: number, wild: number) {
     const x2 = x + Math.sin(angle) * len
     const y2 = y - Math.cos(angle) * len
     segments.push({
+      key,
       x1: x,
       y1: y,
       x2,
@@ -296,29 +340,45 @@ function treeShapes(input: TreeInput): { shapes: Shape[]; leaves: Leaf[] } {
   // Thick to thin, so twigs sit on top of the trunk.
   for (const s of [...segments].sort((a, b) => a.level - b.level)) {
     const seg = { ...s, x1: X(s.x1), y1: Y(s.y1), x2: X(s.x2), y2: Y(s.y2) }
-    shapes.push({
-      layer: 'tree',
-      svg: `<line ${attrs({ x1: seg.x1, y1: seg.y1, x2: seg.x2, y2: seg.y2, stroke: COLORS.ink, 'stroke-width': s.width * scale, 'stroke-linecap': 'round' })}/>`,
-      box: boxOfSegment(seg, scale),
-    })
+    shapes.push(
+      prim(
+        'tree',
+        `b:${s.key}`,
+        'line',
+        { x1: seg.x1, y1: seg.y1, x2: seg.x2, y2: seg.y2, 'stroke-width': s.width * scale },
+        { stroke: COLORS.ink, 'stroke-linecap': 'round' },
+        boxOfSegment(seg, scale),
+      ),
+    )
   }
   if (crown) {
     const r = crown.r * scale
-    shapes.push({
-      layer: 'tree',
-      svg: `<circle ${attrs({ cx: X(crown.x), cy: Y(crown.y), r, fill: COLORS.leafDark })}/>`,
-      box: boxOfCircle(X(crown.x), Y(crown.y), r),
-    })
+    const [cx, cy] = [X(crown.x), Y(crown.y)]
+    shapes.push(
+      prim(
+        'tree',
+        'crown',
+        'circle',
+        { cx, cy, r },
+        { fill: COLORS.leafDark },
+        boxOfCircle(cx, cy, r),
+      ),
+    )
   }
   // Dark leaves first, light ones on top.
   for (const l of [...leaves].sort((a, b) => Number(b.dark) - Number(a.dark))) {
     const leaf = { ...l, x: X(l.x), y: Y(l.y), r: l.r * scale }
     placed.push(leaf)
-    shapes.push({
-      layer: 'tree',
-      svg: `<circle ${attrs({ cx: leaf.x, cy: leaf.y, r: leaf.r, fill: l.dark ? COLORS.leafDark : COLORS.leaf })}/>`,
-      box: boxOfCircle(leaf.x, leaf.y, leaf.r),
-    })
+    shapes.push(
+      prim(
+        'tree',
+        `l:${l.key}`,
+        'circle',
+        { cx: leaf.x, cy: leaf.y, r: leaf.r },
+        { fill: l.dark ? COLORS.leafDark : COLORS.leaf },
+        boxOfCircle(leaf.x, leaf.y, leaf.r),
+      ),
+    )
   }
   return { shapes, leaves: placed }
 }
@@ -354,14 +414,19 @@ function fruitShapes(input: TreeInput, leaves: Leaf[]): Shape[] {
     .map((h) => h.i)
   const moneyCount = Math.round(count * money * MAX_MONEY)
 
-  return hosts.flatMap(({ l }, i) => {
-    const x = l.x
-    const y = l.y + l.r * 0.45
+  return hosts.map(({ l }, i) => {
+    // Drawn around (0, 0) and placed under the host leaf.
+    const fx = l.x
+    const fy = l.y + l.r * 0.45
+    const x = 0
+    const y = 0
     const r = 7.5
     const rank = moneyRanks.indexOf(i)
+    let kind: 'apple' | 'coin' | 'bill'
     let parts: string[]
-    let box = boxOfCircle(x, y, r + 3)
+    let reach = r + 3
     if (rank >= moneyCount) {
+      kind = 'apple'
       parts = [
         `<circle ${attrs({ cx: x, cy: y, r, fill: COLORS.apple })}/>`,
         `<line ${attrs({ x1: x, y1: y - r + 1, x2: x + 1.5, y2: y - r - 3.5, stroke: COLORS.ink, 'stroke-width': 1.5, 'stroke-linecap': 'round' })}/>`,
@@ -369,6 +434,7 @@ function fruitShapes(input: TreeInput, leaves: Leaf[]): Shape[] {
       ]
     } else if (rank % 2 === 1) {
       // A banknote hanging at a slant, like a leaf.
+      kind = 'bill'
       const tilt = (rngFor(`bill:${l.key}`)() - 0.5) * 50
       const w = 26
       const h = 14
@@ -379,15 +445,16 @@ function fruitShapes(input: TreeInput, leaves: Leaf[]): Shape[] {
         `<rect ${attrs({ x: x - w / 2 + 2.5, y: by - h / 2 + 2.5, width: w - 5, height: h - 5, rx: 1, fill: 'none', stroke: COLORS.leafDark, 'stroke-width': 0.8, 'stroke-opacity': 0.6, transform: t })}/>`,
         euro(x + 0.5, by, 3, COLORS.leafDark, 1.4).replace('/>', ` transform="${t}"/>`),
       ]
-      box = boxOfCircle(x, by, w / 2 + 2)
+      reach = w / 2 + 4
     } else {
+      kind = 'coin'
       parts = [
         `<circle ${attrs({ cx: x, cy: y, r: r + 0.5, fill: COLORS.coin, stroke: COLORS.ink, 'stroke-width': 1.5 })}/>`,
         `<circle ${attrs({ cx: x, cy: y, r: r - 2, fill: 'none', stroke: COLORS.ink, 'stroke-width': 0.8, 'stroke-opacity': 0.5 })}/>`,
         euro(x + 0.5, y, 3, COLORS.ink, 1.4),
       ]
     }
-    return parts.map((svg) => ({ layer: 'fruit' as const, svg, box }))
+    return group('fruit', `f:${l.key}:${kind}`, fx, fy, parts.join(''), boxOfCircle(fx, fy, reach))
   })
 }
 
@@ -544,22 +611,32 @@ function lifeShapes(input: TreeInput): Shape[] {
   const nature = wildItems()
   const keepGarden = Math.round(garden.length * (1 - wild))
   const keepWild = Math.round(nature.length * wild)
-  const toShapes = (layer: Layer, items: Item[]) =>
-    items.flatMap((item) => item.svg.map((svg) => ({ layer, svg, box: item.box })))
+  // Each item is one group, anchored at the middle of its base, so it can
+  // grow out of the ground when it appears.
+  const toShapes = (layer: Layer, prefix: string, items: Item[]) =>
+    items.map((item, i) => {
+      const px = n((item.box.x0 + item.box.x1) / 2)
+      const py = n(item.box.y1)
+      const inner = `<g transform="translate(${-px} ${-py})">${item.svg.join('')}</g>`
+      return group(layer, `${prefix}:${i}`, px, py, inner, item.box)
+    })
   return [
-    ...toShapes('garden', garden.slice(0, keepGarden)),
-    ...toShapes('wild', nature.slice(0, keepWild)),
+    ...toShapes('garden', 'g', garden.slice(0, keepGarden)),
+    ...toShapes('wild', 'w', nature.slice(0, keepWild)),
   ]
 }
 
 // --- assembly -----------------------------------------------------------------
 
 export function treeShapesFor(input: TreeInput): Shape[] {
-  const ground: Shape = {
-    layer: 'ground',
-    svg: `<ellipse ${attrs({ cx: VIEW.baseX, cy: G + 6, rx: 228, ry: 34, fill: COLORS.leaf, 'fill-opacity': 0.28 })}/>`,
-    box: { x0: VIEW.baseX - 228, y0: G - 28, x1: VIEW.baseX + 228, y1: G + 40 },
-  }
+  const ground = prim(
+    'ground',
+    'ground',
+    'ellipse',
+    { cx: VIEW.baseX, cy: G + 6, rx: 228, ry: 34 },
+    { fill: COLORS.leaf, 'fill-opacity': '0.28' },
+    { x0: VIEW.baseX - 228, y0: G - 28, x1: VIEW.baseX + 228, y1: G + 40 },
+  )
   const { shapes: tree, leaves } = treeShapes(input)
   const life = lifeShapes(input)
   // Flat ground-level items go behind the tree, upright ones in front.
