@@ -75,6 +75,7 @@ export default defineConfig({
         !unlistedSlugs.some((slug) => page.includes(`/ehdotukset/${slug}/`)) &&
         // The quiz is noindex until launch (see QuizBody.astro).
         !page.includes('/testi/') &&
+        !page.includes('/quiz-lab/') &&
         (blogHasPosts || !page.includes('/blogi/')),
       // Emits xhtml:link alternates per URL, so hreflang reaches crawlers via
       // the sitemap as well as the <head>. Mirrors BaseLayout's link rel=alternate.

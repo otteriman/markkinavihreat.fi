@@ -1,0 +1,150 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro'
+import { resultTypes } from '../../lib/quiz/data'
+import { renderTree } from '../../lib/quiz/tree'
+import type { Axis } from '../../lib/quiz/types'
+
+// Development and preview only (see src/pages/[lab].astro): a review sheet for
+// the generated tree. Finnish only, like the rest of the team's tooling.
+const mid = { markets: 50, environment: 50, freedom: 50 }
+const stages = Array.from({ length: 10 }, (_, i) => (i + 1) / 10)
+const axes: { axis: Axis; label: string; low: string; high: string }[] = [
+  { axis: 'markets', label: 'Markkinat → hedelmät', low: 'omenat', high: 'kolikot' },
+  { axis: 'freedom', label: 'Vapaus → latvus', low: 'leikattu', high: 'villi' },
+  {
+    axis: 'environment',
+    label: 'Ympäristö → elämä',
+    low: 'siisti puutarha',
+    high: 'kukat, mehiläiset, linnut',
+  },
+]
+---
+
+<BaseLayout
+  locale="fi"
+  title="Puulaboratorio — markkinavihreat.fi"
+  description="Testin puun kehitysnäkymä."
+  path="/quiz-lab/"
+  noindex
+>
+  <div class="mx-auto max-w-6xl px-4 py-10 sm:px-6">
+    <p class="text-eyebrow text-harmaa">Kehitysnäkymä · tyyli A: litteä ja geometrinen</p>
+    <h1 class="mt-2 text-4xl">Puulaboratorio</h1>
+    <p class="mt-4 max-w-2xl">
+      Puu piirretään koodilla. Koko riippuu vain kasvusta (yksi vaihe per vastattu kysymys);
+      vastaukset muuttavat vain puun luonnetta: hedelmät, latvuksen muodon ja elämän puun ympärillä.
+    </p>
+
+    <section class="mt-10">
+      <h2 class="text-2xl">Kokeile</h2>
+      <div class="mt-4 grid gap-6 md:grid-cols-[minmax(0,36rem)_18rem]">
+        <div
+          id="lab-tree"
+          class="card bg-white p-2 sm:p-2"
+          set:html={renderTree({ growth: 1, ...mid })}
+        />
+        <form id="lab-controls" class="card space-y-4 bg-white">
+          {
+            (
+              [
+                { name: 'growth', label: 'Kasvu', value: 10, min: 1, max: 10 },
+                { name: 'markets', label: 'Markkinat', value: 50, min: 0, max: 100 },
+                { name: 'freedom', label: 'Vapaus', value: 50, min: 0, max: 100 },
+                { name: 'environment', label: 'Ympäristö', value: 50, min: 0, max: 100 },
+              ] as const
+            ).map(({ name, label, value, min, max }) => (
+              <label class="block text-sm font-semibold">
+                {label}:{' '}
+                <output data-for={name}>{name === 'growth' ? `${value}/10` : value}</output>
+                <input
+                  type="range"
+                  name={name}
+                  min={min}
+                  max={max}
+                  value={value}
+                  step="1"
+                  class="accent-vihrea-tumma mt-1 w-full"
+                />
+              </label>
+            ))
+          }
+        </form>
+      </div>
+    </section>
+
+    <section class="mt-12">
+      <h2 class="text-2xl">Kasvuvaiheet 1–10</h2>
+      <p class="text-harmaa mt-1 text-sm">
+        Kaikki akselit 50. Hedelmät vain kolmessa viimeisessä vaiheessa.
+      </p>
+      <div class="mt-4 grid grid-cols-2 gap-3 sm:grid-cols-5">
+        {
+          stages.map((g, i) => (
+            <figure class="card bg-white p-2 sm:p-2">
+              <Fragment set:html={renderTree({ growth: g, ...mid })} />
+              <figcaption class="text-harmaa text-center text-xs">Vaihe {i + 1}</figcaption>
+            </figure>
+          ))
+        }
+      </div>
+    </section>
+
+    <section class="mt-12">
+      <h2 class="text-2xl">Akselien ääripäät</h2>
+      <p class="text-harmaa mt-1 text-sm">
+        Täysi kasvu, muut akselit 50. Kummankin pään pitää näyttää yhtä houkuttelevalta.
+      </p>
+      {
+        axes.map(({ axis, label, low, high }) => (
+          <div class="mt-6">
+            <h3 class="text-lg">{label}</h3>
+            <div class="mt-2 grid gap-3 sm:grid-cols-2">
+              {[0, 100].map((v) => (
+                <figure class="card bg-white p-2 sm:p-2">
+                  <Fragment set:html={renderTree({ growth: 1, ...mid, [axis]: v })} />
+                  <figcaption class="text-harmaa text-center text-xs">
+                    {v} – {v === 0 ? low : high}
+                  </figcaption>
+                </figure>
+              ))}
+            </div>
+          </div>
+        ))
+      }
+    </section>
+
+    <section class="mt-12">
+      <h2 class="text-2xl">Tulostyyppien puut</h2>
+      <div class="mt-4 grid gap-3 sm:grid-cols-3">
+        {
+          resultTypes.map((r) => (
+            <figure class="card bg-white p-2 sm:p-2">
+              <Fragment set:html={renderTree({ growth: 1, ...r.representative }, r.name.fi)} />
+              <figcaption class="text-center text-sm font-semibold">{r.name.fi}</figcaption>
+            </figure>
+          ))
+        }
+      </div>
+    </section>
+  </div>
+</BaseLayout>
+
+<script>
+  import { renderTree } from '../../lib/quiz/tree'
+
+  const form = document.getElementById('lab-controls') as HTMLFormElement | null
+  const target = document.getElementById('lab-tree')
+  form?.addEventListener('input', () => {
+    const v = (name: string) => Number((form.elements.namedItem(name) as HTMLInputElement).value)
+    for (const out of form.querySelectorAll<HTMLOutputElement>('output[data-for]')) {
+      const name = out.dataset.for!
+      out.textContent = name === 'growth' ? `${v(name)}/10` : String(v(name))
+    }
+    target!.innerHTML = renderTree({
+      growth: v('growth') / 10,
+      markets: v('markets'),
+      environment: v('environment'),
+      freedom: v('freedom'),
+    })
+  })
+</script>
