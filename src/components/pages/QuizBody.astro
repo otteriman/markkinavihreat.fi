@@ -22,7 +22,6 @@ const SCALE = [-2, -1, 0, 1, 2] as const
 const config = {
   locale,
   total,
-  scale: SCALE.map((v) => t(`scale.${v}`)),
   guess: items.find((i): i is GuessInterlude => i.kind === 'guess')?.answer,
   strings: {
     progress: t('progress.label', { n: '{n}', total }),
@@ -91,75 +90,19 @@ const btnAnswer =
                 <p class="text-eyebrow text-harmaa">
                   {num ? t('progress.label', { n: num, total }) : ' '}
                 </p>
-                <h2
-                  data-heading
-                  tabindex="-1"
-                  class:list={[
-                    'mt-3 text-2xl sm:text-3xl',
-                    // The swipe card already shows the statement; keep the heading for screen readers.
-                    isStatement(item) && item.ui === 'swipe' && 'sr-only',
-                  ]}
-                >
+                <h2 data-heading tabindex="-1" class="mt-3 text-2xl sm:text-3xl">
                   {item.text[locale]}
                 </h2>
               </div>
 
               <div class="space-y-3">
-                {isStatement(item) && item.ui === 'buttons' && (
+                {isStatement(item) && (
                   <div class="space-y-2" role="group" aria-label={item.text[locale]}>
                     {SCALE.map((v) => (
                       <button type="button" data-answer={v} class={btnAnswer}>
                         {t(`scale.${v}`)}
                       </button>
                     ))}
-                  </div>
-                )}
-
-                {isStatement(item) && item.ui === 'swipe' && (
-                  <>
-                    <div
-                      data-swipe
-                      tabindex="0"
-                      role="group"
-                      aria-label={t('swipe.cardLabel')}
-                      class="card touch-pan-y bg-white text-center text-xl font-semibold select-none"
-                    >
-                      <p>{item.text[locale]}</p>
-                    </div>
-                    <p class="text-harmaa flex justify-between text-sm" aria-hidden="true">
-                      <span>← {t('swipe.disagree')}</span>
-                      <span>{t('swipe.agree')} →</span>
-                    </p>
-                    <div class="space-y-2" role="group" aria-label={item.text[locale]}>
-                      {SCALE.map((v) => (
-                        <button type="button" data-answer={v} class={btnAnswer}>
-                          {t(`scale.${v}`)}
-                        </button>
-                      ))}
-                    </div>
-                  </>
-                )}
-
-                {isStatement(item) && item.ui === 'slider' && (
-                  <div>
-                    <input
-                      type="range"
-                      min="-2"
-                      max="2"
-                      step="1"
-                      value="0"
-                      data-slider
-                      aria-label={item.text[locale]}
-                      class="accent-vihrea-tumma w-full"
-                    />
-                    <div class="text-harmaa flex justify-between text-xs" aria-hidden="true">
-                      {SCALE.map((v) => (
-                        <span class="w-1/5 text-center">{t(`scale.${v}`)}</span>
-                      ))}
-                    </div>
-                    <p data-slider-label class="mt-3 text-center font-semibold" aria-hidden="true">
-                      {t('scale.0')}
-                    </p>
                   </div>
                 )}
 
@@ -204,7 +147,7 @@ const btnAnswer =
                   <button type="button" data-action="back" class="btn-outline-sm">
                     {t('nav.back')}
                   </button>
-                  {(isGuess(item) || (isStatement(item) && item.ui === 'slider')) && (
+                  {isGuess(item) && (
                     <button type="button" data-action="next" class="btn-primary">
                       {t('nav.next')}
                     </button>
@@ -224,7 +167,7 @@ const btnAnswer =
                 hidden
                 class="flex flex-1 flex-col justify-between gap-6 py-4"
               >
-                <div data-card class="card relative overflow-hidden bg-white">
+                <div data-card class="card bg-white">
                   <h2 data-heading tabindex="-1" class="text-2xl sm:text-3xl">
                     {item.after.text[locale]}
                   </h2>
@@ -245,11 +188,6 @@ const btnAnswer =
                       )}
                     </p>
                   )}
-                  <div
-                    data-timer
-                    class="bg-vihrea absolute inset-x-0 bottom-0 h-1 origin-left scale-x-0"
-                    aria-hidden="true"
-                  />
                 </div>
                 <button
                   type="button"
