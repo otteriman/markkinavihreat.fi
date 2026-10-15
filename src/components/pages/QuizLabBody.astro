@@ -1,12 +1,20 @@
 ---
 import BaseLayout from '../../layouts/BaseLayout.astro'
 import { resultTypes } from '../../lib/quiz/data'
-import { renderTree } from '../../lib/quiz/tree'
+import { renderTree, TREE_STYLES, type TreeInput, type TreeStyle } from '../../lib/quiz/tree'
 import type { Axis } from '../../lib/quiz/types'
 
 // Development and preview only (see src/pages/[lab].astro): a review sheet for
 // the generated tree. Finnish only, like the rest of the team's tooling.
 const mid = { markets: 50, environment: 50, freedom: 50 }
+const STYLE_NAMES: Record<TreeStyle, string> = {
+  flat: 'A · Litteä ja geometrinen',
+  line: 'B · Viivapiirros',
+  paper: 'C · Paperileikkaus',
+}
+const sample = { growth: 1, markets: 70, environment: 40, freedom: 60 }
+// Static figures carry their input, so the style switch can redraw them.
+const tree = (input: TreeInput) => JSON.stringify(input)
 const stages = Array.from({ length: 10 }, (_, i) => (i + 1) / 10)
 const axes: { axis: Axis; label: string; low: string; high: string }[] = [
   { axis: 'markets', label: 'Markkinat → hedelmät', low: 'omenat', high: 'kolikot ja setelit' },
@@ -28,12 +36,49 @@ const axes: { axis: Axis; label: string; low: string; high: string }[] = [
   noindex
 >
   <div class="mx-auto max-w-6xl px-4 py-10 sm:px-6">
-    <p class="text-eyebrow text-harmaa">Kehitysnäkymä · tyyli A: litteä ja geometrinen</p>
+    <p class="text-eyebrow text-harmaa">Kehitysnäkymä · kolme tyylivaihtoehtoa</p>
     <h1 class="mt-2 text-4xl">Puulaboratorio</h1>
     <p class="mt-4 max-w-2xl">
       Puu piirretään koodilla. Koko riippuu vain kasvusta (yksi vaihe per vastattu kysymys);
       vastaukset muuttavat vain puun luonnetta: hedelmät, latvuksen muodon ja elämän puun ympärillä.
     </p>
+
+    <section class="mt-10">
+      <h2 class="text-2xl">Tyylit rinnakkain</h2>
+      <p class="text-harmaa mt-1 text-sm">Sama puu, samat vastaukset, kolme piirustustyyliä.</p>
+      <div class="mt-4 grid gap-3 sm:grid-cols-3">
+        {
+          TREE_STYLES.map((style) => (
+            <figure class="card bg-white p-2 sm:p-2">
+              <Fragment set:html={renderTree({ ...sample, style })} />
+              <figcaption class="text-center text-sm font-semibold">
+                {STYLE_NAMES[style]}
+              </figcaption>
+            </figure>
+          ))
+        }
+      </div>
+    </section>
+
+    <fieldset id="lab-style" class="card mt-10 bg-white">
+      <legend class="text-sm font-semibold">Näytä alla tyylillä</legend>
+      <div class="mt-2 flex flex-wrap gap-4">
+        {
+          TREE_STYLES.map((style, i) => (
+            <label class="flex items-center gap-2 text-sm">
+              <input
+                type="radio"
+                name="style"
+                value={style}
+                checked={i === 0}
+                class="accent-vihrea-tumma"
+              />
+              {STYLE_NAMES[style]}
+            </label>
+          ))
+        }
+      </div>
+    </fieldset>
 
     <section class="mt-10">
       <h2 class="text-2xl">Kokeile</h2>
@@ -88,7 +133,10 @@ const axes: { axis: Axis; label: string; low: string; high: string }[] = [
         {
           stages.map((g, i) => (
             <figure class="card bg-white p-2 sm:p-2">
-              <Fragment set:html={renderTree({ growth: g, ...mid })} />
+              <div
+                data-tree={tree({ growth: g, ...mid })}
+                set:html={renderTree({ growth: g, ...mid })}
+              />
               <figcaption class="text-harmaa text-center text-xs">Vaihe {i + 1}</figcaption>
             </figure>
           ))
@@ -108,7 +156,10 @@ const axes: { axis: Axis; label: string; low: string; high: string }[] = [
             <div class="mt-2 grid gap-3 sm:grid-cols-2">
               {[0, 100].map((v) => (
                 <figure class="card bg-white p-2 sm:p-2">
-                  <Fragment set:html={renderTree({ growth: 1, ...mid, [axis]: v })} />
+                  <div
+                    data-tree={tree({ growth: 1, ...mid, [axis]: v })}
+                    set:html={renderTree({ growth: 1, ...mid, [axis]: v })}
+                  />
                   <figcaption class="text-harmaa text-center text-xs">
                     {v} – {v === 0 ? low : high}
                   </figcaption>
@@ -126,7 +177,10 @@ const axes: { axis: Axis; label: string; low: string; high: string }[] = [
         {
           resultTypes.map((r) => (
             <figure class="card bg-white p-2 sm:p-2">
-              <Fragment set:html={renderTree({ growth: 1, ...r.representative }, r.name.fi)} />
+              <div
+                data-tree={tree({ growth: 1, ...r.representative })}
+                set:html={renderTree({ growth: 1, ...r.representative }, r.name.fi)}
+              />
               <figcaption class="text-center text-sm font-semibold">{r.name.fi}</figcaption>
             </figure>
           ))
@@ -137,6 +191,7 @@ const axes: { axis: Axis; label: string; low: string; high: string }[] = [
 </BaseLayout>
 
 <script>
+  import { renderTree, type TreeStyle } from '../../lib/quiz/tree'
   import { TreeView } from '../../lib/quiz/treeView'
 
   const form = document.getElementById('lab-controls') as HTMLFormElement | null
@@ -144,7 +199,11 @@ const axes: { axis: Axis; label: string; low: string; high: string }[] = [
   const play = document.getElementById('lab-play') as HTMLButtonElement | null
   if (form && target && play) {
     const input = (name: string) => form.elements.namedItem(name) as HTMLInputElement
+    const styleOf = () =>
+      ((document.querySelector('#lab-style input:checked') as HTMLInputElement | null)?.value ??
+        'flat') as TreeStyle
     const read = () => ({
+      style: styleOf(),
       growth: Number(input('growth').value) / 10,
       markets: Number(input('markets').value),
       environment: Number(input('environment').value),
@@ -157,6 +216,15 @@ const axes: { axis: Axis; label: string; low: string; high: string }[] = [
       }
     }
     const view = new TreeView(target, read())
+
+    // Switching style redraws every figure below, and the explorer, at once.
+    document.getElementById('lab-style')?.addEventListener('change', () => {
+      const style = styleOf()
+      for (const el of document.querySelectorAll<HTMLElement>('[data-tree]')) {
+        el.innerHTML = renderTree({ ...JSON.parse(el.dataset.tree!), style })
+      }
+      void view.set(read(), false)
+    })
     let playing = 0
 
     form.addEventListener('input', () => {
