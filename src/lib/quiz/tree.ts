@@ -570,16 +570,23 @@ function wildItems(): Item[] {
     ],
     box: { x0: x - 9, y0: y - 13, x1: x + 9, y1: y + 6 },
   })
+  // Idle motion (wing beats, gliding) comes from TREE_STYLE; each animal gets
+  // its own phase so they don't move in step.
+  const phase = (x: number) => `animation-delay:-${n((x % 9) / 10)}s`
   const bird = (x: number, y: number, s: number): Item => ({
     svg: [
-      `<path ${attrs({ d: `M${x - 10 * s} ${y - 3 * s}q${n(5 * s)} -${n(6 * s)} ${n(10 * s)} ${n(3 * s)}q${n(5 * s)} -${n(9 * s)} ${n(10 * s)} -${n(3 * s)}`, fill: 'none', stroke: COLORS.ink, 'stroke-width': 2.5, 'stroke-linecap': 'round', 'stroke-linejoin': 'round' })}/>`,
+      `<g class="qt-glide" style="${phase(x)}">`,
+      `<path class="qt-bird" style="${phase(x * 3)}" ${attrs({ d: `M${x - 10 * s} ${y - 3 * s}q${n(5 * s)} -${n(6 * s)} ${n(10 * s)} ${n(3 * s)}q${n(5 * s)} -${n(9 * s)} ${n(10 * s)} -${n(3 * s)}`, fill: 'none', stroke: COLORS.ink, 'stroke-width': 2.5, 'stroke-linecap': 'round', 'stroke-linejoin': 'round' })}/>`,
+      '</g>',
     ],
     box: { x0: x - 11 * s, y0: y - 9 * s, x1: x + 11 * s, y1: y + 2 * s },
   })
   const butterfly = (x: number, y: number): Item => ({
     svg: [
-      `<path ${attrs({ d: `M${x} ${y}c-9 -10 -14 -2 -9 4c-6 4 -2 10 9 -4z`, fill: COLORS.apple })}/>`,
-      `<path ${attrs({ d: `M${x} ${y}c9 -10 14 -2 9 4c6 4 2 10 -9 -4z`, fill: COLORS.coin })}/>`,
+      `<g class="qt-bob" style="${phase(x)}">`,
+      `<path class="qt-wing-l" style="${phase(x * 7)}" ${attrs({ d: `M${x} ${y}c-9 -10 -14 -2 -9 4c-6 4 -2 10 9 -4z`, fill: COLORS.apple })}/>`,
+      `<path class="qt-wing-r" style="${phase(x * 7)}" ${attrs({ d: `M${x} ${y}c9 -10 14 -2 9 4c6 4 2 10 -9 -4z`, fill: COLORS.coin })}/>`,
+      '</g>',
     ],
     box: { x0: x - 12, y0: y - 10, x1: x + 12, y1: y + 8 },
   })
@@ -645,6 +652,26 @@ export function treeShapesFor(input: TreeInput): Shape[] {
   return [ground, ...behind, ...tree, ...fruitShapes(input, leaves), ...front]
 }
 
+/**
+ * Idle motion for the animals: butterflies flap and drift, birds beat their
+ * wings and glide. Pure CSS inside the SVG; off with prefers-reduced-motion,
+ * and simply ignored by static renderers (link-preview images).
+ */
+export const TREE_STYLE =
+  '<style>' +
+  '.qt-wing-l,.qt-wing-r,.qt-bird{transform-box:fill-box}' +
+  '.qt-wing-l{transform-origin:100% 50%;animation:qt-flap .3s ease-in-out infinite alternate}' +
+  '.qt-wing-r{transform-origin:0 50%;animation:qt-flap .3s ease-in-out infinite alternate}' +
+  '@keyframes qt-flap{to{transform:scaleX(.2)}}' +
+  '.qt-bob{animation:qt-bob 2.2s ease-in-out infinite alternate}' +
+  '@keyframes qt-bob{to{transform:translate(5px,-7px)}}' +
+  '.qt-bird{transform-origin:50% 100%;animation:qt-beat .45s ease-in-out infinite alternate}' +
+  '@keyframes qt-beat{to{transform:scaleY(-.5)}}' +
+  '.qt-glide{animation:qt-glide 3.4s ease-in-out infinite alternate}' +
+  '@keyframes qt-glide{to{transform:translate(-9px,4px)}}' +
+  '@media (prefers-reduced-motion:reduce){.qt-wing-l,.qt-wing-r,.qt-bob,.qt-bird,.qt-glide{animation:none}}' +
+  '</style>'
+
 /** The tree as a standalone SVG string. Same input, same string. */
 export function renderTree(input: TreeInput, label = ''): string {
   const body = treeShapesFor(input)
@@ -653,5 +680,5 @@ export function renderTree(input: TreeInput, label = ''): string {
   const a11y = label
     ? `role="img" aria-label="${label.replace(/"/g, '&quot;')}"`
     : 'aria-hidden="true"'
-  return `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 ${VIEW.width} ${VIEW.height}" ${a11y}>${body}</svg>`
+  return `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 ${VIEW.width} ${VIEW.height}" ${a11y}>${TREE_STYLE}${body}</svg>`
 }

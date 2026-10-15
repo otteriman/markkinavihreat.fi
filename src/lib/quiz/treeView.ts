@@ -8,7 +8,7 @@
  * - shapes that are no longer there shrink away.
  * With prefers-reduced-motion every change is instant.
  */
-import { shapeSvg, treeShapesFor, VIEW, type Shape, type TreeInput } from './tree'
+import { shapeSvg, TREE_STYLE, treeShapesFor, VIEW, type Shape, type TreeInput } from './tree'
 
 const SVGNS = 'http://www.w3.org/2000/svg'
 export const DURATION = 600 // ms, the plan's maximum per stage
@@ -101,7 +101,7 @@ export class TreeView {
   constructor(container: HTMLElement, input: TreeInput, label = '') {
     container.innerHTML = `<svg xmlns="${SVGNS}" viewBox="0 0 ${VIEW.width} ${VIEW.height}" ${
       label ? `role="img" aria-label="${label.replace(/"/g, '&quot;')}"` : 'aria-hidden="true"'
-    }></svg>`
+    }>${TREE_STYLE}</svg>`
     this.svg = container.querySelector('svg')!
     void this.set(input, false)
   }

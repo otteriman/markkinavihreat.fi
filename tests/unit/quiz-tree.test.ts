@@ -48,6 +48,13 @@ describe('determinism', () => {
     expect([...before].filter((k) => k.startsWith('b:')).every((k) => after.has(k))).toBe(true)
   })
 
+  it('animates butterflies and birds only when motion is allowed', () => {
+    const svg = renderTree({ growth: 1, ...mid, environment: 100 })
+    expect(svg).toContain('class="qt-wing-l"')
+    expect(svg).toContain('class="qt-bird"')
+    expect(svg).toMatch(/prefers-reduced-motion:reduce\)\{[^}]*animation:none/)
+  })
+
   it('changes when the scores change', () => {
     expect(renderTree({ growth: 1, ...mid })).not.toBe(
       renderTree({ growth: 1, ...mid, freedom: 90 }),
