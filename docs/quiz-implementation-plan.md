@@ -15,8 +15,8 @@ This document is the spec for building the "Are you a market green?" quiz on mar
 ## 2. How to use this plan with Claude Code
 
 1. Put this file in the repo root (or `docs/`), then start Claude Code in the repo.
-2. First prompt: *"Read quiz-implementation-plan.md. Do Phase 0 only and report back."*
-3. After each phase, review the diff, run the site locally, and then ask for the next phase: *"Phase N looks good. Continue with Phase N+1."*
+2. First prompt: _"Read quiz-implementation-plan.md. Do Phase 0 only and report back."_
+3. After each phase, review the diff, run the site locally, and then ask for the next phase: _"Phase N looks good. Continue with Phase N+1."_
 4. Content (question wording, facts, type descriptions) lives in data files, so non-developers can edit it later without touching components.
 
 ## 3. Hard constraints
@@ -36,11 +36,11 @@ These apply to every phase. Claude Code must not violate them, even if a later i
 
 ## 4. Routes
 
-| Language | Quiz start | Result pages |
-| --- | --- | --- |
-| Finnish | `/testi/` | `/testi/tulos/[type]-[bucket]/` |
-| Swedish | `/sv/test/` | `/sv/test/resultat/[type]-[bucket]/` |
-| English | `/en/quiz/` | `/en/quiz/result/[type]-[bucket]/` |
+| Language | Quiz start  | Result pages                         |
+| -------- | ----------- | ------------------------------------ |
+| Finnish  | `/testi/`   | `/testi/tulos/[type]-[bucket]/`      |
+| Swedish  | `/sv/test/` | `/sv/test/resultat/[type]-[bucket]/` |
+| English  | `/en/quiz/` | `/en/quiz/result/[type]-[bucket]/`   |
 
 Adapt the Swedish and English slugs to match the existing i18n routing if it differs.
 
@@ -72,69 +72,71 @@ Each text field has `fi`, `sv`, `en` keys. **Finnish is the source of truth.** E
 Suggested TypeScript types:
 
 ```ts
-type Lang = 'fi' | 'sv' | 'en';
-type Axis = 'markets' | 'environment' | 'freedom';
-type AnswerUI = 'buttons' | 'swipe' | 'slider' | 'imageChoice';
+type Lang = 'fi' | 'sv' | 'en'
+type Axis = 'markets' | 'environment' | 'freedom'
+type AnswerUI = 'buttons' | 'swipe' | 'slider' | 'imageChoice'
 
 interface Statement {
-  id: string;               // 'q1' … 'q9'
-  kind: 'statement';
-  axis: Axis;
-  direction: 1 | -1;        // +1: agreeing raises the axis score
-  ui: Exclude<AnswerUI, 'imageChoice'>;
-  text: Record<Lang, string>;
-  after: AfterCard;
-  relatedLink?: { href: Record<Lang, string>; label: Record<Lang, string> };
+  id: string // 'q1' … 'q9'
+  kind: 'statement'
+  axis: Axis
+  direction: 1 | -1 // +1: agreeing raises the axis score
+  ui: Exclude<AnswerUI, 'imageChoice'>
+  text: Record<Lang, string>
+  after: AfterCard
+  relatedLink?: { href: Record<Lang, string>; label: Record<Lang, string> }
 }
 
 interface Finale {
-  id: 'q10';
-  kind: 'finale';
-  ui: 'imageChoice';
-  text: Record<Lang, string>;
-  options: { id: string; label: Record<Lang, string>; markets: number; environment: number }[];
+  id: 'q10'
+  kind: 'finale'
+  ui: 'imageChoice'
+  text: Record<Lang, string>
+  options: { id: string; label: Record<Lang, string>; markets: number; environment: number }[]
 }
 
 interface GuessInterlude {
-  id: 'guess';
-  kind: 'guess';            // not scored
-  after: 'q5';
-  text: Record<Lang, string>;
-  min: number; max: number; answer: number;
-  reveal: Record<Lang, string>;
+  id: 'guess'
+  kind: 'guess' // not scored
+  after: 'q5'
+  text: Record<Lang, string>
+  min: number
+  max: number
+  answer: number
+  reveal: Record<Lang, string>
 }
 
 type AfterCard =
   | { type: 'fact'; text: Record<Lang, string>; source: { label: string; url: string } | 'TODO' }
   | { type: 'reaction'; text: Record<Lang, string> }
-  | { type: 'teaser'; text: Record<Lang, string> };
+  | { type: 'teaser'; text: Record<Lang, string> }
 ```
 
 ### 5.2 The ten questions (in display order)
 
 Statements use a 5-point scale: strongly disagree (−2), somewhat disagree (−1), can't say (0), somewhat agree (+1), strongly agree (+2).
 
-| # | Axis | Dir | UI | Finnish (source) | English draft | After-question card |
-| --- | --- | --- | --- | --- | --- | --- |
-| 1 | markets | +1 | buttons | Suurimmasta osasta yritystukia pitäisi luopua, vaikka se veisi joitakin työpaikkoja. | Most corporate subsidies should be scrapped, even if some jobs are lost. | Fact: annual total of corporate subsidies in Finland. Source: VATT. **Number TODO.** |
-| 2 | environment | +1 | swipe | Ruuhkamaksut olisivat hyvä keino suurissa kaupungeissa. | Congestion charges would be a good tool for large cities. | Fact: congestion charges are used in, for example, London, Singapore and Gothenburg. |
-| 3 | freedom | +1 | slider | Aikuisen pitäisi saada päättää itse päihteiden käytöstään, kunhan hän ei vahingoita muita. | Adults should be free to decide on their own substance use, as long as they don't harm others. | Reaction: "Tämä jakaa kansaa." / "This one divides the nation." |
-| 4 | markets | −1 | swipe | Vuokrasääntely on hyvä keino pitää asuminen kohtuuhintaisena. | Rent control is a good way to keep housing affordable. | Fact: what economists think about rent control. **Source TODO** (e.g. an economist survey). |
-| 5 | environment | −1 | buttons | Ilmastotavoitteista voi joustaa, jos ne hidastavat talouskasvua. | Climate targets can be relaxed if they slow economic growth. | Teaser: "Olet jo yllättänyt meidät." / "You've already surprised us." |
-| – | (guess) | – | slider | Arvaa: mistä vuodesta lähtien Tukholmassa on ollut pysyvät ruuhkamaksut? | Guess: since what year has Stockholm had permanent congestion charges? | Reveal: 2007. Range 1990–2025. Not scored. |
-| 6 | freedom | −1 | slider | Viranomaisille pitäisi antaa laajemmat valtuudet valvoa verkkoviestintää rikosten ehkäisemiseksi. | Authorities should get wider powers to monitor online communication to prevent crime. | Reaction: "Rohkea veto!" / "Bold move!" |
-| 7 | markets | +1 | swipe | Osakesäästötilin sijoituskattoa pitäisi nostaa selvästi. | The deposit cap of the equity savings account (osakesäästötili) should be raised substantially. | Fact: number of equity savings accounts in Finland. **Number and source TODO.** |
-| 8 | environment | +1 | buttons | Luontokadon pysäyttäminen on yhtä tärkeää kuin ilmastonmuutoksen torjunta. | Halting biodiversity loss is as important as fighting climate change. | Fact: share of threatened species in Finland. Source: the Red List of Finnish species. **Number TODO.** |
-| 9 | freedom | +1 | slider | Työperäisen maahanmuuton pitäisi olla nykyistä helpompaa. | Work-based immigration should be made easier than it is today. | Reaction: "Viimeinen ennen finaalia." / "Last one before the finale." |
-| 10 | finale | – | imageChoice | Ilmastopolitiikassa luotan eniten… | In climate policy, I trust most in… | Drum roll, then the result reveal. |
+| #   | Axis        | Dir | UI          | Finnish (source)                                                                                  | English draft                                                                                   | After-question card                                                                                     |
+| --- | ----------- | --- | ----------- | ------------------------------------------------------------------------------------------------- | ----------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------- |
+| 1   | markets     | +1  | buttons     | Suurimmasta osasta yritystukia pitäisi luopua, vaikka se veisi joitakin työpaikkoja.              | Most corporate subsidies should be scrapped, even if some jobs are lost.                        | Fact: annual total of corporate subsidies in Finland. Source: VATT. **Number TODO.**                    |
+| 2   | environment | +1  | swipe       | Ruuhkamaksut olisivat hyvä keino suurissa kaupungeissa.                                           | Congestion charges would be a good tool for large cities.                                       | Fact: congestion charges are used in, for example, London, Singapore and Gothenburg.                    |
+| 3   | freedom     | +1  | slider      | Aikuisen pitäisi saada päättää itse päihteiden käytöstään, kunhan hän ei vahingoita muita.        | Adults should be free to decide on their own substance use, as long as they don't harm others.  | Reaction: "Tämä jakaa kansaa." / "This one divides the nation."                                         |
+| 4   | markets     | −1  | swipe       | Vuokrasääntely on hyvä keino pitää asuminen kohtuuhintaisena.                                     | Rent control is a good way to keep housing affordable.                                          | Fact: what economists think about rent control. **Source TODO** (e.g. an economist survey).             |
+| 5   | environment | −1  | buttons     | Ilmastotavoitteista voi joustaa, jos ne hidastavat talouskasvua.                                  | Climate targets can be relaxed if they slow economic growth.                                    | Teaser: "Olet jo yllättänyt meidät." / "You've already surprised us."                                   |
+| –   | (guess)     | –   | slider      | Arvaa: mistä vuodesta lähtien Tukholmassa on ollut pysyvät ruuhkamaksut?                          | Guess: since what year has Stockholm had permanent congestion charges?                          | Reveal: 2007. Range 1990–2025. Not scored.                                                              |
+| 6   | freedom     | −1  | slider      | Viranomaisille pitäisi antaa laajemmat valtuudet valvoa verkkoviestintää rikosten ehkäisemiseksi. | Authorities should get wider powers to monitor online communication to prevent crime.           | Reaction: "Rohkea veto!" / "Bold move!"                                                                 |
+| 7   | markets     | +1  | swipe       | Osakesäästötilin sijoituskattoa pitäisi nostaa selvästi.                                          | The deposit cap of the equity savings account (osakesäästötili) should be raised substantially. | Fact: number of equity savings accounts in Finland. **Number and source TODO.**                         |
+| 8   | environment | +1  | buttons     | Luontokadon pysäyttäminen on yhtä tärkeää kuin ilmastonmuutoksen torjunta.                        | Halting biodiversity loss is as important as fighting climate change.                           | Fact: share of threatened species in Finland. Source: the Red List of Finnish species. **Number TODO.** |
+| 9   | freedom     | +1  | slider      | Työperäisen maahanmuuton pitäisi olla nykyistä helpompaa.                                         | Work-based immigration should be made easier than it is today.                                  | Reaction: "Viimeinen ennen finaalia." / "Last one before the finale."                                   |
+| 10  | finale      | –   | imageChoice | Ilmastopolitiikassa luotan eniten…                                                                | In climate policy, I trust most in…                                                             | Drum roll, then the result reveal.                                                                      |
 
 **Finale options**
 
-| Option id | Finnish | English | markets | environment |
-| --- | --- | --- | --- | --- |
-| `price` | …hintaan päästöille | …putting a price on emissions | +2 | +2 |
-| `bans` | …kieltoihin ja tukiin | …bans and subsidies | −2 | +2 |
-| `neither` | …en kumpaankaan, ilmastopolitiikkaa on jo tarpeeksi | …neither, there's enough climate policy already | 0 | −2 |
+| Option id | Finnish                                             | English                                         | markets | environment |
+| --------- | --------------------------------------------------- | ----------------------------------------------- | ------- | ----------- |
+| `price`   | …hintaan päästöille                                 | …putting a price on emissions                   | +2      | +2          |
+| `bans`    | …kieltoihin ja tukiin                               | …bans and subsidies                             | −2      | +2          |
+| `neither` | …en kumpaankaan, ilmastopolitiikkaa on jo tarpeeksi | …neither, there's enough climate policy already | 0       | −2          |
 
 A short Finnish note in the source plan lists nine backup statements. They are not part of this build.
 
@@ -155,14 +157,14 @@ bucket  = round(overall / 10) × 10
 
 **Result types** (evaluate in this order):
 
-| Slug | Rule | Finnish name | English name | Finnish one-liner |
-| --- | --- | --- | --- | --- |
-| `pigou` | all three high | Pigou'n perillinen | Pigou's heir | Olet markkinavihreä. Hinnoittele haitat, vapauta loput. |
-| `liberal` | markets + freedom high | Klassinen liberaali | Classical liberal | Vapaus on sinulle tärkein. Ilmastossa markkinaratkaisut voisivat yllättää. |
-| `ecologist` | environment + freedom high | Kaupunkiekologi | Urban ecologist | Luonto ja vapaus ensin. Tiesitkö, että päästökauppa on tehokkain ilmastotyökalu? |
-| `engineer` | markets + environment high | Vihreä insinööri | Green engineer | Uskot tehokkaisiin ratkaisuihin. Vapaus kuuluu samaan pakettiin. |
-| `focused` | exactly one high | Yhden asian ihminen | Single-issue person | Sinulla on selvä painopiste. Katso, miten se liittyy kahteen muuhun. |
-| `free` | none high | Vapaa sielu | Free spirit | Et mahdu laatikoihin. Hyvä, ei mekään. |
+| Slug        | Rule                       | Finnish name        | English name        | Finnish one-liner                                                                |
+| ----------- | -------------------------- | ------------------- | ------------------- | -------------------------------------------------------------------------------- |
+| `pigou`     | all three high             | Pigou'n perillinen  | Pigou's heir        | Olet markkinavihreä. Hinnoittele haitat, vapauta loput.                          |
+| `liberal`   | markets + freedom high     | Klassinen liberaali | Classical liberal   | Vapaus on sinulle tärkein. Ilmastossa markkinaratkaisut voisivat yllättää.       |
+| `ecologist` | environment + freedom high | Kaupunkiekologi     | Urban ecologist     | Luonto ja vapaus ensin. Tiesitkö, että päästökauppa on tehokkain ilmastotyökalu? |
+| `engineer`  | markets + environment high | Vihreä insinööri    | Green engineer      | Uskot tehokkaisiin ratkaisuihin. Vapaus kuuluu samaan pakettiin.                 |
+| `focused`   | exactly one high           | Yhden asian ihminen | Single-issue person | Sinulla on selvä painopiste. Katso, miten se liittyy kahteen muuhun.             |
+| `free`      | none high                  | Vapaa sielu         | Free spirit         | Et mahdu laatikoihin. Hyvä, ei mekään.                                           |
 
 English one-liners: draft natural English equivalents, keeping the same friendly tone.
 
@@ -202,7 +204,7 @@ All map to the same −2…+2 value.
 
 ### 7.3 Animations and surprises
 
-- **Growing tree that reflects the answers:** an SVG tree with 10 growth stages, from sapling to full tree. It advances one stage per answered scored question and does not advance on the guess interlude. Every answer grows the tree by the same amount; the answers change *what kind* of growth appears, never how much (section 7.5). Stage changes animate over ≤ 600 ms. At the reveal, the tree the user grew is their result, and the percentage and type name explain it.
+- **Growing tree that reflects the answers:** an SVG tree with 10 growth stages, from sapling to full tree. It advances one stage per answered scored question and does not advance on the guess interlude. Every answer grows the tree by the same amount; the answers change _what kind_ of growth appears, never how much (section 7.5). Stage changes animate over ≤ 600 ms. At the reveal, the tree the user grew is their result, and the percentage and type name explain it.
 - **After-question cards** (fact, reaction or teaser): slide in for ≤ 1.5 s total, then auto-advance. Tapping anywhere or pressing a key skips immediately. A fact card shows its source in small text with a link that opens in a new tab and does not auto-advance while focused.
 - **Guess interlude:** slider answer, then the reveal animates the correct value on the same slider with a short "You were X years off" line.
 - **Result reveal** (on the quiz page, before navigating):
@@ -232,11 +234,11 @@ All visuals are made by Claude Code in code, so the style must be one that code 
 
 **Core rule: no answer is ever punished visually.** Every answer adds the same amount of growth. Each axis controls a trait with two ends, and both ends must look attractive. A smaller, barer or sadder tree after any answer would signal a "right" answer, invite gaming and break the quiz's neutrality.
 
-| Axis | Trait | Low end (score near 0) | High end (score near 100) |
-| --- | --- | --- | --- |
-| Markets | Fruit type | Apples | Coins |
-| Freedom | Crown shape | Neatly pruned, rounded, symmetrical, like a well-kept garden tree | Wild, spreading, asymmetrical |
-| Environment | Life around the tree | A tidy garden: mown lawn, a neat path, a bench | Flowers, bees and birds |
+| Axis        | Trait                | Low end (score near 0)                                            | High end (score near 100)     |
+| ----------- | -------------------- | ----------------------------------------------------------------- | ----------------------------- |
+| Markets     | Fruit type           | Apples                                                            | Coins                         |
+| Freedom     | Crown shape          | Neatly pruned, rounded, symmetrical, like a well-kept garden tree | Wild, spreading, asymmetrical |
+| Environment | Life around the tree | A tidy garden: mown lawn, a neat path, a bench                    | Flowers, bees and birds       |
 
 - **Continuous, not binary.** Scores in between produce mixes: at markets 50, roughly half the fruit are coins. Crown shape interpolates smoothly between pruned and wild.
 - **Environment is the riskiest axis.** "No flowers or birds" can easily look like a dying world. The tidy-garden end must be equally detailed, pleasant and full of life in its own way. Flag this axis specifically in the soft-launch feedback.
@@ -273,15 +275,15 @@ Static pages per language × type × bucket (section 4), hydrated with the exact
 
 Wrap analytics in `src/lib/quiz/track.ts`, exposing `track(event, props?)`. It does nothing if no provider is configured. The provider and site id come from environment variables.
 
-| Event | Props |
-| --- | --- |
-| `quiz_start` | `lang` |
-| `quiz_question_view` | `lang`, `q` (question id only, no answer) |
-| `quiz_abandon` | `lang`, `q` (last question seen; sent on `visibilitychange` → hidden) |
-| `quiz_complete` | `lang`, `type`, `bucket` |
-| `quiz_share` | `lang`, `channel` |
-| `quiz_cta` | `lang`, `cta` (`newsletter` / `whatsapp` / `manifesto`) |
-| `quiz_challenge_open` | `lang` |
+| Event                 | Props                                                                 |
+| --------------------- | --------------------------------------------------------------------- |
+| `quiz_start`          | `lang`                                                                |
+| `quiz_question_view`  | `lang`, `q` (question id only, no answer)                             |
+| `quiz_abandon`        | `lang`, `q` (last question seen; sent on `visibilitychange` → hidden) |
+| `quiz_complete`       | `lang`, `type`, `bucket`                                              |
+| `quiz_share`          | `lang`, `channel`                                                     |
+| `quiz_cta`            | `lang`, `cta` (`newsletter` / `whatsapp` / `manifesto`)               |
+| `quiz_challenge_open` | `lang`                                                                |
 
 Never send individual answers or exact axis scores. Type and bucket are acceptable because they are coarse.
 
