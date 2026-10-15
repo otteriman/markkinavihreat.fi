@@ -51,7 +51,7 @@ describe('determinism', () => {
   it('animates butterflies and birds only when motion is allowed', () => {
     const svg = renderTree({ growth: 1, ...mid, environment: 100 })
     expect(svg).toContain('class="qt-wing-l"')
-    expect(svg).toContain('class="qt-bird"')
+    expect(svg).toContain('class="qt-wl"')
     expect(svg).toMatch(/prefers-reduced-motion:reduce\)\{[^}]*animation:none/)
   })
 

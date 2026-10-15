@@ -467,17 +467,17 @@ const G = VIEW.groundY
 /** The tidy-garden end: mown lawn, path, bench, topiary, lamp, a formal bed. */
 function gardenItems(): Item[] {
   const stripes: Item = {
-    svg: [-14, -6, 2, 10, 18].map((dy, i) => {
+    svg: [-14, -6, 2, 10, 18, 26].map((dy, i) => {
       const y = G + dy
       const half = 215 * Math.sqrt(Math.max(0, 1 - ((y - G - 4) / 30) ** 2))
       return `<rect ${attrs({ x: VIEW.baseX - half, y: y - 2.5, width: half * 2, height: 5, rx: 2.5, fill: i % 2 ? COLORS.leaf : COLORS.leafDark, 'fill-opacity': 0.22 })}/>`
     }),
-    box: { x0: 25, y0: G - 17, x1: 455, y1: G + 21 },
+    box: { x0: 25, y0: G - 17, x1: 455, y1: G + 29 },
   }
   const path: Item = {
     svg: [
       `<path ${attrs({ d: `M${VIEW.baseX + 6} ${G - 2}C${VIEW.baseX + 40} ${G + 6} ${VIEW.baseX + 70} ${G + 18} ${VIEW.baseX + 92} ${G + 34}L${VIEW.baseX + 128} ${G + 34}C${VIEW.baseX + 100} ${G + 16} ${VIEW.baseX + 62} ${G + 4} ${VIEW.baseX + 22} ${G - 2}Z`, fill: COLORS.stone })}/>`,
-      ...[0.2, 0.45, 0.7, 0.92].map((t) => {
+      ...[0.06, 0.26, 0.48, 0.7, 0.92].map((t) => {
         const x = VIEW.baseX + 18 + t * 92
         const y = G + t * 30
         return `<rect ${attrs({ x: x - 7, y: y - 2.5, width: 14, height: 5, rx: 2.5, fill: COLORS.petal })}/>`
@@ -573,14 +573,15 @@ function wildItems(): Item[] {
   // Idle motion (wing beats, gliding) comes from TREE_STYLE; each animal gets
   // its own phase so they don't move in step.
   const phase = (x: number) => `animation-delay:-${n((x % 9) / 10)}s`
-  const bird = (x: number, y: number, s: number): Item => ({
-    svg: [
-      `<g class="qt-glide" style="${phase(x)}">`,
-      `<path class="qt-bird" style="${phase(x * 3)}" ${attrs({ d: `M${x - 10 * s} ${y - 3 * s}q${n(5 * s)} -${n(6 * s)} ${n(10 * s)} ${n(3 * s)}q${n(5 * s)} -${n(9 * s)} ${n(10 * s)} -${n(3 * s)}`, fill: 'none', stroke: COLORS.ink, 'stroke-width': 2.5, 'stroke-linecap': 'round', 'stroke-linejoin': 'round' })}/>`,
-      '</g>',
-    ],
-    box: { x0: x - 11 * s, y0: y - 9 * s, x1: x + 11 * s, y1: y + 2 * s },
-  })
+  // Two wings hinged at the body, so they can beat up and down from the shoulders.
+  const bird = (x: number, y: number, s: number): Item => {
+    const wing = (side: -1 | 1) =>
+      `<path class="${side < 0 ? 'qt-wl' : 'qt-wr'}" style="${phase(x * 3)}" ${attrs({ d: `M${x} ${y}q${n(side * 4 * s)} -${n(7 * s)} ${n(side * 11 * s)} -${n(3 * s)}`, fill: 'none', stroke: COLORS.ink, 'stroke-width': 2.5, 'stroke-linecap': 'round' })}/>`
+    return {
+      svg: [`<g class="qt-glide" style="${phase(x)}">`, wing(-1), wing(1), '</g>'],
+      box: { x0: x - 12 * s, y0: y - 9 * s, x1: x + 12 * s, y1: y + 2 * s },
+    }
+  }
   const butterfly = (x: number, y: number): Item => ({
     svg: [
       `<g class="qt-bob" style="${phase(x)}">`,
@@ -659,17 +660,21 @@ export function treeShapesFor(input: TreeInput): Shape[] {
  */
 export const TREE_STYLE =
   '<style>' +
-  '.qt-wing-l,.qt-wing-r,.qt-bird{transform-box:fill-box}' +
-  '.qt-wing-l{transform-origin:100% 50%;animation:qt-flap .3s ease-in-out infinite alternate}' +
-  '.qt-wing-r{transform-origin:0 50%;animation:qt-flap .3s ease-in-out infinite alternate}' +
-  '@keyframes qt-flap{to{transform:scaleX(.2)}}' +
-  '.qt-bob{animation:qt-bob 2.2s ease-in-out infinite alternate}' +
-  '@keyframes qt-bob{to{transform:translate(5px,-7px)}}' +
-  '.qt-bird{transform-origin:50% 100%;animation:qt-beat .45s ease-in-out infinite alternate}' +
-  '@keyframes qt-beat{to{transform:scaleY(-.5)}}' +
-  '.qt-glide{animation:qt-glide 3.4s ease-in-out infinite alternate}' +
-  '@keyframes qt-glide{to{transform:translate(-9px,4px)}}' +
-  '@media (prefers-reduced-motion:reduce){.qt-wing-l,.qt-wing-r,.qt-bob,.qt-bird,.qt-glide{animation:none}}' +
+  '.qt-wing-l,.qt-wing-r,.qt-wl,.qt-wr{transform-box:fill-box}' +
+  // Butterflies: wings fold in and out at the body; the whole butterfly drifts.
+  '.qt-wing-l{transform-origin:100% 50%;animation:qt-flap .55s ease-in-out infinite alternate}' +
+  '.qt-wing-r{transform-origin:0 50%;animation:qt-flap .55s ease-in-out infinite alternate}' +
+  '@keyframes qt-flap{to{transform:scaleX(.25)}}' +
+  '.qt-bob{animation:qt-bob 3.8s ease-in-out infinite alternate}' +
+  '@keyframes qt-bob{to{transform:translate(6px,-8px)}}' +
+  // Birds: two wing beats from the shoulders, then a glide with wings held out.
+  '.qt-wl{transform-origin:100% 100%;animation:qt-wl 2.6s ease-in-out infinite}' +
+  '.qt-wr{transform-origin:0 100%;animation:qt-wr 2.6s ease-in-out infinite}' +
+  '@keyframes qt-wl{0%,30%,60%,100%{transform:rotate(10deg)}15%,45%{transform:rotate(-35deg)}}' +
+  '@keyframes qt-wr{0%,30%,60%,100%{transform:rotate(-10deg)}15%,45%{transform:rotate(35deg)}}' +
+  '.qt-glide{animation:qt-glide 5s ease-in-out infinite alternate}' +
+  '@keyframes qt-glide{to{transform:translate(-10px,4px)}}' +
+  '@media (prefers-reduced-motion:reduce){.qt-wing-l,.qt-wing-r,.qt-bob,.qt-wl,.qt-wr,.qt-glide{animation:none}}' +
   '</style>'
 
 /** The tree as a standalone SVG string. Same input, same string. */
