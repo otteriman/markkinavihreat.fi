@@ -39,9 +39,12 @@ describe('questions.json', () => {
     for (const i of scoredItems) if (i.kind === 'statement') expect(i.after).toBeTruthy()
   })
 
-  it('uses the answer UIs of the plan', () => {
-    const uis = Object.fromEntries(items.map((i) => [i.id, 'ui' in i ? i.ui : 'slider']))
-    expect(uis).toMatchObject({ q1: 'buttons', q2: 'swipe', q3: 'slider', q10: 'imageChoice' })
+  it('answers every statement with buttons', () => {
+    // Every statement uses the five buttons; the finale uses illustrated cards.
+    for (const i of items) {
+      if (i.kind === 'statement') expect(i.ui).toBe('buttons')
+      if (i.kind === 'finale') expect(i.ui).toBe('imageChoice')
+    }
   })
 
   it('only flags known locales for review', () => {

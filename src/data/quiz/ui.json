@@ -83,12 +83,6 @@
     "en": "Strongly agree",
     "needsReview": ["sv"]
   },
-  "swipe.hint": {
-    "fi": "Pyyhkäise oikealle (samaa mieltä) tai vasemmalle (eri mieltä), tai käytä painikkeita.",
-    "sv": "Svep åt höger (håller med) eller vänster (håller inte med), eller använd knapparna.",
-    "en": "Swipe right (agree) or left (disagree), or use the buttons.",
-    "needsReview": ["sv"]
-  },
   "card.source": {
     "fi": "Lähde",
     "sv": "Källa",
@@ -249,24 +243,6 @@
     "fi": "Tämä testi ei ole vaalikone eikä Vihreiden virallinen palvelu.",
     "sv": "Det här testet är ingen valkompass och inte en officiell tjänst från De Gröna.",
     "en": "This quiz is not a voting advice application and not an official Green League service.",
-    "needsReview": ["sv"]
-  },
-  "swipe.agree": {
-    "fi": "Samaa mieltä",
-    "sv": "Håller med",
-    "en": "Agree",
-    "needsReview": ["sv"]
-  },
-  "swipe.disagree": {
-    "fi": "Eri mieltä",
-    "sv": "Håller inte med",
-    "en": "Disagree",
-    "needsReview": ["sv"]
-  },
-  "swipe.cardLabel": {
-    "fi": "Kortti: pyyhkäise tai käytä nuolinäppäimiä (Shift = voimakkaasti)",
-    "sv": "Kort: svep eller använd piltangenterna (Skift = starkt)",
-    "en": "Card: swipe or use the arrow keys (Shift = strongly)",
     "needsReview": ["sv"]
   },
   "guess.yourGuess": {

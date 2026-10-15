@@ -27,7 +27,7 @@
       "kind": "statement",
       "axis": "environment",
       "direction": 1,
-      "ui": "swipe",
+      "ui": "buttons",
       "text": {
         "fi": "Ruuhkamaksut olisivat hyvä keino suurissa kaupungeissa.",
         "sv": "Trängselavgifter vore ett bra verktyg i stora städer.",
@@ -49,7 +49,7 @@
       "kind": "statement",
       "axis": "freedom",
       "direction": 1,
-      "ui": "slider",
+      "ui": "buttons",
       "text": {
         "fi": "Aikuisen pitäisi saada päättää itse päihteiden käytöstään, kunhan hän ei vahingoita muita.",
         "sv": "Vuxna bör själva få bestämma över sitt bruk av rusmedel, så länge de inte skadar andra.",
@@ -70,7 +70,7 @@
       "kind": "statement",
       "axis": "markets",
       "direction": -1,
-      "ui": "swipe",
+      "ui": "buttons",
       "text": {
         "fi": "Vuokrasääntely on hyvä keino pitää asuminen kohtuuhintaisena.",
         "sv": "Hyresreglering är ett bra sätt att hålla boendet överkomligt.",
@@ -132,7 +132,7 @@
       "kind": "statement",
       "axis": "freedom",
       "direction": -1,
-      "ui": "slider",
+      "ui": "buttons",
       "text": {
         "fi": "Viranomaisille pitäisi antaa laajemmat valtuudet valvoa verkkoviestintää rikosten ehkäisemiseksi.",
         "sv": "Myndigheterna bör få vidare befogenheter att övervaka nätkommunikation för att förebygga brott.",
@@ -153,7 +153,7 @@
       "kind": "statement",
       "axis": "markets",
       "direction": 1,
-      "ui": "swipe",
+      "ui": "buttons",
       "text": {
         "fi": "Osakesäästötilin sijoituskattoa pitäisi nostaa selvästi.",
         "sv": "Taket för insättningar på aktiesparkontot (osakesäästötili) bör höjas rejält.",
@@ -197,7 +197,7 @@
       "kind": "statement",
       "axis": "freedom",
       "direction": 1,
-      "ui": "slider",
+      "ui": "buttons",
       "text": {
         "fi": "Työperäisen maahanmuuton pitäisi olla nykyistä helpompaa.",
         "sv": "Arbetskraftsinvandring bör göras enklare än i dag.",

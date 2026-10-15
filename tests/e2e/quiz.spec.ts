@@ -20,9 +20,6 @@ async function completeQuiz(page: Page) {
       await step.locator('[data-option="price"]').click()
       await page.waitForURL(/\/tulos\//)
       return
-    } else if (await step.locator('[data-slider]').count()) {
-      await step.locator('[data-slider]').fill('2')
-      await step.locator('[data-action="next"]').click()
     } else if (await step.locator('[data-guess-slider]').count())
       await step.locator('[data-action="next"]').click()
     else await step.locator('[data-answer="2"]').click()
@@ -85,58 +82,6 @@ test('skip counts as a neutral answer', async ({ page }) => {
   await expect(page.locator('[data-step="a:q1"]')).toBeVisible()
 })
 
-test('swipe questions can be answered with the buttons only', async ({ page }) => {
-  await page.goto(START.fi)
-  await page.locator('[data-action="start"]').click()
-  await page.locator('[data-step="q:q1"] [data-answer="0"]').click()
-  await page.locator('[data-step="a:q1"] [data-action="continue"]').click()
-  const q2 = page.locator('[data-step="q:q2"]')
-  await expect(q2.locator('[data-swipe]')).toBeVisible()
-  await q2.locator('[data-answer="-1"]').click()
-  await expect(page.locator('[data-step="a:q2"]')).toBeVisible()
-})
-
-test('swipe questions can be answered with the arrow keys', async ({ page }) => {
-  await page.goto(START.fi)
-  await page.locator('[data-action="start"]').click()
-  await page.locator('[data-step="q:q1"] [data-answer="0"]').click()
-  await page.locator('[data-step="a:q1"] [data-action="continue"]').click()
-  await page.locator('[data-step="q:q2"] [data-swipe]').focus()
-  await page.keyboard.press('ArrowRight')
-  await expect(page.locator('[data-step="a:q2"]')).toBeVisible()
-})
-
-test('swiping a card answers the question', async ({ page }) => {
-  await page.goto(START.fi)
-  await page.locator('[data-action="start"]').click()
-  await page.locator('[data-step="q:q1"] [data-answer="0"]').click()
-  await page.locator('[data-step="a:q1"] [data-action="continue"]').click()
-  const box = (await page.locator('[data-step="q:q2"] [data-swipe]').boundingBox())!
-  const y = box.y + box.height / 2
-  await page.mouse.move(box.x + box.width / 2, y)
-  await page.mouse.down()
-  await page.mouse.move(box.x + box.width / 2 + box.width * 0.5, y, { steps: 5 })
-  await page.mouse.up()
-  await expect(page.locator('[data-step="a:q2"]')).toBeVisible()
-  // The click that ends the swipe must not also skip the card that just appeared.
-  await page.waitForTimeout(300)
-  await expect(page.locator('[data-step="a:q2"]')).toBeVisible()
-})
-
-test('a short drag snaps back without answering', async ({ page }) => {
-  await page.goto(START.fi)
-  await page.locator('[data-action="start"]').click()
-  await page.locator('[data-step="q:q1"] [data-answer="0"]').click()
-  await page.locator('[data-step="a:q1"] [data-action="continue"]').click()
-  const box = (await page.locator('[data-step="q:q2"] [data-swipe]').boundingBox())!
-  const y = box.y + box.height / 2
-  await page.mouse.move(box.x + box.width / 2, y)
-  await page.mouse.down()
-  await page.mouse.move(box.x + box.width / 2 + 10, y, { steps: 2 })
-  await page.mouse.up()
-  await expect(page.locator('[data-step="q:q2"]')).toBeVisible()
-})
-
 test('runs through with the keyboard only', async ({ page }) => {
   await page.goto(START.fi)
   await page.locator('[data-action="start"]').focus()
@@ -168,9 +113,7 @@ test('guess reveal shows how far off the guess was', async ({ page }) => {
   await page.locator('[data-action="start"]').click()
   for (const id of ['q1', 'q2', 'q3', 'q4', 'q5']) {
     const step = page.locator(`[data-step="q:${id}"]`)
-    if (await step.locator('[data-slider]').count())
-      await step.locator('[data-action="skip"]').click()
-    else await step.locator('[data-answer="0"]').click()
+    await step.locator('[data-answer="0"]').click()
     await page.locator(`[data-step="a:${id}"] [data-action="continue"]`).click()
   }
   await page.locator('[data-guess-slider]').fill('2000')
@@ -195,9 +138,7 @@ test('the tree grows one stage per answered question, not on the guess', async (
   const seedling = await shapes()
   for (const id of ['q1', 'q2', 'q3', 'q4', 'q5']) {
     const step = page.locator(`[data-step="q:${id}"]`)
-    if (await step.locator('[data-slider]').count())
-      await step.locator('[data-action="next"]').click()
-    else await step.locator('[data-answer="1"]').click()
+    await step.locator('[data-answer="1"]').click()
     await page.locator(`[data-step="a:${id}"] [data-action="continue"]`).click()
   }
   const afterFive = await shapes()
@@ -215,17 +156,14 @@ test("the result page shows the visitor's own tree", async ({ page }) => {
 test.describe('with motion', () => {
   test.use({ contextOptions: { reducedMotion: 'no-preference' } })
 
-  test('after-question cards move on by themselves', async ({ page }) => {
+  test('after-question cards wait for a tap, also with motion', async ({ page }) => {
     await page.goto(START.fi)
     await page.locator('[data-action="start"]').click()
     await page.locator('[data-step="q:q1"] [data-answer="0"]').click()
-    await page.locator('[data-step="a:q1"] [data-action="continue"]').click()
-    await page.locator('[data-step="q:q2"] [data-answer="0"]').click()
-    await page.locator('[data-step="a:q2"] [data-action="continue"]').click()
-    await page.locator('[data-step="q:q3"] [data-action="next"]').click()
-    // q3 has a short reaction card: about 1.5 s.
-    await expect(page.locator('[data-step="a:q3"]')).toBeVisible()
-    await expect(page.locator('[data-step="q:q4"]')).toBeVisible({ timeout: 4000 })
+    await page.waitForTimeout(2500)
+    await expect(page.locator('[data-step="a:q1"]')).toBeVisible()
+    await page.keyboard.press('Space')
+    await expect(page.locator('[data-step="q:q2"]')).toBeVisible()
   })
 
   test('the result reveal plays, then goes to the result page', async ({ page }) => {
@@ -241,7 +179,7 @@ test.describe('with motion', () => {
         await next.click({ timeout: 1000 }).catch(() => {})
       } else if (await step.locator('[data-option]').count())
         await step.locator('[data-option="price"]').click()
-      else if (await step.locator('[data-slider], [data-guess-slider]').count())
+      else if (await step.locator('[data-guess-slider]').count())
         await step.locator('[data-action="next"]').click()
       else await step.locator('[data-answer="2"]').click()
     }

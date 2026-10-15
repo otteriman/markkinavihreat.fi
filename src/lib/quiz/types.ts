@@ -4,7 +4,8 @@ export const LANGS: Lang[] = ['fi', 'sv', 'en']
 export type Axis = 'markets' | 'environment' | 'freedom'
 export const AXES: Axis[] = ['markets', 'environment', 'freedom']
 
-export type AnswerUI = 'buttons' | 'swipe' | 'slider' | 'imageChoice'
+/** Statements are answered with five buttons; the finale with illustrated cards. */
+export type AnswerUI = 'buttons' | 'imageChoice'
 
 export type Localized = Record<Lang, string>
 

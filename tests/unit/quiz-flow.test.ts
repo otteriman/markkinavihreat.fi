@@ -8,7 +8,6 @@ import {
   scoredCount,
   statementValues,
 } from '../../src/lib/quiz/flow'
-import { swipeValue } from '../../src/lib/quiz/swipe'
 
 const steps = buildSteps(items)
 const at = (kind: string, id?: string) =>
@@ -71,19 +70,5 @@ describe('statementValues', () => {
   it('lists q1–q9 in order with skipped and unanswered as null', () => {
     const values = statementValues(items, { q1: 2, q2: -1, q3: null, q9: 1, q10: 'price' })
     expect(values).toEqual([2, -1, null, null, null, null, null, null, 1])
-  })
-})
-
-describe('swipeValue', () => {
-  it('maps short and long swipes to ±1 and ±2', () => {
-    expect(swipeValue(60, 300)).toBe(1)
-    expect(swipeValue(-60, 300)).toBe(-1)
-    expect(swipeValue(120, 300)).toBe(2) // exactly 40 %
-    expect(swipeValue(-200, 300)).toBe(-2)
-  })
-
-  it('ignores tiny movements and zero width', () => {
-    expect(swipeValue(20, 300)).toBeNull()
-    expect(swipeValue(100, 0)).toBeNull()
   })
 })
