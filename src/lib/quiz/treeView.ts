@@ -139,8 +139,18 @@ export class TreeView {
     const reduce =
       typeof matchMedia === 'function' && matchMedia('(prefers-reduced-motion: reduce)').matches
 
-    // Put elements in the new drawing order; leaving ones stay behind them.
-    for (const shape of next) this.svg.appendChild(this.element(shape.key, toFrame(shape)))
+    // Put elements in the new drawing order, moving only those that are out of
+    // place: moving a node restarts its CSS animations, which would make a
+    // flying bee jump back to the start of its route on every growth step.
+    let prev: Element = this.svg.firstElementChild! // the <style>
+    for (const shape of next) {
+      const el = this.element(shape.key, toFrame(shape))
+      const inPlace =
+        el.isConnected &&
+        Boolean(prev.compareDocumentPosition(el) & Node.DOCUMENT_POSITION_FOLLOWING)
+      if (!inPlace) prev.after(el)
+      prev = el
+    }
 
     const finish = () => {
       for (const k of leaving) {
