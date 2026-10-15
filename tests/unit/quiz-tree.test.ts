@@ -1,5 +1,6 @@
 import { describe, expect, it } from 'vitest'
 import {
+  TREE_STYLES,
   depthFor,
   express,
   fruitCount,
@@ -138,5 +139,37 @@ describe('traits', () => {
     const low = count({ growth: 1, ...mid, [axis]: 0 }, layers[axis])
     const high = count({ growth: 1, ...mid, [axis]: 100 }, layers[axis])
     expect(Math.abs(low - high) / Math.max(low, high)).toBeLessThanOrEqual(0.3)
+  })
+})
+
+describe('styles', () => {
+  it.each(TREE_STYLES)('%s is deterministic and keeps unique keys', (style) => {
+    const input = { growth: 0.9, markets: 70, environment: 30, freedom: 20, style }
+    expect(renderTree(input)).toBe(renderTree({ ...input }))
+    const keys = treeShapesFor(input).map((s) => s.key)
+    expect(new Set(keys).size).toBe(keys.length)
+  })
+
+  it.each(TREE_STYLES)('%s keeps the tree height set by growth alone', (style) => {
+    for (const growth of [0.3, 0.7, 1])
+      for (const freedom of [0, 100]) {
+        const tree = treeShapesFor({ growth, ...mid, freedom, style }).filter(
+          (s) => s.layer === 'tree',
+        )
+        const height = VIEW.groundY - Math.min(...tree.map((s) => s.box.y0))
+        expect(Math.abs(height - treeHeight(growth)) / treeHeight(growth)).toBeLessThanOrEqual(0.03)
+      }
+  })
+
+  it('draws the same tree under different paint', () => {
+    const base = treeShapesFor({ growth: 1, ...mid }).map((s) => s.key)
+    for (const style of ['line', 'paper'] as const) {
+      const keys = new Set(
+        treeShapesFor({ growth: 1, ...mid, style }).map((s) =>
+          s.key.slice(s.key.lastIndexOf('~') + 1),
+        ),
+      )
+      expect(base.filter((k) => k !== 'ground').every((k) => keys.has(k))).toBe(true)
+    }
   })
 })
