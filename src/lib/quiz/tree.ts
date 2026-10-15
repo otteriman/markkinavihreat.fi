@@ -562,11 +562,15 @@ function wildItems(): Item[] {
     ],
     box: { x0: x - 12, y0: G - 20, x1: x + 14, y1: G + 2 },
   })
-  const bee = (x: number, y: number): Item => ({
+  // A bee buzzes its wing and wanders slowly back and forth over the
+  // flowers; `delay` (s) sets where in its round it starts.
+  const bee = (x: number, y: number, delay: number): Item => ({
     svg: [
-      `<ellipse ${attrs({ cx: x - 1, cy: y - 6, rx: 4.5, ry: 6, fill: COLORS.petal, 'fill-opacity': 0.9, stroke: COLORS.ink, 'stroke-width': 1, transform: `rotate(-30 ${n(x - 1)} ${n(y - 6)})` })}/>`,
+      `<g class="qt-fly" style="animation-delay:-${delay}s">`,
+      `<g class="qt-buzz"><ellipse ${attrs({ cx: x - 1, cy: y - 6, rx: 4.5, ry: 6, fill: COLORS.petal, 'fill-opacity': 0.9, stroke: COLORS.ink, 'stroke-width': 1, transform: `rotate(-30 ${n(x - 1)} ${n(y - 6)})` })}/></g>`,
       `<ellipse ${attrs({ cx: x, cy: y, rx: 8, ry: 5.5, fill: COLORS.coin, stroke: COLORS.ink, 'stroke-width': 1.5 })}/>`,
       `<path ${attrs({ d: `M${x - 1.5} ${y - 5}v10M${x + 3} ${y - 4.5}v9`, stroke: COLORS.ink, 'stroke-width': 1.8 })}/>`,
+      '</g>',
     ],
     box: { x0: x - 9, y0: y - 13, x1: x + 9, y1: y + 6 },
   })
@@ -596,14 +600,14 @@ function wildItems(): Item[] {
     bird(418, 64, 1.4),
     grass(66),
     flower(150, 36, COLORS.coin),
-    bee(414, 290),
+    bee(414, 290, 0),
     flower(424, 26, COLORS.apple),
     butterfly(112, 280),
     flower(96, 50, COLORS.petal),
     bird(58, 92, 1.2),
     grass(334),
     flower(176, 22, COLORS.apple),
-    bee(124, 300),
+    bee(124, 300, 5),
     flower(364, 24, COLORS.coin),
     butterfly(452, 250),
     flower(42, 26, COLORS.coin),
@@ -660,7 +664,24 @@ export function treeShapesFor(input: TreeInput): Shape[] {
  */
 export const TREE_STYLE =
   '<style>' +
-  '.qt-wing-l,.qt-wing-r,.qt-wl,.qt-wr{transform-box:fill-box}' +
+  '.qt-wing-l,.qt-wing-r,.qt-wl,.qt-wr,.qt-buzz,.qt-fly{transform-box:fill-box}' +
+  // Bees: a fast wing buzz, and a slow wavy flight to one side and back,
+  // turning around at each end.
+  '.qt-buzz{transform-origin:50% 100%;animation:qt-buzz .07s linear infinite alternate}' +
+  '@keyframes qt-buzz{to{transform:scaleY(.5)}}' +
+  '.qt-fly{transform-origin:50% 50%;animation:qt-fly 10s ease-in-out infinite}' +
+  '@keyframes qt-fly{' +
+  '0%{transform:translate(0,0) scaleX(1)}' +
+  '12%{transform:translate(-14px,-7px) scaleX(1)}' +
+  '25%{transform:translate(-28px,0) scaleX(1)}' +
+  '37%{transform:translate(-42px,-7px) scaleX(1)}' +
+  '46%{transform:translate(-52px,-2px) scaleX(1)}' +
+  '50%{transform:translate(-54px,0) scaleX(-1)}' +
+  '62%{transform:translate(-40px,-7px) scaleX(-1)}' +
+  '75%{transform:translate(-26px,0) scaleX(-1)}' +
+  '87%{transform:translate(-12px,-7px) scaleX(-1)}' +
+  '96%{transform:translate(-2px,-2px) scaleX(-1)}' +
+  '100%{transform:translate(0,0) scaleX(1)}}' +
   // Butterflies: wings fold in and out at the body; the whole butterfly drifts.
   '.qt-wing-l{transform-origin:100% 50%;animation:qt-flap .55s ease-in-out infinite alternate}' +
   '.qt-wing-r{transform-origin:0 50%;animation:qt-flap .55s ease-in-out infinite alternate}' +
@@ -674,7 +695,7 @@ export const TREE_STYLE =
   '@keyframes qt-wr{0%,30%,60%,100%{transform:rotate(-10deg)}15%,45%{transform:rotate(35deg)}}' +
   '.qt-glide{animation:qt-glide 5s ease-in-out infinite alternate}' +
   '@keyframes qt-glide{to{transform:translate(-10px,4px)}}' +
-  '@media (prefers-reduced-motion:reduce){.qt-wing-l,.qt-wing-r,.qt-bob,.qt-wl,.qt-wr,.qt-glide{animation:none}}' +
+  '@media (prefers-reduced-motion:reduce){.qt-wing-l,.qt-wing-r,.qt-bob,.qt-wl,.qt-wr,.qt-glide,.qt-buzz,.qt-fly{animation:none}}' +
   '</style>'
 
 /** The tree as a standalone SVG string. Same input, same string. */

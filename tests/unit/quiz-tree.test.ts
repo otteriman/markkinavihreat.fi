@@ -52,6 +52,7 @@ describe('determinism', () => {
     const svg = renderTree({ growth: 1, ...mid, environment: 100 })
     expect(svg).toContain('class="qt-wing-l"')
     expect(svg).toContain('class="qt-wl"')
+    expect(svg).toContain('class="qt-fly"')
     expect(svg).toMatch(/prefers-reduced-motion:reduce\)\{[^}]*animation:none/)
   })
 
