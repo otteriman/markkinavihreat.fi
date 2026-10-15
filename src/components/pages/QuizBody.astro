@@ -314,23 +314,24 @@ const btnAnswer =
     }
 
     <!-- The result reveal (plan section 7.3), then on to the static result page. -->
-    <section data-step="reveal" hidden class="flex flex-1 flex-col gap-4 py-4 text-center">
+    <!-- Laid out like the top of the result page, so the hand-over to it is seamless. -->
+    <section data-step="reveal" hidden class="flex flex-1 flex-col py-4">
       <p data-reveal-drumroll class="text-eyebrow text-harmaa">{t('finale.drumroll')}</p>
-      <p data-reveal-percent class="text-display-lg tabular-nums" aria-hidden="true">
+      <p data-reveal-percent class="text-display-lg mt-2 tabular-nums" aria-hidden="true">
         {t('result.overall', { percent: 0 })}
       </p>
       <h2
         data-heading
         data-reveal-type
         tabindex="-1"
-        class="text-3xl opacity-0 transition-opacity duration-500 motion-reduce:transition-none"
+        class="mt-2 text-3xl opacity-0 transition-opacity duration-500 motion-reduce:transition-none sm:text-4xl"
       >
       </h2>
-      <div class="text-left">
+      <div class="mt-6">
         <QuizBars locale={locale} group="reveal" />
       </div>
       <p data-reveal-status class="sr-only" aria-live="polite"></p>
-      <a data-reveal-link href={`#`} class="btn-primary mt-2 justify-center">{t('reveal.see')}</a>
+      <a data-reveal-link href={`#`} class="btn-primary mt-6 justify-center">{t('reveal.see')}</a>
     </section>
 
     <script type="application/json" id="quiz-config" is:inline set:html={JSON.stringify(config)} />
@@ -367,6 +368,30 @@ const btnAnswer =
     [data-step]:not([hidden]) [data-card] {
       transition: none;
       animation: none;
+    }
+  }
+</style>
+
+<style is:global>
+  /* Quiz → result page: a cross-document view transition. The tree, the
+     percentage and the type name glide to their places on the result page and
+     everything else cross-fades, instead of the page visibly reloading.
+     Browsers without support simply navigate. */
+  @view-transition {
+    navigation: auto;
+  }
+  #quiz-tree-wrap {
+    view-transition-name: quiz-tree;
+  }
+  [data-reveal-percent] {
+    view-transition-name: quiz-percent;
+  }
+  [data-reveal-type] {
+    view-transition-name: quiz-type;
+  }
+  @media (prefers-reduced-motion: reduce) {
+    @view-transition {
+      navigation: none;
     }
   }
 </style>

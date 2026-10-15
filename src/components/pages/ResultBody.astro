@@ -54,16 +54,16 @@ const config = {
     id="quiz-result"
     data-type={type}
     data-bucket={bucket}
-    class="content-max mx-auto px-4 py-10 sm:px-6"
+    class="content-max mx-auto px-4 py-6 sm:px-6"
   >
-    <p class="text-eyebrow text-harmaa">{t('intro.title')}</p>
     <!-- The type's representative tree; replaced by the visitor's own tree when
          their scores are in the URL. Same size and place as at the end of the quiz. -->
     <div
       id="result-tree"
-      class="mx-auto mt-4 aspect-[6/5] w-full max-w-[24rem]"
+      class="mx-auto aspect-[6/5] w-full max-w-[24rem]"
       set:html={renderTree({ growth: 1, ...resultType.representative }, resultType.name[locale])}
     />
+    <p class="text-eyebrow text-harmaa mt-4">{t('intro.title')}</p>
     <p data-result-percent class="text-display-lg mt-2">
       {t('result.overall', { percent: bucket })}
     </p>
@@ -150,3 +150,24 @@ const config = {
   import { initResult } from '../../scripts/quiz/result'
   initResult()
 </script>
+
+<style is:global>
+  /* The other half of the quiz → result view transition (see QuizBody.astro). */
+  @view-transition {
+    navigation: auto;
+  }
+  #result-tree {
+    view-transition-name: quiz-tree;
+  }
+  [data-result-percent] {
+    view-transition-name: quiz-percent;
+  }
+  #quiz-result h1 {
+    view-transition-name: quiz-type;
+  }
+  @media (prefers-reduced-motion: reduce) {
+    @view-transition {
+      navigation: none;
+    }
+  }
+</style>
