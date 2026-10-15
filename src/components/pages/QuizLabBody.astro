@@ -1,26 +1,15 @@
 ---
 import BaseLayout from '../../layouts/BaseLayout.astro'
-import { resultTypes } from '../../lib/quiz/data'
-import {
-  DEFAULT_STYLE,
-  renderTree,
-  TREE_STYLES,
-  type TreeInput,
-  type TreeStyle,
-} from '../../lib/quiz/tree'
-import type { Axis } from '../../lib/quiz/types'
+import FinaleIcon from '../FinaleIcon.astro'
+import QuizBars from '../QuizBars.astro'
+import { items, resultTypes, t } from '../../lib/quiz/data'
+import { renderTree, type TreeInput } from '../../lib/quiz/tree'
+import type { Axis, Finale, GuessInterlude, Statement } from '../../lib/quiz/types'
 
 // Development and preview only (see src/pages/[lab].astro): a review sheet for
-// the generated tree. Finnish only, like the rest of the team's tooling.
+// the generated tree, style C (paper-cut). Finnish only, like the rest of the
+// team's tooling.
 const mid = { markets: 50, environment: 50, freedom: 50 }
-const STYLE_NAMES: Record<TreeStyle, string> = {
-  flat: 'A · Litteä ja geometrinen',
-  line: 'B · Viivapiirros',
-  paper: 'C · Paperileikkaus',
-}
-const sample = { growth: 1, markets: 70, environment: 40, freedom: 60 }
-// Static figures carry their input, so the style switch can redraw them.
-const tree = (input: TreeInput) => JSON.stringify(input)
 const stages = Array.from({ length: 10 }, (_, i) => (i + 1) / 10)
 const axes: { axis: Axis; label: string; low: string; high: string }[] = [
   { axis: 'markets', label: 'Markkinat → hedelmät', low: 'omenat', high: 'kolikot ja setelit' },
@@ -32,6 +21,16 @@ const axes: { axis: Axis; label: string; low: string; high: string }[] = [
     high: 'kukat, mehiläiset, linnut',
   },
 ]
+const statements = items.filter((i): i is Statement => i.kind === 'statement')
+const guess = items.find((i): i is GuessInterlude => i.kind === 'guess')!
+const finale = items.find((i): i is Finale => i.kind === 'finale')!
+const tree = (input: TreeInput) => renderTree(input)
+const CARD_LABELS = { fact: 'Fakta', reaction: 'Reaktio', teaser: 'Kiusoittelu' }
+const labConfig = {
+  overall: t('fi', 'result.overall', { percent: '{percent}' }),
+  status: t('fi', 'reveal.status', { percent: '{percent}', type: '{type}' }),
+  types: Object.fromEntries(resultTypes.map((r) => [r.slug, r.name.fi])),
+}
 ---
 
 <BaseLayout
@@ -42,7 +41,7 @@ const axes: { axis: Axis; label: string; low: string; high: string }[] = [
   noindex
 >
   <div class="mx-auto max-w-6xl px-4 py-10 sm:px-6">
-    <p class="text-eyebrow text-harmaa">Kehitysnäkymä · valittu tyyli C: paperileikkaus</p>
+    <p class="text-eyebrow text-harmaa">Kehitysnäkymä · tyyli C: paperileikkaus</p>
     <h1 class="mt-2 text-4xl">Puulaboratorio</h1>
     <p class="mt-4 max-w-2xl">
       Puu piirretään koodilla. Koko riippuu vain kasvusta (yksi vaihe per vastattu kysymys);
@@ -50,57 +49,45 @@ const axes: { axis: Axis; label: string; low: string; high: string }[] = [
     </p>
 
     <section class="mt-10">
-      <h2 class="text-2xl">Tyylit rinnakkain</h2>
-      <p class="text-harmaa mt-1 text-sm">Sama puu, samat vastaukset, kolme piirustustyyliä.</p>
-      <div class="mt-4 grid gap-3 sm:grid-cols-3">
-        {
-          TREE_STYLES.map((style) => (
-            <figure class="card bg-white p-2 sm:p-2">
-              <Fragment set:html={renderTree({ ...sample, style })} />
-              <figcaption class="text-center text-sm font-semibold">
-                {STYLE_NAMES[style]}
-              </figcaption>
-            </figure>
-          ))
-        }
-      </div>
-    </section>
-
-    <fieldset id="lab-style" class="card mt-10 bg-white">
-      <legend class="text-sm font-semibold">Näytä alla tyylillä</legend>
-      <div class="mt-2 flex flex-wrap gap-4">
-        {
-          TREE_STYLES.map((style) => (
-            <label class="flex items-center gap-2 text-sm">
-              <input
-                type="radio"
-                name="style"
-                value={style}
-                checked={style === DEFAULT_STYLE}
-                class="accent-vihrea-tumma"
-              />
-              {STYLE_NAMES[style]}
-            </label>
-          ))
-        }
-      </div>
-    </fieldset>
-
-    <section class="mt-10">
       <h2 class="text-2xl">Kokeile</h2>
       <div class="mt-4 grid gap-6 md:grid-cols-[minmax(0,36rem)_18rem]">
-        <div
-          id="lab-tree"
-          class="card bg-white p-2 sm:p-2"
-          set:html={renderTree({ growth: 1, ...mid })}
-        />
-        <form id="lab-controls" class="card space-y-4 bg-white">
+        <div>
+          <div
+            id="lab-tree"
+            class="card bg-white p-2 sm:p-2"
+            set:html={tree({ growth: 1, ...mid })}
+          />
+          <!-- Same markup hooks as the quiz's reveal screen, for the replay. -->
+          <div id="lab-reveal" class="mt-4 text-center">
+            <p data-reveal-drumroll class="text-eyebrow text-harmaa">
+              {t('fi', 'finale.drumroll')}
+            </p>
+            <p data-reveal-percent class="text-display tabular-nums">
+              {t('fi', 'result.overall', { percent: 0 })}
+            </p>
+            <p
+              data-reveal-type
+              class="mt-1 text-2xl font-extrabold opacity-0 transition-opacity duration-500"
+            >
+            </p>
+            <div class="mt-3 text-left"><QuizBars locale="fi" group="reveal" /></div>
+            <p data-reveal-status class="sr-only" aria-live="polite"></p>
+          </div>
+        </div>
+        <form id="lab-controls" class="card space-y-4 self-start bg-white">
           <button
             type="button"
             id="lab-play"
             class="btn-primary w-full justify-center disabled:opacity-50"
           >
             ▶ Toista kasvu
+          </button>
+          <button
+            type="button"
+            id="lab-reveal-play"
+            class="btn-outline-medium w-full justify-center disabled:opacity-50"
+          >
+            ▶ Toista tulospaljastus
           </button>
           {
             (
@@ -139,10 +126,7 @@ const axes: { axis: Axis; label: string; low: string; high: string }[] = [
         {
           stages.map((g, i) => (
             <figure class="card bg-white p-2 sm:p-2">
-              <div
-                data-tree={tree({ growth: g, ...mid })}
-                set:html={renderTree({ growth: g, ...mid })}
-              />
+              <Fragment set:html={tree({ growth: g, ...mid })} />
               <figcaption class="text-harmaa text-center text-xs">Vaihe {i + 1}</figcaption>
             </figure>
           ))
@@ -162,10 +146,7 @@ const axes: { axis: Axis; label: string; low: string; high: string }[] = [
             <div class="mt-2 grid gap-3 sm:grid-cols-2">
               {[0, 100].map((v) => (
                 <figure class="card bg-white p-2 sm:p-2">
-                  <div
-                    data-tree={tree({ growth: 1, ...mid, [axis]: v })}
-                    set:html={renderTree({ growth: 1, ...mid, [axis]: v })}
-                  />
+                  <Fragment set:html={tree({ growth: 1, ...mid, [axis]: v })} />
                   <figcaption class="text-harmaa text-center text-xs">
                     {v} – {v === 0 ? low : high}
                   </figcaption>
@@ -183,38 +164,89 @@ const axes: { axis: Axis; label: string; low: string; high: string }[] = [
         {
           resultTypes.map((r) => (
             <figure class="card bg-white p-2 sm:p-2">
-              <div
-                data-tree={tree({ growth: 1, ...r.representative })}
-                set:html={renderTree({ growth: 1, ...r.representative }, r.name.fi)}
-              />
+              <Fragment set:html={renderTree({ growth: 1, ...r.representative }, r.name.fi)} />
               <figcaption class="text-center text-sm font-semibold">{r.name.fi}</figcaption>
             </figure>
           ))
         }
       </div>
     </section>
+
+    <section class="mt-12">
+      <h2 class="text-2xl">Kysymysten jälkeiset kortit</h2>
+      <p class="text-harmaa mt-1 text-sm">
+        Siirtyvät eteenpäin itsestään: reaktiot ja kiusoittelut noin 1,5 s, faktat tekstin pituuden
+        mukaan (enintään 6 s). Napautus tai näppäin ohittaa.
+      </p>
+      <div class="mt-4 grid gap-3 sm:grid-cols-2">
+        {
+          statements.map((s) => (
+            <div class="card bg-white">
+              <p class="text-eyebrow text-harmaa">
+                {s.id} · {CARD_LABELS[s.after.type]}
+              </p>
+              <p class="mt-2 text-lg font-semibold">{s.after.text.fi}</p>
+              {s.after.type === 'fact' && (
+                <p class="text-harmaa mt-2 text-sm">
+                  Lähde: {s.after.source === 'TODO' ? 'TODO' : s.after.source.label}
+                </p>
+              )}
+            </div>
+          ))
+        }
+        <div class="card bg-white">
+          <p class="text-eyebrow text-harmaa">Arvaus · paljastus</p>
+          <p class="mt-2 text-lg font-semibold">{guess.reveal.fi}</p>
+        </div>
+      </div>
+    </section>
+
+    <section class="mt-12">
+      <h2 class="text-2xl">Finaalin kuvitukset</h2>
+      <div class="mt-4 grid gap-3 sm:grid-cols-3">
+        {
+          finale.options.map((o) => (
+            <div class="card flex items-center gap-4 bg-white text-lg font-semibold">
+              <FinaleIcon option={o.id} />
+              <span>{o.label.fi}</span>
+            </div>
+          ))
+        }
+      </div>
+    </section>
+
+    <script
+      type="application/json"
+      id="lab-config"
+      is:inline
+      set:html={JSON.stringify(labConfig)}
+    />
   </div>
 </BaseLayout>
 
 <script>
-  import { renderTree, type TreeStyle } from '../../lib/quiz/tree'
+  import { resultFromScores } from '../../lib/quiz/scoring'
   import { TreeView } from '../../lib/quiz/treeView'
+  import { runReveal } from '../../scripts/quiz/reveal'
 
   const form = document.getElementById('lab-controls') as HTMLFormElement | null
   const target = document.getElementById('lab-tree')
   const play = document.getElementById('lab-play') as HTMLButtonElement | null
-  if (form && target && play) {
+  const replay = document.getElementById('lab-reveal-play') as HTMLButtonElement | null
+  const reveal = document.getElementById('lab-reveal')
+  const config = JSON.parse(document.getElementById('lab-config')?.textContent ?? '{}') as {
+    overall: string
+    status: string
+    types: Record<string, string>
+  }
+  if (form && target && play && replay && reveal) {
     const input = (name: string) => form.elements.namedItem(name) as HTMLInputElement
-    const styleOf = () =>
-      ((document.querySelector('#lab-style input:checked') as HTMLInputElement | null)?.value ??
-        'flat') as TreeStyle
-    const read = () => ({
-      style: styleOf(),
-      growth: Number(input('growth').value) / 10,
+    const scores = () => ({
       markets: Number(input('markets').value),
       environment: Number(input('environment').value),
       freedom: Number(input('freedom').value),
     })
+    const read = () => ({ growth: Number(input('growth').value) / 10, ...scores() })
     const showValues = () => {
       for (const out of form.querySelectorAll<HTMLOutputElement>('output[data-for]')) {
         const name = out.dataset.for!
@@ -222,20 +254,15 @@ const axes: { axis: Axis; label: string; low: string; high: string }[] = [
       }
     }
     const view = new TreeView(target, read())
-
-    // Switching style redraws every figure below, and the explorer, at once.
-    document.getElementById('lab-style')?.addEventListener('change', () => {
-      const style = styleOf()
-      for (const el of document.querySelectorAll<HTMLElement>('[data-tree]')) {
-        el.innerHTML = renderTree({ ...JSON.parse(el.dataset.tree!), style })
-      }
-      void view.set(read(), false)
-    })
     let playing = 0
+    const busy = (on: boolean) => {
+      play.disabled = on
+      replay.disabled = on
+    }
 
     form.addEventListener('input', () => {
       playing++ // moving a slider stops a running playback
-      play.disabled = false
+      busy(false)
       showValues()
       void view.set(read())
     })
@@ -244,14 +271,39 @@ const axes: { axis: Axis; label: string; low: string; high: string }[] = [
     // one stage at a time, as it would during the quiz.
     play.addEventListener('click', async () => {
       const run = ++playing
-      play.disabled = true
+      busy(true)
       for (let stage = 1; stage <= 10 && run === playing; stage++) {
         input('growth').value = String(stage)
         showValues()
         await view.set(read(), stage > 1)
         await new Promise((r) => setTimeout(r, 450))
       }
-      if (run === playing) play.disabled = false
+      if (run === playing) busy(false)
+    })
+
+    // Replays the quiz's result reveal with the chosen scores.
+    replay.addEventListener('click', async () => {
+      const run = ++playing
+      busy(true)
+      input('growth').value = '9'
+      showValues()
+      await view.set(read(), false)
+      const result = resultFromScores(scores())
+      await runReveal(
+        {
+          section: reveal,
+          treeWrap: target,
+          view,
+          overall: config.overall,
+          status: config.status,
+          typeName: config.types[result.type],
+        },
+        result,
+        matchMedia('(prefers-reduced-motion: reduce)').matches,
+      )
+      input('growth').value = '10'
+      showValues()
+      if (run === playing) busy(false)
     })
   }
 </script>
