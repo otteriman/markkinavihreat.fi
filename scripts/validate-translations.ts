@@ -1,4 +1,4 @@
-import { readdirSync, statSync } from 'node:fs'
+import { readdirSync, readFileSync, statSync } from 'node:fs'
 import { join } from 'node:path'
 
 const LOCALES = ['fi', 'sv', 'en']
@@ -55,9 +55,46 @@ for (const collection of readdirSync(CONTENT_ROOT)) {
   }
 }
 
+// Quiz data (src/data/quiz/*.json): every localized string needs fi + sv + en.
+// "TODO" placeholders and `needsReview` drafts are allowed but reported, so
+// open items stay visible without failing the build.
+const QUIZ_DIR = join(process.cwd(), 'src/data/quiz')
+let quizTodos = 0
+let quizReview = 0
+
+function checkQuiz(value: unknown, where: string) {
+  if (Array.isArray(value)) {
+    value.forEach((v, i) => checkQuiz(v, `${where}[${i}]`))
+    return
+  }
+  if (!value || typeof value !== 'object') return
+  const obj = value as Record<string, unknown>
+  const present = LOCALES.filter((l) => l in obj)
+  if (present.length > 0 && present.every((l) => typeof obj[l] === 'string')) {
+    const missing = LOCALES.filter((l) => !(l in obj) || String(obj[l]).trim() === '')
+    if (missing.length > 0) {
+      console.error(`[quiz] ${where} is missing: ${missing.join(', ')}`)
+      hasError = true
+    }
+    if (LOCALES.some((l) => String(obj[l]).startsWith('TODO'))) quizTodos++
+    if (Array.isArray(obj.needsReview) && obj.needsReview.length > 0) quizReview++
+    return
+  }
+  if (Array.isArray(obj.needsReview) && obj.needsReview.length > 0) quizReview++
+  for (const [key, child] of Object.entries(obj)) {
+    if (key !== 'needsReview') checkQuiz(child, `${where}.${key}`)
+  }
+}
+
+for (const file of readdirSync(QUIZ_DIR).filter((f) => f.endsWith('.json'))) {
+  checkQuiz(JSON.parse(readFileSync(join(QUIZ_DIR, file), 'utf-8')), file)
+}
+
 if (hasError) {
   console.error('\nTranslation parity check failed.')
   process.exit(1)
 } else {
   console.log('Translation parity check passed: every entry has fi/sv/en.')
+  if (quizTodos > 0) console.log(`Quiz: ${quizTodos} string(s) still marked TODO.`)
+  if (quizReview > 0) console.log(`Quiz: ${quizReview} entr(ies) flagged needsReview.`)
 }
