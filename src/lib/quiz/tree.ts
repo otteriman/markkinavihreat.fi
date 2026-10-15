@@ -16,14 +16,13 @@
 import type { Scores } from './types'
 
 /**
- * Drawing styles under review (plan section 7.4). All three share the same
- * geometry, keys and traits; only the painting differs.
- * - flat: flat, geometric colour shapes (style A)
- * - line: single-weight line art, white shapes with one even outline (style B)
+ * Drawing styles. The geometry, keys and traits are the same; only the paint
+ * differs. Style C was chosen in review (plan section 7.4).
  * - paper: paper-cut layers in soft colours, each piece on a flat paper edge (style C)
+ * - flat: the unpainted flat, geometric base that style C is painted from (style A)
  */
-export type TreeStyle = 'flat' | 'line' | 'paper'
-export const TREE_STYLES: TreeStyle[] = ['flat', 'line', 'paper']
+export type TreeStyle = 'flat' | 'paper'
+export const TREE_STYLES: TreeStyle[] = ['flat', 'paper']
 /** Style C, chosen in review. */
 export const DEFAULT_STYLE: TreeStyle = 'paper'
 
@@ -315,7 +314,7 @@ function clip(segments: Segment[], leaves: Leaf[], amount: number) {
     for (const l of leaves) l.dark = (l.x - cx) * 0.6 - (l.y - cy) * -0.8 > radius * 0.35
   }
   // The solid ball only starts to form once the crown is mostly clipped.
-  const solid = Math.max(0, (amount - 0.3) / 0.7)
+  const solid = Math.max(0, (amount - 0.45) / 0.55)
   return solid > 0 ? { x: cx, y: cy, r: radius * solid } : null
 }
 
@@ -670,7 +669,7 @@ export function treeShapesFor(input: TreeInput): Shape[] {
   const front = life.filter((s) => s.box.y0 <= G - 20)
   const shapes = [ground, ...behind, ...tree, ...fruitShapes(input, leaves), ...front]
   const style = input.style ?? DEFAULT_STYLE
-  return style === 'line' ? lineArt(shapes) : style === 'paper' ? paperCut(shapes) : shapes
+  return style === 'paper' ? paperCut(shapes) : shapes
 }
 
 // --- alternative styles -------------------------------------------------------
@@ -702,95 +701,6 @@ function variant(
   inner = shape.inner,
 ): Shape {
   return { ...shape, key, num, str, inner, svg: shapeSvg(shape.tag, num, str, inner) }
-}
-
-const LINE = {
-  ink: '#1A3A1A', // --color-metsa
-  paper: '#FFFFFF',
-  width: 2.2,
-  // Colour stays only where it carries meaning: fruit, money, flowers, insects.
-  fill: {
-    [COLORS.apple]: COLORS.apple,
-    [COLORS.coin]: COLORS.coin,
-    [COLORS.bill]: '#E8F3DA',
-  } as Record<string, string>,
-}
-
-/**
- * Style B: every shape is white with one even outline. The trunk, branches
- * and crown are outlined as one silhouette: all their outlines are drawn
- * first (keys prefixed `o~`), then all their white fills on top.
- */
-function lineArt(shapes: Shape[]): Shape[] {
-  const fillOf = (c: string) => LINE.fill[c] ?? LINE.paper
-  const paintLine = (a: string, width = LINE.width) => {
-    const fill = getAttr(a, 'fill')
-    const faint = Number(getAttr(a, 'fill-opacity') ?? 1) < 0.5
-    let out = dropAttr(dropAttr(a, 'fill-opacity'), 'stroke-opacity')
-    if (faint) {
-      // Lawn stripes and the like: a light pencil line.
-      out = setAttr(
-        setAttr(setAttr(out, 'fill', 'none'), 'stroke', LINE.ink),
-        'stroke-opacity',
-        '0.3',
-      )
-      return setAttr(out, 'stroke-width', '1.2')
-    }
-    if (fill && fill !== 'none') out = setAttr(out, 'fill', fillOf(fill))
-    out = setAttr(out, 'stroke', LINE.ink)
-    out = setAttr(out, 'stroke-width', String(width))
-    return setAttr(out, 'stroke-linejoin', 'round')
-  }
-
-  const tree = shapes.filter((x) => x.layer === 'tree')
-  const outlines = tree.map((x) =>
-    x.tag === 'line'
-      ? variant(
-          x,
-          `o~${x.key}`,
-          { ...x.num, 'stroke-width': x.num['stroke-width'] + LINE.width * 2 },
-          { ...x.str, stroke: LINE.ink },
-        )
-      : variant(x, `o~${x.key}`, { ...x.num, r: x.num.r + LINE.width }, { fill: LINE.ink }),
-  )
-  const fills = tree.map((x) =>
-    x.tag === 'line'
-      ? variant(x, x.key, x.num, { ...x.str, stroke: LINE.paper })
-      : // A faint pencil line inside the crown hints at the leaf clusters.
-        variant(x, x.key, x.num, {
-          fill: LINE.paper,
-          stroke: LINE.ink,
-          'stroke-width': '1',
-          'stroke-opacity': '0.28',
-        }),
-  )
-  const outlineBranches = outlines.filter((x) => x.tag === 'line')
-  const outlineCrown = outlines.filter((x) => x.tag !== 'line')
-  const fillBranches = fills.filter((x) => x.tag === 'line')
-  const fillCrown = fills.filter((x) => x.tag !== 'line')
-
-  const other = (x: Shape): Shape => {
-    // Fruit are small, so their details get a finer line to stay readable.
-    const width = x.layer === 'fruit' ? 1.3 : LINE.width
-    if (x.tag === 'g')
-      return variant(
-        x,
-        x.key,
-        x.num,
-        {},
-        repaint(x.inner ?? '', (a) => paintLine(a, width)),
-      )
-    // The ground: a white mound with an outline.
-    return variant(x, x.key, x.num, {
-      fill: LINE.paper,
-      stroke: LINE.ink,
-      'stroke-width': String(LINE.width),
-    })
-  }
-  const firstTree = shapes.findIndex((x) => x.layer === 'tree')
-  const before = shapes.slice(0, firstTree).map(other)
-  const after = shapes.filter((x, i) => i > firstTree && x.layer !== 'tree').map(other)
-  return [...before, ...outlineBranches, ...fillBranches, ...outlineCrown, ...fillCrown, ...after]
 }
 
 const PAPER: Record<string, string> = {

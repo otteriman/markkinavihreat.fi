@@ -169,7 +169,7 @@ describe('styles', () => {
 
   it('draws the same tree under different paint', () => {
     const base = treeShapesFor({ growth: 1, ...mid, style: 'flat' }).map((s) => s.key)
-    for (const style of ['line', 'paper'] as const) {
+    for (const style of ['paper'] as const) {
       const keys = new Set(
         treeShapesFor({ growth: 1, ...mid, style }).map((s) =>
           s.key.slice(s.key.lastIndexOf('~') + 1),
