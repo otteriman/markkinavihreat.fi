@@ -9,6 +9,7 @@ import {
   parseScore,
   parseScores,
   resultPath,
+  resultSlug,
 } from '../../src/lib/quiz/url'
 
 describe('parseScore', () => {
@@ -116,5 +117,6 @@ describe('parseResultSlug', () => {
 
   it('builds the path below the locale root', () => {
     expect(resultPath('pigou', 80)).toBe('/testi/tulos/pigou-80/')
+    expect(resultSlug('pigou', 80)).toBe('pigou-80')
   })
 })

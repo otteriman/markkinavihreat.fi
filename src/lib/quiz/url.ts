@@ -82,5 +82,9 @@ export function parseResultSlug(slug: string): { type: TypeSlug; bucket: number 
     : null
 }
 
+/** `pigou`, 80 → `pigou-80`: the last path segment of a result page. */
+export const resultSlug = (type: TypeSlug, bucket: number) => `${type}-${bucket}`
+
 /** Path below the locale root, e.g. /testi/tulos/pigou-80/ (apply localePath() for the locale). */
-export const resultPath = (type: TypeSlug, bucket: number) => `/testi/tulos/${type}-${bucket}/`
+export const resultPath = (type: TypeSlug, bucket: number) =>
+  `/testi/tulos/${resultSlug(type, bucket)}/`

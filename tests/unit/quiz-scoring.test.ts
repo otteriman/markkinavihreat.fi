@@ -8,6 +8,7 @@ import {
   overallScore,
   pickNudges,
   reachableResults,
+  resultFromScores,
   runningScores,
   scoreAxes,
 } from '../../src/lib/quiz/scoring'
@@ -189,5 +190,22 @@ describe('pickNudges', () => {
 
   it('ignores statements without a related link', () => {
     expect(pickNudges({ q1: 2 })).toEqual([])
+  })
+})
+
+describe('resultFromScores', () => {
+  it('derives overall, bucket and type from axis scores', () => {
+    expect(resultFromScores({ markets: 82, environment: 79, freedom: 85 })).toEqual({
+      scores: { markets: 82, environment: 79, freedom: 85 },
+      overall: 82,
+      bucket: 80,
+      type: 'pigou',
+    })
+  })
+
+  it('agrees with computeResult', () => {
+    const answers = answersAt({ markets: 1, environment: -1, freedom: 2 }, 'bans')
+    const r = computeResult(answers)
+    expect(resultFromScores(r.scores)).toEqual(r)
   })
 })

@@ -105,10 +105,14 @@ export interface QuizResult {
   type: TypeSlug
 }
 
-export function computeResult(answers: Answers, items: ScoredItem[] = defaultItems): QuizResult {
-  const scores = scoreAxes(answers, items)
+/** Type, overall score and bucket for already-computed axis scores. */
+export function resultFromScores(scores: Scores): QuizResult {
   const overall = overallScore(scores)
   return { scores, overall, bucket: bucketOf(overall), type: classify(scores) }
+}
+
+export function computeResult(answers: Answers, items: ScoredItem[] = defaultItems): QuizResult {
+  return resultFromScores(scoreAxes(answers, items))
 }
 
 /** Every sum of `count`-many values from -2…+2 that can be reached. */
