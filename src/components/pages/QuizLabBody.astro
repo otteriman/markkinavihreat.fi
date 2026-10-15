@@ -26,6 +26,15 @@ const guess = items.find((i): i is GuessInterlude => i.kind === 'guess')!
 const finale = items.find((i): i is Finale => i.kind === 'finale')!
 const tree = (input: TreeInput) => renderTree(input)
 const CARD_LABELS = { fact: 'Fakta', reaction: 'Reaktio', teaser: 'Kiusoittelu' }
+const CUES = [
+  'markets.up',
+  'markets.down',
+  'freedom.up',
+  'freedom.down',
+  'environment.up',
+  'environment.down',
+  'neutral',
+]
 const labConfig = {
   overall: t('fi', 'result.overall', { percent: '{percent}' }),
   status: t('fi', 'reveal.status', { percent: '{percent}', type: '{type}' }),
@@ -197,6 +206,25 @@ const labConfig = {
           <p class="text-eyebrow text-harmaa">Arvaus · paljastus</p>
           <p class="mt-2 text-lg font-semibold">{guess.reveal.fi}</p>
         </div>
+      </div>
+    </section>
+
+    <section class="mt-12">
+      <h2 class="text-2xl">Kasvun suunta vastauksen jälkeen</h2>
+      <p class="text-harmaa mt-1 text-sm">
+        Puu tulee näkyviin vasta vastauksen jälkeen, ja tämä teksti kertoo, mihin suuntaan vastaus
+        sitä kasvatti. Luonnoksia: kaikki kieliversiot odottavat tarkistusta.
+      </p>
+      <div class="mt-4 grid gap-3 sm:grid-cols-2">
+        {
+          CUES.map((k) => (
+            <div class="card bg-white text-center">
+              <p class="text-eyebrow text-harmaa">{k}</p>
+              <p class="mt-2 text-xl font-extrabold">{t('fi', `cue.${k}.title`)}</p>
+              <p class="text-harmaa">{t('fi', `cue.${k}.detail`)}</p>
+            </div>
+          ))
+        }
       </div>
     </section>
 

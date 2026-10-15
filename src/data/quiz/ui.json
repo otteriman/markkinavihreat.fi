@@ -310,5 +310,89 @@
     "sv": "Ditt resultat: {percent} % marknadsgrön, {type}.",
     "en": "Your result: {percent}% market green, {type}.",
     "needsReview": ["sv"]
+  },
+  "cue.freedom.up.title": {
+    "fi": "Lisää vapautta",
+    "sv": "Mer frihet",
+    "en": "More freedom",
+    "needsReview": ["fi", "sv", "en"]
+  },
+  "cue.freedom.up.detail": {
+    "fi": "Latvus kasvaa vapaammin.",
+    "sv": "Kronan växer friare.",
+    "en": "The crown grows freer.",
+    "needsReview": ["fi", "sv", "en"]
+  },
+  "cue.freedom.down.title": {
+    "fi": "Lisää järjestystä",
+    "sv": "Mer ordning",
+    "en": "More order",
+    "needsReview": ["fi", "sv", "en"]
+  },
+  "cue.freedom.down.detail": {
+    "fi": "Latvus pysyy siistinä.",
+    "sv": "Kronan hålls välklippt.",
+    "en": "The crown stays neatly trimmed.",
+    "needsReview": ["fi", "sv", "en"]
+  },
+  "cue.markets.up.title": {
+    "fi": "Lisää markkinoita",
+    "sv": "Mer marknad",
+    "en": "More markets",
+    "needsReview": ["fi", "sv", "en"]
+  },
+  "cue.markets.up.detail": {
+    "fi": "Puuhun kasvaa rahaa.",
+    "sv": "Pengar växer på trädet.",
+    "en": "Money grows on the tree.",
+    "needsReview": ["fi", "sv", "en"]
+  },
+  "cue.markets.down.title": {
+    "fi": "Lisää julkista ohjausta",
+    "sv": "Mer offentlig styrning",
+    "en": "More public steering",
+    "needsReview": ["fi", "sv", "en"]
+  },
+  "cue.markets.down.detail": {
+    "fi": "Puuhun kypsyy omenoita.",
+    "sv": "Äpplen mognar på trädet.",
+    "en": "Apples ripen on the tree.",
+    "needsReview": ["fi", "sv", "en"]
+  },
+  "cue.environment.up.title": {
+    "fi": "Lisää luontoa",
+    "sv": "Mer natur",
+    "en": "More nature",
+    "needsReview": ["fi", "sv", "en"]
+  },
+  "cue.environment.up.detail": {
+    "fi": "Ympärille palaa kukkia ja mehiläisiä.",
+    "sv": "Blommor och bin återvänder.",
+    "en": "Flowers and bees return.",
+    "needsReview": ["fi", "sv", "en"]
+  },
+  "cue.environment.down.title": {
+    "fi": "Siistimpi puutarha",
+    "sv": "En prydligare trädgård",
+    "en": "A tidier garden",
+    "needsReview": ["fi", "sv", "en"]
+  },
+  "cue.environment.down.detail": {
+    "fi": "Ympärille kasvaa hoidettu puutarha.",
+    "sv": "En välskött trädgård växer runt trädet.",
+    "en": "A well-kept garden grows around the tree.",
+    "needsReview": ["fi", "sv", "en"]
+  },
+  "cue.neutral.title": {
+    "fi": "Puu kasvaa",
+    "sv": "Trädet växer",
+    "en": "The tree grows",
+    "needsReview": ["fi", "sv", "en"]
+  },
+  "cue.neutral.detail": {
+    "fi": "Tasapaino säilyy.",
+    "sv": "Balansen består.",
+    "en": "The balance holds.",
+    "needsReview": ["fi", "sv", "en"]
   }
 }

@@ -32,6 +32,18 @@ const config = {
     revealStatus: t('reveal.status', { percent: '{percent}', type: '{type}' }),
   },
   types: Object.fromEntries(resultTypes.map((r) => [r.slug, r.name[locale]])),
+  // Which way an answer moved the tree, shown after each statement.
+  cues: Object.fromEntries(
+    [
+      'freedom.up',
+      'freedom.down',
+      'markets.up',
+      'markets.down',
+      'environment.up',
+      'environment.down',
+      'neutral',
+    ].map((k) => [k, { title: t(`cue.${k}.title`), detail: t(`cue.${k}.detail`) }]),
+  ),
 }
 
 const isStatement = (i: (typeof items)[number]): i is Statement => i.kind === 'statement'
@@ -84,13 +96,13 @@ const btnAnswer =
             <section
               data-step={`q:${item.id}`}
               hidden
-              class="flex flex-1 flex-col justify-between gap-6 py-4"
+              class="flex flex-1 flex-col justify-between gap-5 py-2 sm:gap-6 sm:py-4"
             >
               <div>
                 <p class="text-eyebrow text-harmaa">
                   {num ? t('progress.label', { n: num, total }) : ' '}
                 </p>
-                <h2 data-heading tabindex="-1" class="mt-3 text-2xl sm:text-3xl">
+                <h2 data-heading tabindex="-1" class="mt-2 text-xl sm:mt-3 sm:text-3xl">
                   {item.text[locale]}
                 </h2>
               </div>
@@ -167,27 +179,32 @@ const btnAnswer =
                 hidden
                 class="flex flex-1 flex-col justify-between gap-6 py-4"
               >
-                <div data-card class="card bg-white">
-                  <h2 data-heading tabindex="-1" class="text-2xl sm:text-3xl">
-                    {item.after.text[locale]}
-                  </h2>
-                  {item.after.type === 'fact' && (
-                    <p class="text-harmaa mt-4 text-sm">
-                      {t('card.source')}:{' '}
-                      {item.after.source === 'TODO' ? (
-                        'TODO'
-                      ) : (
-                        <a
-                          href={item.after.source.url}
-                          target="_blank"
-                          rel="noopener"
-                          class="underline"
-                        >
-                          {item.after.source.label}
-                        </a>
-                      )}
-                    </p>
-                  )}
+                <div>
+                  {/* Which way this answer moved the tree; filled in by the script. */}
+                  <div data-cue data-heading tabindex="-1" class="quiz-cue text-center">
+                    <p data-cue-title class="text-2xl font-extrabold" />
+                    <p data-cue-detail class="text-harmaa mt-1" />
+                  </div>
+                  <div data-card class="card mt-4 bg-white">
+                    <p class="text-lg font-semibold">{item.after.text[locale]}</p>
+                    {item.after.type === 'fact' && (
+                      <p class="text-harmaa mt-3 text-sm">
+                        {t('card.source')}:{' '}
+                        {item.after.source === 'TODO' ? (
+                          'TODO'
+                        ) : (
+                          <a
+                            href={item.after.source.url}
+                            target="_blank"
+                            rel="noopener"
+                            class="underline"
+                          >
+                            {item.after.source.label}
+                          </a>
+                        )}
+                      </p>
+                    )}
+                  </div>
                 </div>
                 <button
                   type="button"
@@ -282,14 +299,25 @@ const btnAnswer =
 </script>
 
 <style>
-  /* The tree shrinks while questions are on screen and grows for the reveal. */
+  /* The tree is off screen while a question is shown, so the answers fit
+     without scrolling; it appears after each answer and grows for the reveal. */
   .quiz-tree-wrap {
-    max-width: 15rem;
+    max-width: 14rem;
     transition: max-width 0.6s ease;
   }
   .quiz-tree-wrap.is-intro,
   .quiz-tree-wrap.is-reveal {
     max-width: 24rem;
+  }
+  /* The growth cue rises in once the tree has started to grow. */
+  [data-step]:not([hidden]) .quiz-cue {
+    animation: quiz-cue-in 0.5s ease-out 0.35s both;
+  }
+  @keyframes quiz-cue-in {
+    from {
+      opacity: 0;
+      transform: translateY(12px) scale(0.96);
+    }
   }
   /* After-question cards slide in. */
   [data-step]:not([hidden]) [data-card] {
@@ -303,6 +331,7 @@ const btnAnswer =
   }
   @media (prefers-reduced-motion: reduce) {
     .quiz-tree-wrap,
+    [data-step]:not([hidden]) .quiz-cue,
     [data-step]:not([hidden]) [data-card] {
       transition: none;
       animation: none;

@@ -195,3 +195,51 @@ test.describe('with motion', () => {
     expect(percent).toMatch(/\d+ %/)
   })
 })
+
+test.describe('on an iPhone 11 Pro sized screen', () => {
+  // Safari's visible area on an iPhone 11 Pro.
+  test.use({ viewport: { width: 375, height: 635 } })
+
+  test('every question and its answers fit without scrolling', async ({ page }) => {
+    await page.goto(START.fi)
+    await page.locator('[data-action="start"]').click()
+    for (const id of ['q1', 'q2', 'q3', 'q4', 'q5', 'guess', 'q6', 'q7', 'q8', 'q9']) {
+      const step = page.locator(`[data-step="q:${id}"]`)
+      await expect(step).toBeVisible()
+      await expect(page.locator('#quiz-tree-wrap')).toBeHidden()
+      if (id === 'guess') {
+        await step.locator('[data-action="next"]').click()
+        await page.locator('[data-step="a:guess"] [data-action="continue"]').click()
+        continue
+      }
+      // The bottom row of controls (Back, Skip) is on screen without scrolling.
+      const last = (await step.locator('[data-action="back"]').boundingBox())!
+      expect(last.y).toBeGreaterThanOrEqual(0)
+      expect(last.y + last.height).toBeLessThanOrEqual(635)
+      await step.locator('[data-answer="1"]').click()
+      await page.locator(`[data-step="a:${id}"] [data-action="continue"]`).click()
+    }
+  })
+})
+
+test('after an answer the tree appears with a cue saying which way it grew', async ({ page }) => {
+  await page.goto(START.fi)
+  await page.locator('[data-action="start"]').click()
+  await expect(page.locator('#quiz-tree-wrap')).toBeHidden()
+  // q1 (markets, agreeing raises it): strongly agree.
+  await page.locator('[data-step="q:q1"] [data-answer="2"]').click()
+  await expect(page.locator('#quiz-tree-wrap')).toBeVisible()
+  await expect(page.locator('[data-step="a:q1"] [data-cue-title]')).toHaveText('Lisää markkinoita')
+  await page.locator('[data-step="a:q1"] [data-action="continue"]').click()
+  // q2 (environment): skipped, so the tree just grows.
+  await page.locator('[data-step="q:q2"] [data-action="skip"]').click()
+  await expect(page.locator('[data-step="a:q2"] [data-cue-title]')).toHaveText('Puu kasvaa')
+  await page.locator('[data-step="a:q2"] [data-action="continue"]').click()
+  await page.locator('[data-step="q:q3"] [data-answer="0"]').click()
+  await page.locator('[data-step="a:q3"] [data-action="continue"]').click()
+  // q4 (markets, reversed): agreeing lowers markets.
+  await page.locator('[data-step="q:q4"] [data-answer="2"]').click()
+  await expect(page.locator('[data-step="a:q4"] [data-cue-title]')).toHaveText(
+    'Lisää julkista ohjausta',
+  )
+})

@@ -10,7 +10,7 @@ import {
 } from '../../lib/quiz/flow'
 import { computeResult, runningScores } from '../../lib/quiz/scoring'
 import { TreeView } from '../../lib/quiz/treeView'
-import type { Answers } from '../../lib/quiz/types'
+import type { Answers, Statement } from '../../lib/quiz/types'
 import { encodeAnswersHash, encodeScores, parseChallenger, resultPath } from '../../lib/quiz/url'
 import { runReveal } from './reveal'
 
@@ -27,6 +27,7 @@ interface Config {
     revealStatus: string
   }
   types: Record<string, string>
+  cues: Record<string, { title: string; detail: string }>
 }
 
 const wait = (ms: number) => new Promise((resolve) => setTimeout(resolve, ms))
@@ -164,13 +165,31 @@ export function initQuiz() {
     if (step.kind === 'question') restore(step.id)
     if (step.kind === 'after' && step.id === 'guess') playGuessReveal()
 
+    // The tree is shown on the intro and after each answer, never next to a
+    // question, so the answers fit on a phone screen without scrolling.
+    const afterStatement = step.kind === 'after' && step.id !== 'guess'
+    treeWrap.classList.toggle('hidden', step.kind !== 'intro' && !afterStatement)
     treeWrap.classList.toggle('is-intro', step.kind === 'intro')
+    if (afterStatement) showCue(step.id)
     if (step.kind === 'question') {
       const n = questionNumber(items, step.id)
       if (n !== null) status.textContent = config.strings.progress.replace('{n}', String(n))
     }
     updateTree()
     show(stepKey(step), focus)
+  }
+
+  /** Tells which way the answer just given moved the tree, e.g. "More freedom". */
+  function showCue(id: string) {
+    const item = items.find((i): i is Statement => i.id === id && i.kind === 'statement')
+    if (!item) return
+    const value = answers[id]
+    const push = typeof value === 'number' ? value * item.direction : 0
+    const cue =
+      config.cues[push > 0 ? `${item.axis}.up` : push < 0 ? `${item.axis}.down` : 'neutral']
+    const section = sections.get(`a:${id}`)!
+    section.querySelector('[data-cue-title]')!.textContent = cue.title
+    section.querySelector('[data-cue-detail]')!.textContent = cue.detail
   }
 
   let finishing = false
@@ -186,6 +205,7 @@ export function initQuiz() {
       encodeAnswersHash(statementValues(items, answers))
     const section = sections.get('reveal')!
     section.querySelector<HTMLAnchorElement>('[data-reveal-link]')!.href = url
+    treeWrap.classList.remove('hidden')
     show('reveal', true)
     shownTree = ''
     await runReveal(
