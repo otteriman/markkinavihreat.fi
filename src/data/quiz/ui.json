@@ -1,0 +1,254 @@
+{
+  "intro.title": {
+    "fi": "Oletko markkinavihreä?",
+    "sv": "Är du marknadsgrön?",
+    "en": "Are you a market green?",
+    "needsReview": ["sv"]
+  },
+  "intro.lead": {
+    "fi": "Kymmenen kysymystä, noin kaksi minuuttia. Vastauksesi käsitellään vain selaimessasi: niitä ei lähetetä eikä tallenneta mihinkään.",
+    "sv": "Tio frågor, ungefär två minuter. Dina svar behandlas bara i din webbläsare: de skickas eller sparas aldrig någonstans.",
+    "en": "Ten questions, about two minutes. Your answers are processed only in your browser: they are never sent or stored anywhere.",
+    "needsReview": ["sv"]
+  },
+  "intro.start": {
+    "fi": "Aloita testi",
+    "sv": "Starta testet",
+    "en": "Start the quiz",
+    "needsReview": ["sv"]
+  },
+  "intro.notVaa": {
+    "fi": "Tämä ei ole vaalikone eikä suosittele puoluetta tai ehdokasta.",
+    "sv": "Det här är ingen valkompass och rekommenderar inget parti eller någon kandidat.",
+    "en": "This is not a voting advice application and does not recommend a party or a candidate.",
+    "needsReview": ["sv"]
+  },
+  "nav.back": {
+    "fi": "Takaisin",
+    "sv": "Tillbaka",
+    "en": "Back",
+    "needsReview": ["sv"]
+  },
+  "nav.skip": {
+    "fi": "Ohita",
+    "sv": "Hoppa över",
+    "en": "Skip",
+    "needsReview": ["sv"]
+  },
+  "nav.next": {
+    "fi": "Seuraava",
+    "sv": "Nästa",
+    "en": "Next",
+    "needsReview": ["sv"]
+  },
+  "nav.continue": {
+    "fi": "Jatka",
+    "sv": "Fortsätt",
+    "en": "Continue",
+    "needsReview": ["sv"]
+  },
+  "progress.label": {
+    "fi": "Kysymys {n}/{total}",
+    "sv": "Fråga {n} av {total}",
+    "en": "Question {n} of {total}",
+    "needsReview": ["sv"]
+  },
+  "scale.-2": {
+    "fi": "Täysin eri mieltä",
+    "sv": "Håller helt inte med",
+    "en": "Strongly disagree",
+    "needsReview": ["sv"]
+  },
+  "scale.-1": {
+    "fi": "Jokseenkin eri mieltä",
+    "sv": "Håller delvis inte med",
+    "en": "Somewhat disagree",
+    "needsReview": ["sv"]
+  },
+  "scale.0": {
+    "fi": "En osaa sanoa",
+    "sv": "Kan inte säga",
+    "en": "Can't say",
+    "needsReview": ["sv"]
+  },
+  "scale.1": {
+    "fi": "Jokseenkin samaa mieltä",
+    "sv": "Håller delvis med",
+    "en": "Somewhat agree",
+    "needsReview": ["sv"]
+  },
+  "scale.2": {
+    "fi": "Täysin samaa mieltä",
+    "sv": "Håller helt med",
+    "en": "Strongly agree",
+    "needsReview": ["sv"]
+  },
+  "swipe.hint": {
+    "fi": "Pyyhkäise oikealle (samaa mieltä) tai vasemmalle (eri mieltä), tai käytä painikkeita.",
+    "sv": "Svep åt höger (håller med) eller vänster (håller inte med), eller använd knapparna.",
+    "en": "Swipe right (agree) or left (disagree), or use the buttons.",
+    "needsReview": ["sv"]
+  },
+  "card.source": {
+    "fi": "Lähde",
+    "sv": "Källa",
+    "en": "Source",
+    "needsReview": ["sv"]
+  },
+  "card.skipHint": {
+    "fi": "Napauta jatkaaksesi",
+    "sv": "Tryck för att fortsätta",
+    "en": "Tap to continue",
+    "needsReview": ["sv"]
+  },
+  "guess.off": {
+    "fi": "Arvauksesi oli {n} vuoden päässä.",
+    "sv": "Du gissade {n} år fel.",
+    "en": "You were {n} years off.",
+    "needsReview": ["sv"]
+  },
+  "guess.offOne": {
+    "fi": "Arvauksesi oli vuoden päässä.",
+    "sv": "Du gissade 1 år fel.",
+    "en": "You were 1 year off.",
+    "needsReview": ["sv"]
+  },
+  "guess.exact": {
+    "fi": "Täsmälleen oikein!",
+    "sv": "Exakt rätt!",
+    "en": "Spot on!",
+    "needsReview": ["sv"]
+  },
+  "finale.drumroll": {
+    "fi": "Rumpujen pärinää…",
+    "sv": "Trumvirvel…",
+    "en": "Drum roll…",
+    "needsReview": ["sv"]
+  },
+  "axis.markets": {
+    "fi": "Markkinat",
+    "sv": "Marknader",
+    "en": "Markets",
+    "needsReview": ["sv"]
+  },
+  "axis.environment": {
+    "fi": "Ympäristö",
+    "sv": "Miljö",
+    "en": "Environment",
+    "needsReview": ["sv"]
+  },
+  "axis.freedom": {
+    "fi": "Vapaus",
+    "sv": "Frihet",
+    "en": "Freedom",
+    "needsReview": ["sv"]
+  },
+  "result.overall": {
+    "fi": "{percent} % markkinavihreä",
+    "sv": "{percent} % marknadsgrön",
+    "en": "{percent}% market green",
+    "needsReview": ["sv"]
+  },
+  "result.takeAgain": {
+    "fi": "Tee testi uudelleen",
+    "sv": "Gör testet igen",
+    "en": "Take the quiz again",
+    "needsReview": ["sv"]
+  },
+  "result.takeQuiz": {
+    "fi": "Tee testi",
+    "sv": "Gör testet",
+    "en": "Take the quiz",
+    "needsReview": ["sv"]
+  },
+  "result.share": {
+    "fi": "Jaa tuloksesi",
+    "sv": "Dela ditt resultat",
+    "en": "Share your result",
+    "needsReview": ["sv"]
+  },
+  "result.shareText": {
+    "fi": "Olen {percent} % markkinavihreä. Entä sinä?",
+    "sv": "Jag är {percent} % marknadsgrön. Och du?",
+    "en": "I'm {percent}% market green. How about you?",
+    "needsReview": ["sv"]
+  },
+  "result.copyLink": {
+    "fi": "Kopioi linkki",
+    "sv": "Kopiera länken",
+    "en": "Copy link",
+    "needsReview": ["sv"]
+  },
+  "result.linkCopied": {
+    "fi": "Linkki kopioitu",
+    "sv": "Länken kopierad",
+    "en": "Link copied",
+    "needsReview": ["sv"]
+  },
+  "result.saveImage": {
+    "fi": "Tallenna kuva",
+    "sv": "Spara bilden",
+    "en": "Save image",
+    "needsReview": ["sv"]
+  },
+  "result.challenge": {
+    "fi": "Haasta ystävä",
+    "sv": "Utmana en vän",
+    "en": "Challenge a friend",
+    "needsReview": ["sv"]
+  },
+  "result.compare": {
+    "fi": "Tuloksesi vs. ystäväsi",
+    "sv": "Ditt resultat mot din väns",
+    "en": "Your result vs. your friend's",
+    "needsReview": ["sv"]
+  },
+  "result.nudgeHeading": {
+    "fi": "Lue lisää aiheista, joissa olit samaa mieltä",
+    "sv": "Läs mer om ämnen du höll med om",
+    "en": "Read more on topics you agreed with",
+    "needsReview": ["sv"]
+  },
+  "result.ctaNewsletter": {
+    "fi": "Tilaa uutiskirje",
+    "sv": "Prenumerera på nyhetsbrevet",
+    "en": "Subscribe to the newsletter",
+    "needsReview": ["sv"]
+  },
+  "result.ctaWhatsapp": {
+    "fi": "Liity WhatsApp-ryhmään",
+    "sv": "Gå med i WhatsApp-gruppen",
+    "en": "Join the WhatsApp group",
+    "needsReview": ["sv"]
+  },
+  "result.ctaManifesto": {
+    "fi": "Lue manifesti",
+    "sv": "Läs manifestet",
+    "en": "Read the manifesto",
+    "needsReview": ["sv"]
+  },
+  "how.heading": {
+    "fi": "Näin testi toimii",
+    "sv": "Så fungerar testet",
+    "en": "How this quiz works",
+    "needsReview": ["sv"]
+  },
+  "how.scoring": {
+    "fi": "Jokaiseen kolmesta akselista (markkinat, ympäristö, vapaus) vaikuttaa 3–4 kysymystä. Vastaus pisteytetään välillä −2…+2, käänteiset kysymykset käännetään, ja summa skaalataan 0–100:aan. Akseli on korkea, kun se on vähintään 60. Tyyppi määräytyy sen mukaan, mitkä akselit ovat korkeita.",
+    "sv": "Var och en av de tre axlarna (marknader, miljö, frihet) styrs av 3–4 frågor. Varje svar poängsätts från −2 till +2, omvända frågor vänds och summan skalas till 0–100. En axel räknas som hög vid 60 eller mer. Din typ beror på vilka axlar som är höga.",
+    "en": "Each of the three axes (markets, environment, freedom) is driven by 3–4 questions. Each answer is scored from −2 to +2, reversed questions are flipped, and the sum is scaled to 0–100. An axis counts as high at 60 or above. Your type depends on which axes are high.",
+    "needsReview": ["sv"]
+  },
+  "how.questions": {
+    "fi": "Kaikki kysymykset",
+    "sv": "Alla frågor",
+    "en": "All questions",
+    "needsReview": ["sv"]
+  },
+  "footer.notVaa": {
+    "fi": "Tämä testi ei ole vaalikone eikä Vihreiden virallinen palvelu.",
+    "sv": "Det här testet är ingen valkompass och inte en officiell tjänst från De Gröna.",
+    "en": "This quiz is not a voting advice application and not an official Green League service.",
+    "needsReview": ["sv"]
+  }
+}

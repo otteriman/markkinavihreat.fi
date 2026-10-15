@@ -1,0 +1,148 @@
+{
+  "types": [
+    {
+      "slug": "pigou",
+      "name": {
+        "fi": "Pigou'n perillinen",
+        "sv": "Pigous arvinge",
+        "en": "Pigou's heir"
+      },
+      "oneLiner": {
+        "fi": "Olet markkinavihreä. Hinnoittele haitat, vapauta loput.",
+        "sv": "Du är marknadsgrön. Prissätt skadorna, frigör resten.",
+        "en": "You're a market green. Price the harms, free the rest."
+      },
+      "description": {
+        "fi": "TODO: tyypin kuvaus",
+        "sv": "TODO: beskrivning av typen",
+        "en": "TODO: type description"
+      },
+      "representative": {
+        "markets": 85,
+        "environment": 85,
+        "freedom": 85
+      },
+      "needsReview": ["en", "sv"]
+    },
+    {
+      "slug": "liberal",
+      "name": {
+        "fi": "Klassinen liberaali",
+        "sv": "Klassisk liberal",
+        "en": "Classical liberal"
+      },
+      "oneLiner": {
+        "fi": "Vapaus on sinulle tärkein. Ilmastossa markkinaratkaisut voisivat yllättää.",
+        "sv": "Friheten kommer först för dig. I klimatfrågan kan marknadslösningar överraska.",
+        "en": "Freedom comes first for you. On climate, market solutions might surprise you."
+      },
+      "description": {
+        "fi": "TODO: tyypin kuvaus",
+        "sv": "TODO: beskrivning av typen",
+        "en": "TODO: type description"
+      },
+      "representative": {
+        "markets": 85,
+        "environment": 35,
+        "freedom": 85
+      },
+      "needsReview": ["en", "sv"]
+    },
+    {
+      "slug": "ecologist",
+      "name": {
+        "fi": "Kaupunkiekologi",
+        "sv": "Stadsekolog",
+        "en": "Urban ecologist"
+      },
+      "oneLiner": {
+        "fi": "Luonto ja vapaus ensin. Tiesitkö, että päästökauppa on tehokkain ilmastotyökalu?",
+        "sv": "Naturen och friheten först. Visste du att utsläppshandel är det effektivaste klimatverktyget?",
+        "en": "Nature and freedom first. Did you know emissions trading is the most efficient climate tool?"
+      },
+      "description": {
+        "fi": "TODO: tyypin kuvaus",
+        "sv": "TODO: beskrivning av typen",
+        "en": "TODO: type description"
+      },
+      "representative": {
+        "markets": 35,
+        "environment": 85,
+        "freedom": 85
+      },
+      "needsReview": ["en", "sv"]
+    },
+    {
+      "slug": "engineer",
+      "name": {
+        "fi": "Vihreä insinööri",
+        "sv": "Grön ingenjör",
+        "en": "Green engineer"
+      },
+      "oneLiner": {
+        "fi": "Uskot tehokkaisiin ratkaisuihin. Vapaus kuuluu samaan pakettiin.",
+        "sv": "Du tror på effektiva lösningar. Friheten hör till samma paket.",
+        "en": "You believe in efficient solutions. Freedom comes in the same package."
+      },
+      "description": {
+        "fi": "TODO: tyypin kuvaus",
+        "sv": "TODO: beskrivning av typen",
+        "en": "TODO: type description"
+      },
+      "representative": {
+        "markets": 85,
+        "environment": 85,
+        "freedom": 35
+      },
+      "needsReview": ["en", "sv"]
+    },
+    {
+      "slug": "focused",
+      "name": {
+        "fi": "Yhden asian ihminen",
+        "sv": "Enfrågemänniska",
+        "en": "Single-issue person"
+      },
+      "oneLiner": {
+        "fi": "Sinulla on selvä painopiste. Katso, miten se liittyy kahteen muuhun.",
+        "sv": "Du har ett tydligt fokus. Se hur det hänger ihop med de två andra.",
+        "en": "You have a clear focus. See how it connects to the other two."
+      },
+      "description": {
+        "fi": "TODO: tyypin kuvaus",
+        "sv": "TODO: beskrivning av typen",
+        "en": "TODO: type description"
+      },
+      "representative": {
+        "markets": 85,
+        "environment": 35,
+        "freedom": 35
+      },
+      "needsReview": ["en", "sv"]
+    },
+    {
+      "slug": "free",
+      "name": {
+        "fi": "Vapaa sielu",
+        "sv": "Fri själ",
+        "en": "Free spirit"
+      },
+      "oneLiner": {
+        "fi": "Et mahdu laatikoihin. Hyvä, ei mekään.",
+        "sv": "Du passar inte i fack. Bra, det gör inte vi heller.",
+        "en": "You don't fit in boxes. Good, neither do we."
+      },
+      "description": {
+        "fi": "TODO: tyypin kuvaus",
+        "sv": "TODO: beskrivning av typen",
+        "en": "TODO: type description"
+      },
+      "representative": {
+        "markets": 45,
+        "environment": 45,
+        "freedom": 45
+      },
+      "needsReview": ["en", "sv"]
+    }
+  ]
+}

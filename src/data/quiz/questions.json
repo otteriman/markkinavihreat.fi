@@ -1,0 +1,263 @@
+{
+  "items": [
+    {
+      "id": "q1",
+      "kind": "statement",
+      "axis": "markets",
+      "direction": 1,
+      "ui": "buttons",
+      "text": {
+        "fi": "Suurimmasta osasta yritystukia pitäisi luopua, vaikka se veisi joitakin työpaikkoja.",
+        "sv": "Det mesta av företagsstöden bör avskaffas, även om en del jobb skulle gå förlorade.",
+        "en": "Most corporate subsidies should be scrapped, even if some jobs are lost."
+      },
+      "after": {
+        "type": "fact",
+        "text": {
+          "fi": "TODO: yritystukien vuosisumma Suomessa (lähde: VATT).",
+          "sv": "TODO: det årliga totalbeloppet av företagsstöd i Finland (källa: VATT).",
+          "en": "TODO: annual total of corporate subsidies in Finland (source: VATT)."
+        },
+        "source": "TODO"
+      },
+      "needsReview": ["sv"]
+    },
+    {
+      "id": "q2",
+      "kind": "statement",
+      "axis": "environment",
+      "direction": 1,
+      "ui": "swipe",
+      "text": {
+        "fi": "Ruuhkamaksut olisivat hyvä keino suurissa kaupungeissa.",
+        "sv": "Trängselavgifter vore ett bra verktyg i stora städer.",
+        "en": "Congestion charges would be a good tool for large cities."
+      },
+      "after": {
+        "type": "fact",
+        "text": {
+          "fi": "Ruuhkamaksuja käytetään esimerkiksi Lontoossa, Singaporessa ja Göteborgissa.",
+          "sv": "Trängselavgifter används till exempel i London, Singapore och Göteborg.",
+          "en": "Congestion charges are used in, for example, London, Singapore and Gothenburg."
+        },
+        "source": "TODO"
+      },
+      "needsReview": ["sv"]
+    },
+    {
+      "id": "q3",
+      "kind": "statement",
+      "axis": "freedom",
+      "direction": 1,
+      "ui": "slider",
+      "text": {
+        "fi": "Aikuisen pitäisi saada päättää itse päihteiden käytöstään, kunhan hän ei vahingoita muita.",
+        "sv": "Vuxna bör själva få bestämma över sitt bruk av rusmedel, så länge de inte skadar andra.",
+        "en": "Adults should be free to decide on their own substance use, as long as they don't harm others."
+      },
+      "after": {
+        "type": "reaction",
+        "text": {
+          "fi": "Tämä jakaa kansaa.",
+          "sv": "Den här frågan delar nationen.",
+          "en": "This one divides the nation."
+        }
+      },
+      "needsReview": ["sv"]
+    },
+    {
+      "id": "q4",
+      "kind": "statement",
+      "axis": "markets",
+      "direction": -1,
+      "ui": "swipe",
+      "text": {
+        "fi": "Vuokrasääntely on hyvä keino pitää asuminen kohtuuhintaisena.",
+        "sv": "Hyresreglering är ett bra sätt att hålla boendet överkomligt.",
+        "en": "Rent control is a good way to keep housing affordable."
+      },
+      "after": {
+        "type": "fact",
+        "text": {
+          "fi": "TODO: mitä taloustieteilijät ajattelevat vuokrasääntelystä (lähde puuttuu, esim. taloustieteilijäkysely).",
+          "sv": "TODO: vad ekonomer anser om hyresreglering (källa saknas, t.ex. en ekonomenkät).",
+          "en": "TODO: what economists think about rent control (source missing, e.g. an economist survey)."
+        },
+        "source": "TODO"
+      },
+      "needsReview": ["sv"]
+    },
+    {
+      "id": "q5",
+      "kind": "statement",
+      "axis": "environment",
+      "direction": -1,
+      "ui": "buttons",
+      "text": {
+        "fi": "Ilmastotavoitteista voi joustaa, jos ne hidastavat talouskasvua.",
+        "sv": "Klimatmålen kan mjukas upp om de bromsar den ekonomiska tillväxten.",
+        "en": "Climate targets can be relaxed if they slow economic growth."
+      },
+      "after": {
+        "type": "teaser",
+        "text": {
+          "fi": "Olet jo yllättänyt meidät.",
+          "sv": "Du har redan överraskat oss.",
+          "en": "You've already surprised us."
+        }
+      },
+      "needsReview": ["sv"]
+    },
+    {
+      "id": "guess",
+      "kind": "guess",
+      "after": "q5",
+      "text": {
+        "fi": "Arvaa: mistä vuodesta lähtien Tukholmassa on ollut pysyvät ruuhkamaksut?",
+        "sv": "Gissa: sedan vilket år har Stockholm haft permanenta trängselavgifter?",
+        "en": "Guess: since what year has Stockholm had permanent congestion charges?"
+      },
+      "min": 1990,
+      "max": 2025,
+      "answer": 2007,
+      "reveal": {
+        "fi": "Oikea vastaus: 2007.",
+        "sv": "Rätt svar: 2007.",
+        "en": "Correct answer: 2007."
+      },
+      "needsReview": ["sv"]
+    },
+    {
+      "id": "q6",
+      "kind": "statement",
+      "axis": "freedom",
+      "direction": -1,
+      "ui": "slider",
+      "text": {
+        "fi": "Viranomaisille pitäisi antaa laajemmat valtuudet valvoa verkkoviestintää rikosten ehkäisemiseksi.",
+        "sv": "Myndigheterna bör få vidare befogenheter att övervaka nätkommunikation för att förebygga brott.",
+        "en": "Authorities should get wider powers to monitor online communication to prevent crime."
+      },
+      "after": {
+        "type": "reaction",
+        "text": {
+          "fi": "Rohkea veto!",
+          "sv": "Djärvt!",
+          "en": "Bold move!"
+        }
+      },
+      "needsReview": ["sv"]
+    },
+    {
+      "id": "q7",
+      "kind": "statement",
+      "axis": "markets",
+      "direction": 1,
+      "ui": "swipe",
+      "text": {
+        "fi": "Osakesäästötilin sijoituskattoa pitäisi nostaa selvästi.",
+        "sv": "Taket för insättningar på aktiesparkontot (osakesäästötili) bör höjas rejält.",
+        "en": "The deposit cap of the equity savings account (osakesäästötili) should be raised substantially."
+      },
+      "after": {
+        "type": "fact",
+        "text": {
+          "fi": "TODO: osakesäästötilien lukumäärä Suomessa (luku ja lähde puuttuvat).",
+          "sv": "TODO: antalet aktiesparkonton i Finland (siffra och källa saknas).",
+          "en": "TODO: number of equity savings accounts in Finland (number and source missing)."
+        },
+        "source": "TODO"
+      },
+      "needsReview": ["sv"]
+    },
+    {
+      "id": "q8",
+      "kind": "statement",
+      "axis": "environment",
+      "direction": 1,
+      "ui": "buttons",
+      "text": {
+        "fi": "Luontokadon pysäyttäminen on yhtä tärkeää kuin ilmastonmuutoksen torjunta.",
+        "sv": "Att stoppa förlusten av biologisk mångfald är lika viktigt som att bekämpa klimatförändringen.",
+        "en": "Halting biodiversity loss is as important as fighting climate change."
+      },
+      "after": {
+        "type": "fact",
+        "text": {
+          "fi": "TODO: uhanalaisten lajien osuus Suomessa (lähde: Suomen lajien uhanalaisuus, Punainen kirja).",
+          "sv": "TODO: andelen hotade arter i Finland (källa: Rödlistan över Finlands arter).",
+          "en": "TODO: share of threatened species in Finland (source: the Red List of Finnish species)."
+        },
+        "source": "TODO"
+      },
+      "needsReview": ["sv"]
+    },
+    {
+      "id": "q9",
+      "kind": "statement",
+      "axis": "freedom",
+      "direction": 1,
+      "ui": "slider",
+      "text": {
+        "fi": "Työperäisen maahanmuuton pitäisi olla nykyistä helpompaa.",
+        "sv": "Arbetskraftsinvandring bör göras enklare än i dag.",
+        "en": "Work-based immigration should be made easier than it is today."
+      },
+      "after": {
+        "type": "reaction",
+        "text": {
+          "fi": "Viimeinen ennen finaalia.",
+          "sv": "Sista frågan före finalen.",
+          "en": "Last one before the finale."
+        }
+      },
+      "needsReview": ["sv"]
+    },
+    {
+      "id": "q10",
+      "kind": "finale",
+      "ui": "imageChoice",
+      "text": {
+        "fi": "Ilmastopolitiikassa luotan eniten…",
+        "sv": "I klimatpolitiken litar jag mest på…",
+        "en": "In climate policy, I trust most in…"
+      },
+      "options": [
+        {
+          "id": "price",
+          "label": {
+            "fi": "…hintaan päästöille",
+            "sv": "…ett pris på utsläpp",
+            "en": "…putting a price on emissions"
+          },
+          "markets": 2,
+          "environment": 2,
+          "needsReview": ["sv"]
+        },
+        {
+          "id": "bans",
+          "label": {
+            "fi": "…kieltoihin ja tukiin",
+            "sv": "…förbud och subventioner",
+            "en": "…bans and subsidies"
+          },
+          "markets": -2,
+          "environment": 2,
+          "needsReview": ["sv"]
+        },
+        {
+          "id": "neither",
+          "label": {
+            "fi": "…en kumpaankaan, ilmastopolitiikkaa on jo tarpeeksi",
+            "sv": "…ingetdera, det finns redan tillräckligt med klimatpolitik",
+            "en": "…neither, there's enough climate policy already"
+          },
+          "markets": 0,
+          "environment": -2,
+          "needsReview": ["sv"]
+        }
+      ],
+      "needsReview": ["sv"]
+    }
+  ]
+}
