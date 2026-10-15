@@ -182,6 +182,8 @@ test('tapping an after-question card moves on', async ({ page }) => {
   await page.goto(START.fi)
   await page.locator('[data-action="start"]').click()
   await page.locator('[data-step="q:q1"] [data-answer="0"]').click()
+  // A tap in the first moments after the card appears is ignored as a stray one.
+  await page.waitForTimeout(500)
   await page.locator('[data-step="a:q1"] [data-card]').click({ position: { x: 20, y: 20 } })
   await expect(page.locator('[data-step="q:q2"]')).toBeVisible()
 })
