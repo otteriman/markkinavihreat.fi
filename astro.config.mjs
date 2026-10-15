@@ -73,6 +73,8 @@ export default defineConfig({
     sitemap({
       filter: (page) =>
         !unlistedSlugs.some((slug) => page.includes(`/ehdotukset/${slug}/`)) &&
+        // The quiz is noindex until launch (see QuizBody.astro).
+        !page.includes('/testi/') &&
         (blogHasPosts || !page.includes('/blogi/')),
       // Emits xhtml:link alternates per URL, so hreflang reaches crawlers via
       // the sitemap as well as the <head>. Mirrors BaseLayout's link rel=alternate.

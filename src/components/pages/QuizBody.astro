@@ -1,0 +1,312 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro'
+import type { Locale } from '../../lib/content'
+import { items, resultTypes, t as qt } from '../../lib/quiz/data'
+import { questionNumber, scoredCount } from '../../lib/quiz/flow'
+import type { Finale, GuessInterlude, Statement } from '../../lib/quiz/types'
+
+interface Props {
+  locale: Locale
+}
+
+const { locale } = Astro.props
+const t = (key: string, vars?: Record<string, string | number>) => qt(locale, key, vars)
+const total = scoredCount(items)
+const SCALE = [-2, -1, 0, 1, 2] as const
+
+// Everything the client script needs that is locale-specific. Question text is
+// rendered into the markup below, so the script itself ships no copy.
+const config = {
+  locale,
+  total,
+  scale: SCALE.map((v) => t(`scale.${v}`)),
+  guess: items.find((i): i is GuessInterlude => i.kind === 'guess')?.answer,
+  strings: {
+    progress: t('progress.label', { n: '{n}', total }),
+    overall: t('result.overall', { percent: '{percent}' }),
+    guessOff: t('guess.off', { n: '{n}' }),
+    guessOffOne: t('guess.offOne'),
+    guessExact: t('guess.exact'),
+  },
+  types: Object.fromEntries(
+    resultTypes.map((r) => [r.slug, { name: r.name[locale], oneLiner: r.oneLiner[locale] }]),
+  ),
+}
+
+const isStatement = (i: (typeof items)[number]): i is Statement => i.kind === 'statement'
+const isFinale = (i: (typeof items)[number]): i is Finale => i.kind === 'finale'
+const isGuess = (i: (typeof items)[number]): i is GuessInterlude => i.kind === 'guess'
+
+const btnAnswer =
+  'btn-outline-medium w-full justify-center aria-pressed:bg-musta aria-pressed:text-kerma'
+---
+
+<BaseLayout
+  locale={locale}
+  title={`${t('intro.title')} — markkinavihreat.fi`}
+  description={t('intro.lead')}
+  path="/testi/"
+  noindex
+>
+  <div
+    id="quiz"
+    data-locale={locale}
+    class="content-max mx-auto flex min-h-[calc(100svh-4rem)] scroll-mt-16 flex-col px-4 py-6 sm:px-6"
+  >
+    <div id="quiz-progress" class="mb-4 hidden" aria-hidden="true">
+      <div class="bg-kerma-syva h-2 overflow-hidden rounded-full">
+        <div id="quiz-progress-bar" class="bg-vihrea h-full w-0 transition-[width]"></div>
+      </div>
+    </div>
+    <p id="quiz-status" class="sr-only" aria-live="polite"></p>
+
+    <section data-step="intro" class="flex flex-1 flex-col justify-between gap-8 py-8">
+      <div>
+        <h1 data-heading tabindex="-1" class="text-4xl sm:text-5xl">{t('intro.title')}</h1>
+        <p class="mt-6 text-lg">{t('intro.lead')}</p>
+        <p class="text-harmaa mt-4 text-sm">{t('intro.notVaa')}</p>
+      </div>
+      <button type="button" data-action="start" class="btn-primary w-full justify-center">
+        {t('intro.start')}
+      </button>
+    </section>
+
+    {
+      items.map((item) => {
+        const num = questionNumber(items, item.id)
+        return (
+          <>
+            <section
+              data-step={`q:${item.id}`}
+              hidden
+              class="flex flex-1 flex-col justify-between gap-6 py-4"
+            >
+              <div>
+                <p class="text-eyebrow text-harmaa">
+                  {num ? t('progress.label', { n: num, total }) : ' '}
+                </p>
+                <h2
+                  data-heading
+                  tabindex="-1"
+                  class:list={[
+                    'mt-3 text-2xl sm:text-3xl',
+                    // The swipe card already shows the statement; keep the heading for screen readers.
+                    isStatement(item) && item.ui === 'swipe' && 'sr-only',
+                  ]}
+                >
+                  {item.text[locale]}
+                </h2>
+              </div>
+
+              <div class="space-y-3">
+                {isStatement(item) && item.ui === 'buttons' && (
+                  <div class="space-y-2" role="group" aria-label={item.text[locale]}>
+                    {SCALE.map((v) => (
+                      <button type="button" data-answer={v} class={btnAnswer}>
+                        {t(`scale.${v}`)}
+                      </button>
+                    ))}
+                  </div>
+                )}
+
+                {isStatement(item) && item.ui === 'swipe' && (
+                  <>
+                    <div
+                      data-swipe
+                      tabindex="0"
+                      role="group"
+                      aria-label={t('swipe.cardLabel')}
+                      class="card touch-pan-y bg-white text-center text-xl font-semibold select-none"
+                    >
+                      <p>{item.text[locale]}</p>
+                    </div>
+                    <p class="text-harmaa flex justify-between text-sm" aria-hidden="true">
+                      <span>← {t('swipe.disagree')}</span>
+                      <span>{t('swipe.agree')} →</span>
+                    </p>
+                    <div class="space-y-2" role="group" aria-label={item.text[locale]}>
+                      {SCALE.map((v) => (
+                        <button type="button" data-answer={v} class={btnAnswer}>
+                          {t(`scale.${v}`)}
+                        </button>
+                      ))}
+                    </div>
+                  </>
+                )}
+
+                {isStatement(item) && item.ui === 'slider' && (
+                  <div>
+                    <input
+                      type="range"
+                      min="-2"
+                      max="2"
+                      step="1"
+                      value="0"
+                      data-slider
+                      aria-label={item.text[locale]}
+                      class="accent-vihrea-tumma w-full"
+                    />
+                    <div class="text-harmaa flex justify-between text-xs" aria-hidden="true">
+                      {SCALE.map((v) => (
+                        <span class="w-1/5 text-center">{t(`scale.${v}`)}</span>
+                      ))}
+                    </div>
+                    <p data-slider-label class="mt-3 text-center font-semibold" aria-hidden="true">
+                      {t('scale.0')}
+                    </p>
+                  </div>
+                )}
+
+                {isGuess(item) && (
+                  <div>
+                    <p class="text-center text-4xl font-extrabold" data-guess-value>
+                      {Math.round((item.min + item.max) / 2)}
+                    </p>
+                    <input
+                      type="range"
+                      min={item.min}
+                      max={item.max}
+                      step="1"
+                      value={Math.round((item.min + item.max) / 2)}
+                      data-guess-slider
+                      aria-label={item.text[locale]}
+                      class="accent-vihrea-tumma mt-3 w-full"
+                    />
+                    <div class="text-harmaa flex justify-between text-xs" aria-hidden="true">
+                      <span>{item.min}</span>
+                      <span>{item.max}</span>
+                    </div>
+                  </div>
+                )}
+
+                {isFinale(item) && (
+                  <div class="grid gap-3" role="group" aria-label={t('finale.choices')}>
+                    {item.options.map((o) => (
+                      <button
+                        type="button"
+                        data-option={o.id}
+                        class="card hover:bg-surface-green aria-pressed:bg-musta aria-pressed:text-kerma min-h-24 bg-white text-left text-lg font-semibold"
+                      >
+                        {o.label[locale]}
+                      </button>
+                    ))}
+                  </div>
+                )}
+
+                <div class="flex items-center justify-between gap-3 pt-2">
+                  <button type="button" data-action="back" class="btn-outline-sm">
+                    {t('nav.back')}
+                  </button>
+                  {(isGuess(item) || (isStatement(item) && item.ui === 'slider')) && (
+                    <button type="button" data-action="next" class="btn-primary">
+                      {t('nav.next')}
+                    </button>
+                  )}
+                  {isStatement(item) && (
+                    <button type="button" data-action="skip" class="btn-outline-sm">
+                      {t('nav.skip')}
+                    </button>
+                  )}
+                </div>
+              </div>
+            </section>
+
+            {isStatement(item) && (
+              <section
+                data-step={`a:${item.id}`}
+                hidden
+                class="flex flex-1 flex-col justify-between gap-6 py-4"
+              >
+                <div class="card bg-white">
+                  <h2 data-heading tabindex="-1" class="text-2xl sm:text-3xl">
+                    {item.after.text[locale]}
+                  </h2>
+                  {item.after.type === 'fact' && (
+                    <p class="text-harmaa mt-4 text-sm">
+                      {t('card.source')}:{' '}
+                      {item.after.source === 'TODO' ? (
+                        'TODO'
+                      ) : (
+                        <a
+                          href={item.after.source.url}
+                          target="_blank"
+                          rel="noopener"
+                          class="underline"
+                        >
+                          {item.after.source.label}
+                        </a>
+                      )}
+                    </p>
+                  )}
+                </div>
+                <button
+                  type="button"
+                  data-action="continue"
+                  class="btn-primary w-full justify-center"
+                >
+                  {t('nav.continue')}
+                </button>
+              </section>
+            )}
+
+            {isGuess(item) && (
+              <section
+                data-step={`a:${item.id}`}
+                hidden
+                class="flex flex-1 flex-col justify-between gap-6 py-4"
+              >
+                <div class="card bg-white">
+                  <h2 data-heading tabindex="-1" class="text-2xl sm:text-3xl">
+                    {item.reveal[locale]}
+                  </h2>
+                  <p data-guess-result class="mt-4 text-lg font-semibold" />
+                </div>
+                <button
+                  type="button"
+                  data-action="continue"
+                  class="btn-primary w-full justify-center"
+                >
+                  {t('nav.continue')}
+                </button>
+              </section>
+            )}
+          </>
+        )
+      })
+    }
+
+    <!-- Placeholder result summary; Phase 3 replaces it with navigation to the static result page. -->
+    <section data-step="result" hidden class="flex flex-1 flex-col justify-between gap-6 py-4">
+      <div>
+        <p data-result-percent class="text-display-lg"></p>
+        <h2 data-heading tabindex="-1" data-result-type class="mt-2 text-3xl"></h2>
+        <p data-result-oneliner class="mt-3 text-lg"></p>
+        <div class="mt-6 space-y-3">
+          {
+            (['markets', 'environment', 'freedom'] as const).map((axis) => (
+              <div data-bar={axis}>
+                <p class="flex justify-between text-sm font-semibold">
+                  <span>{t(`axis.${axis}`)}</span>
+                  <span data-bar-value />
+                </p>
+                <div class="bg-kerma-syva h-3 overflow-hidden rounded-full">
+                  <div data-bar-fill class="bg-vihrea h-full" style="width:0%" />
+                </div>
+              </div>
+            ))
+          }
+        </div>
+      </div>
+      <button type="button" data-action="restart" class="btn-outline-medium w-full justify-center">
+        {t('result.takeAgain')}
+      </button>
+    </section>
+
+    <script type="application/json" id="quiz-config" is:inline set:html={JSON.stringify(config)} />
+  </div>
+</BaseLayout>
+
+<script>
+  import { initQuiz } from '../../scripts/quiz/init'
+  initQuiz()
+</script>
