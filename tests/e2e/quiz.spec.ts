@@ -1,5 +1,9 @@
 import { expect, test, type Page } from '@playwright/test'
 
+// Flow tests run with reduced motion: cards wait for Continue and the result
+// reveal is instant. Motion itself is covered at the end of this file.
+test.use({ contextOptions: { reducedMotion: 'reduce' } })
+
 const START: Record<string, string> = { fi: '/testi/', sv: '/sv/testi/', en: '/en/testi/' }
 const PREFIX: Record<string, string> = { fi: '', sv: '/sv', en: '/en' }
 
@@ -169,4 +173,82 @@ test('guess reveal shows how far off the guess was', async ({ page }) => {
   await page.locator('[data-guess-slider]').fill('2000')
   await page.locator('[data-step="q:guess"] [data-action="next"]').click()
   await expect(page.locator('[data-guess-result]')).toContainText('7')
+})
+
+test('tapping an after-question card moves on', async ({ page }) => {
+  await page.goto(START.fi)
+  await page.locator('[data-action="start"]').click()
+  await page.locator('[data-step="q:q1"] [data-answer="0"]').click()
+  await page.locator('[data-step="a:q1"] [data-card]').click({ position: { x: 20, y: 20 } })
+  await expect(page.locator('[data-step="q:q2"]')).toBeVisible()
+})
+
+test('the tree grows one stage per answered question, not on the guess', async ({ page }) => {
+  await page.goto(START.fi)
+  const shapes = () => page.locator('#quiz-tree svg > *').count()
+  await page.locator('[data-action="start"]').click()
+  const seedling = await shapes()
+  for (const id of ['q1', 'q2', 'q3', 'q4', 'q5']) {
+    const step = page.locator(`[data-step="q:${id}"]`)
+    if (await step.locator('[data-slider]').count())
+      await step.locator('[data-action="next"]').click()
+    else await step.locator('[data-answer="1"]').click()
+    await page.locator(`[data-step="a:${id}"] [data-action="continue"]`).click()
+  }
+  const afterFive = await shapes()
+  expect(afterFive).toBeGreaterThan(seedling)
+  await page.locator('[data-step="q:guess"] [data-action="next"]').click()
+  await page.locator('[data-step="a:guess"] [data-action="continue"]').click()
+  expect(await shapes()).toBe(afterFive)
+})
+
+test("the result page shows the visitor's own tree", async ({ page }) => {
+  await page.goto('/testi/tulos/pigou-80/?m=82&y=79&v=85')
+  await expect(page.locator('#result-tree svg')).toHaveAttribute('aria-label', /Pigou/)
+})
+
+test.describe('with motion', () => {
+  test.use({ contextOptions: { reducedMotion: 'no-preference' } })
+
+  test('after-question cards move on by themselves', async ({ page }) => {
+    await page.goto(START.fi)
+    await page.locator('[data-action="start"]').click()
+    await page.locator('[data-step="q:q1"] [data-answer="0"]').click()
+    await page.locator('[data-step="a:q1"] [data-action="continue"]').click()
+    await page.locator('[data-step="q:q2"] [data-answer="0"]').click()
+    await page.locator('[data-step="a:q2"] [data-action="continue"]').click()
+    await page.locator('[data-step="q:q3"] [data-action="next"]').click()
+    // q3 has a short reaction card: about 1.5 s.
+    await expect(page.locator('[data-step="a:q3"]')).toBeVisible()
+    await expect(page.locator('[data-step="q:q4"]')).toBeVisible({ timeout: 4000 })
+  })
+
+  test('the result reveal plays, then goes to the result page', async ({ page }) => {
+    await page.goto(START.fi)
+    await page.locator('[data-action="start"]').click()
+    for (let guard = 0; guard < 40; guard++) {
+      const step = page.locator('[data-step]:not([hidden])')
+      const key = await step.getAttribute('data-step')
+      if (key === 'reveal') break
+      if (key!.startsWith('a:')) {
+        const next = step.locator('[data-action="continue"]')
+        // The card may already have moved on by itself.
+        await next.click({ timeout: 1000 }).catch(() => {})
+      } else if (await step.locator('[data-option]').count())
+        await step.locator('[data-option="price"]').click()
+      else if (await step.locator('[data-slider], [data-guess-slider]').count())
+        await step.locator('[data-action="next"]').click()
+      else await step.locator('[data-answer="2"]').click()
+    }
+    const reveal = page.locator('[data-step="reveal"]')
+    await expect(reveal).toBeVisible()
+    // The percentage counts up from 0 and the type name appears before moving on.
+    await expect(reveal.locator('[data-reveal-percent]')).not.toContainText(/^0 /, {
+      timeout: 6000,
+    })
+    await expect(reveal.locator('[data-reveal-type]')).toHaveClass(/opacity-100/, { timeout: 6000 })
+    await page.waitForURL(/\/testi\/tulos\/[a-z]+-\d+\/\?m=/, { timeout: 10000 })
+    const percent = await page.locator('[data-result-percent]').textContent()
+    expect(percent).toMatch(/\d+ %/)
+  })
 })
