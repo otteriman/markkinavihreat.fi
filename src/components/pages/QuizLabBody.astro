@@ -44,6 +44,13 @@ const axes: { axis: Axis; label: string; low: string; high: string }[] = [
           set:html={renderTree({ growth: 1, ...mid })}
         />
         <form id="lab-controls" class="card space-y-4 bg-white">
+          <button
+            type="button"
+            id="lab-play"
+            class="btn-primary w-full justify-center disabled:opacity-50"
+          >
+            ▶ Toista kasvu
+          </button>
           {
             (
               [
@@ -130,21 +137,47 @@ const axes: { axis: Axis; label: string; low: string; high: string }[] = [
 </BaseLayout>
 
 <script>
-  import { renderTree } from '../../lib/quiz/tree'
+  import { TreeView } from '../../lib/quiz/treeView'
 
   const form = document.getElementById('lab-controls') as HTMLFormElement | null
   const target = document.getElementById('lab-tree')
-  form?.addEventListener('input', () => {
-    const v = (name: string) => Number((form.elements.namedItem(name) as HTMLInputElement).value)
-    for (const out of form.querySelectorAll<HTMLOutputElement>('output[data-for]')) {
-      const name = out.dataset.for!
-      out.textContent = name === 'growth' ? `${v(name)}/10` : String(v(name))
-    }
-    target!.innerHTML = renderTree({
-      growth: v('growth') / 10,
-      markets: v('markets'),
-      environment: v('environment'),
-      freedom: v('freedom'),
+  const play = document.getElementById('lab-play') as HTMLButtonElement | null
+  if (form && target && play) {
+    const input = (name: string) => form.elements.namedItem(name) as HTMLInputElement
+    const read = () => ({
+      growth: Number(input('growth').value) / 10,
+      markets: Number(input('markets').value),
+      environment: Number(input('environment').value),
+      freedom: Number(input('freedom').value),
     })
-  })
+    const showValues = () => {
+      for (const out of form.querySelectorAll<HTMLOutputElement>('output[data-for]')) {
+        const name = out.dataset.for!
+        out.textContent = name === 'growth' ? `${input(name).value}/10` : input(name).value
+      }
+    }
+    const view = new TreeView(target, read())
+    let playing = 0
+
+    form.addEventListener('input', () => {
+      playing++ // moving a slider stops a running playback
+      play.disabled = false
+      showValues()
+      void view.set(read())
+    })
+
+    // Grows the tree from a seedling to full size with the chosen traits,
+    // one stage at a time, as it would during the quiz.
+    play.addEventListener('click', async () => {
+      const run = ++playing
+      play.disabled = true
+      for (let stage = 1; stage <= 10 && run === playing; stage++) {
+        input('growth').value = String(stage)
+        showValues()
+        await view.set(read(), stage > 1)
+        await new Promise((r) => setTimeout(r, 450))
+      }
+      if (run === playing) play.disabled = false
+    })
+  }
 </script>
