@@ -118,6 +118,9 @@ test('swiping a card answers the question', async ({ page }) => {
   await page.mouse.move(box.x + box.width / 2 + box.width * 0.5, y, { steps: 5 })
   await page.mouse.up()
   await expect(page.locator('[data-step="a:q2"]')).toBeVisible()
+  // The click that ends the swipe must not also skip the card that just appeared.
+  await page.waitForTimeout(300)
+  await expect(page.locator('[data-step="a:q2"]')).toBeVisible()
 })
 
 test('a short drag snaps back without answering', async ({ page }) => {

@@ -88,7 +88,14 @@ export function initQuiz() {
     return step.kind === 'intro' ? null : step.id
   }
 
+  // When the current screen appeared. A tap or key right after that belongs to
+  // the previous screen (the click that ends a swipe, a double tap) and must not
+  // skip the card that just appeared.
+  let shownAt = 0
+  const justShown = () => performance.now() - shownAt < 400
+
   function show(key: string, focus: boolean) {
+    shownAt = performance.now()
     for (const [k, el] of sections) el.hidden = k !== key
     const section = sections.get(key)!
     if (!focus) return
@@ -273,7 +280,7 @@ export function initQuiz() {
     // Tapping anywhere on an after-question card moves on (links still work).
     const step = steps[index]
     if (!target && step.kind === 'after' && !clicked.closest('a')) {
-      if (sections.get(stepKey(step))!.contains(clicked)) advance()
+      if (!justShown() && sections.get(stepKey(step))!.contains(clicked)) advance()
       return
     }
     if (!target || !root.contains(target)) return
@@ -309,7 +316,7 @@ export function initQuiz() {
   document.addEventListener('keydown', (event) => {
     const step = steps[index]
     // defaultPrevented: the key was already used, e.g. an arrow key answering a swipe card.
-    if (step.kind !== 'after' || finishing || event.defaultPrevented) return
+    if (step.kind !== 'after' || finishing || event.defaultPrevented || justShown()) return
     if (['Tab', 'Shift', 'Control', 'Alt', 'Meta'].includes(event.key)) return
     if ((event.target as Element).closest?.('a,button,input')) return
     event.preventDefault()
