@@ -59,6 +59,8 @@ export function seedOf(shape: Frame, parent?: Frame): Frame {
  */
 export function timing(key: string, change: 'stay' | 'enter' | 'leave'): [number, number] {
   const r = hash01(key)
+  // Style copies (o~ outlines, s~ paper edges) move with the shape they belong to.
+  key = key.slice(key.lastIndexOf('~') + 1)
   if (change === 'stay') return [0, 1]
   if (change === 'leave') return [r * 0.2, 0.5]
   if (key.startsWith('b:')) return [Math.min(0.3, (key.length - 3) * 0.04), 0.55]
@@ -74,9 +76,11 @@ export function blend(from: Frame, to: Frame, p: number): Frame {
   return { tag: to.tag, num, str: p < 0.5 ? from.str : to.str, inner: to.inner }
 }
 
-/** Parent branch key for a branch key: b:TLR → b:TL. */
-const parentKey = (key: string) =>
-  key.startsWith('b:') && key.length > 3 ? key.slice(0, -1) : null
+/** Parent branch key for a branch key: b:TLR → b:TL, o~b:TLR → o~b:TL. */
+const parentKey = (key: string) => {
+  const base = key.slice(key.lastIndexOf('~') + 1)
+  return base.startsWith('b:') && base.length > 3 ? key.slice(0, -1) : null
+}
 
 function setAttrs(el: SVGElement, f: Frame) {
   if (f.tag === 'g') {
@@ -89,6 +93,10 @@ function setAttrs(el: SVGElement, f: Frame) {
   }
   for (const [k, v] of Object.entries(f.num)) el.setAttribute(k, v.toFixed(1))
   for (const [k, v] of Object.entries(f.str)) el.setAttribute(k, v)
+  // Drop attributes a previous state set but this one doesn't (e.g. after a style change).
+  for (const name of el.getAttributeNames()) {
+    if (!(name in f.num) && !(name in f.str)) el.removeAttribute(name)
+  }
 }
 
 export class TreeView {
@@ -106,12 +114,18 @@ export class TreeView {
     void this.set(input, false)
   }
 
+  /** Content last written into each group, so it is only rewritten when it changes. */
+  private readonly inners = new Map<string, string>()
+
   private element(key: string, f: Frame): SVGElement {
     let el = this.els.get(key)
     if (!el) {
       el = document.createElementNS(SVGNS, f.tag) as SVGElement
-      if (f.inner) el.innerHTML = f.inner
       this.els.set(key, el)
+    }
+    if (f.inner !== undefined && this.inners.get(key) !== f.inner) {
+      el.innerHTML = f.inner
+      this.inners.set(key, f.inner)
     }
     return el
   }
@@ -132,6 +146,7 @@ export class TreeView {
       for (const k of leaving) {
         this.els.get(k)?.remove()
         this.els.delete(k)
+        this.inners.delete(k)
         this.shown.delete(k)
       }
       for (const shape of next) {
