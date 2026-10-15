@@ -86,6 +86,16 @@ describe('traits', () => {
     expect(express(0, 0.5)).toBe(0.25)
   })
 
+  it('keeps a couple of apples and adds banknotes at markets 100', () => {
+    const fruit = treeShapesFor({ growth: 1, ...mid, markets: 100 }).filter(
+      (s) => s.layer === 'fruit',
+    )
+    expect(
+      fruit.filter((s) => s.svg.includes('<circle') && s.svg.includes('#C95B3D')),
+    ).toHaveLength(2)
+    expect(fruit.some((s) => s.svg.includes('#D3E8BC'))).toBe(true)
+  })
+
   it('turns apples into coins as the markets score rises', () => {
     const coins = (markets: number) =>
       treeShapesFor({ growth: 1, ...mid, markets }).filter(

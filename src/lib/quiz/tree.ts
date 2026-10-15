@@ -44,6 +44,7 @@ export const COLORS = {
   apple: '#C95B3D', // --color-terra
   stone: '#E2E1DB', // --color-kerma-syva
   petal: '#FFFFFF',
+  bill: '#D3E8BC', // a pale banknote green, tinted from --color-vihrea
 }
 
 const SEED = 'markkinavihreat'
@@ -324,40 +325,68 @@ function treeShapes(input: TreeInput): { shapes: Shape[]; leaves: Leaf[] } {
 
 // --- fruit (markets) ----------------------------------------------------------
 
+/** A euro sign centred on (x, y), `s` = radius of its curve, as one stroked path. */
+function euro(x: number, y: number, s: number, color: string, width: number) {
+  const d =
+    `M${n(x + s * 0.55)} ${n(y - s * 0.8)}A${n(s)} ${n(s)} 0 1 0 ${n(x + s * 0.55)} ${n(y + s * 0.8)}` +
+    `M${n(x - s * 1.25)} ${n(y - s * 0.25)}h${n(s * 1.3)}M${n(x - s * 1.25)} ${n(y + s * 0.3)}h${n(s * 1.3)}`
+  return `<path ${attrs({ d, fill: 'none', stroke: color, 'stroke-width': width, 'stroke-linecap': 'round' })}/>`
+}
+
+/** Share of fruit that turns into money at markets 100; a couple of apples always stay. */
+const MAX_MONEY = 0.8
+
 function fruitShapes(input: TreeInput, leaves: Leaf[]): Shape[] {
   const count = fruitCount(input.growth)
   if (count === 0) return []
-  const coins = express(input.markets, input.growth)
+  const money = express(input.markets, input.growth)
   // Fruit hang from tip leaves, chosen and typed by fixed per-leaf orders, so
-  // a higher markets score turns apples into coins one at a time.
+  // a higher markets score turns apples into money (coins and banknotes) one
+  // at a time.
   const hosts = leaves
     .filter((l) => l.tip)
     .map((l) => ({ l, order: rngFor(`fruit:${l.key}`)() }))
     .sort((a, b) => a.order - b.order)
     .slice(0, count)
-  const coinRanks = hosts
+  const moneyRanks = hosts
     .map((h, i) => ({ i, order: rngFor(`coin:${h.l.key}`)() }))
     .sort((a, b) => a.order - b.order)
     .map((h) => h.i)
-  const coinCount = Math.round(count * coins)
+  const moneyCount = Math.round(count * money * MAX_MONEY)
 
   return hosts.flatMap(({ l }, i) => {
     const x = l.x
     const y = l.y + l.r * 0.45
     const r = 7.5
-    const box = boxOfCircle(x, y, r + 3)
-    const isCoin = coinRanks.indexOf(i) < coinCount
-    const parts = isCoin
-      ? [
-          `<circle ${attrs({ cx: x, cy: y, r, fill: COLORS.coin, stroke: COLORS.ink, 'stroke-width': 1.5 })}/>`,
-          `<circle ${attrs({ cx: x, cy: y, r: r * 0.55, fill: 'none', stroke: COLORS.ink, 'stroke-width': 1 })}/>`,
-          `<path ${attrs({ d: `M${n(x - r * 0.5)} ${n(y - r * 0.15)}a${n(r * 0.55)} ${n(r * 0.55)} 0 0 1 ${n(r * 0.35)} -${n(r * 0.35)}`, fill: 'none', stroke: COLORS.petal, 'stroke-width': 1.2, 'stroke-linecap': 'round' })}/>`,
-        ]
-      : [
-          `<circle ${attrs({ cx: x, cy: y, r, fill: COLORS.apple })}/>`,
-          `<line ${attrs({ x1: x, y1: y - r + 1, x2: x + 1.5, y2: y - r - 3.5, stroke: COLORS.ink, 'stroke-width': 1.5, 'stroke-linecap': 'round' })}/>`,
-          `<ellipse ${attrs({ cx: x + 4.5, cy: y - r - 2, rx: 3.5, ry: 1.8, fill: COLORS.leafDark, transform: `rotate(-25 ${n(x + 4.5)} ${n(y - r - 2)})` })}/>`,
-        ]
+    const rank = moneyRanks.indexOf(i)
+    let parts: string[]
+    let box = boxOfCircle(x, y, r + 3)
+    if (rank >= moneyCount) {
+      parts = [
+        `<circle ${attrs({ cx: x, cy: y, r, fill: COLORS.apple })}/>`,
+        `<line ${attrs({ x1: x, y1: y - r + 1, x2: x + 1.5, y2: y - r - 3.5, stroke: COLORS.ink, 'stroke-width': 1.5, 'stroke-linecap': 'round' })}/>`,
+        `<ellipse ${attrs({ cx: x + 4.5, cy: y - r - 2, rx: 3.5, ry: 1.8, fill: COLORS.leafDark, transform: `rotate(-25 ${n(x + 4.5)} ${n(y - r - 2)})` })}/>`,
+      ]
+    } else if (rank % 2 === 1) {
+      // A banknote hanging at a slant, like a leaf.
+      const tilt = (rngFor(`bill:${l.key}`)() - 0.5) * 50
+      const w = 26
+      const h = 14
+      const by = y + 2
+      const t = `rotate(${n(tilt)} ${n(x)} ${n(by)})`
+      parts = [
+        `<rect ${attrs({ x: x - w / 2, y: by - h / 2, width: w, height: h, rx: 2, fill: COLORS.bill, stroke: COLORS.leafDark, 'stroke-width': 1.5, transform: t })}/>`,
+        `<rect ${attrs({ x: x - w / 2 + 2.5, y: by - h / 2 + 2.5, width: w - 5, height: h - 5, rx: 1, fill: 'none', stroke: COLORS.leafDark, 'stroke-width': 0.8, 'stroke-opacity': 0.6, transform: t })}/>`,
+        euro(x + 0.5, by, 3, COLORS.leafDark, 1.4).replace('/>', ` transform="${t}"/>`),
+      ]
+      box = boxOfCircle(x, by, w / 2 + 2)
+    } else {
+      parts = [
+        `<circle ${attrs({ cx: x, cy: y, r: r + 0.5, fill: COLORS.coin, stroke: COLORS.ink, 'stroke-width': 1.5 })}/>`,
+        `<circle ${attrs({ cx: x, cy: y, r: r - 2, fill: 'none', stroke: COLORS.ink, 'stroke-width': 0.8, 'stroke-opacity': 0.5 })}/>`,
+        euro(x + 0.5, y, 3, COLORS.ink, 1.4),
+      ]
+    }
     return parts.map((svg) => ({ layer: 'fruit' as const, svg, box }))
   })
 }
