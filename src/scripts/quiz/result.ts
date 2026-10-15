@@ -10,6 +10,7 @@ import {
   resultPath,
 } from '../../lib/quiz/url'
 import { items } from '../../lib/quiz/data'
+import { renderTree } from '../../lib/quiz/tree'
 
 interface Config {
   locale: Locale
@@ -68,6 +69,11 @@ export function initResult() {
       String(result.overall),
     )
     root.querySelector('[data-no-scores]')!.setAttribute('hidden', '')
+    // The visitor's own tree, redrawn from the final scores alone.
+    document.getElementById('result-tree')!.innerHTML = renderTree(
+      { growth: 1, ...scores },
+      config.types[result.type].name,
+    )
     root.querySelector('[data-cta-quiz]')!.textContent = config.strings.takeAgain
 
     if (friend) {
@@ -80,6 +86,10 @@ export function initResult() {
         const card = root.querySelector(`[data-compare-card="${who}"]`)!
         card.querySelector('[data-compare-summary]')!.textContent = summary(r)
         fillBars(card, `compare-${who}`, r.scores)
+        card.querySelector('[data-compare-tree]')!.innerHTML = renderTree(
+          { growth: 1, ...r.scores },
+          summary(r),
+        )
       }
       root.querySelector('[data-compare]')!.removeAttribute('hidden')
     } else {

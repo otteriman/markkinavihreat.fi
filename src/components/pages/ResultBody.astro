@@ -4,6 +4,7 @@ import QuizBars from '../QuizBars.astro'
 import { localePath, type Locale } from '../../lib/content'
 import { items, resultTypes, t as qt } from '../../lib/quiz/data'
 import type { Finale, Statement, TypeSlug } from '../../lib/quiz/types'
+import { renderTree } from '../../lib/quiz/tree'
 import { resultPath } from '../../lib/quiz/url'
 
 interface Props {
@@ -56,6 +57,13 @@ const config = {
     class="content-max mx-auto px-4 py-10 sm:px-6"
   >
     <p class="text-eyebrow text-harmaa">{t('intro.title')}</p>
+    <!-- The type's representative tree; replaced by the visitor's own tree when
+         their scores are in the URL. Same size and place as at the end of the quiz. -->
+    <div
+      id="result-tree"
+      class="mx-auto mt-4 aspect-[6/5] w-full max-w-[24rem]"
+      set:html={renderTree({ growth: 1, ...resultType.representative }, resultType.name[locale])}
+    />
     <p data-result-percent class="text-display-lg mt-2">
       {t('result.overall', { percent: bucket })}
     </p>
@@ -78,6 +86,7 @@ const config = {
             <div class="card bg-white" data-compare-card={who}>
               <h3 class="text-lg">{t(`result.${who}`)}</h3>
               <p data-compare-summary class="mb-4 text-sm font-semibold" />
+              <div data-compare-tree class="mb-4 aspect-[6/5]" />
               <QuizBars locale={locale} group={`compare-${who}`} />
             </div>
           ))
