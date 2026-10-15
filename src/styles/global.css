@@ -127,3 +127,27 @@
     @apply text-kerma underline;
   }
 }
+
+/* The quiz's drum roll before the result reveal: the tree shakes. */
+.is-shaking {
+  animation: tree-shake 0.8s ease-in-out;
+}
+@keyframes tree-shake {
+  0%,
+  100% {
+    transform: none;
+  }
+  20%,
+  60% {
+    transform: translateX(-5px) rotate(-1.5deg);
+  }
+  40%,
+  80% {
+    transform: translateX(5px) rotate(1.5deg);
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .is-shaking {
+    animation: none;
+  }
+}

@@ -316,5 +316,23 @@
     "sv": "Sista frågan, alternativ",
     "en": "The last question, options",
     "needsReview": ["sv"]
+  },
+  "reveal.see": {
+    "fi": "Näytä tulokseni",
+    "sv": "Visa mitt resultat",
+    "en": "See my result",
+    "needsReview": ["sv"]
+  },
+  "guess.correct": {
+    "fi": "Oikea vastaus",
+    "sv": "Rätt svar",
+    "en": "Correct answer",
+    "needsReview": ["sv"]
+  },
+  "reveal.status": {
+    "fi": "Tuloksesi: {percent} % markkinavihreä, {type}.",
+    "sv": "Ditt resultat: {percent} % marknadsgrön, {type}.",
+    "en": "Your result: {percent}% market green, {type}.",
+    "needsReview": ["sv"]
   }
 }

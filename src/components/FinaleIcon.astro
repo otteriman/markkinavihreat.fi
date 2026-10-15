@@ -1,0 +1,56 @@
+---
+/**
+ * Illustrations for the three finale options, in the tree's paper-cut style
+ * (style C): flat paper colours, each piece on a flat, offset paper edge.
+ */
+interface Props {
+  option: string
+}
+
+const { option } = Astro.props
+const C = {
+  coin: '#F2C14E',
+  apple: '#DD6B4A',
+  brown: '#6B4F3A',
+  paper: '#FFFDF6',
+  leaf: '#7FB548',
+}
+const EDGE = '#1A3A1A'
+
+// Each icon is drawn by a function of a colour picker, so the paper edge is the
+// same shapes in one flat colour.
+const icons: Record<string, (c: (name: keyof typeof C) => string) => string> = {
+  // A price tag with a euro sign: putting a price on emissions.
+  price: (c) => `
+    <path d="M10 30 L30 10 H52 V32 L32 52 Z" fill="${c('coin')}" stroke="${c('brown')}" stroke-width="3" stroke-linejoin="round"/>
+    <circle cx="44" cy="18" r="4" fill="${c('paper')}" stroke="${c('brown')}" stroke-width="2.5"/>
+    <path d="M36 27a7 7 0 1 0 0 10M25 30h9M25 34h9" fill="none" stroke="${c('brown')}" stroke-width="2.5" stroke-linecap="round" transform="rotate(-45 32 32)"/>`,
+  // A prohibition sign: bans and subsidies.
+  bans: (c) => `
+    <circle cx="32" cy="32" r="21" fill="${c('paper')}" stroke="${c('apple')}" stroke-width="7"/>
+    <path d="M17 17 L47 47" stroke="${c('apple')}" stroke-width="7" stroke-linecap="round"/>`,
+  // A shrug: neither.
+  neither: (c) => `
+    <circle cx="32" cy="22" r="10" fill="${c('leaf')}"/>
+    <path d="M28 21v1M36 21v1M28 26q4 3 8 0" fill="none" stroke="${c('brown')}" stroke-width="2.2" stroke-linecap="round"/>
+    <path d="M32 33v14M32 38 L20 41 L13 31 M32 38 L44 41 L51 31 M8 34 L13 31 L13 25 M56 34 L51 31 L51 25" fill="none" stroke="${c('brown')}" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round"/>`,
+}
+
+const draw = icons[option]
+const svg = draw
+  ? `<g transform="translate(2 3)" opacity="0.2">${draw(() => EDGE)}</g>${draw((name) => C[name])}`
+  : ''
+---
+
+{
+  svg && (
+    <svg
+      viewBox="0 0 64 64"
+      width="64"
+      height="64"
+      aria-hidden="true"
+      class="shrink-0"
+      set:html={svg}
+    />
+  )
+}

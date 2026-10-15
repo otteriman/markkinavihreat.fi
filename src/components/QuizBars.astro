@@ -21,7 +21,11 @@ const { locale, group } = Astro.props
           <span data-bar-value />
         </p>
         <div class="bg-kerma-syva h-3 overflow-hidden rounded-full">
-          <div data-bar-fill class="bg-vihrea h-full" style="width:0%" />
+          <div
+            data-bar-fill
+            class="bg-vihrea h-full transition-[width] duration-300 ease-out motion-reduce:transition-none"
+            style="width:0%"
+          />
         </div>
       </div>
     ))

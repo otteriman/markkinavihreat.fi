@@ -1,7 +1,10 @@
 ---
 import BaseLayout from '../../layouts/BaseLayout.astro'
+import FinaleIcon from '../FinaleIcon.astro'
+import QuizBars from '../QuizBars.astro'
 import type { Locale } from '../../lib/content'
-import { items, t as qt } from '../../lib/quiz/data'
+import { items, resultTypes, t as qt } from '../../lib/quiz/data'
+import { renderTree } from '../../lib/quiz/tree'
 import { questionNumber, scoredCount } from '../../lib/quiz/flow'
 import type { Finale, GuessInterlude, Statement } from '../../lib/quiz/types'
 
@@ -26,7 +29,10 @@ const config = {
     guessOff: t('guess.off', { n: '{n}' }),
     guessOffOne: t('guess.offOne'),
     guessExact: t('guess.exact'),
+    overall: t('result.overall', { percent: '{percent}' }),
+    revealStatus: t('reveal.status', { percent: '{percent}', type: '{type}' }),
   },
+  types: Object.fromEntries(resultTypes.map((r) => [r.slug, r.name[locale]])),
 }
 
 const isStatement = (i: (typeof items)[number]): i is Statement => i.kind === 'statement'
@@ -49,10 +55,14 @@ const btnAnswer =
     data-locale={locale}
     class="content-max mx-auto flex min-h-[calc(100svh-4rem)] scroll-mt-16 flex-col px-4 py-6 sm:px-6"
   >
-    <div id="quiz-progress" class="mb-4 hidden" aria-hidden="true">
-      <div class="bg-kerma-syva h-2 overflow-hidden rounded-full">
-        <div id="quiz-progress-bar" class="bg-vihrea h-full w-0 transition-[width]"></div>
-      </div>
+    <!-- The growing tree is the progress indicator (plan section 7.3). It is
+         decorative; screen readers get "Question n of 10" from #quiz-status. -->
+    <div id="quiz-tree-wrap" class="quiz-tree-wrap mx-auto w-full" aria-hidden="true">
+      <div
+        id="quiz-tree"
+        class="aspect-[6/5]"
+        set:html={renderTree({ growth: 0, markets: 50, environment: 50, freedom: 50 })}
+      />
     </div>
     <p id="quiz-status" class="sr-only" aria-live="polite"></p>
 
@@ -181,9 +191,10 @@ const btnAnswer =
                       <button
                         type="button"
                         data-option={o.id}
-                        class="card hover:bg-surface-green aria-pressed:bg-musta aria-pressed:text-kerma min-h-24 bg-white text-left text-lg font-semibold"
+                        class="card hover:bg-surface-green aria-pressed:bg-musta aria-pressed:text-kerma flex min-h-24 items-center gap-4 bg-white text-left text-lg font-semibold"
                       >
-                        {o.label[locale]}
+                        <FinaleIcon option={o.id} />
+                        <span>{o.label[locale]}</span>
                       </button>
                     ))}
                   </div>
@@ -213,7 +224,7 @@ const btnAnswer =
                 hidden
                 class="flex flex-1 flex-col justify-between gap-6 py-4"
               >
-                <div class="card bg-white">
+                <div data-card class="card relative overflow-hidden bg-white">
                   <h2 data-heading tabindex="-1" class="text-2xl sm:text-3xl">
                     {item.after.text[locale]}
                   </h2>
@@ -234,6 +245,11 @@ const btnAnswer =
                       )}
                     </p>
                   )}
+                  <div
+                    data-timer
+                    class="bg-vihrea absolute inset-x-0 bottom-0 h-1 origin-left scale-x-0"
+                    aria-hidden="true"
+                  />
                 </div>
                 <button
                   type="button"
@@ -251,11 +267,37 @@ const btnAnswer =
                 hidden
                 class="flex flex-1 flex-col justify-between gap-6 py-4"
               >
-                <div class="card bg-white">
+                <div data-card class="card bg-white">
                   <h2 data-heading tabindex="-1" class="text-2xl sm:text-3xl">
                     {item.reveal[locale]}
                   </h2>
-                  <p data-guess-result class="mt-4 text-lg font-semibold" />
+                  <p
+                    class="mt-6 text-center text-4xl font-extrabold"
+                    data-reveal-year
+                    aria-hidden="true"
+                  >
+                    {item.answer}
+                  </p>
+                  <input
+                    type="range"
+                    min={item.min}
+                    max={item.max}
+                    step="1"
+                    value={item.answer}
+                    data-reveal-slider
+                    disabled
+                    tabindex="-1"
+                    aria-hidden="true"
+                    class="accent-vihrea-tumma mt-3 w-full"
+                  />
+                  <div class="text-harmaa flex justify-between text-xs" aria-hidden="true">
+                    <span>{item.min}</span>
+                    <span>{item.max}</span>
+                  </div>
+                  <p class="text-harmaa mt-3 text-sm">
+                    {t('guess.yourGuess')}: <span data-your-guess />
+                  </p>
+                  <p data-guess-result class="mt-2 text-lg font-semibold" />
                 </div>
                 <button
                   type="button"
@@ -271,6 +313,26 @@ const btnAnswer =
       })
     }
 
+    <!-- The result reveal (plan section 7.3), then on to the static result page. -->
+    <section data-step="reveal" hidden class="flex flex-1 flex-col gap-4 py-4 text-center">
+      <p data-reveal-drumroll class="text-eyebrow text-harmaa">{t('finale.drumroll')}</p>
+      <p data-reveal-percent class="text-display-lg tabular-nums" aria-hidden="true">
+        {t('result.overall', { percent: 0 })}
+      </p>
+      <h2
+        data-heading
+        data-reveal-type
+        tabindex="-1"
+        class="text-3xl opacity-0 transition-opacity duration-500 motion-reduce:transition-none"
+      >
+      </h2>
+      <div class="text-left">
+        <QuizBars locale={locale} group="reveal" />
+      </div>
+      <p data-reveal-status class="sr-only" aria-live="polite"></p>
+      <a data-reveal-link href={`#`} class="btn-primary mt-2 justify-center">{t('reveal.see')}</a>
+    </section>
+
     <script type="application/json" id="quiz-config" is:inline set:html={JSON.stringify(config)} />
   </div>
 </BaseLayout>
@@ -279,3 +341,32 @@ const btnAnswer =
   import { initQuiz } from '../../scripts/quiz/init'
   initQuiz()
 </script>
+
+<style>
+  /* The tree shrinks while questions are on screen and grows for the reveal. */
+  .quiz-tree-wrap {
+    max-width: 15rem;
+    transition: max-width 0.6s ease;
+  }
+  .quiz-tree-wrap.is-intro,
+  .quiz-tree-wrap.is-reveal {
+    max-width: 24rem;
+  }
+  /* After-question cards slide in. */
+  [data-step]:not([hidden]) [data-card] {
+    animation: quiz-card-in 0.35s ease-out;
+  }
+  @keyframes quiz-card-in {
+    from {
+      opacity: 0;
+      transform: translateY(16px);
+    }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .quiz-tree-wrap,
+    [data-step]:not([hidden]) [data-card] {
+      transition: none;
+      animation: none;
+    }
+  }
+</style>
