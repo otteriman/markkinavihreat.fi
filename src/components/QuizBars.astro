@@ -1,0 +1,29 @@
+---
+import type { Locale } from '../lib/content'
+import { t } from '../lib/quiz/data'
+import { AXES } from '../lib/quiz/types'
+
+interface Props {
+  locale: Locale
+  /** Hook for the client script, which fills the values: data-bars="<group>". */
+  group: string
+}
+
+const { locale, group } = Astro.props
+---
+
+<div data-bars={group} class="space-y-3">
+  {
+    AXES.map((axis) => (
+      <div data-bar={axis}>
+        <p class="flex justify-between text-sm font-semibold">
+          <span>{t(locale, `axis.${axis}`)}</span>
+          <span data-bar-value />
+        </p>
+        <div class="bg-kerma-syva h-3 overflow-hidden rounded-full">
+          <div data-bar-fill class="bg-vihrea h-full" style="width:0%" />
+        </div>
+      </div>
+    ))
+  }
+</div>

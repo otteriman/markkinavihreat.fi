@@ -280,5 +280,41 @@
     "sv": "Alternativ",
     "en": "Choices",
     "needsReview": ["sv"]
+  },
+  "result.noScores": {
+    "fi": "Tämä on yleinen tulos tälle ryhmälle. Tee testi nähdäksesi oman tuloksesi.",
+    "sv": "Det här är det allmänna resultatet för den här gruppen. Gör testet för att se ditt eget.",
+    "en": "This is the general result for this group. Take the quiz to see your own.",
+    "needsReview": ["sv"]
+  },
+  "result.scoresHeading": {
+    "fi": "Tuloksesi akseleittain",
+    "sv": "Dina poäng per axel",
+    "en": "Your scores by axis",
+    "needsReview": ["sv"]
+  },
+  "result.you": {
+    "fi": "Sinä",
+    "sv": "Du",
+    "en": "You",
+    "needsReview": ["sv"]
+  },
+  "result.friend": {
+    "fi": "Ystäväsi",
+    "sv": "Din vän",
+    "en": "Your friend",
+    "needsReview": ["sv"]
+  },
+  "result.whatNext": {
+    "fi": "Mitä seuraavaksi?",
+    "sv": "Vad händer härnäst?",
+    "en": "What next?",
+    "needsReview": ["sv"]
+  },
+  "how.finale": {
+    "fi": "Viimeinen kysymys, vaihtoehdot",
+    "sv": "Sista frågan, alternativ",
+    "en": "The last question, options",
+    "needsReview": ["sv"]
   }
 }

@@ -1,0 +1,23 @@
+---
+import ResultBody from '../../../components/pages/ResultBody.astro'
+import { reachableResults } from '../../../lib/quiz/scoring'
+import { resultSlug } from '../../../lib/quiz/url'
+import type { TypeSlug } from '../../../lib/quiz/types'
+
+interface Props {
+  type: TypeSlug
+  bucket: number
+}
+
+// One static page per reachable type/bucket (see reachableResults()).
+export function getStaticPaths() {
+  return reachableResults().map(({ type, bucket }) => ({
+    params: { result: resultSlug(type, bucket) },
+    props: { type, bucket },
+  }))
+}
+
+const { type, bucket } = Astro.props
+---
+
+<ResultBody locale="fi" type={type} bucket={bucket} />

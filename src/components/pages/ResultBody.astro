@@ -1,0 +1,143 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro'
+import QuizBars from '../QuizBars.astro'
+import { localePath, type Locale } from '../../lib/content'
+import { items, resultTypes, t as qt } from '../../lib/quiz/data'
+import type { Finale, Statement, TypeSlug } from '../../lib/quiz/types'
+import { resultPath } from '../../lib/quiz/url'
+
+interface Props {
+  locale: Locale
+  type: TypeSlug
+  bucket: number
+}
+
+const { locale, type, bucket } = Astro.props
+const t = (key: string, vars?: Record<string, string | number>) => qt(locale, key, vars)
+
+const WHATSAPP_URL = 'https://chat.whatsapp.com/DFBhxqTOmLRHqGgUzupy7L'
+
+const resultType = resultTypes.find((r) => r.slug === type)!
+const description = resultType.description[locale]
+const statements = items.filter((i): i is Statement => i.kind === 'statement')
+const finale = items.find((i): i is Finale => i.kind === 'finale')!
+
+// Everything the client script needs that is locale-specific. The exact scores
+// come from the URL, so this page is the same for every visitor of a type/bucket.
+const config = {
+  locale,
+  strings: {
+    overall: t('result.overall', { percent: '{percent}' }),
+    takeAgain: t('result.takeAgain'),
+  },
+  types: Object.fromEntries(resultTypes.map((r) => [r.slug, { name: r.name[locale] }])),
+  nudges: Object.fromEntries(
+    statements
+      .filter((s) => s.relatedLink)
+      .map((s) => [
+        s.id,
+        { href: s.relatedLink!.href[locale], label: s.relatedLink!.label[locale] },
+      ]),
+  ),
+}
+---
+
+<BaseLayout
+  locale={locale}
+  title={`${t('result.overall', { percent: bucket })}: ${resultType.name[locale]} — markkinavihreat.fi`}
+  description={resultType.oneLiner[locale]}
+  path={resultPath(type, bucket)}
+  noindex
+>
+  <div
+    id="quiz-result"
+    data-type={type}
+    data-bucket={bucket}
+    class="content-max mx-auto px-4 py-10 sm:px-6"
+  >
+    <p class="text-eyebrow text-harmaa">{t('intro.title')}</p>
+    <p data-result-percent class="text-display-lg mt-2">
+      {t('result.overall', { percent: bucket })}
+    </p>
+    <h1 class="mt-2 text-3xl sm:text-4xl">{resultType.name[locale]}</h1>
+    <p class="mt-3 text-lg">{resultType.oneLiner[locale]}</p>
+    {!description.startsWith('TODO') && <p class="mt-3">{description}</p>}
+
+    <p data-no-scores class="text-harmaa mt-6">{t('result.noScores')}</p>
+
+    <section data-scores hidden class="mt-8">
+      <h2 class="mb-4 text-xl">{t('result.scoresHeading')}</h2>
+      <QuizBars locale={locale} group="you" />
+    </section>
+
+    <section data-compare hidden class="mt-8">
+      <h2 class="mb-4 text-xl">{t('result.compare')}</h2>
+      <div class="grid gap-6 sm:grid-cols-2">
+        {
+          (['you', 'friend'] as const).map((who) => (
+            <div class="card bg-white" data-compare-card={who}>
+              <h3 class="text-lg">{t(`result.${who}`)}</h3>
+              <p data-compare-summary class="mb-4 text-sm font-semibold" />
+              <QuizBars locale={locale} group={`compare-${who}`} />
+            </div>
+          ))
+        }
+      </div>
+    </section>
+
+    <section data-nudges hidden class="mt-8">
+      <h2 class="mb-3 text-xl">{t('result.nudgeHeading')}</h2>
+      <ul data-nudge-list class="list-disc space-y-1 pl-5"></ul>
+    </section>
+
+    <section class="mt-10">
+      <h2 class="mb-4 text-xl">{t('result.whatNext')}</h2>
+      <div class="flex flex-col gap-3 sm:flex-row sm:flex-wrap">
+        <!-- TODO(phase 6): newsletter signup is the primary call to action; added with the newsletter component. -->
+        <a data-cta-quiz href={localePath(locale, '/testi/')} class="btn-primary justify-center">
+          {t('result.takeQuiz')}
+        </a>
+        <a
+          href={WHATSAPP_URL}
+          target="_blank"
+          rel="noopener"
+          class="btn-outline-medium justify-center"
+        >
+          {t('result.ctaWhatsapp')}
+        </a>
+        <a href={localePath(locale, '/manifesti/')} class="btn-outline-medium justify-center">
+          {t('result.ctaManifesto')}
+        </a>
+      </div>
+    </section>
+
+    <details class="card mt-10 bg-white">
+      <summary class="cursor-pointer text-lg font-semibold">{t('how.heading')}</summary>
+      <p class="mt-4">{t('how.scoring')}</p>
+      <h3 class="mt-6 text-base">{t('how.questions')}</h3>
+      <ol class="mt-2 list-decimal space-y-1 pl-5">
+        {statements.map((s) => <li>{s.text[locale]}</li>)}
+        <li>
+          {finale.text[locale]}
+          <ul class="list-disc pl-5">
+            {finale.options.map((o) => <li>{o.label[locale]}</li>)}
+          </ul>
+        </li>
+      </ol>
+    </details>
+
+    <p class="text-harmaa mt-8 text-sm">{t('footer.notVaa')}</p>
+
+    <script
+      type="application/json"
+      id="quiz-result-config"
+      is:inline
+      set:html={JSON.stringify(config)}
+    />
+  </div>
+</BaseLayout>
+
+<script>
+  import { initResult } from '../../scripts/quiz/result'
+  initResult()
+</script>

@@ -1,7 +1,7 @@
 ---
 import BaseLayout from '../../layouts/BaseLayout.astro'
 import type { Locale } from '../../lib/content'
-import { items, resultTypes, t as qt } from '../../lib/quiz/data'
+import { items, t as qt } from '../../lib/quiz/data'
 import { questionNumber, scoredCount } from '../../lib/quiz/flow'
 import type { Finale, GuessInterlude, Statement } from '../../lib/quiz/types'
 
@@ -23,14 +23,10 @@ const config = {
   guess: items.find((i): i is GuessInterlude => i.kind === 'guess')?.answer,
   strings: {
     progress: t('progress.label', { n: '{n}', total }),
-    overall: t('result.overall', { percent: '{percent}' }),
     guessOff: t('guess.off', { n: '{n}' }),
     guessOffOne: t('guess.offOne'),
     guessExact: t('guess.exact'),
   },
-  types: Object.fromEntries(
-    resultTypes.map((r) => [r.slug, { name: r.name[locale], oneLiner: r.oneLiner[locale] }]),
-  ),
 }
 
 const isStatement = (i: (typeof items)[number]): i is Statement => i.kind === 'statement'
@@ -274,33 +270,6 @@ const btnAnswer =
         )
       })
     }
-
-    <!-- Placeholder result summary; Phase 3 replaces it with navigation to the static result page. -->
-    <section data-step="result" hidden class="flex flex-1 flex-col justify-between gap-6 py-4">
-      <div>
-        <p data-result-percent class="text-display-lg"></p>
-        <h2 data-heading tabindex="-1" data-result-type class="mt-2 text-3xl"></h2>
-        <p data-result-oneliner class="mt-3 text-lg"></p>
-        <div class="mt-6 space-y-3">
-          {
-            (['markets', 'environment', 'freedom'] as const).map((axis) => (
-              <div data-bar={axis}>
-                <p class="flex justify-between text-sm font-semibold">
-                  <span>{t(`axis.${axis}`)}</span>
-                  <span data-bar-value />
-                </p>
-                <div class="bg-kerma-syva h-3 overflow-hidden rounded-full">
-                  <div data-bar-fill class="bg-vihrea h-full" style="width:0%" />
-                </div>
-              </div>
-            ))
-          }
-        </div>
-      </div>
-      <button type="button" data-action="restart" class="btn-outline-medium w-full justify-center">
-        {t('result.takeAgain')}
-      </button>
-    </section>
 
     <script type="application/json" id="quiz-config" is:inline set:html={JSON.stringify(config)} />
   </div>
