@@ -138,7 +138,14 @@ function skeleton(depth: number, wild: number) {
     const shade = r()
     const x2 = x + Math.sin(angle) * len
     const y2 = y - Math.cos(angle) * len
-    segments.push({ x1: x, y1: y, x2, y2, width: 0.11 * Math.pow(0.66, level), level })
+    segments.push({
+      x1: x,
+      y1: y,
+      x2,
+      y2,
+      width: level === 0 ? 0.17 : 0.12 * Math.pow(0.66, level),
+      level,
+    })
 
     if (depth === 1) {
       // A seedling: two leaves either side of the tip.
@@ -180,14 +187,77 @@ function skeleton(depth: number, wild: number) {
         x2,
         y2,
         angle + side * spread + wild * (ca * 0.9 + jitterA * 0.3) + lean,
-        len * lerp(0.72, 0.76, wild) * (1 + wild * (cl * 0.5 + jitterL * 0.15)),
+        (level === 0 ? 1 : len) * lerp(0.72, 0.76, wild) * (1 + wild * (cl * 0.5 + jitterL * 0.15)),
         level + 1,
       )
     }
   }
 
-  branch('T', 0, 0, lean * 0.5, 1, 0)
+  // A pruned tree is a garden standard: a taller clear trunk under a clipped crown.
+  branch('T', 0, 0, lean * 0.5, depth >= 3 ? lerp(1.5, 1, wild) : 1, 0)
   return { segments, leaves }
+}
+
+/**
+ * Shapes a pruned tree into a garden standard: the crown is clipped into a
+ * ball around the top of the trunk, branches are drawn in under it, and the
+ * leaves are spread evenly around it. `amount` 0 leaves the natural shape,
+ * 1 is fully clipped; in between it blends. Returns the solid crown behind
+ * the leaves, or null when there is none. Mutates segments and leaves.
+ */
+function clip(segments: Segment[], leaves: Leaf[], amount: number) {
+  if (amount <= 0) return null
+  const trunk = segments[0]
+  const x0 = Math.min(...leaves.map((l) => l.x - l.r))
+  const x1 = Math.max(...leaves.map((l) => l.x + l.r))
+  const radius = ((x1 - x0) / 2) * 0.62
+  const cx = trunk.x2
+  const cy = trunk.y2 - radius * 0.55
+  const pull = (x: number, y: number, k: number) => ({
+    x: lerp(x, cx + (x - cx) * k, amount),
+    y: lerp(y, cy + (y - cy) * k, amount),
+  })
+
+  for (const s of segments) {
+    if (s.level === 0) continue
+    // First branches stay attached to the top of the trunk.
+    const a = s.level === 1 ? { x: s.x1, y: s.y1 } : pull(s.x1, s.y1, 0.42)
+    const b = pull(s.x2, s.y2, 0.42)
+    Object.assign(s, {
+      x1: a.x,
+      y1: a.y,
+      x2: b.x,
+      y2: b.y,
+      width: s.level === 1 ? s.width : s.width * (1 - 0.6 * amount),
+    })
+  }
+
+  // Tips keep their order around the crown but are spaced evenly on its rim;
+  // the inner leaves cover the face of the ball in a sunflower spiral.
+  const tips = leaves
+    .filter((l) => l.tip)
+    .sort((p, q) => Math.atan2(p.x - cx, cy - p.y) - Math.atan2(q.x - cx, cy - q.y))
+  tips.forEach((l, i) => {
+    const a = -Math.PI + ((i + 0.5) / tips.length) * Math.PI * 2
+    l.x = lerp(l.x, cx + Math.sin(a) * radius * 0.9, amount)
+    l.y = lerp(l.y, cy - Math.cos(a) * radius * 0.9, amount)
+    l.r = lerp(l.r, radius * 0.2, amount)
+  })
+  const inner = leaves.filter((l) => !l.tip)
+  inner.forEach((l, i) => {
+    const d = Math.sqrt((i + 0.5) / inner.length) * radius * 0.7
+    const a = i * 2.39996
+    l.x = lerp(l.x, cx + Math.sin(a) * d, amount)
+    l.y = lerp(l.y, cy - Math.cos(a) * d, amount)
+    l.r = lerp(l.r, radius * 0.24, amount)
+  })
+  // Flat shading for volume: light where the sun hits (upper left), dark below right.
+  if (amount >= 0.5) {
+    for (const l of leaves) l.dark = (l.x - cx) * 0.6 - (l.y - cy) * -0.8 > radius * 0.35
+  }
+  // The solid ball only starts to form once the crown is mostly clipped.
+  const solid = Math.max(0, (amount - 0.3) / 0.7)
+  return solid > 0 ? { x: cx, y: cy, r: radius * solid } : null
 }
 
 function boxOfCircle(x: number, y: number, r: number): Box {
@@ -209,11 +279,13 @@ function treeShapes(input: TreeInput): { shapes: Shape[]; leaves: Leaf[] } {
   const depth = depthFor(growth)
   const wild = express(input.freedom, growth)
   const { segments, leaves } = skeleton(depth, wild)
+  const crown = depth >= 2 ? clip(segments, leaves, clamp01((0.55 - wild) / 0.55)) : null
 
   // Scale so that the top of the crown sits exactly treeHeight(growth) above the ground.
   let top = 0
   for (const s of segments) top = Math.min(top, s.y2, s.y1)
   for (const l of leaves) top = Math.min(top, l.y - l.r)
+  if (crown) top = Math.min(top, crown.y - crown.r)
   const scale = treeHeight(growth) / -top
   const X = (x: number) => VIEW.baseX + x * scale
   const Y = (y: number) => VIEW.groundY + y * scale
@@ -227,6 +299,14 @@ function treeShapes(input: TreeInput): { shapes: Shape[]; leaves: Leaf[] } {
       layer: 'tree',
       svg: `<line ${attrs({ x1: seg.x1, y1: seg.y1, x2: seg.x2, y2: seg.y2, stroke: COLORS.ink, 'stroke-width': s.width * scale, 'stroke-linecap': 'round' })}/>`,
       box: boxOfSegment(seg, scale),
+    })
+  }
+  if (crown) {
+    const r = crown.r * scale
+    shapes.push({
+      layer: 'tree',
+      svg: `<circle ${attrs({ cx: X(crown.x), cy: Y(crown.y), r, fill: COLORS.leafDark })}/>`,
+      box: boxOfCircle(X(crown.x), Y(crown.y), r),
     })
   }
   // Dark leaves first, light ones on top.
