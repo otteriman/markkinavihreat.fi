@@ -11,11 +11,12 @@ async function completeQuiz(page: Page) {
   for (let guard = 0; guard < 40; guard++) {
     const step = visibleStep(page)
     const key = await step.getAttribute('data-step')
-    if (key === 'result') return
     if (key!.startsWith('a:')) await step.locator('[data-action="continue"]').click()
-    else if (await step.locator('[data-option]').count())
+    else if (await step.locator('[data-option]').count()) {
       await step.locator('[data-option="price"]').click()
-    else if (await step.locator('[data-slider]').count()) {
+      await page.waitForURL(/\/tulos\//)
+      return
+    } else if (await step.locator('[data-slider]').count()) {
       await step.locator('[data-slider]').fill('2')
       await step.locator('[data-action="next"]').click()
     } else if (await step.locator('[data-guess-slider]').count())
@@ -26,21 +27,31 @@ async function completeQuiz(page: Page) {
 }
 
 for (const locale of ['fi', 'sv', 'en']) {
-  test(`completes the quiz in ${locale} and builds the result URL`, async ({ page }) => {
+  test(`completes the quiz in ${locale} and lands on the matching result page`, async ({
+    page,
+  }) => {
     await page.goto(START[locale])
     await completeQuiz(page)
-    const result = page.locator('[data-step="result"]')
-    await expect(result).toBeVisible()
     // All "strongly agree" answers: reversed items pull the axes to 75 / 75 / 67.
-    await expect(result).toHaveAttribute('data-result-type', 'pigou')
-    await expect(result).toHaveAttribute('data-result-bucket', '70')
-    await expect(result).toHaveAttribute(
-      'data-result-url',
-      `${PREFIX[locale]}/testi/tulos/pigou-70/?m=75&y=75&v=67#a=2,2,2,2,2,2,2,2,2`,
+    await expect(page).toHaveURL(
+      `${PREFIX[locale]}/testi/tulos/pigou-70/?m=75&y=75&v=67#a=2,2,2,2,2,2,2,2,2`.replace(
+        /^/,
+        'http://localhost:4321',
+      ),
     )
-    await expect(result.locator('[data-bar="freedom"] [data-bar-value]')).toHaveText('67')
+    await expect(page.locator('[data-result-percent]')).toContainText('72')
+    await expect(
+      page.locator('[data-bars="you"] [data-bar="freedom"] [data-bar-value]'),
+    ).toHaveText('67')
   })
 }
+
+test('a challenge link carries the friend scores to the result page', async ({ page }) => {
+  await page.goto('/testi/?cm=40&cy=50&cv=60')
+  await completeQuiz(page)
+  expect(page.url()).toContain('&cm=40&cy=50&cv=60')
+  await expect(page.locator('[data-compare]')).toBeVisible()
+})
 
 test('is noindex and not in the sitemap while in development', async ({ page, request }) => {
   await page.goto('/testi/')
@@ -158,13 +169,4 @@ test('guess reveal shows how far off the guess was', async ({ page }) => {
   await page.locator('[data-guess-slider]').fill('2000')
   await page.locator('[data-step="q:guess"] [data-action="next"]').click()
   await expect(page.locator('[data-guess-result]')).toContainText('7')
-})
-
-test('restart clears the answers', async ({ page }) => {
-  await page.goto(START.fi)
-  await completeQuiz(page)
-  await page.locator('[data-action="restart"]').click()
-  await expect(page.locator('[data-step="intro"]')).toBeVisible()
-  await page.locator('[data-action="start"]').click()
-  await expect(page.locator('[data-step="q:q1"] [data-answer][aria-pressed="true"]')).toHaveCount(0)
 })
