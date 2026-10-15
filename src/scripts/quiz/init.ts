@@ -10,8 +10,8 @@ import {
 } from '../../lib/quiz/flow'
 import { computeResult } from '../../lib/quiz/scoring'
 import { swipeValue } from '../../lib/quiz/swipe'
-import type { Answers, Axis } from '../../lib/quiz/types'
-import { encodeAnswersHash, encodeScores, resultPath } from '../../lib/quiz/url'
+import type { Answers } from '../../lib/quiz/types'
+import { encodeAnswersHash, encodeScores, parseChallenger, resultPath } from '../../lib/quiz/url'
 
 interface Config {
   locale: Locale
@@ -20,12 +20,10 @@ interface Config {
   guess: number
   strings: {
     progress: string
-    overall: string
     guessOff: string
     guessOffOne: string
     guessExact: string
   }
-  types: Record<string, { name: string; oneLiner: string }>
 }
 
 const stepKey = (s: Step) =>
@@ -129,29 +127,14 @@ export function initQuiz() {
 
   function finish() {
     const result = computeResult(answers, scoredItems)
-    const section = sections.get('result')!
-    const type = config.types[result.type]
-    section.querySelector('[data-result-percent]')!.textContent = config.strings.overall.replace(
-      '{percent}',
-      String(result.overall),
-    )
-    section.querySelector('[data-result-type]')!.textContent = type.name
-    section.querySelector('[data-result-oneliner]')!.textContent = type.oneLiner
-    for (const axis of Object.keys(result.scores) as Axis[]) {
-      const bar = section.querySelector(`[data-bar="${axis}"]`)!
-      bar.querySelector('[data-bar-value]')!.textContent = String(result.scores[axis])
-      bar.querySelector<HTMLElement>('[data-bar-fill]')!.style.width = `${result.scores[axis]}%`
-    }
-    // The static result page for this type and bucket arrives in Phase 3; the
-    // URL is built here so the whole flow can already be tested.
-    section.dataset.resultUrl =
+    // A friend's scores (from a challenge link) ride along to the result page.
+    const friend = parseChallenger(location.search)
+    // replace, so Back from the result page leaves the quiz instead of re-opening q10.
+    location.replace(
       localePath(config.locale, resultPath(result.type, result.bucket)) +
-      encodeScores(result.scores) +
-      encodeAnswersHash(statementValues(items, answers))
-    section.dataset.resultType = result.type
-    section.dataset.resultBucket = String(result.bucket)
-    progressBar.style.width = '100%'
-    show('result', true)
+        encodeScores(result.scores, friend) +
+        encodeAnswersHash(statementValues(items, answers)),
+    )
   }
 
   function advance() {
@@ -196,11 +179,6 @@ export function initQuiz() {
         const slider = section.querySelector<HTMLInputElement>('[data-slider]')
         return answer(slider ? Number(slider.value) : 0)
       }
-      case 'restart':
-        answers = {}
-        guess = null
-        progressBar.style.width = '0%'
-        return go(0)
     }
   })
 
