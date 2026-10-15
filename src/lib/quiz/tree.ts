@@ -24,9 +24,12 @@ import type { Scores } from './types'
  */
 export type TreeStyle = 'flat' | 'line' | 'paper'
 export const TREE_STYLES: TreeStyle[] = ['flat', 'line', 'paper']
+/** Style C, chosen in review. */
+export const DEFAULT_STYLE: TreeStyle = 'paper'
 
 export interface TreeInput extends Scores {
   growth: number
+  /** Defaults to DEFAULT_STYLE. */
   style?: TreeStyle
 }
 
@@ -666,7 +669,7 @@ export function treeShapesFor(input: TreeInput): Shape[] {
   const behind = life.filter((s) => s.box.y0 > G - 20)
   const front = life.filter((s) => s.box.y0 <= G - 20)
   const shapes = [ground, ...behind, ...tree, ...fruitShapes(input, leaves), ...front]
-  const style = input.style ?? 'flat'
+  const style = input.style ?? DEFAULT_STYLE
   return style === 'line' ? lineArt(shapes) : style === 'paper' ? paperCut(shapes) : shapes
 }
 

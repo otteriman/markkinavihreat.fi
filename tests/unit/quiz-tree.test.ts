@@ -110,7 +110,7 @@ describe('traits', () => {
   })
 
   it('keeps a couple of apples and adds banknotes at markets 100', () => {
-    const fruit = treeShapesFor({ growth: 1, ...mid, markets: 100 }).filter(
+    const fruit = treeShapesFor({ growth: 1, ...mid, markets: 100, style: 'flat' }).filter(
       (s) => s.layer === 'fruit',
     )
     expect(
@@ -121,7 +121,7 @@ describe('traits', () => {
 
   it('turns apples into coins as the markets score rises', () => {
     const coins = (markets: number) =>
-      treeShapesFor({ growth: 1, ...mid, markets }).filter(
+      treeShapesFor({ growth: 1, ...mid, markets, style: 'flat' }).filter(
         (s) => s.layer === 'fruit' && s.svg.includes('#E8B931'),
       ).length
     expect(coins(0)).toBe(0)
@@ -161,8 +161,14 @@ describe('styles', () => {
       }
   })
 
+  it('uses the chosen paper-cut style by default', () => {
+    expect(renderTree({ growth: 1, ...mid })).toBe(
+      renderTree({ growth: 1, ...mid, style: 'paper' }),
+    )
+  })
+
   it('draws the same tree under different paint', () => {
-    const base = treeShapesFor({ growth: 1, ...mid }).map((s) => s.key)
+    const base = treeShapesFor({ growth: 1, ...mid, style: 'flat' }).map((s) => s.key)
     for (const style of ['line', 'paper'] as const) {
       const keys = new Set(
         treeShapesFor({ growth: 1, ...mid, style }).map((s) =>

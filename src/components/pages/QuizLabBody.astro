@@ -1,7 +1,13 @@
 ---
 import BaseLayout from '../../layouts/BaseLayout.astro'
 import { resultTypes } from '../../lib/quiz/data'
-import { renderTree, TREE_STYLES, type TreeInput, type TreeStyle } from '../../lib/quiz/tree'
+import {
+  DEFAULT_STYLE,
+  renderTree,
+  TREE_STYLES,
+  type TreeInput,
+  type TreeStyle,
+} from '../../lib/quiz/tree'
 import type { Axis } from '../../lib/quiz/types'
 
 // Development and preview only (see src/pages/[lab].astro): a review sheet for
@@ -36,7 +42,7 @@ const axes: { axis: Axis; label: string; low: string; high: string }[] = [
   noindex
 >
   <div class="mx-auto max-w-6xl px-4 py-10 sm:px-6">
-    <p class="text-eyebrow text-harmaa">Kehitysnäkymä · kolme tyylivaihtoehtoa</p>
+    <p class="text-eyebrow text-harmaa">Kehitysnäkymä · valittu tyyli C: paperileikkaus</p>
     <h1 class="mt-2 text-4xl">Puulaboratorio</h1>
     <p class="mt-4 max-w-2xl">
       Puu piirretään koodilla. Koko riippuu vain kasvusta (yksi vaihe per vastattu kysymys);
@@ -64,13 +70,13 @@ const axes: { axis: Axis; label: string; low: string; high: string }[] = [
       <legend class="text-sm font-semibold">Näytä alla tyylillä</legend>
       <div class="mt-2 flex flex-wrap gap-4">
         {
-          TREE_STYLES.map((style, i) => (
+          TREE_STYLES.map((style) => (
             <label class="flex items-center gap-2 text-sm">
               <input
                 type="radio"
                 name="style"
                 value={style}
-                checked={i === 0}
+                checked={style === DEFAULT_STYLE}
                 class="accent-vihrea-tumma"
               />
               {STYLE_NAMES[style]}
