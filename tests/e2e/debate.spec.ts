@@ -137,6 +137,50 @@ test('a whole battle by tapping on a phone, with typing and bars', async ({ brow
   await context.close()
 })
 
+test('both characters slide in when the battle starts', async ({ page }) => {
+  await page.goto('/debaattipeli/')
+  await expect(page.locator('[data-debate-bottom]')).not.toHaveText('')
+  await expect(page.locator('.debate-sprite-enemy')).toBeVisible()
+  await expect(page.locator('.debate-sprite-player')).toBeVisible()
+  await expect(page.locator('.debate-enter')).toHaveCount(0)
+})
+
+test('with reduced motion the characters are simply there', async ({ page }) => {
+  await page.emulateMedia({ reducedMotion: 'reduce' })
+  await page.goto('/debaattipeli/')
+  await expect(page.locator('[data-debate-bottom]')).not.toHaveText('')
+  await expect(page.locator('.debate-sprite-enemy')).toBeVisible()
+  await expect(page.locator('.debate-enter')).toHaveCount(0)
+})
+
+test('sound is off until the toggle is clicked', async ({ page }) => {
+  await page.addInitScript(() => {
+    const w = window as unknown as { audioContexts: number; AudioContext: typeof AudioContext }
+    w.audioContexts = 0
+    const Base = window.AudioContext
+    w.AudioContext = class extends Base {
+      constructor(options?: AudioContextOptions) {
+        super(options)
+        w.audioContexts++
+      }
+    }
+  })
+  await page.goto('/debaattipeli/')
+  const toggle = page.getByRole('button', { name: 'Äänet päälle' })
+  await expect(toggle).toBeVisible()
+  await expect(page.locator('[data-debate-bottom]')).not.toHaveText('')
+  const contexts = () =>
+    page.evaluate(() => (window as unknown as { audioContexts: number }).audioContexts)
+  expect(await contexts()).toBe(0)
+  await toggle.click()
+  await expect(page.getByRole('button', { name: 'Äänet pois' })).toBeVisible()
+  expect(await contexts()).toBe(1)
+  // A mouse click hands focus back to the game, so Enter keeps advancing it.
+  await expect(page.locator('.debate-stage')).toBeFocused()
+  await page.getByRole('button', { name: 'Äänet pois' }).click()
+  await expect(page.getByRole('button', { name: 'Äänet päälle' })).toBeVisible()
+})
+
 test('the battle waits until the stage is on screen', async ({ page }) => {
   await page.setViewportSize({ width: 1280, height: 300 })
   await page.goto('/debaattipeli/')

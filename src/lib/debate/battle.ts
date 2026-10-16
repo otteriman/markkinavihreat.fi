@@ -33,6 +33,8 @@ export type BattleEvent =
    */
   | { type: 'phase'; phase: 'enemyAttack' | 'reply' | 'playerAttack'; name: Localized }
   | { type: 'phase'; phase: 'enemyDefense' | 'newRound' }
+  /** Both sides take the stage (they slide in when the battle starts). */
+  | { type: 'enter' }
   /** `who` leaves the stage (the enemy slides out when knocked out). */
   | { type: 'exit'; who: Side }
   /**
@@ -133,6 +135,7 @@ export function startBattle({ enemy, difficulty, attackSlots, rng }: BattleSetup
     result: null,
   }
   const events: BattleEvent[] = [
+    { type: 'enter' },
     { type: 'narrate', message: { text: enemy.appear } },
     { type: 'say', who: 'enemy', text: enemy.opening },
   ]

@@ -19,7 +19,8 @@ import type { Enemy, UiStrings } from './types'
  * - The enemy's box empties (text and label) when a new round starts and when
  *   the player attacks, so it never shows a line he has finished with.
  * - A new round and the ending clear both labels. Rounds aren't announced.
- * - A knocked-out enemy slides off the stage before his defeat line.
+ * - Both sides slide in as the battle starts; a knocked-out enemy slides off
+ *   the stage before his defeat line.
  * - A backfire (a perfect defense hurting the attacker) is a hit like any
  *   other; its effect text says whose support dropped.
  */
@@ -49,7 +50,11 @@ export type Step =
       to: number
       /** E.g. "Sinä: kannatus 85". */
       announce: string
+      /** The attack backfired on the attacker. */
+      backfire: boolean
     }
+  /** Both sides slide onto the stage. */
+  | { kind: 'enter' }
   /** `who` slides off the stage. */
   | { kind: 'exit'; who: Side }
   | { kind: 'prompt'; prompt: PromptEvent }
@@ -130,10 +135,14 @@ export function planSteps(
           from: event.from,
           to: event.to,
           announce: format({ key: 'a11y.hit', vars: { name, value: event.to } }, locale, ui),
+          backfire: event.counter,
         })
         if (events[i - 1]?.type === 'narrate') steps.push({ kind: 'wait', until: 'advance' })
         break
       }
+      case 'enter':
+        steps.push({ kind: 'enter' })
+        break
       case 'exit':
         // He has left: his box and the labels go before he slides out.
         if (event.who === 'enemy') steps.push({ kind: 'clear', box: 'top' })

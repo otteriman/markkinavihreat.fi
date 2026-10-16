@@ -28,7 +28,7 @@ const shape = (steps: Step[]) =>
                 ? `hit:${s.target}`
                 : s.kind === 'prompt'
                   ? `prompt:${s.prompt.kind}`
-                  : 'end',
+                  : s.kind,
   )
 
 function battle() {
@@ -42,6 +42,7 @@ describe('planSteps', () => {
     const { start } = battle()
     const steps = plan(start.events)
     expect(shape(steps)).toEqual([
+      'enter', // both sides slide in
       'type:bottom', // Villi … ilmestyi!
       'wait:advance',
       'type:top', // opening line

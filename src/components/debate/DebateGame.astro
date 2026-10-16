@@ -98,8 +98,15 @@ const promptId = `debate-prompt-${locale}`
       </span>
     </div>
 
-    <div class="debate-sprite debate-sprite-enemy" set:html={spriteSvg(enemy.sprite)} />
-    <div class="debate-sprite debate-sprite-player" set:html={spriteSvg('player')} />
+    {/* A playable stage starts with both off stage; the battle brings them in. */}
+    <div
+      class:list={['debate-sprite debate-sprite-enemy', play && 'debate-offstage']}
+      set:html={spriteSvg(enemy.sprite)}
+    />
+    <div
+      class:list={['debate-sprite debate-sprite-player', play && 'debate-offstage']}
+      set:html={spriteSvg('player')}
+    />
 
     <div class="debate-status debate-status-player">
       <span class="debate-status-name">{t('status.player')}</span>
@@ -170,7 +177,27 @@ const promptId = `debate-prompt-${locale}`
       )
     }
   </div>
+  {
+    play && (
+      <button
+        type="button"
+        class="debate-sound"
+        data-debate-sound
+        data-on-label={t('sound.off')}
+        data-off-label={t('sound.on')}
+      >
+        {t('sound.on')}
+      </button>
+    )
+  }
   {play && <p class="debate-note" data-debate-note hidden />}
+  {
+    play && (
+      <noscript>
+        <style is:inline set:html=".debate-offstage { visibility: visible !important; }" />
+      </noscript>
+    )
+  }
 </div>
 
 <script>

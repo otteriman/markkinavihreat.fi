@@ -3,6 +3,7 @@ import type { Side } from '../../lib/debate/battle'
 import type { PromptEvent, Step } from '../../lib/debate/playback'
 import { format, localize } from '../../lib/debate/text'
 import type { Difficulty, UiStrings } from '../../lib/debate/types'
+import type { Sounds } from './audio'
 
 /**
  * The stage's DOM (rendered by DebateGame.astro) and everything the battle
@@ -17,6 +18,7 @@ export interface ViewOptions {
   reduce: boolean
   msPerChar: number
   signal: AbortSignal
+  sounds: Sounds
 }
 
 type Box = 'top' | 'bottom'
@@ -31,8 +33,17 @@ const GRID_GRACE_MS = 300
 const END_GRACE_MS = 800
 /** Matches the .debate-flash animation: 3 × 333 ms, within WCAG's three flashes a second. */
 const FLASH_MS = 1000
-/** Matches the .debate-exit animation. */
+/** Match the .debate-exit and .debate-enter animations. */
 const EXIT_MS = 900
+const ENTER_MS = 800
+
+/** Hides both sprites (off stage) until a battle's entrance. */
+export function hideSprites(root: ParentNode): void {
+  root.querySelectorAll('.debate-sprite').forEach((s) => {
+    s.classList.remove('debate-exit', 'debate-enter')
+    s.classList.add('debate-offstage')
+  })
+}
 
 const sleep = (ms: number, signal: AbortSignal) =>
   new Promise<void>((resolve, reject) => {
@@ -93,8 +104,8 @@ export class StageView {
     this.more.top.hidden = true
     this.more.bottom.hidden = true
     this.setTags({ kind: 'tags', top: null, bottom: null })
-    this.root.querySelector('.debate-sprite-enemy')?.classList.remove('debate-exit')
-    this.root.querySelector('.debate-sprite-player')?.classList.remove('debate-exit')
+    // Off stage until the battle's entrance (enter()).
+    hideSprites(this.root)
     this.stage.tabIndex = 0
     this.stage.focus({ preventScroll: true })
   }
@@ -192,6 +203,7 @@ export class StageView {
       const timer = setInterval(() => {
         shown += 1
         el.textContent = text.slice(0, shown)
+        if (text[shown - 1] !== ' ') this.opts.sounds.blip()
         if (shown >= text.length) {
           done()
           resolve()
@@ -219,6 +231,7 @@ export class StageView {
     const { signal, reduce } = this.opts
     this.announce(step.announce, true)
     if (step.damage <= 0) return
+    this.opts.sounds.hit(step.backfire)
     if (reduce) {
       this.setKannatus(step.target, step.to)
       return
@@ -239,9 +252,25 @@ export class StageView {
     }
   }
 
+  /** Both sides slide onto the stage from their own edge (instantly there with reduced motion). */
+  async enter(): Promise<void> {
+    const sprites = this.root.querySelectorAll<HTMLElement>('.debate-sprite')
+    sprites.forEach((s) => {
+      s.classList.remove('debate-offstage')
+      if (!this.opts.reduce) s.classList.add('debate-enter')
+    })
+    if (this.opts.reduce) return
+    try {
+      await sleep(ENTER_MS, this.opts.signal)
+    } finally {
+      sprites.forEach((s) => s.classList.remove('debate-enter'))
+    }
+  }
+
   /** `who` slides off the stage (instantly gone with reduced motion). */
   async exit(who: Side): Promise<void> {
     this.root.querySelector(`.debate-sprite-${who}`)?.classList.add('debate-exit')
+    if (who === 'enemy') this.opts.sounds.win()
     if (!this.opts.reduce) await sleep(EXIT_MS, this.opts.signal)
   }
 
@@ -300,6 +329,7 @@ export class StageView {
       items.findIndex((i) => !i.used),
     )
     const select = (index: number, focus = true) => {
+      if (index !== current) this.opts.sounds.move()
       current = index
       buttons.forEach((b, i) => {
         b.tabIndex = i === index ? 0 : -1
@@ -351,6 +381,7 @@ export class StageView {
               this.announce(`${localize(items[i].label, locale)}: ${usedText}`)
               return
             }
+            this.opts.sounds.select()
             finish()
             resolve(items[i].value)
           },

@@ -68,6 +68,7 @@ describe('battle flow', () => {
   it('opens with the intro, round 1, the enemy attack and a reply prompt', () => {
     const { state, events } = start()
     expect(keys(events)).toEqual([
+      'enter',
       'text',
       'say:enemy',
       'phase:newRound',
@@ -77,7 +78,7 @@ describe('battle flow', () => {
       'prompt.reply',
       'prompt',
     ])
-    expect(events[4]).toMatchObject({ name: state.enemyAttacks[0].name })
+    expect(events[5]).toMatchObject({ name: state.enemyAttacks[0].name })
     expect(state.phase).toBe('reply')
     const prompt = events.at(-1)
     expect(prompt).toMatchObject({ type: 'prompt', kind: 'reply' })

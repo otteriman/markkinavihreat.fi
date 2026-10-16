@@ -38,6 +38,27 @@
   align-items: center;
 }
 
+/* The sound toggle under the stage: page-sized, so it's easy to hit. */
+.debate-sound {
+  margin-top: 10px;
+  padding: 4px 12px;
+  border: 1px solid var(--gb-0);
+  border-radius: 4px;
+  background: transparent;
+  color: var(--gb-0);
+  font: 14px var(--debate-font);
+  cursor: pointer;
+}
+
+.debate-sound:hover {
+  background: rgb(155 188 15 / 0.15);
+}
+
+.debate-sound:focus-visible {
+  outline: 2px solid var(--gb-0);
+  outline-offset: 2px;
+}
+
 /* Preview-only note under the stage, e.g. which ?difficulty= is in use. */
 .debate-note {
   margin-top: 8px;
@@ -218,14 +239,16 @@
   position: absolute;
 }
 
+/* Enemy 48 × 50 (bottom at y 108, clear of the player's status at 112);
+   player 56 × 50 (between the enemy's status and the bottom label at 156). */
 .debate-sprite-enemy {
-  right: 14px;
-  top: 60px;
+  right: 12px;
+  top: 58px;
 }
 
 .debate-sprite-player {
-  left: 14px;
-  top: 112px;
+  left: 10px;
+  top: 102px;
 }
 
 /* The option grid in the bottom box: 2×2 replies, 2×3 attacks. */
@@ -343,8 +366,33 @@
   }
 }
 
-/* A knocked-out enemy slides off the right edge of the stage (view.ts
-   EXIT_MS), in pixel steps. The player's sprite would slide off the left. */
+/* Entrances and exits, in pixel steps (view.ts ENTER_MS / EXIT_MS): each
+   side comes in from its own edge as the battle starts, and a knocked-out
+   enemy slides back off the right edge. */
+.debate-offstage {
+  visibility: hidden;
+}
+
+.debate-sprite-enemy.debate-enter {
+  animation: debate-enter-right 800ms steps(10) both;
+}
+
+.debate-sprite-player.debate-enter {
+  animation: debate-enter-left 800ms steps(10) both;
+}
+
+@keyframes debate-enter-right {
+  from {
+    transform: translateX(70px);
+  }
+}
+
+@keyframes debate-enter-left {
+  from {
+    transform: translateX(-70px);
+  }
+}
+
 .debate-sprite-enemy.debate-exit {
   animation: debate-exit-right 900ms steps(12) forwards;
 }
@@ -369,6 +417,10 @@
   .debate-exit {
     animation: none !important;
     visibility: hidden;
+  }
+
+  .debate-enter {
+    animation: none !important;
   }
 
   .debate-more,

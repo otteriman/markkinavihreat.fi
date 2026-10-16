@@ -5,6 +5,7 @@ import { resolveDifficulty } from '../../lib/debate/difficulty'
 import { planSteps, type Step } from '../../lib/debate/playback'
 import type { Rng } from '../../lib/debate/rng'
 import type { Difficulty } from '../../lib/debate/types'
+import { silent, type Sounds } from './audio'
 import { StageView } from './view'
 
 export interface PlayOptions {
@@ -19,6 +20,8 @@ export interface PlayOptions {
   reduceMotion?: boolean
   /** Aborting ends the battle at once and removes every listener; the promise rejects. */
   signal?: AbortSignal
+  /** Sound effects; silent by default. */
+  sounds?: Sounds
 }
 
 /**
@@ -38,6 +41,7 @@ export async function playDebate(root: HTMLElement, options: PlayOptions): Promi
     reduce: options.reduceMotion ?? matchMedia('(prefers-reduced-motion: reduce)').matches,
     msPerChar: config.typing.msPerChar,
     signal: options.signal ?? new AbortController().signal,
+    sounds: options.sounds ?? silent,
   })
 
   /** Performs steps until the battle needs a choice or is over. */
@@ -55,6 +59,9 @@ export async function playDebate(root: HTMLElement, options: PlayOptions): Promi
           break
         case 'clear':
           view.clearTop()
+          break
+        case 'enter':
+          await view.enter()
           break
         case 'exit':
           await view.exit(step.who)
@@ -80,6 +87,9 @@ export async function playDebate(root: HTMLElement, options: PlayOptions): Promi
   for (;;) {
     const stop = await perform(planSteps(events, options.locale, ui, enemy))
     if (stop.kind === 'end') {
+      if (stop.result.kind === 'koLose' || stop.result.kind === 'pointsLose') {
+        ;(options.sounds ?? silent).lose()
+      }
       await view.showEnd(stop)
       return stop.result
     }

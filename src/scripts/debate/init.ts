@@ -2,7 +2,9 @@ import type { Locale } from '../../lib/content'
 import { config } from '../../lib/debate/data'
 import { DifficultyError, resolveDifficulty } from '../../lib/debate/difficulty'
 import type { Difficulty } from '../../lib/debate/types'
+import { Chiptune } from './audio'
 import { playDebate } from './play'
+import { hideSprites } from './view'
 
 /** How much of the stage must be on screen before the battle starts by itself. */
 const VISIBLE_TO_START = 0.5
@@ -15,12 +17,17 @@ const VISIBLE_TO_START = 0.5
 export function startDebateGames(root: ParentNode): void {
   for (const frame of root.querySelectorAll<HTMLElement>('[data-debate-play]')) {
     const difficulty = pickDifficulty(frame)
+    // The characters wait off stage for their entrance.
+    hideSprites(frame)
+    const sounds = new Chiptune()
+    setUpSoundToggle(frame, sounds)
     const run = async () => {
       for (;;) {
         await playDebate(frame, {
           locale: frame.lang as Locale,
           enemy: frame.dataset.debateEnemy,
           difficulty,
+          sounds,
         })
       }
     }
@@ -35,6 +42,22 @@ export function startDebateGames(root: ParentNode): void {
     )
     observer.observe(stage)
   }
+}
+
+/**
+ * The sound toggle under the stage: off by default; its label says what a
+ * click does. After a mouse click focus goes back to the stage, so Enter and
+ * Space carry on advancing the battle instead of toggling the sound again.
+ */
+function setUpSoundToggle(frame: HTMLElement, sounds: Chiptune) {
+  const button = frame.querySelector<HTMLButtonElement>('[data-debate-sound]')
+  if (!button) return
+  button.addEventListener('click', (event) => {
+    sounds.setEnabled(!sounds.enabled)
+    button.textContent = sounds.enabled ? button.dataset.onLabel! : button.dataset.offLabel!
+    if (event.detail > 0)
+      frame.querySelector<HTMLElement>('.debate-stage')?.focus({ preventScroll: true })
+  })
 }
 
 /**
