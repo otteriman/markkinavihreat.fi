@@ -9,10 +9,22 @@ const PREFIX: Record<string, string> = { fi: '', sv: '/sv', en: '/en' }
 
 const visibleStep = (page: Page) => page.locator('[data-step]:not([hidden])')
 
+/** Plays the bonus level (after q3) the winning way and waits until it has closed. */
+async function passBonus(page: Page) {
+  const overlay = page.locator('#bonus')
+  await expect(overlay).toBeVisible()
+  await overlay.locator('[data-bonus="yes"]').click()
+  await expect(overlay).toBeHidden({ timeout: 10000 })
+}
+
 /** Answers every screen with the strongest agreement and the "price" finale. */
 async function completeQuiz(page: Page) {
   await page.locator('[data-action="start"]').click()
   for (let guard = 0; guard < 40; guard++) {
+    if (await page.locator('#bonus').isVisible()) {
+      await passBonus(page)
+      continue
+    }
     const step = visibleStep(page)
     const key = await step.getAttribute('data-step')
     if (key!.startsWith('a:')) await step.locator('[data-action="continue"]').click()
@@ -115,6 +127,7 @@ test('guess reveal shows how far off the guess was', async ({ page }) => {
     const step = page.locator(`[data-step="q:${id}"]`)
     await step.locator('[data-answer="0"]').click()
     await page.locator(`[data-step="a:${id}"] [data-action="continue"]`).click()
+    if (id === 'q3') await passBonus(page)
   }
   await page.locator('[data-guess-slider]').fill('2000')
   await page.locator('[data-step="q:guess"] [data-action="next"]').click()
@@ -140,6 +153,7 @@ test('the tree grows one stage per answered question, not on the guess', async (
     const step = page.locator(`[data-step="q:${id}"]`)
     await step.locator('[data-answer="1"]').click()
     await page.locator(`[data-step="a:${id}"] [data-action="continue"]`).click()
+    if (id === 'q3') await passBonus(page)
   }
   const afterFive = await shapes()
   expect(afterFive).toBeGreaterThan(seedling)
@@ -170,6 +184,10 @@ test.describe('with motion', () => {
     await page.goto(START.fi)
     await page.locator('[data-action="start"]').click()
     for (let guard = 0; guard < 40; guard++) {
+      if (await page.locator('#bonus').isVisible()) {
+        await passBonus(page)
+        continue
+      }
       const step = page.locator('[data-step]:not([hidden])')
       const key = await step.getAttribute('data-step')
       if (key === 'reveal') break
@@ -218,6 +236,7 @@ test.describe('on an iPhone 11 Pro sized screen', () => {
       expect(last.y + last.height).toBeLessThanOrEqual(635)
       await step.locator('[data-answer="1"]').click()
       await page.locator(`[data-step="a:${id}"] [data-action="continue"]`).click()
+      if (id === 'q3') await passBonus(page)
     }
   })
 })
@@ -245,9 +264,85 @@ test('after an answer the tree appears with a sentence on what the answer indica
     'Vastauksesi perusteella et kallistu kumpaankaan suuntaan.',
   )
   await page.locator('[data-step="a:q3"] [data-action="continue"]').click()
+  await passBonus(page)
   // q4 (markets, reversed): agreeing lowers markets.
   await page.locator('[data-step="q:q4"] [data-answer="2"]').click()
   await expect(page.locator('[data-step="a:q4"] [data-cue]')).toHaveText(
     'Vastauksesi perusteella luotat julkiseen ohjaukseen.',
   )
+})
+
+test.describe('bonus level', () => {
+  /** Answers q1–q3 so that the bonus level starts. */
+  async function reachBonus(page: Page) {
+    await page.goto(START.fi)
+    await page.locator('[data-action="start"]').click()
+    for (const id of ['q1', 'q2', 'q3']) {
+      await expect(page.locator('#bonus')).toBeHidden()
+      await page.locator(`[data-step="q:${id}"] [data-answer="1"]`).click()
+      await page.locator(`[data-step="a:${id}"] [data-action="continue"]`).click()
+    }
+    const overlay = page.locator('#bonus')
+    await expect(overlay).toBeVisible()
+    return overlay
+  }
+
+  test('comes after q3: put the sweater on, win and return to q4', async ({ page }) => {
+    const overlay = await reachBonus(page)
+    await expect(overlay.locator('[data-bonus-screen="title"]')).toContainText('Yllätyshaaste!')
+    await expect(overlay.locator('[data-bonus-screen="title"]')).toContainText(
+      'Vihreiden villapaitapeli!',
+    )
+    await expect(overlay.locator('[data-bonus-screen="game"]')).toContainText(
+      'Pue Laurille villapaita',
+    )
+    await overlay.locator('[data-bonus="yes"]').click()
+    await expect(overlay.locator('.bonus-person')).toHaveClass(/is-dressed/)
+    await expect(overlay.locator('.bonus-person')).toHaveAttribute('data-mood', 'laugh')
+    await expect(overlay.locator('[data-bonus-tickles]')).toHaveText('Hihihi, kutittaa!')
+    await expect(overlay.locator('[data-bonus-screen="win"]')).toContainText('Voitit pelin!')
+    await expect(overlay.locator('[data-bonus-screen="win"]')).toContainText(
+      'Palaat takaisin testiin',
+    )
+    await expect(overlay).toBeHidden({ timeout: 10000 })
+    await expect(page.locator('[data-step="q:q4"]')).toBeVisible()
+  })
+
+  test('saying no shows a disappointed face, then try again or leave to q4', async ({ page }) => {
+    const overlay = await reachBonus(page)
+    await overlay.locator('[data-bonus="no"]').click()
+    await expect(overlay.locator('.bonus-person')).toHaveAttribute('data-mood', 'sad')
+    await expect(overlay.locator('[data-bonus="again"]')).toBeFocused()
+    // Try again with the keyboard, then say no again and leave.
+    await page.keyboard.press('Enter')
+    await expect(overlay.locator('.bonus-person')).toHaveAttribute('data-mood', 'neutral')
+    await overlay.locator('[data-bonus="no"]').click()
+    await overlay.locator('[data-bonus="leave"]').click()
+    await expect(overlay).toBeHidden()
+    await expect(overlay.locator('[data-bonus-screen="win"]')).toBeHidden()
+    await expect(page.locator('[data-step="q:q4"]')).toBeVisible()
+  })
+
+  test('Back from q4 goes to q3, not to the bonus level', async ({ page }) => {
+    const overlay = await reachBonus(page)
+    await overlay.locator('[data-bonus="yes"]').click()
+    await expect(overlay).toBeHidden({ timeout: 10000 })
+    await page.locator('[data-step="q:q4"] [data-action="back"]').click()
+    await expect(page.locator('[data-step="q:q3"]')).toBeVisible()
+    await expect(overlay).toBeHidden()
+  })
+
+  test.describe('on an iPhone 11 Pro sized screen', () => {
+    test.use({ viewport: { width: 375, height: 635 } })
+
+    test('the game fits without scrolling', async ({ page }) => {
+      const overlay = await reachBonus(page)
+      const yes = overlay.locator('[data-bonus="yes"]')
+      await expect(yes).toBeVisible()
+      const box = (await yes.boundingBox())!
+      expect(box.y + box.height).toBeLessThanOrEqual(635)
+      const figure = (await overlay.locator('.bonus-person').boundingBox())!
+      expect(figure.y + figure.height).toBeLessThanOrEqual(635)
+    })
+  })
 })
