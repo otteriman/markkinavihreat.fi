@@ -33,6 +33,8 @@ export type BattleEvent =
    */
   | { type: 'phase'; phase: 'enemyAttack' | 'reply' | 'playerAttack'; name: Localized }
   | { type: 'phase'; phase: 'enemyDefense' | 'newRound' }
+  /** `who` leaves the stage (the enemy slides out when knocked out). */
+  | { type: 'exit'; who: Side }
   /**
    * `target` lost `damage` KANNATUS (may be 0); drain its bar from `from` to
    * `to`. `quality` is the defense's. With `counter`, a perfect defense made
@@ -240,8 +242,14 @@ function end(state: BattleState, kind: ResultKind, events: BattleEvent[]): Step 
     strongReplies: state.strongReplies,
     repliesGiven: state.repliesGiven,
   }
-  events.push(
-    {
+  if (kind === 'koWin') {
+    // The enemy flees the stage, with his own defeat line.
+    events.push(
+      { type: 'exit', who: 'enemy' },
+      { type: 'narrate', message: { text: state.enemy.defeat } },
+    )
+  } else {
+    events.push({
       type: 'narrate',
       message: {
         key: `end.${kind}`,
@@ -251,9 +259,9 @@ function end(state: BattleState, kind: ResultKind, events: BattleEvent[]): Step 
           enemyScore: state.enemyKannatus,
         },
       },
-    },
-    { type: 'end', result },
-  )
+    })
+  }
+  events.push({ type: 'end', result })
   return { state: { ...state, phase: 'over', result }, events }
 }
 

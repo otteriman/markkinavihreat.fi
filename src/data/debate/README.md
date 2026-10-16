@@ -15,7 +15,7 @@ Both also run in CI (`npm run validate:translations`, `npm run test`).
 config.json                       difficulty presets, guardrails, content rules
 ui.json                           narration and UI texts ("{enemy} käytti {attack}!" …)
 enemies/<enemy>/
-  enemy.json                      name, intro texts, sprite
+  enemy.json                      name, intro texts, defeat line, sprite
   enemy-attacks/<id>.json         one enemy attack and the player's 4 replies to it
   player-attacks/<id>.json        one player attack and the enemy's 4 comebacks to it
 ```
@@ -29,7 +29,7 @@ Every text is written in all three languages: `{ "fi": "…", "sv": "…", "en":
 - **Add a player attack:** copy a file in `player-attacks/` and edit it. Each attack needs 4 enemy comebacks, and at least one of them must be `strong`. `order` sets its place in the 2×3 grid. If there are more than 6 player attacks, each battle shows a random 6.
 - **Remove an attack:** delete its file. The enemy needs at least one attack and the player at least 6.
 - **Make an attack stronger or weaker:** change the `quality` of the enemy's comebacks. An attack's tier (Vahva / Hyvä / Heikko) is never written down; `debate:report` works it out from the comebacks.
-- **Add an enemy:** add a folder under `enemies/` with the same three parts.
+- **Add an enemy:** add a folder under `enemies/` with the same three parts. Everything he says is his own, including `defeat`, the line shown when he is knocked out and slides off the stage ("Konservatiivi hävisi väittelyn, ja pakeni Twitteriin!").
 
 Quality means how good the _defender's_ answer is: `strong` blocks the hit completely, `medium` blocks half of it and `weak` lets the whole hit through (with the shipped numbers, 0, 15 or 30 points).
 

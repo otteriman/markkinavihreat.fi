@@ -101,12 +101,6 @@
     "en": "Your defence didn’t work at all!",
     "needsReview": ["sv", "en"]
   },
-  "end.koWin": {
-    "fi": "{enemy} vaihtoi puheenaihetta! Voitit väittelyn!",
-    "sv": "{enemy} bytte samtalsämne! Du vann debatten!",
-    "en": "{enemy} changed the subject! You won the debate!",
-    "needsReview": ["sv", "en"]
-  },
   "end.koLose": {
     "fi": "Kannatuksesi romahti... Heräät puoluetoimistolta.",
     "sv": "Ditt stöd rasade... Du vaknar upp på partikansliet.",

@@ -329,8 +329,14 @@ describe('battle endings', () => {
     }
     const { state } = start(difficulty)
     const afterReply = chooseReply(state, replyOf(state, 'strong')).state
-    const { state: after } = chooseAttack(afterReply, 'vahva1', seededRng(1))
+    const { state: after, events } = chooseAttack(afterReply, 'vahva1', seededRng(1))
     expect(after.result).toMatchObject({ kind: 'koWin', enemy: 0, strongReplies: 1 })
+    // He slides off the stage, then his own defeat line.
+    expect(events.slice(-3)).toEqual([
+      { type: 'exit', who: 'enemy' },
+      { type: 'narrate', message: { text: specEnemy().defeat } },
+      { type: 'end', result: after.result },
+    ])
   })
 
   it('decides on points after the last round', () => {

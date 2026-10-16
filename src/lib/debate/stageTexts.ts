@@ -42,7 +42,8 @@ export function stageTexts(enemies: Enemy[], ui: UiStrings): StageText[] {
       add('bottom', localize(enemy.appear, locale), `${e}/enemy.json appear`)
       add('top', localize(enemy.opening, locale), `${e}/enemy.json opening`)
       const scores = { enemy: enemy.subject, playerScore: 100, enemyScore: 100 }
-      for (const kind of ['koWin', 'koLose', 'pointsWin', 'pointsLose', 'tie']) {
+      add('bottom', localize(enemy.defeat, locale), `${e}/enemy.json defeat`)
+      for (const kind of ['koLose', 'pointsWin', 'pointsLose', 'tie']) {
         add('bottom', t(`end.${kind}`, scores), `ui.json end.${kind}`)
       }
       for (const a of enemy.attacks) {

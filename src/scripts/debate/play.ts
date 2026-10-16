@@ -56,6 +56,9 @@ export async function playDebate(root: HTMLElement, options: PlayOptions): Promi
         case 'clear':
           view.clearTop()
           break
+        case 'exit':
+          await view.exit(step.who)
+          break
         case 'hit':
           await view.hit(step)
           break

@@ -343,7 +343,34 @@
   }
 }
 
+/* A knocked-out enemy slides off the right edge of the stage (view.ts
+   EXIT_MS), in pixel steps. The player's sprite would slide off the left. */
+.debate-sprite-enemy.debate-exit {
+  animation: debate-exit-right 900ms steps(12) forwards;
+}
+
+.debate-sprite-player.debate-exit {
+  animation: debate-exit-left 900ms steps(12) forwards;
+}
+
+@keyframes debate-exit-right {
+  to {
+    transform: translateX(120px);
+  }
+}
+
+@keyframes debate-exit-left {
+  to {
+    transform: translateX(-120px);
+  }
+}
+
 @media (prefers-reduced-motion: reduce) {
+  .debate-exit {
+    animation: none !important;
+    visibility: hidden;
+  }
+
   .debate-more,
   .debate-flash {
     animation: none;

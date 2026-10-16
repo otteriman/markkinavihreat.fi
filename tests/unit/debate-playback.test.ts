@@ -18,15 +18,17 @@ const shape = (steps: Step[]) =>
       ? `tags:${(['top', 'bottom'] as const).filter((b) => b in s).join(',')}`
       : s.kind === 'clear'
         ? `clear:${s.box}`
-        : s.kind === 'type'
-          ? `type:${s.box}`
-          : s.kind === 'wait'
-            ? `wait:${s.until}`
-            : s.kind === 'hit'
-              ? `hit:${s.target}`
-              : s.kind === 'prompt'
-                ? `prompt:${s.prompt.kind}`
-                : 'end',
+        : s.kind === 'exit'
+          ? `exit:${s.who}`
+          : s.kind === 'type'
+            ? `type:${s.box}`
+            : s.kind === 'wait'
+              ? `wait:${s.until}`
+              : s.kind === 'hit'
+                ? `hit:${s.target}`
+                : s.kind === 'prompt'
+                  ? `prompt:${s.prompt.kind}`
+                  : 'end',
   )
 
 function battle() {
@@ -119,6 +121,38 @@ describe('planSteps', () => {
       { kind: 'clear', box: 'top' },
       { kind: 'tags', top: null, bottom: null },
     ])
+  })
+
+  it('a knockout win: he slides out, then his defeat line', () => {
+    const difficulty = { ...specDifficulty(), enemy: { ...specDifficulty().enemy, kannatus: 1 } }
+    const rng = seededRng(1)
+    const start = startBattle({ enemy, difficulty, attackSlots: 6, rng })
+    const afterReply = chooseReply(start.state, 0).state
+    // Every defense lands at least half a hit, more than his 1 point.
+    const weights = { strong: 0, medium: 1, weak: 1 }
+    const steps = plan(
+      chooseAttack(
+        { ...afterReply, difficulty: { ...difficulty, enemyDefenseWeights: weights } },
+        'vahva1',
+        rng,
+      ).events,
+    )
+    expect(shape(steps).slice(-8)).toEqual([
+      'wait:advance', // after the effect text and hit
+      'clear:top', // his box and the labels go…
+      'tags:top,bottom',
+      'exit:enemy', // …and he slides out
+      'tags:top,bottom',
+      'type:bottom', // his defeat line
+      'wait:advance',
+      'end',
+    ])
+    expect(steps.at(-3)).toMatchObject({ text: 'defeat fi' })
+    expect(steps.at(-1)).toMatchObject({
+      kind: 'end',
+      text: 'defeat fi',
+      result: { kind: 'koWin' },
+    })
   })
 
   it('ends with the end narration, its wait, and the result', () => {

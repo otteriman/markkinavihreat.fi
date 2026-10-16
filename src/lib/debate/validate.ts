@@ -28,7 +28,6 @@ export const REQUIRED_UI_KEYS = [
   ...QUALITIES.map((q) => `effect.defend.${q}`),
   'effect.attack.backfire',
   'effect.defend.backfire',
-  'end.koWin',
   'end.koLose',
   'end.pointsWin',
   'end.pointsLose',
@@ -114,6 +113,7 @@ class Checker {
     this.text(file, 'subject', enemy.subject, 'label')
     this.text(file, 'appear', enemy.appear, 'line')
     this.text(file, 'opening', enemy.opening, 'line')
+    this.text(file, 'defeat', enemy.defeat, 'line')
     if (typeof enemy.sprite !== 'string' || !enemy.sprite) this.add(file, 'sprite is missing')
     else if (!(enemy.sprite in SPRITES)) {
       this.add(file, `sprite "${enemy.sprite}" doesn’t exist in src/lib/debate/sprites.ts`)

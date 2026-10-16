@@ -31,6 +31,8 @@ const GRID_GRACE_MS = 300
 const END_GRACE_MS = 800
 /** Matches the .debate-flash animation: 3 × 333 ms, within WCAG's three flashes a second. */
 const FLASH_MS = 1000
+/** Matches the .debate-exit animation. */
+const EXIT_MS = 900
 
 const sleep = (ms: number, signal: AbortSignal) =>
   new Promise<void>((resolve, reject) => {
@@ -91,6 +93,8 @@ export class StageView {
     this.more.top.hidden = true
     this.more.bottom.hidden = true
     this.setTags({ kind: 'tags', top: null, bottom: null })
+    this.root.querySelector('.debate-sprite-enemy')?.classList.remove('debate-exit')
+    this.root.querySelector('.debate-sprite-player')?.classList.remove('debate-exit')
     this.stage.tabIndex = 0
     this.stage.focus({ preventScroll: true })
   }
@@ -233,6 +237,12 @@ export class StageView {
     } finally {
       sprite?.classList.remove('debate-flash')
     }
+  }
+
+  /** `who` slides off the stage (instantly gone with reduced motion). */
+  async exit(who: Side): Promise<void> {
+    this.root.querySelector(`.debate-sprite-${who}`)?.classList.add('debate-exit')
+    if (!this.opts.reduce) await sleep(EXIT_MS, this.opts.signal)
   }
 
   /**

@@ -19,6 +19,7 @@ import type { Enemy, UiStrings } from './types'
  * - The enemy's box empties (text and label) when a new round starts and when
  *   the player attacks, so it never shows a line he has finished with.
  * - A new round and the ending clear both labels. Rounds aren't announced.
+ * - A knocked-out enemy slides off the stage before his defeat line.
  * - A backfire (a perfect defense hurting the attacker) is a hit like any
  *   other; its effect text says whose support dropped.
  */
@@ -49,6 +50,8 @@ export type Step =
       /** E.g. "Sinä: kannatus 85". */
       announce: string
     }
+  /** `who` slides off the stage. */
+  | { kind: 'exit'; who: Side }
   | { kind: 'prompt'; prompt: PromptEvent }
   | { kind: 'end'; result: BattleResult; text: string }
 
@@ -82,8 +85,8 @@ export function planSteps(
           steps.push({ kind: 'tags', bottom: text, announce: text })
           break
         }
-        const key = 'key' in event.message ? event.message.key : ''
-        if (key.startsWith('end.')) steps.push({ kind: 'tags', top: null, bottom: null })
+        // The ending's narration clears both labels.
+        if (next?.type === 'end') steps.push({ kind: 'tags', top: null, bottom: null })
         steps.push({ kind: 'type', box: 'bottom', text, announce: text })
         lastNarration = text
         // A hit right after an effect text plays before the wait (the spec's order).
@@ -131,6 +134,11 @@ export function planSteps(
         if (events[i - 1]?.type === 'narrate') steps.push({ kind: 'wait', until: 'advance' })
         break
       }
+      case 'exit':
+        // He has left: his box and the labels go before he slides out.
+        if (event.who === 'enemy') steps.push({ kind: 'clear', box: 'top' })
+        steps.push({ kind: 'tags', top: null, bottom: null }, { kind: 'exit', who: event.who })
+        break
       case 'prompt':
         steps.push({ kind: 'prompt', prompt: event })
         break

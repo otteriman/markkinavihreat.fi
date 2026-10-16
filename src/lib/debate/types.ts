@@ -70,6 +70,11 @@ export interface Enemy {
   appear: Localized
   /** The enemy's opening line (top box). */
   opening: Localized
+  /**
+   * Narration when he is knocked out, as he slides off the stage, e.g.
+   * "Konservatiivi hävisi väittelyn, ja pakeni Twitteriin!".
+   */
+  defeat: Localized
   /** Sprite id (src/lib/debate/sprites.ts, added in a later phase). */
   sprite: string
   attacks: EnemyAttack[]
