@@ -1,5 +1,7 @@
 ---
 import BaseLayout from '../../layouts/BaseLayout.astro'
+import BonusFont from '../BonusFont.astro'
+import BonusGame from '../BonusGame.astro'
 import FinaleIcon from '../FinaleIcon.astro'
 import QuizBars from '../QuizBars.astro'
 import { items, resultTypes, t } from '../../lib/quiz/data'
@@ -47,6 +49,7 @@ const labConfig = {
   path="/quiz-lab/"
   noindex
 >
+  <BonusFont slot="head" />
   <div class="mx-auto max-w-6xl px-4 py-10 sm:px-6">
     <p class="text-eyebrow text-harmaa">Kehitysnäkymä · tyyli C: paperileikkaus</p>
     <h1 class="mt-2 text-4xl">Puulaboratorio</h1>
@@ -198,6 +201,17 @@ const labConfig = {
     </section>
 
     <section class="mt-12">
+      <h2 class="text-2xl">Bonustaso: Vihreiden villapaitapeli</h2>
+      <p class="text-harmaa mt-1 text-sm">
+        Tulee testissä kolmannen kysymyksen jälkeen. Ei vaikuta tulokseen.
+      </p>
+      <div class="mt-4 flex flex-wrap items-center gap-4">
+        <button type="button" id="lab-bonus" class="btn-primary">▶ Pelaa bonustaso</button>
+        <p id="lab-bonus-result" class="text-harmaa text-sm" aria-live="polite"></p>
+      </div>
+    </section>
+
+    <section class="mt-12">
       <h2 class="text-2xl">Finaalin kuvitukset</h2>
       <div class="mt-4 grid gap-3 sm:grid-cols-3">
         {
@@ -211,6 +225,8 @@ const labConfig = {
       </div>
     </section>
 
+    <BonusGame locale="fi" />
+
     <script
       type="application/json"
       id="lab-config"
@@ -223,7 +239,16 @@ const labConfig = {
 <script>
   import { resultFromScores } from '../../lib/quiz/scoring'
   import { TreeView } from '../../lib/quiz/treeView'
+  import { playBonus } from '../../scripts/quiz/bonus'
   import { runReveal } from '../../scripts/quiz/reveal'
+
+  document.getElementById('lab-bonus')?.addEventListener('click', async () => {
+    const overlay = document.getElementById('bonus')
+    const result = document.getElementById('lab-bonus-result')
+    if (!overlay || !result) return
+    const outcome = await playBonus(overlay, matchMedia('(prefers-reduced-motion: reduce)').matches)
+    result.textContent = outcome === 'won' ? 'Tulos: voitit pelin.' : 'Tulos: poistuit pelistä.'
+  })
 
   const form = document.getElementById('lab-controls') as HTMLFormElement | null
   const target = document.getElementById('lab-tree')
