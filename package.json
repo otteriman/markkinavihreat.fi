@@ -24,6 +24,8 @@
     "test:e2e": "playwright test",
     "validate:translations": "tsx scripts/validate-translations.ts",
     "check:og": "tsx scripts/check-og-images.ts",
+    "debate:report": "tsx scripts/debate/report.ts",
+    "debate:balance": "tsx scripts/debate/balance.ts",
     "deploy": "astro build && wrangler deploy",
     "prepare": "husky"
   },
