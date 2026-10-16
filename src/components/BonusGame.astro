@@ -1,0 +1,240 @@
+---
+/**
+ * The quiz's surprise bonus level, "Vihreiden villapaitapeli": put a green
+ * wool sweater on Lauri. A full-screen white overlay driven by
+ * src/scripts/quiz/bonus.ts. Unscored: it never touches answers or scores.
+ * Needs the Patrick Hand font (see BonusFont.astro) in the page's <head>.
+ */
+import type { Locale } from '../lib/content'
+import { t as qt } from '../lib/quiz/data'
+import { personSvg } from '../lib/quiz/bonusArt'
+
+interface Props {
+  locale: Locale
+}
+
+const { locale } = Astro.props
+const t = (key: string) => qt(locale, key)
+---
+
+<div id="bonus" class="bonus-overlay" hidden>
+  <p data-bonus-status class="sr-only" aria-live="polite"></p>
+
+  <section data-bonus-screen="title" class="bonus-screen justify-center gap-6 text-center" hidden>
+    <p data-bonus-focus tabindex="-1" class="bonus-hand bonus-pop text-5xl" style="--tilt:-4deg">
+      {t('bonus.kicker')}
+    </p>
+    <p class="bonus-hand bonus-pop bonus-pop-late text-4xl" style="--tilt:3deg">
+      {t('bonus.title')}
+    </p>
+  </section>
+
+  <section data-bonus-screen="game" class="bonus-screen" hidden>
+    <p data-bonus-focus tabindex="-1" class="bonus-hand text-center text-4xl" style="--tilt:-3deg">
+      {t('bonus.prompt')}
+    </p>
+    <div class="bonus-stage">
+      <div class="bonus-figure" set:html={personSvg(t('bonus.person'))} />
+      <div class="bonus-side">
+        <div data-bonus-choices="ask" class="bonus-choices">
+          <button type="button" data-bonus="no" class="bonus-blob" style="--tilt:-6deg">
+            {t('bonus.no')}
+          </button>
+          <button type="button" data-bonus="yes" class="bonus-blob" style="--tilt:5deg">
+            {t('bonus.yes')}
+          </button>
+        </div>
+        <div data-bonus-choices="retry" class="bonus-choices" hidden>
+          <button type="button" data-bonus="again" class="bonus-blob" style="--tilt:4deg">
+            {t('bonus.again')}
+          </button>
+          <button type="button" data-bonus="leave" class="bonus-blob" style="--tilt:-5deg">
+            {t('bonus.leave')}
+          </button>
+        </div>
+        <p data-bonus-tickles class="bonus-hand bonus-pop text-3xl" style="--tilt:6deg" hidden>
+          {t('bonus.tickles')}
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <section data-bonus-screen="win" class="bonus-screen justify-center gap-6 text-center" hidden>
+    <p data-bonus-focus tabindex="-1" class="bonus-hand bonus-pop text-5xl" style="--tilt:-3deg">
+      {t('bonus.won')}
+    </p>
+    <p class="bonus-hand text-3xl" style="--tilt:2deg">
+      {t('bonus.back')}
+      <span data-bonus-count class="bonus-count">3</span>
+    </p>
+  </section>
+
+  <script
+    type="application/json"
+    data-bonus-config
+    is:inline
+    set:html={JSON.stringify({ sad: t('bonus.sad'), tickles: t('bonus.tickles') })}
+  />
+</div>
+
+<style is:global>
+  .bonus-overlay {
+    position: fixed;
+    inset: 0;
+    z-index: 60;
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+    background: #fff;
+    color: #161a14;
+    opacity: 0;
+    transition: opacity 0.6s ease;
+    padding: max(1.5rem, env(safe-area-inset-top)) max(1rem, env(safe-area-inset-right))
+      max(1.5rem, env(safe-area-inset-bottom)) max(1rem, env(safe-area-inset-left));
+  }
+  .bonus-overlay.is-open {
+    opacity: 1;
+  }
+  .bonus-overlay[hidden] {
+    display: none;
+  }
+  .bonus-screen {
+    display: flex;
+    flex: 1;
+    flex-direction: column;
+    max-width: 40rem;
+    width: 100%;
+    margin: 0 auto;
+  }
+  .bonus-screen[hidden] {
+    display: none;
+  }
+  /* Handwriting is never quite straight. */
+  .bonus-hand {
+    font-family: 'Patrick Hand', 'Comic Sans MS', 'Segoe Print', cursive;
+    font-weight: 400;
+    line-height: 1.15;
+    letter-spacing: 0.01em;
+    transform: rotate(var(--tilt, -2deg));
+  }
+  .bonus-stage {
+    display: grid;
+    grid-template-columns: minmax(0, 8fr) minmax(0, 5fr);
+    align-items: center;
+    gap: 0.5rem;
+    flex: 1;
+    min-height: 0;
+  }
+  .bonus-figure svg {
+    width: 100%;
+    max-height: 66svh;
+    overflow: visible;
+  }
+  .bonus-side {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 1.5rem;
+  }
+  .bonus-choices {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 2.25rem;
+  }
+  .bonus-choices[hidden] {
+    display: none;
+  }
+  /* Soft hand-cut blobs, like buttons drawn with a marker. */
+  .bonus-blob {
+    font-family: 'Patrick Hand', 'Comic Sans MS', 'Segoe Print', cursive;
+    font-size: 2rem;
+    line-height: 1;
+    min-width: 6.5rem;
+    padding: 0.85rem 1.4rem;
+    background: #c9dcec;
+    color: #161a14;
+    border-radius: 58% 42% 55% 45% / 52% 60% 40% 48%;
+    transform: rotate(var(--tilt, -3deg));
+    transition: transform 0.15s ease;
+    cursor: pointer;
+  }
+  .bonus-blob:hover {
+    transform: rotate(var(--tilt, -3deg)) scale(1.06);
+  }
+  .bonus-blob:focus-visible {
+    outline: 3px solid #161a14;
+    outline-offset: 4px;
+  }
+  .bonus-count {
+    display: inline-block;
+    min-width: 1ch;
+  }
+  .bonus-person [data-face] {
+    display: none;
+  }
+  .bonus-person[data-mood='neutral'] [data-face='neutral'],
+  .bonus-person[data-mood='laugh'] [data-face='laugh'],
+  .bonus-person[data-mood='sad'] [data-face='sad'] {
+    display: inline;
+  }
+  /* The sweater waits off-screen on the left and slides onto Lauri. */
+  .bonus-sweater {
+    transform: translateX(-520px);
+    visibility: hidden;
+  }
+  .bonus-person.is-dressed .bonus-sweater {
+    transform: none;
+    visibility: visible;
+    transition: transform 0.9s cubic-bezier(0.2, 0.9, 0.3, 1.08);
+  }
+  .bonus-person.is-tickled .bonus-body {
+    transform-box: fill-box;
+    transform-origin: 50% 100%;
+    animation: bonus-wiggle 0.45s ease-in-out 3;
+  }
+  @keyframes bonus-wiggle {
+    25% {
+      transform: rotate(-2.5deg);
+    }
+    75% {
+      transform: rotate(2.5deg);
+    }
+  }
+  /* Texts pop in, keeping their tilt. */
+  [data-bonus-screen]:not([hidden]) .bonus-pop:not([hidden]) {
+    animation: bonus-pop 0.5s cubic-bezier(0.2, 0.9, 0.3, 1.3) both;
+  }
+  .bonus-pop-late {
+    animation-delay: 0.7s !important;
+  }
+  .bonus-count.is-ticking {
+    animation: bonus-pop 0.4s cubic-bezier(0.2, 0.9, 0.3, 1.3);
+  }
+  @keyframes bonus-pop {
+    from {
+      opacity: 0;
+      transform: rotate(var(--tilt, 0deg)) scale(0.6);
+    }
+  }
+  @media (max-width: 30rem) {
+    .bonus-blob {
+      font-size: 1.75rem;
+      min-width: 5.5rem;
+    }
+    .bonus-choices {
+      gap: 1.75rem;
+    }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .bonus-overlay,
+    .bonus-person.is-dressed .bonus-sweater {
+      transition: none;
+    }
+    .bonus-person.is-tickled .bonus-body,
+    [data-bonus-screen]:not([hidden]) .bonus-pop:not([hidden]),
+    .bonus-count.is-ticking {
+      animation: none;
+    }
+  }
+</style>

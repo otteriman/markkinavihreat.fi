@@ -346,5 +346,77 @@
     "sv": "Du hoppade över frågan.",
     "en": "You skipped this question.",
     "needsReview": ["fi", "sv", "en"]
+  },
+  "bonus.kicker": {
+    "fi": "Yllätyshaaste!",
+    "sv": "Överraskningsutmaning!",
+    "en": "Surprise challenge!",
+    "needsReview": ["sv", "en"]
+  },
+  "bonus.title": {
+    "fi": "Vihreiden villapaitapeli!",
+    "sv": "De grönas ylletröjspel!",
+    "en": "The Greens' wool sweater game!",
+    "needsReview": ["sv", "en"]
+  },
+  "bonus.prompt": {
+    "fi": "Pue Laurille villapaita",
+    "sv": "Sätt en ylletröja på Lauri",
+    "en": "Put a wool sweater on Lauri",
+    "needsReview": ["sv", "en"]
+  },
+  "bonus.no": {
+    "fi": "En",
+    "sv": "Nej",
+    "en": "No",
+    "needsReview": ["sv", "en"]
+  },
+  "bonus.yes": {
+    "fi": "Joo",
+    "sv": "Ja",
+    "en": "Yes",
+    "needsReview": ["sv", "en"]
+  },
+  "bonus.tickles": {
+    "fi": "Hihihi, kutittaa!",
+    "sv": "Hihihi, det kittlas!",
+    "en": "Hee hee, it tickles!",
+    "needsReview": ["sv", "en"]
+  },
+  "bonus.sad": {
+    "fi": "Lauri näyttää pettyneeltä.",
+    "sv": "Lauri ser besviken ut.",
+    "en": "Lauri looks disappointed.",
+    "needsReview": ["sv", "en"]
+  },
+  "bonus.again": {
+    "fi": "Uudestaan",
+    "sv": "Igen",
+    "en": "Try again",
+    "needsReview": ["sv", "en"]
+  },
+  "bonus.leave": {
+    "fi": "Poistu",
+    "sv": "Lämna",
+    "en": "Leave",
+    "needsReview": ["sv", "en"]
+  },
+  "bonus.won": {
+    "fi": "Voitit pelin!",
+    "sv": "Du vann spelet!",
+    "en": "You won the game!",
+    "needsReview": ["sv", "en"]
+  },
+  "bonus.back": {
+    "fi": "Palaat takaisin testiin",
+    "sv": "Tillbaka till testet om",
+    "en": "Back to the quiz in",
+    "needsReview": ["sv", "en"]
+  },
+  "bonus.person": {
+    "fi": "Piirretty mies, Lauri, pyöreät silmälasit päässä.",
+    "sv": "En teckning av en man, Lauri, med runda glasögon.",
+    "en": "A drawing of a man, Lauri, with round glasses.",
+    "needsReview": ["sv", "en"]
   }
 }

@@ -124,6 +124,8 @@ const ogImage = ogUrlFor(locale, path)
       crossorigin="anonymous"
       referrerpolicy="no-referrer"
     />
+    <!-- Page-specific additions to <head>, e.g. an extra font. -->
+    <slot name="head" />
   </head>
   <body>
     <Nav locale={locale} path={path} />
