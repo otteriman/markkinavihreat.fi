@@ -11,6 +11,7 @@ Game spec: "Vihreä väittely – pelin speksi" (Jarkko, Oct 16, 2026). This pla
 - **Difficulty is easy to adjust** without touching code or content (section 3.5). We will playtest and tune.
 - **Translations are reviewed later**, after the game works; sv/en are drafts until then.
 - **Spec oddity fixed** (MAAHANMUUTTO / "Rasismi" reply, section 3.1.1).
+- **Rule change after Phase 3 (on request): no round limit, perfect defenses backfire.** Rounds are no longer announced or limited: the battle runs until one side's KANNATUS reaches 0. A perfect (strong) reply or defense now makes the attack backfire on the attacker (`counter` in the difficulty, half a hit in `normal`), which keeps battles to about four rounds (simulated: 3.8 with perfect play, 4.1 with random play). The enemy reshuffles his attacks when all are used (never the same twice in a row) and the player's used attacks free up once all six are spent. `maxRounds` (12) is only a safety net that decides on points. The frozen `spec` preset keeps the original rules (4 rounds, no backfire), so the tests against the spec's balance table still hold. Consequence for balance: all-medium replies, a coin flip under the old rules, now win only about 10%, in line with the spec's rule that replies must average better than Kohtalainen.
 - **May become a surprise minigame inside the quiz**, depending on how it feels once playable. The game is built so it can run both standalone and embedded (section 5.2), but embedding is not part of this plan's scope.
 
 ---
