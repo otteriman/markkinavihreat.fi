@@ -1,0 +1,90 @@
+name: Preview (GitHub Pages)
+
+# Publishes branch previews to GitHub Pages so changes can be reviewed before
+# merging. This is separate from production, which deploys to Cloudflare (see
+# `npm run deploy`) — GitHub Pages here is preview-only.
+#
+# GitHub Pages serves one site per repository, so each run assembles a single
+# site out of two builds:
+#   /<repo>/                 the branch in ROOT_BRANCH (the long-standing preview URL)
+#   /<repo>/<branch-slug>/   the branch that was just pushed
+# Both are rebuilt on every run, so neither disappears when the other updates.
+# Caveat: the older workflow on the ROOT_BRANCH replaces the whole site with
+# just that branch when it is pushed; re-run this workflow (Actions tab → Run
+# workflow, on the branch you want) to bring the other previews back.
+on:
+  push:
+    branches-ignore: [main]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+# Only one preview deploy at a time; a newer push supersedes an in-progress one.
+concurrency:
+  group: pages-preview
+  cancel-in-progress: true
+
+env:
+  ROOT_BRANCH: claude/ruokaostostuki-kohdentuminen-2lh26i
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version-file: '.nvmrc'
+          cache: 'npm'
+      - name: Build previews
+        env:
+          REPO: ${{ github.event.repository.name }}
+          ORIGIN: https://${{ github.repository_owner }}.github.io
+        run: |
+          set -euo pipefail
+          slug=$(echo "$GITHUB_REF_NAME" | tr 'A-Z' 'a-z' | sed 's/[^a-z0-9]/-/g')
+          mkdir site
+
+          # BASE_PATH/SITE_URL make build-time absolute URLs resolve under the
+          # preview's actual GitHub Pages origin and subpath; NOINDEX keeps the
+          # preview out of search engines.
+          build() { # <source dir> <base path> <output dir>
+            (cd "$1" && npm ci && BASE_PATH="$2" SITE_URL="$ORIGIN" NOINDEX=true npm run build)
+            mkdir -p "$3"
+            cp -R "$1/dist/." "$3/"
+          }
+
+          if [ "$GITHUB_REF_NAME" = "$ROOT_BRANCH" ]; then
+            build . "/$REPO" site
+          else
+            build . "/$REPO/$slug" "site/$slug"
+            if git fetch --depth 1 origin "$ROOT_BRANCH"; then
+              git worktree add ../root-branch FETCH_HEAD
+              build ../root-branch "/$REPO" site
+            else
+              echo "::warning::$ROOT_BRANCH not found; the site root links to this preview instead."
+              echo "<!doctype html><meta charset=utf-8><meta http-equiv=refresh content=\"0;url=$slug/\"><a href=\"$slug/\">$slug</a>" > site/index.html
+            fi
+          fi
+
+          {
+            echo "### Preview URLs"
+            echo "- Root ($ROOT_BRANCH): $ORIGIN/$REPO/"
+            [ "$GITHUB_REF_NAME" = "$ROOT_BRANCH" ] || echo "- $GITHUB_REF_NAME: $ORIGIN/$REPO/$slug/"
+          } >> "$GITHUB_STEP_SUMMARY"
+      - uses: actions/upload-pages-artifact@v3
+        with:
+          path: site
+
+  deploy:
+    needs: build
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - id: deployment
+        uses: actions/deploy-pages@v4
