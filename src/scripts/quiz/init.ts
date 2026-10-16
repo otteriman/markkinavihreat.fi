@@ -12,6 +12,7 @@ import { computeResult, runningScores } from '../../lib/quiz/scoring'
 import { TreeView } from '../../lib/quiz/treeView'
 import type { Answers, Statement } from '../../lib/quiz/types'
 import { encodeAnswersHash, encodeScores, parseChallenger, resultPath } from '../../lib/quiz/url'
+import { playBonus } from './bonus'
 import { runReveal } from './reveal'
 
 interface Config {
@@ -33,7 +34,7 @@ interface Config {
 const wait = (ms: number) => new Promise((resolve) => setTimeout(resolve, ms))
 
 const stepKey = (s: Step) =>
-  s.kind === 'intro' ? 'intro' : `${s.kind === 'question' ? 'q' : 'a'}:${s.id}`
+  s.kind === 'intro' || s.kind === 'bonus' ? s.kind : `${s.kind === 'question' ? 'q' : 'a'}:${s.id}`
 
 /**
  * Drives the quiz page. The markup (question text, cards, labels) is
@@ -79,7 +80,7 @@ export function initQuiz() {
 
   const currentId = () => {
     const step = steps[index]
-    return step.kind === 'intro' ? null : step.id
+    return step.kind === 'intro' || step.kind === 'bonus' ? null : step.id
   }
 
   // When the current screen appeared. A tap or key right after that belongs to
@@ -162,6 +163,7 @@ export function initQuiz() {
   function go(i: number, focus = true) {
     index = i
     const step = steps[i]
+    if (step.kind === 'bonus') return void runBonus()
     if (step.kind === 'question') restore(step.id)
     if (step.kind === 'after' && step.id === 'guess') playGuessReveal()
 
@@ -194,6 +196,14 @@ export function initQuiz() {
             ? `${item.axis}.down`
             : 'neutral'
     sections.get(`a:${id}`)!.querySelector('[data-cue]')!.textContent = config.cues[key]
+  }
+
+  /** The surprise bonus level plays over the quiz, then the quiz carries on. */
+  async function runBonus() {
+    const overlay = document.getElementById('bonus')
+    // Move on to the next question underneath while the screen is still white.
+    if (overlay) await playBonus(overlay, reduceMotion.matches, advance)
+    else advance()
   }
 
   let finishing = false

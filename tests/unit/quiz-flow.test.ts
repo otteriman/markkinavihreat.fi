@@ -1,6 +1,7 @@
 import { describe, expect, it } from 'vitest'
 import { items } from '../../src/lib/quiz/data'
 import {
+  BONUS_AFTER,
   buildSteps,
   nextStep,
   previousStep,
@@ -70,5 +71,24 @@ describe('statementValues', () => {
   it('lists q1–q9 in order with skipped and unanswered as null', () => {
     const values = statementValues(items, { q1: 2, q2: -1, q3: null, q9: 1, q10: 'price' })
     expect(values).toEqual([2, -1, null, null, null, null, null, null, 1])
+  })
+})
+
+describe('bonus level', () => {
+  const bonus = steps.findIndex((s) => s.kind === 'bonus')
+
+  it('comes once, right after the third question and its after-screen', () => {
+    expect(BONUS_AFTER).toBe('q3')
+    expect(steps.filter((s) => s.kind === 'bonus')).toHaveLength(1)
+    expect(steps[bonus - 1]).toEqual({ kind: 'after', id: 'q3' })
+    expect(steps[bonus + 1]).toEqual({ kind: 'question', id: 'q4' })
+  })
+
+  it('is skipped by Back: from q4 back to q3', () => {
+    expect(previousStep(steps, at('question', 'q4'))).toBe(at('question', 'q3'))
+  })
+
+  it('does not count as a question', () => {
+    expect(questionNumber(items, 'q4')).toBe(4)
   })
 })

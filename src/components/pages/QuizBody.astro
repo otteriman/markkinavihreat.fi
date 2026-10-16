@@ -1,5 +1,7 @@
 ---
 import BaseLayout from '../../layouts/BaseLayout.astro'
+import BonusFont from '../BonusFont.astro'
+import BonusGame from '../BonusGame.astro'
 import FinaleIcon from '../FinaleIcon.astro'
 import QuizBars from '../QuizBars.astro'
 import type { Locale } from '../../lib/content'
@@ -62,6 +64,7 @@ const btnAnswer =
   path="/testi/"
   noindex
 >
+  <BonusFont slot="head" />
   <div
     id="quiz"
     data-locale={locale}
@@ -269,6 +272,8 @@ const btnAnswer =
       <p data-reveal-status class="sr-only" aria-live="polite"></p>
       <a data-reveal-link href={`#`} class="btn-primary mt-6 justify-center">{t('reveal.see')}</a>
     </section>
+
+    <BonusGame locale={locale} />
 
     <script type="application/json" id="quiz-config" is:inline set:html={JSON.stringify(config)} />
   </div>

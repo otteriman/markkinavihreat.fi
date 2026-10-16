@@ -2,17 +2,24 @@ import type { Answers, QuizItem } from './types'
 
 /**
  * Screens of the quiz in display order (plan section 7.1):
- * intro → q1 → after q1 → … → guess → guess reveal → … → q10.
- * The finale has no after-card; the quiz ends there.
+ * intro → q1 → after q1 → … → q3 → after q3 → bonus level → q4 → … → guess →
+ * guess reveal → … → q10. The finale has no after-screen; the quiz ends there.
  */
 export type Step =
-  { kind: 'intro' } | { kind: 'question'; id: string } | { kind: 'after'; id: string }
+  | { kind: 'intro' }
+  | { kind: 'question'; id: string }
+  | { kind: 'after'; id: string }
+  | { kind: 'bonus' }
+
+/** The surprise bonus level (the sweater game) comes after this question. */
+export const BONUS_AFTER = 'q3'
 
 export function buildSteps(items: QuizItem[]): Step[] {
   const steps: Step[] = [{ kind: 'intro' }]
   for (const item of items) {
     steps.push({ kind: 'question', id: item.id })
     if (item.kind !== 'finale') steps.push({ kind: 'after', id: item.id })
+    if (item.id === BONUS_AFTER) steps.push({ kind: 'bonus' })
   }
   return steps
 }
@@ -32,13 +39,13 @@ export function nextStep(steps: Step[], index: number): number | null {
 }
 
 /**
- * Index of the step before `index`. Back never lands on an after-card: from a
- * question it goes to the previous question, from an after-card to its own
- * question. Null when there is nothing before (the intro).
+ * Index of the step before `index`. Back never lands on an after-screen or the
+ * bonus level: from a question it goes to the previous question, from an
+ * after-screen to its own question. Null when there is nothing before (the intro).
  */
 export function previousStep(steps: Step[], index: number): number | null {
   for (let i = index - 1; i >= 0; i--) {
-    if (steps[i].kind !== 'after') return i
+    if (steps[i].kind !== 'after' && steps[i].kind !== 'bonus') return i
   }
   return null
 }
