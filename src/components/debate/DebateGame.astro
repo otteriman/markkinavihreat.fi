@@ -5,8 +5,9 @@
  * narration or the option grid. Self-contained (styles scoped under .debate),
  * so it can sit on its own page or, later, inside another page.
  *
- * The battle itself is wired up in a later phase; until then the stage shows
- * the opening (or the `preview` the lab page passes in).
+ * With `play`, the stage is playable: a start button begins a battle
+ * (src/scripts/debate/init.ts drives it). Without, it's a still picture of
+ * the opening or of the `preview` the lab page passes in.
  */
 import '../../styles/debate.css'
 import type { Locale } from '../../lib/content'
@@ -32,9 +33,11 @@ interface Props {
   scale?: number
   /** Extra class on the outer element, e.g. a font for the lab's comparison. */
   class?: string
+  /** A playable stage with a start button, instead of a still picture. */
+  play?: boolean
 }
 
-const { locale, enemy: enemyId, preview, scale, class: className } = Astro.props
+const { locale, enemy: enemyId, preview, scale, class: className, play = false } = Astro.props
 const enemy = enemyId ? enemies.find((e) => e.id === enemyId) : enemies[0]
 if (!enemy) throw new Error(`Unknown debate enemy "${enemyId}"`)
 
@@ -43,22 +46,31 @@ const top = preview?.top ?? localize(enemy.opening, locale)
 const bottom = preview?.bottom ?? localize(enemy.appear, locale)
 const options = preview?.options
 const fill = (kannatus: number | undefined) => (kannatus ?? 100) / 100
+// `?difficulty=` switches presets only in development and noindex previews.
+const difficultyParam = import.meta.env.DEV || import.meta.env.NOINDEX === 'true'
+const controlsId = `debate-controls-${locale}`
 ---
 
 <div
   class:list={['debate debate-frame', className]}
   data-debate
   data-debate-fixed-scale={scale}
+  data-debate-play={play ? '' : undefined}
+  data-debate-enemy={enemy.id}
+  data-debate-difficulty-param={play && difficultyParam ? '' : undefined}
   lang={locale}
 >
   <div
     class="debate-stage"
     role="group"
     aria-label={t('page.title')}
+    aria-describedby={play ? controlsId : undefined}
+    tabindex={play ? '-1' : undefined}
     style={scale ? `--debate-scale: ${scale}` : undefined}
   >
-    <div class="debate-box debate-box-top" data-debate-box="top">
-      <p class="debate-text" data-debate-top aria-hidden="true">{top}</p>
+    <div class="debate-box debate-box-top" data-debate-box="top" hidden={play}>
+      <p class="debate-text" data-debate-top aria-hidden="true">{play ? '' : top}</p>
+      <span class="debate-more" data-debate-more="top" hidden></span>
     </div>
 
     <div class="debate-status debate-status-enemy">
@@ -94,8 +106,21 @@ const fill = (kannatus: number | undefined) => (kannatus ?? 100) / 100
 
     <div class="debate-box debate-box-bottom" data-debate-box="bottom">
       <p class="debate-text" data-debate-bottom aria-hidden="true" hidden={!!options}>
-        {bottom}
+        {play ? '' : bottom}
       </p>
+      {
+        play && (
+          <button
+            type="button"
+            class="debate-option debate-start"
+            data-debate-start
+            aria-current="true"
+          >
+            <span class="debate-option-label">{t('start')}</span>
+          </button>
+        )
+      }
+      <span class="debate-more" data-debate-more="bottom" hidden></span>
       <ul class="debate-options" data-debate-options hidden={!options}>
         {
           options?.map((o) => (
@@ -114,12 +139,30 @@ const fill = (kannatus: number | undefined) => (kannatus ?? 100) / 100
       </ul>
     </div>
 
+    <div class="debate-end" data-debate-end hidden>
+      <p class="debate-end-result" data-debate-end-result></p>
+      <p data-debate-end-strong></p>
+      <button type="button" class="debate-option" data-debate-again aria-current="true">
+        <span class="debate-option-label">{t('end.playAgain')}</span>
+      </button>
+    </div>
+
     <p class="sr-only" aria-live="polite" data-debate-live></p>
+    {
+      play && (
+        <p class="sr-only" id={controlsId}>
+          {t('a11y.controls')}
+        </p>
+      )
+    }
   </div>
+  {play && <p class="debate-note" data-debate-note hidden />}
 </div>
 
 <script>
   import { fitStages } from '../../scripts/debate/scale'
+  import { startDebateGames } from '../../scripts/debate/init'
 
   fitStages(document)
+  startDebateGames(document)
 </script>

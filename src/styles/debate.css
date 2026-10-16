@@ -34,7 +34,15 @@
 /* The frame around the stage: takes the available width, centres the stage. */
 .debate-frame {
   display: flex;
-  justify-content: center;
+  flex-direction: column;
+  align-items: center;
+}
+
+/* Preview-only note under the stage, e.g. which ?difficulty= is in use. */
+.debate-note {
+  margin-top: 8px;
+  color: var(--gb-0);
+  font-size: 14px;
 }
 
 .debate-stage {
@@ -51,6 +59,17 @@
   -webkit-font-smoothing: none;
   font-synthesis: none;
   user-select: none;
+  -webkit-tap-highlight-color: transparent;
+  touch-action: manipulation;
+}
+
+.debate-stage:focus {
+  outline: none;
+}
+
+.debate-stage:focus-visible {
+  outline: 1px solid var(--gb-0);
+  outline-offset: 1px;
 }
 
 /* Until scale.ts runs: a sensible whole-number zoom per viewport width. */
@@ -233,4 +252,89 @@
   text-decoration: line-through;
   text-decoration-thickness: 1px;
   cursor: default;
+}
+
+/* The start button sits where the text would. */
+.debate-start {
+  width: auto;
+}
+
+/* ▼ in a speech box's corner: the line is done, tap or press a key to go on. */
+.debate-more {
+  position: absolute;
+  right: 5px;
+  bottom: 3px;
+  width: 7px;
+  height: 4px;
+  background: var(--gb-3);
+  clip-path: polygon(0 0, 100% 0, 50% 100%);
+  animation: debate-more 1s steps(1) infinite;
+}
+
+@keyframes debate-more {
+  50% {
+    transform: translateY(1px);
+  }
+}
+
+/* The end screen covers the stage: result, strong replies, play again. */
+.debate-end {
+  position: absolute;
+  inset: 4px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  padding: 12px;
+  border: 2px solid var(--gb-3);
+  border-radius: 3px;
+  background: var(--gb-0);
+  box-shadow: inset 0 0 0 1px var(--gb-1);
+  text-align: center;
+}
+
+.debate-end p {
+  margin: 0;
+}
+
+.debate-end .debate-option {
+  width: auto;
+}
+
+/* Hit: the sprite shakes, then the status blinks while its bar drains. */
+.debate-shake {
+  animation: debate-shake 320ms steps(8);
+}
+
+@keyframes debate-shake {
+  0%,
+  50% {
+    transform: translateX(-2px);
+  }
+  25%,
+  75% {
+    transform: translateX(2px);
+  }
+  100% {
+    transform: none;
+  }
+}
+
+.debate-blink {
+  animation: debate-blink 240ms steps(1) infinite;
+}
+
+@keyframes debate-blink {
+  50% {
+    opacity: 0.35;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .debate-more,
+  .debate-shake,
+  .debate-blink {
+    animation: none;
+  }
 }

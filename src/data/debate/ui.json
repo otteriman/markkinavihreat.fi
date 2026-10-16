@@ -125,6 +125,36 @@
     "en": "Sound off",
     "needsReview": ["sv", "en"]
   },
+  "start": {
+    "fi": "Aloita väittely",
+    "sv": "Starta debatten",
+    "en": "Start the debate",
+    "needsReview": ["fi", "sv", "en"]
+  },
+  "a11y.you": {
+    "fi": "Sinä",
+    "sv": "Du",
+    "en": "You",
+    "needsReview": ["fi", "sv", "en"]
+  },
+  "a11y.used": {
+    "fi": "käytetty",
+    "sv": "använd",
+    "en": "used",
+    "needsReview": ["fi", "sv", "en"]
+  },
+  "a11y.hit": {
+    "fi": "{name}: kannatus {value}",
+    "sv": "{name}: stöd {value}",
+    "en": "{name}: support {value}",
+    "needsReview": ["fi", "sv", "en"]
+  },
+  "a11y.controls": {
+    "fi": "Etene napauttamalla tai Enterillä. Valitse nuolinäppäimillä.",
+    "sv": "Gå vidare genom att trycka eller med Enter. Välj med piltangenterna.",
+    "en": "Tap or press Enter to continue. Choose with the arrow keys.",
+    "needsReview": ["fi", "sv", "en"]
+  },
   "page.title": {
     "fi": "Vihreä väittely",
     "sv": "Grön debatt",
