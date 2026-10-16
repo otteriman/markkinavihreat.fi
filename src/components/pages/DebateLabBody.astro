@@ -1,0 +1,254 @@
+---
+/**
+ * /debate-lab/: the debate game's workbench. Not built in production (see
+ * src/pages/[debateLab].astro). Sections:
+ *   1. Fonts: candidates side by side, plus a fit check of every battle text.
+ *   2. Stage states in each language, with the longest real texts.
+ *   3. Sprites at several sizes.
+ *   4. Difficulty: change any knob and see simulated win rates at once.
+ */
+import '../../styles/debate-lab.css'
+import BaseLayout from '../../layouts/BaseLayout.astro'
+import DebateGame from '../debate/DebateGame.astro'
+import { LOCALES } from '../../lib/content'
+import { config, enemies, ui } from '../../lib/debate/data'
+import { SPRITES, spriteSvg } from '../../lib/debate/sprites'
+import { longestTexts, stageTexts } from '../../lib/debate/stageTexts'
+import { localize } from '../../lib/debate/text'
+
+const FONTS = [
+  { id: 'jersey', name: 'Jersey 10, 12px (shipped)' },
+  { id: 'pixelify', name: 'Pixelify Sans 10px' },
+  { id: 'silkscreen', name: 'Silkscreen 8px' },
+  { id: 'micro', name: 'Micro 5, 11px' },
+]
+
+const texts = stageTexts(enemies, ui)
+const enemy = enemies[0]
+
+/** The worst case in `locale`: longest lines in both boxes, longest labels in the grid. */
+function worstCase(locale: (typeof LOCALES)[number]) {
+  const longest = longestTexts(texts, locale)
+  const labels = texts
+    .filter((t) => t.locale === locale && t.box === 'label')
+    .map((t) => t.text)
+    .sort((a, b) => b.length - a.length)
+    .slice(0, 6)
+  return { longest, labels }
+}
+
+const fi = worstCase('fi')
+const attackGrid = (locale: (typeof LOCALES)[number]) =>
+  enemy.playerAttacks.slice(0, config.rules.playerAttackSlots).map((a, i) => ({
+    label: localize(a.label, locale),
+    used: i === 1 || i === 4,
+    current: i === 2,
+  }))
+const replyGrid = (locale: (typeof LOCALES)[number]) =>
+  enemy.attacks[0].replies.map((r, i) => ({ label: localize(r.label, locale), current: i === 0 }))
+---
+
+<BaseLayout
+  locale="fi"
+  title="Debate lab — markkinavihreat.fi"
+  description="Debate game workbench"
+  path="/debate-lab/"
+  noindex
+>
+  <div class="content-max mx-auto space-y-16 px-4 py-12 sm:px-6">
+    <header>
+      <h1 class="text-4xl">Debate lab</h1>
+      <p class="text-harmaa mt-2 max-w-2xl">
+        Workbench for the debate game. Only built in development and previews. Content and numbers
+        come from <code>src/data/debate/</code>.
+      </p>
+    </header>
+
+    <section>
+      <h2 class="text-2xl">1. Fonts</h2>
+      <p class="text-harmaa mt-2 max-w-2xl">
+        Each candidate at 2× with the longest Finnish texts: the longest top-box line, the longest
+        bottom-box line and the six longest labels in the attack grid. The table checks every battle
+        text in every language against the boxes.
+      </p>
+      <div class="mt-6 grid gap-8">
+        {
+          FONTS.map((font) => (
+            <figure>
+              <figcaption class="mb-2 font-semibold">{font.name}</figcaption>
+              <div class="flex flex-wrap gap-3">
+                <DebateGame
+                  locale="fi"
+                  scale={2}
+                  class={`font-${font.id}`}
+                  preview={{ top: fi.longest.top, bottom: fi.longest.bottom }}
+                />
+                <DebateGame
+                  locale="fi"
+                  scale={2}
+                  class={`font-${font.id}`}
+                  preview={{
+                    top: fi.longest.top,
+                    options: fi.labels.map((label, i) => ({ label, current: i === 0 })),
+                  }}
+                />
+              </div>
+            </figure>
+          ))
+        }
+      </div>
+
+      <h3 class="mt-10 text-xl">Fit check: texts that don’t fit their box</h3>
+      <div id="fit-report" class="mt-3 overflow-x-auto">
+        <p class="text-harmaa">Measuring…</p>
+      </div>
+      <!-- Off-screen 1× stages the fit check measures in, one per font. -->
+      <div aria-hidden="true" style="position: absolute; left: -10000px; top: 0">
+        {
+          FONTS.map((font) => (
+            <div data-fit-probe={font.id}>
+              <DebateGame
+                locale="fi"
+                scale={1}
+                class={`font-${font.id}`}
+                preview={{ options: [{ label: 'x' }] }}
+              />
+            </div>
+          ))
+        }
+      </div>
+    </section>
+
+    <section>
+      <h2 class="text-2xl">2. Stage states</h2>
+      <p class="text-harmaa mt-2 max-w-2xl">
+        The shipped font in each language: the opening, the reply grid, the attack grid (two attacks
+        used) and a mid-battle moment with the longest player line.
+      </p>
+      {
+        LOCALES.map((locale) => {
+          const worst = worstCase(locale)
+          return (
+            <div class="mt-6">
+              <h3 class="mb-2 font-semibold uppercase">{locale}</h3>
+              <div class="flex flex-wrap gap-3">
+                <DebateGame locale={locale} scale={2} />
+                <DebateGame
+                  locale={locale}
+                  scale={2}
+                  preview={{
+                    top: localize(enemy.attacks[0].line, locale),
+                    options: replyGrid(locale),
+                  }}
+                />
+                <DebateGame
+                  locale={locale}
+                  scale={2}
+                  preview={{
+                    top: worst.longest.top,
+                    options: attackGrid(locale),
+                    player: 70,
+                    enemy: 85,
+                  }}
+                />
+                <DebateGame
+                  locale={locale}
+                  scale={2}
+                  preview={{
+                    top: localize(enemy.opening, locale),
+                    bottom: worst.longest.bottom,
+                    player: 25,
+                    enemy: 55,
+                  }}
+                />
+              </div>
+            </div>
+          )
+        })
+      }
+    </section>
+
+    <section>
+      <h2 class="text-2xl">3. Sprites</h2>
+      <p class="text-harmaa mt-2">Placeholders until the final art (phase 4).</p>
+      <div class="debate mt-4 flex flex-wrap items-end gap-8">
+        {
+          Object.keys(SPRITES).map((name) => (
+            <figure>
+              <div class="flex items-end gap-4" style="background: var(--gb-0); padding: 12px">
+                {[1, 2, 4].map((zoom) => (
+                  <div style={`zoom: ${zoom}`} set:html={spriteSvg(name)} />
+                ))}
+              </div>
+              <figcaption class="mt-1 text-sm">{name}</figcaption>
+            </figure>
+          ))
+        }
+        <figure>
+          <div class="flex">
+            {
+              ['--gb-0', '--gb-1', '--gb-2', '--gb-3'].map((v) => (
+                <div style={`background: var(${v}); width: 48px; height: 48px`} />
+              ))
+            }
+          </div>
+          <figcaption class="mt-1 text-sm">Palette 0–3</figcaption>
+        </figure>
+      </div>
+    </section>
+
+    <section>
+      <h2 class="text-2xl">4. Difficulty</h2>
+      <p class="text-harmaa mt-2 max-w-2xl">
+        Pick a preset and change any number; simulated battles rerun automatically. Nothing here is
+        saved: copy the command below to reproduce a result, or put the values in
+        <code>src/data/debate/config.json</code>.
+      </p>
+      <form id="difficulty" class="mt-4 space-y-4">
+        <div class="flex flex-wrap items-end gap-4">
+          <label class="block">
+            <span class="block text-sm font-semibold">Preset</span>
+            <select name="preset" class="rounded border px-2 py-1">
+              {
+                Object.keys(config.difficulties).map((name) => (
+                  <option value={name} selected={name === config.difficulty}>
+                    {name}
+                    {name === config.difficulty ? ' (shipped)' : ''}
+                  </option>
+                ))
+              }
+            </select>
+          </label>
+          <label class="block">
+            <span class="block text-sm font-semibold">Battles per play style</span>
+            <input
+              name="runs"
+              type="number"
+              value="2000"
+              min="100"
+              step="100"
+              class="w-28 rounded border px-2 py-1"
+            />
+          </label>
+          <button type="button" data-reset class="btn-outline-sm">Reset to preset</button>
+        </div>
+        <div data-knobs class="grid gap-3 sm:grid-cols-3 lg:grid-cols-4"></div>
+      </form>
+      <div id="difficulty-results" class="mt-6 overflow-x-auto"></div>
+      <pre
+        id="difficulty-command"
+        class="bg-surface-greige mt-4 overflow-x-auto rounded p-3 text-sm">
+      </pre>
+    </section>
+  </div>
+
+  <script type="application/json" id="debate-lab-texts" set:html={JSON.stringify(texts)} />
+</BaseLayout>
+
+<script>
+  import { runFitCheck } from '../../scripts/debate/lab-fit'
+  import { setUpDifficultyPanel } from '../../scripts/debate/lab-difficulty'
+
+  runFitCheck()
+  setUpDifficultyPanel()
+</script>

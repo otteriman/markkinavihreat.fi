@@ -1,0 +1,13 @@
+---
+import DebateLabBody from '../components/pages/DebateLabBody.astro'
+
+// /debate-lab/: the debate game's workbench (fonts, stage states, sprites,
+// difficulty tuning). Built in development and in noindex previews (GitHub
+// Pages sets NOINDEX=true), never in the production build.
+export function getStaticPaths() {
+  const enabled = import.meta.env.DEV || import.meta.env.NOINDEX === 'true'
+  return enabled ? [{ params: { debateLab: 'debate-lab' } }] : []
+}
+---
+
+<DebateLabBody />

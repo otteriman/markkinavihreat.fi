@@ -1,0 +1,80 @@
+/*
+ * Candidate fonts for the debate game, loaded only on /debate-lab/ to compare
+ * them with the shipped one (Jersey 10, in debate.css). All SIL OFL 1.1,
+ * self-hosted, licences in src/assets/fonts/debate/.
+ *
+ * Sizes are matched by cap height (about 5–6 logical pixels); Silkscreen and
+ * Micro 5 sit on an exact pixel grid at these sizes.
+ */
+@font-face {
+  font-family: 'Debate Pixelify';
+  src: url('../assets/fonts/debate/PixelifySans-Regular.woff2') format('woff2');
+  font-weight: 400;
+}
+
+@font-face {
+  font-family: 'Debate Pixelify';
+  src: url('../assets/fonts/debate/PixelifySans-Bold.woff2') format('woff2');
+  font-weight: 700;
+}
+
+@font-face {
+  font-family: 'Debate Silkscreen';
+  src: url('../assets/fonts/debate/Silkscreen-Regular.woff2') format('woff2');
+  font-weight: 400;
+}
+
+@font-face {
+  font-family: 'Debate Silkscreen';
+  src: url('../assets/fonts/debate/Silkscreen-Bold.woff2') format('woff2');
+  font-weight: 700;
+}
+
+@font-face {
+  font-family: 'Debate Micro';
+  src: url('../assets/fonts/debate/Micro5-Regular.woff2') format('woff2');
+}
+
+.debate.font-jersey {
+  --debate-font: 'Debate Jersey', monospace;
+  --debate-size: 12px;
+  --debate-line: 12px;
+}
+
+.debate.font-pixelify {
+  --debate-font: 'Debate Pixelify', monospace;
+  --debate-size: 10px;
+  --debate-line: 12px;
+  --debate-name-weight: 700;
+}
+
+.debate.font-silkscreen {
+  --debate-font: 'Debate Silkscreen', monospace;
+  --debate-size: 8px;
+  --debate-line: 11px;
+  --debate-name-weight: 700;
+}
+
+.debate.font-micro {
+  --debate-font: 'Debate Micro', monospace;
+  --debate-size: 11px;
+  --debate-line: 11px;
+}
+
+.lab-table {
+  border-collapse: collapse;
+  font-size: 14px;
+}
+
+.lab-table th,
+.lab-table td {
+  border-bottom: 1px solid rgb(0 0 0 / 0.1);
+  padding: 4px 10px;
+  text-align: right;
+  font-variant-numeric: tabular-nums;
+}
+
+.lab-table th:first-child,
+.lab-table td:first-child {
+  text-align: left;
+}
