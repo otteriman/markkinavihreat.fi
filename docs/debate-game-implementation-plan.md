@@ -58,12 +58,12 @@ src/data/debate/
   enemies/
     kansalliskonservatiivi/
       enemy.json                   name, status label, intro line, sprite id
-      attacks/                     the enemy's attacks (he uses 4 per battle)
+      enemy-attacks/               the enemy's attacks (he uses 4 per battle)
         bensapopulismi.json        one file per attack
         velkakortti.json
         eu-kritiikki.json
         maahanmuutto.json
-      defenses/                    the player's attacks and the enemy's possible comebacks
+      player-attacks/              the player's attacks and the enemy's possible comebacks
         huoltovarmuus.json         one file per player attack
         kotimainen-ruoka.json
         ratahankkeet.json
@@ -72,11 +72,11 @@ src/data/debate/
         lihavero.json
 ```
 
-Adding an attack is dropping a new JSON file in `attacks/` or `defenses/`; removing it is deleting the file; reordering is not needed because order is random (the player's grid is ordered by an optional `order` number, else by filename). The loader reads the folders with Vite's `import.meta.glob`, so no index file needs updating and no new dependency is needed. A new enemy is a new folder under `enemies/`.
+Adding an attack is dropping a new JSON file in `enemy-attacks/` or `player-attacks/`; removing it is deleting the file; reordering is not needed because order is random (the player's grid is ordered by an optional `order` number, else by filename). The loader reads the folders with Vite's `import.meta.glob`, so no index file needs updating and no new dependency is needed. A new enemy is a new folder under `enemies/`.
 
 #### File shapes
 
-An enemy attack (`attacks/maahanmuutto.json`):
+An enemy attack (`enemy-attacks/maahanmuutto.json`):
 
 ```json
 {
@@ -98,7 +98,7 @@ An enemy attack (`attacks/maahanmuutto.json`):
 }
 ```
 
-A player attack (`defenses/huoltovarmuus.json`):
+A player attack (`player-attacks/huoltovarmuus.json`):
 
 ```json
 {
@@ -127,14 +127,14 @@ Rules that keep the files simple:
 
 #### Validation (the safety net for frequent edits)
 
-One shared validator (`src/lib/debate/validate.ts`) used by a unit test, by `scripts/validate-translations.ts` and by a `npm run debate:report` command. It fails with a message that names the file and the rule, for example `enemies/kansalliskonservatiivi/attacks/velkakortti.json: replies need exactly 1 strong, 1 medium, 2 weak (found 2 strong, 1 medium, 1 weak)`.
+One shared validator (`src/lib/debate/validate.ts`) used by a unit test, by `scripts/validate-translations.ts` and by a `npm run debate:report` command. It fails with a message that names the file and the rule, for example `enemies/kansalliskonservatiivi/enemy-attacks/velkakortti.json: replies need exactly 1 strong, 1 medium, 2 weak (found 2 strong, 1 medium, 1 weak)`.
 
 The rules come from `config.json`, not from the code, so changing the game shape is a config edit:
 
 - every attack has `repliesPerAttack` replies (default 4) with the quality mix from `config.replyMix` (default 1 strong, 1 medium, 2 weak);
 - every player attack has `defensesPerAttack` defenses (default 4) and at least one `strong`;
 - each enemy has at least `rounds` attacks (default 4) and at least `playerAttackSlots` player attacks (default 6, the 2×3 grid); having more than needed is fine, the game draws a random subset, so adding a 5th enemy attack just works;
-- button labels are at most `maxLabelLength` (default 15) characters, in every language;
+- button labels are at most `maxLabelLength` (17) characters, in every language. The spec says 15, but its own player attack labels "Kotimainen ruoka" (16) and "Vihreä teollisuus" (17) are longer, and both grids have the same two-column width, so the limit is 17 until the Phase 2 font lab shows what really fits;
 - all three languages present; `TODO` and `needsReview` are allowed but listed in the report, like the quiz.
 
 The balance test (section 6) runs on the real data, so a content edit that wrecks the difficulty fails CI with the numbers shown.
@@ -236,7 +236,7 @@ Presets can also extend each other (`"extends": "normal"` plus overrides), so "h
 
 - **Sprites** as arrays of strings (one char per pixel: digits 0–3 = palette shade, `.` = transparent) in `src/lib/debate/sprites.ts`, converted to inline SVG `<rect>` runs. Player from behind (bottom left), enemy from the front (top right): a generic mid-aged man in a fleece vest and cap, original design. The enemy's sprite id comes from `enemy.json`, so a new enemy brings a new sprite entry.
 - Animations by CSS class: `shake` (hit), `blink` (KANNATUS drops), slide-in at the intro. Bars drain with `steps()` easing to look 8-bit.
-- **Self-hosted font.** One pixel font under an open licence (SIL OFL), committed as a subsetted `woff2` in the repo with its licence text next to it, loaded by an `@font-face` in our own CSS with `font-display: swap`. It must have **ä, ö and å** (Swedish needs å). No Google Fonts link, no npm font package, so no new dependency. The font file is imported through Astro's asset pipeline so its URL respects `BASE_PATH` in branch previews. Candidates, to be compared on `/debate-lab/` in Phase 2 with the longest real labels in all three languages: Pixelify Sans, Silkscreen, VT323 (Press Start 2P is too wide for 240 px). The 15-character label limit is checked against the chosen font in the lab.
+- **Self-hosted font.** One pixel font under an open licence (SIL OFL), committed as a subsetted `woff2` in the repo with its licence text next to it, loaded by an `@font-face` in our own CSS with `font-display: swap`. It must have **ä, ö and å** (Swedish needs å). No Google Fonts link, no npm font package, so no new dependency. The font file is imported through Astro's asset pipeline so its URL respects `BASE_PATH` in branch previews. Candidates, to be compared on `/debate-lab/` in Phase 2 with the longest real labels in all three languages: Pixelify Sans, Silkscreen, VT323 (Press Start 2P is too wide for 240 px). The 17-character label limit is checked against the chosen font in the lab.
 - The quiz's bonus level loads Patrick Hand from Google Fonts; that is the quiz's business and the game does not depend on it.
 
 ## 5. Routes, languages and integration
@@ -269,7 +269,7 @@ You may later turn this into a surprise minigame between quiz questions, dependi
 
 **Unit (vitest)**, `tests/unit/debate-*.test.ts`:
 
-- `debate-data`: runs the validator on the real data (shape, quality mixes, counts, label lengths, all three languages present), plus the derived tiers against the spec table (Huoltovarmuus and Kotimainen ruoka vahva; Ratahankkeet and Vihreä teollisuus hyvä; Ilmastokriisi and Lihavero heikko) so an accidental retier is flagged. Also validator tests on small broken fixtures, proving each rule produces a clear error.
+- `debate-data`: runs the validator on the real data (shape, quality mixes, counts, label lengths, all three languages present), the derived tiers are shown by `debate:report` rather than asserted, so retiering an attack by editing its comebacks is a normal content edit. The spec's tiers are asserted on a frozen fixture copy of the spec's qualities (`debate-balance`). Also validator tests on small broken fixtures, proving each rule produces a clear error.
 - `debate-difficulty`: presets resolve and `extends` works; unknown or out-of-range knobs give a clear error; `enemyDefenseWeights` shift the pick frequencies as expected; a dev override never applies in a production build.
 - `debate-battle`: no enemy attack repeats; each player attack usable once; KO ends the battle mid-round; the last round ends on points; tie ending; the same seed gives the same battle; damage table (0/15/30); works with more than the minimum number of attacks.
 - `debate-balance`: Monte-Carlo (about 20 000 seeded battles per strategy). Against the frozen `spec` preset it checks the spec's expected values exactly (perfect play player 100 / enemy about 40; all-medium replies 40 / 40; random play about 25 vs 55). Against the shipped preset it checks only the loose guardrails from `config.json` and prints the measured numbers on failure. A shared simulation module (`src/lib/debate/simulate.ts`) backs this test, `debate:balance` and the lab.
@@ -284,7 +284,7 @@ You may later turn this into a surprise minigame between quiz questions, dependi
 Each phase ends with `npm run format:check && npm run lint && npm run check && npm run validate:translations && npm run test && npm run build` green and a stop for review. One logical change per commit (Conventional Commits), pushed right after.
 
 0. **Branch, CI, plan** (done): plan doc and the preview workflow.
-1. **Data, validator and engine:** `config.json` with the `spec`, `easy`, `normal` and `hard` presets and guardrails, the per-file enemy data with all spec copy in Finnish (with the fixed "Rasismi" reply), sv/en drafts marked `needsReview`, `ui.json`; `src/lib/debate/*` (loader, validator, battle, rng); unit and balance tests; `debate:report` and `debate:balance`; extend `validate-translations.ts`. No UI yet.
+1. **Data, validator and engine** (done): `config.json` with the `spec`, `easy`, `normal` and `hard` presets and guardrails, the per-file enemy data with all spec copy in Finnish (with the fixed "Rasismi" reply), sv/en drafts marked `needsReview`, `ui.json`; `src/lib/debate/*` (loader, validator, battle, rng); unit and balance tests; `debate:report` and `debate:balance`; extend `validate-translations.ts`. No UI yet.
 2. **Shell, font and lab:** `DebateGame.astro`, `DebateBody.astro`, the 240×216 stage, palette, self-hosted font chosen in the lab, boxes, status boxes, placeholder sprites, `/debate-lab/` (including the live difficulty panel), routes for fi/sv/en, noindex and sitemap exclusion.
 3. **Battle UI:** `playDebate` (with the dev/preview `?difficulty=` switch) wiring engine to DOM: typewriter, 2×2 and 2×3 menus, keyboard and touch, KANNATUS bars, effect texts, endings, end screen, restart.
 4. **Art and juice:** final sprites, shake/blink, intro slide-in, bar drain, optional chiptune audio and mute, reduced-motion variants.
@@ -295,7 +295,7 @@ You play the game after Phase 3 (the preview URL from CI works for that) and tun
 
 ## 8. Risks
 
-- **Font width:** Finnish and Swedish compounds in a 240 px stage. Mitigation: font comparison in Phase 2 with the longest labels per language, labels capped at 15 characters, enemy name abbreviated as in the spec ("KANSALLISKONS.").
+- **Font width:** Finnish and Swedish compounds in a 240 px stage. Mitigation: font comparison in Phase 2 with the longest labels per language, labels capped at 17 characters, enemy name abbreviated as in the spec ("KANSALLISKONS.").
 - **Long lines in boxes:** the longest player lines (about 100 characters, Swedish tends to be longer) must fit the bottom box in 2–3 lines. Mitigation: validator reports line length per language; the lab shows the longest lines.
 - **Balance drift when copy is edited:** covered by the Monte-Carlo guardrails, `debate:balance` and `debate:report`.
 - **Random variance feels unfair:** the enemy's random defense is by design; if playtesting says it feels bad, `enemyDefenseWeights` softens it without touching content.
