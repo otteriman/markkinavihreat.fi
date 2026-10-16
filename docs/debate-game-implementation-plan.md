@@ -37,7 +37,7 @@ The quiz uses **no JS framework**. It is Astro plus plain TypeScript, and the ga
 ## 2. Hard constraints
 
 - Static output only, no backend, no saved data. Nothing about the player's choices is stored or sent (no localStorage, cookies or analytics payloads).
-- No third-party requests at runtime: the font and everything else is served from our own origin.
+- The game itself makes no third-party requests: its font and everything else is served from our own origin. (The site-wide layout, `BaseLayout.astro`, still loads Hanken Grotesk from Google Fonts and Font Awesome from cdnjs on every page, the game page included. Changing that is a site-wide decision outside this plan.)
 - Original pixel art only. No Pokémon sprites, music, logos or names. No real politicians or party logos.
 - Content rules from the spec: positions, not people; no slurs or jokes about ethnicity or immigrants.
 - Accessibility: every action reachable by tap, click and keyboard (arrows plus Enter/Space). Real `<button>`s, live-region narration for screen readers, `prefers-reduced-motion` replaces typing, shake and blink with instant changes. Sound is off by default with a mute toggle.
@@ -177,7 +177,7 @@ The engine emits **events** (`say-bottom`, `say-top`, `effect`, `drain-bar`, `sh
 
 ### 3.4 Rendering
 
-Fixed **240×216 logical pixel** stage, DOM + CSS, not `<canvas>`, so buttons, focus and screen readers work. Scaled by **whole numbers** (`floor(min(vw/240, vh/216))`, minimum 1) with CSS `zoom`/`transform`, centred; portrait phones work because 240×216 is nearly square. Pixelated rendering with `image-rendering: pixelated` and `shape-rendering="crispEdges"`. Palette as CSS custom properties: `#0F380F #306230 #8BAC0F #9BBC0F`; all game UI uses only these four. Game CSS is scoped under a `.debate` root so it can't leak into a host page.
+Fixed **240×216 logical pixel** stage, DOM + CSS, not `<canvas>`, so buttons, focus and screen readers work. Scaled with CSS `zoom` by **whole numbers** from 2× up (`floor(min(width/240, height/216))`); below 2× (portrait phones) by the largest eighth that fits, because a whole number would leave a phone at an unreadable 1× (`src/scripts/debate/scale.ts`). Text and sprites are vector, so fractional zoom stays sharp. Pixelated rendering with `image-rendering: pixelated` and `shape-rendering="crispEdges"`. Palette as CSS custom properties: `#0F380F #306230 #8BAC0F #9BBC0F`; all game UI uses only these four. Game CSS is scoped under a `.debate` root so it can't leak into a host page.
 
 ### 3.5 Difficulty: one place, easy to turn
 
@@ -236,7 +236,7 @@ Presets can also extend each other (`"extends": "normal"` plus overrides), so "h
 
 - **Sprites** as arrays of strings (one char per pixel: digits 0–3 = palette shade, `.` = transparent) in `src/lib/debate/sprites.ts`, converted to inline SVG `<rect>` runs. Player from behind (bottom left), enemy from the front (top right): a generic mid-aged man in a fleece vest and cap, original design. The enemy's sprite id comes from `enemy.json`, so a new enemy brings a new sprite entry.
 - Animations by CSS class: `shake` (hit), `blink` (KANNATUS drops), slide-in at the intro. Bars drain with `steps()` easing to look 8-bit.
-- **Self-hosted font.** One pixel font under an open licence (SIL OFL), committed as a subsetted `woff2` in the repo with its licence text next to it, loaded by an `@font-face` in our own CSS with `font-display: swap`. It must have **ä, ö and å** (Swedish needs å). No Google Fonts link, no npm font package, so no new dependency. The font file is imported through Astro's asset pipeline so its URL respects `BASE_PATH` in branch previews. Candidates, to be compared on `/debate-lab/` in Phase 2 with the longest real labels in all three languages: Pixelify Sans, Silkscreen, VT323 (Press Start 2P is too wide for 240 px). The 17-character label limit is checked against the chosen font in the lab.
+- **Self-hosted font.** One pixel font under an open licence (SIL OFL), committed as a subsetted `woff2` in the repo with its licence text next to it, loaded by an `@font-face` in our own CSS with `font-display: swap`. It must have **ä, ö and å** (Swedish needs å). No Google Fonts link, no npm font package, so no new dependency. The font file is imported through Astro's asset pipeline so its URL respects `BASE_PATH` in branch previews. **Chosen in Phase 2: Jersey 10 at 12 px** (12 px line height). Compared on `/debate-lab/` against Pixelify Sans, Silkscreen and Micro 5, measuring every battle text in all three languages against its box: Jersey 10 fits everything (widest label 82 of 97 px), has unambiguous digits (Pixelify's 5 reads as S) and lowercase (Silkscreen is capitals only), and is narrow enough that sv/en lines wrap less. VT323 and Press Start 2P were ruled out by glyph width before the lab. The candidates stay in the lab for comparison.
 - The quiz's bonus level loads Patrick Hand from Google Fonts; that is the quiz's business and the game does not depend on it.
 
 ## 5. Routes, languages and integration
@@ -245,11 +245,11 @@ Presets can also extend each other (`"extends": "normal"` plus overrides), so "h
 
 One route per language, thin wrappers that hardcode the locale (AGENTS.md; no `[[...locale]]` catch-all):
 
-| Language | URL                | File                                   |
-| -------- | ------------------ | -------------------------------------- |
-| fi       | `/debaattipeli/`   | `src/pages/debaattipeli/index.astro`   |
-| sv       | `/sv/debattspel/`  | `src/pages/sv/debattspel/index.astro`  |
-| en       | `/en/debate-game/` | `src/pages/en/debate-game/index.astro` |
+| Language | URL                 | File                                    |
+| -------- | ------------------- | --------------------------------------- |
+| fi       | `/debaattipeli/`    | `src/pages/debaattipeli/index.astro`    |
+| sv       | `/sv/debaattipeli/` | `src/pages/sv/debaattipeli/index.astro` |
+| en       | `/en/debaattipeli/` | `src/pages/en/debaattipeli/index.astro` |
 
 `BaseLayout` already emits `hreflang` alternates from the `path` prop, so the three pages are linked as alternates. A small language note appears on the page if any string in that locale is still `TODO` or `needsReview` (falls back to Finnish for `TODO` strings rather than showing the placeholder).
 
@@ -275,7 +275,7 @@ You may later turn this into a surprise minigame between quiz questions, dependi
 - `debate-balance`: Monte-Carlo (about 20 000 seeded battles per strategy). Against the frozen `spec` preset it checks the spec's expected values exactly (perfect play player 100 / enemy about 40; all-medium replies 40 / 40; random play about 25 vs 55). Against the shipped preset it checks only the loose guardrails from `config.json` and prints the measured numbers on failure. A shared simulation module (`src/lib/debate/simulate.ts`) backs this test, `debate:balance` and the lab.
 - `debate-typewriter`: line completion and advance semantics.
 
-**E2E (playwright)**, `tests/e2e/debate.spec.ts`, run for fi, sv and en: noindex; full battle by keyboard only; tap-only on a mobile viewport; used attacks greyed and not selectable; end screen shows the result, "Täydelliset vastaukset: n/4" (localised) and "Pelaa uudelleen" restarts in one tap; no hints on any end screen; mute toggle; reduced motion; no requests to other origins; nothing in storage; language alternates present. Randomness is made deterministic with `page.addInitScript` stubbing `Math.random`. The only URL parameter is the dev/preview-only `?difficulty=`, compiled out of production (section 3.5); one e2e checks that production ignores it.
+**E2E (playwright)**, `tests/e2e/debate.spec.ts`, run for fi, sv and en: noindex; full battle by keyboard only; tap-only on a mobile viewport; used attacks greyed and not selectable; end screen shows the result, "Täydelliset vastaukset: n/4" (localised) and "Pelaa uudelleen" restarts in one tap; no hints on any end screen; mute toggle; reduced motion; the game's font served from our own origin; nothing in storage; language alternates present. Randomness is made deterministic with `page.addInitScript` stubbing `Math.random`. The only URL parameter is the dev/preview-only `?difficulty=`, compiled out of production (section 3.5); one e2e checks that production ignores it.
 
 **Report commands:** `npm run debate:balance` (section 3.5) and `npm run debate:report` prints, per enemy, every attack and player attack with derived tier, expected damage, TODO/needsReview counts and the longest label per language. Useful when editing copy.
 
@@ -285,7 +285,7 @@ Each phase ends with `npm run format:check && npm run lint && npm run check && n
 
 0. **Branch, CI, plan** (done): plan doc and the preview workflow.
 1. **Data, validator and engine** (done): `config.json` with the `spec`, `easy`, `normal` and `hard` presets and guardrails, the per-file enemy data with all spec copy in Finnish (with the fixed "Rasismi" reply), sv/en drafts marked `needsReview`, `ui.json`; `src/lib/debate/*` (loader, validator, battle, rng); unit and balance tests; `debate:report` and `debate:balance`; extend `validate-translations.ts`. No UI yet.
-2. **Shell, font and lab:** `DebateGame.astro`, `DebateBody.astro`, the 240×216 stage, palette, self-hosted font chosen in the lab, boxes, status boxes, placeholder sprites, `/debate-lab/` (including the live difficulty panel), routes for fi/sv/en, noindex and sitemap exclusion.
+2. **Shell, font and lab** (done): `DebateGame.astro`, `DebateBody.astro`, the 240×216 stage, palette, self-hosted font chosen in the lab, boxes, status boxes, placeholder sprites, `/debate-lab/` (including the live difficulty panel), routes for fi/sv/en, noindex and sitemap exclusion.
 3. **Battle UI:** `playDebate` (with the dev/preview `?difficulty=` switch) wiring engine to DOM: typewriter, 2×2 and 2×3 menus, keyboard and touch, KANNATUS bars, effect texts, endings, end screen, restart.
 4. **Art and juice:** final sprites, shake/blink, intro slide-in, bar drain, optional chiptune audio and mute, reduced-motion variants.
 5. **Polish:** e2e in all three languages, mobile portrait pass, accessibility pass (screen-reader narration, focus order), Lighthouse check, README entry, a short "how to edit the game's content" section in the docs.
@@ -308,5 +308,5 @@ You play the game after Phase 3 (the preview URL from CI works for that) and tun
 
 ## 10. Resolved questions
 
-1. **URLs:** `/debaattipeli/`, `/sv/debattspel/` and `/en/debate-game/` are confirmed.
+1. **URLs:** `/debaattipeli/`, `/sv/debaattipeli/` and `/en/debaattipeli/`, following the site's convention (the same Finnish slug in every language, like `/en/manifesti/` and the quiz's `/sv/testi/`), which the layout's hreflang tags and the Nav language switcher rely on. Translated slugs were considered and dropped in Phase 2.
 2. **Cross-linking with the quiz:** none for now. Revisit after playing the game (section 5.2).
