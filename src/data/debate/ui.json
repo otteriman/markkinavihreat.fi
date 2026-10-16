@@ -124,5 +124,29 @@
     "sv": "Ljud av",
     "en": "Sound off",
     "needsReview": ["sv", "en"]
+  },
+  "page.title": {
+    "fi": "Vihreä väittely",
+    "sv": "Grön debatt",
+    "en": "Green debate",
+    "needsReview": ["fi", "sv", "en"]
+  },
+  "page.description": {
+    "fi": "Selainpeli: väittele kansalliskonservatiivin kanssa neljä kierrosta ja etsi argumentit, jotka purevat.",
+    "sv": "Ett webbläsarspel: debattera i fyra rundor mot en nationalkonservativ och hitta argumenten som biter.",
+    "en": "A browser game: debate a national conservative for four rounds and find the arguments that land.",
+    "needsReview": ["fi", "sv", "en"]
+  },
+  "page.lead": {
+    "fi": "Neljä kierrosta, noin viisi minuuttia. Etsi argumentit, jotka purevat.",
+    "sv": "Fyra rundor, ungefär fem minuter. Hitta argumenten som biter.",
+    "en": "Four rounds, about five minutes. Find the arguments that land.",
+    "needsReview": ["fi", "sv", "en"]
+  },
+  "page.noscript": {
+    "fi": "Peli tarvitsee toimiakseen JavaScriptin.",
+    "sv": "Spelet behöver JavaScript för att fungera.",
+    "en": "The game needs JavaScript to run.",
+    "needsReview": ["fi", "sv", "en"]
   }
 }

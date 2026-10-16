@@ -1,0 +1,82 @@
+import { LOCALES, type Locale } from '../content'
+import { format, localize } from './text'
+import { QUALITIES, type Enemy, type Localized, type UiStrings } from './types'
+
+/** Where a text appears on the stage, which decides how much room it has. */
+export type StageBox = 'top' | 'bottom' | 'label' | 'status'
+
+export interface StageText {
+  box: StageBox
+  locale: Locale
+  text: string
+  /** Where the text comes from, e.g. "velkakortti.json replies[2].say". */
+  source: string
+}
+
+/**
+ * Every text the battle can show, in every language, with the box it goes in.
+ * The lab page measures these against each font to find any that don't fit.
+ */
+export function stageTexts(enemies: Enemy[], ui: UiStrings): StageText[] {
+  const out: StageText[] = []
+  for (const locale of LOCALES) {
+    const add = (box: StageBox, text: string, source: string) =>
+      out.push({ box, locale, text, source })
+    const t = (key: string, vars?: Record<string, Localized | number>) =>
+      format({ key, vars }, locale, ui)
+
+    add('status', t('status.player'), 'ui.json status.player')
+    add('bottom', t('round.start', { round: 4, rounds: 4 }), 'ui.json round.start')
+    for (const key of ['prompt.reply', 'prompt.attack', 'end.playAgain']) {
+      add('bottom', t(key), `ui.json ${key}`)
+    }
+    for (const q of QUALITIES) {
+      add('bottom', t(`effect.attack.${q}`), `ui.json effect.attack.${q}`)
+      add('bottom', t(`effect.defend.${q}`), `ui.json effect.defend.${q}`)
+    }
+    add('bottom', t('end.strongReplies', { count: 4, total: 4 }), 'ui.json end.strongReplies')
+
+    for (const enemy of enemies) {
+      const e = enemy.id
+      add('status', localize(enemy.status, locale), `${e}/enemy.json status`)
+      add('bottom', localize(enemy.appear, locale), `${e}/enemy.json appear`)
+      add('top', localize(enemy.opening, locale), `${e}/enemy.json opening`)
+      const scores = { enemy: enemy.subject, playerScore: 100, enemyScore: 100 }
+      for (const kind of ['koWin', 'koLose', 'pointsWin', 'pointsLose', 'tie']) {
+        add('bottom', t(`end.${kind}`, scores), `ui.json end.${kind}`)
+      }
+      for (const a of enemy.attacks) {
+        const src = `${a.id}.json`
+        add(
+          'bottom',
+          t('enemy.used', { enemy: enemy.subject, attack: a.announce }),
+          `${src} announce`,
+        )
+        add('top', localize(a.line, locale), `${src} line`)
+        a.replies.forEach((r, i) => {
+          add('label', localize(r.label, locale), `${src} replies[${i}].label`)
+          add('bottom', localize(r.say, locale), `${src} replies[${i}].say`)
+          add('top', localize(r.reaction, locale), `${src} replies[${i}].reaction`)
+        })
+      }
+      for (const a of enemy.playerAttacks) {
+        const src = `${a.id}.json`
+        add('label', localize(a.label, locale), `${src} label`)
+        add('bottom', localize(a.say, locale), `${src} say`)
+        a.defenses.forEach((d, i) =>
+          add('top', localize(d.say, locale), `${src} defenses[${i}].say`),
+        )
+      }
+    }
+  }
+  return out
+}
+
+/** The longest text per box in `locale`, for previews of the worst case. */
+export function longestTexts(texts: StageText[], locale: Locale): Record<StageBox, string> {
+  const best = { top: '', bottom: '', label: '', status: '' }
+  for (const t of texts) {
+    if (t.locale === locale && t.text.length > best[t.box].length) best[t.box] = t.text
+  }
+  return best
+}

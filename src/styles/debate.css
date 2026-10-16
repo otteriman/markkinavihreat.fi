@@ -1,0 +1,236 @@
+/*
+ * The debate game's stage ("Vihreä väittely"). Imported by DebateGame.astro,
+ * so it only loads on pages that show the game. Everything is scoped under
+ * .debate so the game can also sit inside another page (e.g. the quiz) later.
+ *
+ * The stage is a fixed 240×216 logical-pixel screen; scale.ts zooms it to fit.
+ * All measurements below are logical pixels.
+ */
+
+/* Self-hosted pixel font, Jersey 10 (SIL OFL 1.1, licence next to the file),
+   subset to Latin with ä, ö and å. No third-party request. Chosen on
+   /debate-lab/ for legible digits and a narrow width that fits the longest
+   Swedish and English lines. */
+@font-face {
+  font-family: 'Debate Jersey';
+  src: url('../assets/fonts/debate/Jersey10-Regular.woff2') format('woff2');
+  font-display: swap;
+}
+
+.debate {
+  /* The four Game Boy greens, lightest to darkest. */
+  --gb-0: #9bbc0f;
+  --gb-1: #8bac0f;
+  --gb-2: #306230;
+  --gb-3: #0f380f;
+
+  --debate-font: 'Debate Jersey', monospace;
+  --debate-size: 12px;
+  --debate-line: 12px;
+  /* Jersey 10 has no bold; candidates on the lab page that do set 700. */
+  --debate-name-weight: 400;
+}
+
+/* The frame around the stage: takes the available width, centres the stage. */
+.debate-frame {
+  display: flex;
+  justify-content: center;
+}
+
+.debate-stage {
+  position: relative;
+  width: 240px;
+  height: 216px;
+  overflow: hidden;
+  zoom: var(--debate-scale, 1);
+  background: var(--gb-0);
+  color: var(--gb-3);
+  font-family: var(--debate-font);
+  font-size: var(--debate-size);
+  line-height: var(--debate-line);
+  -webkit-font-smoothing: none;
+  font-synthesis: none;
+  user-select: none;
+}
+
+/* Until scale.ts runs: a sensible whole-number zoom per viewport width. */
+@media (min-width: 520px) {
+  .debate-stage {
+    --debate-scale: 2;
+  }
+}
+@media (min-width: 1000px) and (min-height: 820px) {
+  .debate-stage {
+    --debate-scale: 3;
+  }
+}
+
+.debate-stage svg {
+  display: block;
+}
+
+.debate .s0 {
+  fill: var(--gb-0);
+}
+.debate .s1 {
+  fill: var(--gb-1);
+}
+.debate .s2 {
+  fill: var(--gb-2);
+}
+.debate .s3 {
+  fill: var(--gb-3);
+}
+
+/* Speech boxes: the enemy's at the top, narration and the player's at the bottom. */
+.debate-box {
+  position: absolute;
+  left: 4px;
+  width: 232px;
+  box-sizing: border-box;
+  padding: 4px 6px;
+  border: 2px solid var(--gb-3);
+  border-radius: 3px;
+  background: var(--gb-0);
+  box-shadow: inset 0 0 0 1px var(--gb-1);
+  overflow: hidden;
+}
+
+.debate-box-top {
+  top: 4px;
+  height: 48px;
+}
+
+.debate-box-bottom {
+  top: 160px;
+  height: 52px;
+}
+
+.debate-text {
+  margin: 0;
+  white-space: pre-line;
+  overflow-wrap: break-word;
+}
+
+/* Status boxes: name, KANNATUS and its bar. */
+.debate-status {
+  position: absolute;
+  width: 108px;
+  box-sizing: border-box;
+  padding: 2px 4px 3px;
+  border-left: 2px solid var(--gb-3);
+  border-bottom: 2px solid var(--gb-3);
+  border-bottom-left-radius: 3px;
+}
+
+.debate-status-enemy {
+  left: 6px;
+  top: 58px;
+}
+
+.debate-status-player {
+  right: 6px;
+  top: 112px;
+}
+
+.debate-status-name {
+  display: block;
+  font-weight: var(--debate-name-weight);
+  white-space: nowrap;
+  overflow: hidden;
+}
+
+.debate-status-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 4px;
+  white-space: nowrap;
+}
+
+.debate-bar {
+  display: block;
+  height: 4px;
+  margin-top: 2px;
+  border: 1px solid var(--gb-3);
+  border-radius: 2px;
+  background: var(--gb-0);
+}
+
+.debate-bar-fill {
+  display: block;
+  height: 100%;
+  width: calc(var(--fill, 1) * 100%);
+  background: var(--gb-2);
+}
+
+/* Sprites. */
+.debate-sprite {
+  position: absolute;
+}
+
+.debate-sprite-enemy {
+  right: 14px;
+  top: 56px;
+}
+
+.debate-sprite-player {
+  left: 14px;
+  top: 112px;
+}
+
+/* The option grid in the bottom box: 2×2 replies, 2×3 attacks. */
+.debate-options {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  column-gap: 4px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.debate-option {
+  display: block;
+  width: 100%;
+  margin: 0;
+  padding: 0 0 0 9px;
+  border: 0;
+  background: none;
+  color: inherit;
+  font: inherit;
+  line-height: var(--debate-line);
+  text-align: left;
+  white-space: nowrap;
+  overflow: hidden;
+  cursor: pointer;
+  position: relative;
+}
+
+/* Inline, so its width is the text's: the lab's fit check measures it. */
+.debate-option-label {
+  display: inline;
+}
+
+/* The selection cursor: a small arrow, drawn in CSS (the font has no ▶). */
+.debate-option[aria-current='true']::before,
+.debate-option:focus-visible::before {
+  content: '';
+  position: absolute;
+  left: 1px;
+  top: calc((var(--debate-line) - 7px) / 2);
+  width: 4px;
+  height: 7px;
+  background: currentColor;
+  clip-path: polygon(0 0, 100% 50%, 0 100%);
+}
+
+.debate-option:focus-visible {
+  outline: none;
+}
+
+.debate-option[aria-disabled='true'] {
+  color: var(--gb-2);
+  text-decoration: line-through;
+  text-decoration-thickness: 1px;
+  cursor: default;
+}

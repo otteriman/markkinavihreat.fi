@@ -59,7 +59,7 @@ export function specEnemy(): Enemy {
     subject: txt('subject'),
     appear: txt('appear'),
     opening: txt('opening'),
-    sprite: 'test',
+    sprite: 'kansalliskonservatiivi',
     attacks: ['a1', 'a2', 'a3', 'a4'].map((id) => enemyAttack(id)),
     playerAttacks: [
       playerAttack('vahva1', [M, W, S, W], 1),

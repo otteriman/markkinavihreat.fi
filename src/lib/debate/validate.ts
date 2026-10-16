@@ -1,6 +1,7 @@
 import { LOCALES, type Locale } from '../content'
 import { DifficultyError, resolveDifficulty } from './difficulty'
 import type { Problem } from './loader'
+import { SPRITES } from './sprites'
 import { QUALITIES, type DebateConfig, type Enemy, type Quality, type UiStrings } from './types'
 
 /**
@@ -31,6 +32,10 @@ export const REQUIRED_UI_KEYS = [
   'end.playAgain',
   'sound.on',
   'sound.off',
+  'page.title',
+  'page.description',
+  'page.lead',
+  'page.noscript',
 ]
 
 type Obj = Record<string, unknown>
@@ -101,6 +106,9 @@ class Checker {
     this.text(file, 'appear', enemy.appear, 'line')
     this.text(file, 'opening', enemy.opening, 'line')
     if (typeof enemy.sprite !== 'string' || !enemy.sprite) this.add(file, 'sprite is missing')
+    else if (!(enemy.sprite in SPRITES)) {
+      this.add(file, `sprite "${enemy.sprite}" doesn’t exist in src/lib/debate/sprites.ts`)
+    }
 
     for (const attack of enemy.attacks) {
       const f = attack.source
@@ -236,7 +244,13 @@ class Checker {
       if (!(key in ui)) this.add('ui.json', `"${key}" is missing`)
     }
     for (const [key, value] of Object.entries(ui)) {
-      this.text('ui.json', `"${key}"`, value, key.startsWith('status.') ? 'label' : 'line')
+      // Page copy (page.*) sits outside the stage, so it has no length limit.
+      const kind = key.startsWith('status.')
+        ? 'label'
+        : key.startsWith('page.')
+          ? undefined
+          : 'line'
+      this.text('ui.json', `"${key}"`, value, kind)
     }
   }
 }

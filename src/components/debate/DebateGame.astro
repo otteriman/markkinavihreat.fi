@@ -1,0 +1,125 @@
+---
+/**
+ * The debate game's stage: a 240×216 screen with the enemy's speech box at
+ * the top, both status boxes and sprites, and the bottom box that holds
+ * narration or the option grid. Self-contained (styles scoped under .debate),
+ * so it can sit on its own page or, later, inside another page.
+ *
+ * The battle itself is wired up in a later phase; until then the stage shows
+ * the opening (or the `preview` the lab page passes in).
+ */
+import '../../styles/debate.css'
+import type { Locale } from '../../lib/content'
+import { enemies, ui } from '../../lib/debate/data'
+import { spriteSvg } from '../../lib/debate/sprites'
+import { format, localize } from '../../lib/debate/text'
+
+export interface StagePreview {
+  top?: string
+  bottom?: string
+  /** Fills the bottom box with an option grid instead of text. */
+  options?: { label: string; used?: boolean; current?: boolean }[]
+  player?: number
+  enemy?: number
+}
+
+interface Props {
+  locale: Locale
+  /** Folder name under src/data/debate/enemies/; defaults to the first enemy. */
+  enemy?: string
+  preview?: StagePreview
+  /** Pins the zoom (the lab uses this); otherwise the stage fits the viewport. */
+  scale?: number
+  /** Extra class on the outer element, e.g. a font for the lab's comparison. */
+  class?: string
+}
+
+const { locale, enemy: enemyId, preview, scale, class: className } = Astro.props
+const enemy = enemyId ? enemies.find((e) => e.id === enemyId) : enemies[0]
+if (!enemy) throw new Error(`Unknown debate enemy "${enemyId}"`)
+
+const t = (key: string) => format({ key }, locale, ui)
+const top = preview?.top ?? localize(enemy.opening, locale)
+const bottom = preview?.bottom ?? localize(enemy.appear, locale)
+const options = preview?.options
+const fill = (kannatus: number | undefined) => (kannatus ?? 100) / 100
+---
+
+<div
+  class:list={['debate debate-frame', className]}
+  data-debate
+  data-debate-fixed-scale={scale}
+  lang={locale}
+>
+  <div
+    class="debate-stage"
+    role="group"
+    aria-label={t('page.title')}
+    style={scale ? `--debate-scale: ${scale}` : undefined}
+  >
+    <div class="debate-box debate-box-top" data-debate-box="top">
+      <p class="debate-text" data-debate-top aria-hidden="true">{top}</p>
+    </div>
+
+    <div class="debate-status debate-status-enemy">
+      <span class="debate-status-name">{localize(enemy.status, locale)}</span>
+      <span class="debate-status-row">
+        <span>{t('status.kannatus')}</span>
+        <span data-debate-kannatus="enemy">{preview?.enemy ?? 100}</span>
+      </span>
+      <span class="debate-bar" aria-hidden="true">
+        <span
+          class="debate-bar-fill"
+          data-debate-bar="enemy"
+          style={`--fill: ${fill(preview?.enemy)}`}></span>
+      </span>
+    </div>
+
+    <div class="debate-sprite debate-sprite-enemy" set:html={spriteSvg(enemy.sprite)} />
+    <div class="debate-sprite debate-sprite-player" set:html={spriteSvg('player')} />
+
+    <div class="debate-status debate-status-player">
+      <span class="debate-status-name">{t('status.player')}</span>
+      <span class="debate-status-row">
+        <span>{t('status.kannatus')}</span>
+        <span data-debate-kannatus="player">{preview?.player ?? 100}</span>
+      </span>
+      <span class="debate-bar" aria-hidden="true">
+        <span
+          class="debate-bar-fill"
+          data-debate-bar="player"
+          style={`--fill: ${fill(preview?.player)}`}></span>
+      </span>
+    </div>
+
+    <div class="debate-box debate-box-bottom" data-debate-box="bottom">
+      <p class="debate-text" data-debate-bottom aria-hidden="true" hidden={!!options}>
+        {bottom}
+      </p>
+      <ul class="debate-options" data-debate-options hidden={!options}>
+        {
+          options?.map((o) => (
+            <li>
+              <button
+                type="button"
+                class="debate-option"
+                aria-disabled={o.used ? 'true' : undefined}
+                aria-current={o.current ? 'true' : undefined}
+              >
+                <span class="debate-option-label">{o.label}</span>
+              </button>
+            </li>
+          ))
+        }
+      </ul>
+    </div>
+
+    <p class="sr-only" aria-live="polite" data-debate-live></p>
+  </div>
+</div>
+
+<script>
+  import { fitStages } from '../../scripts/debate/scale'
+
+  fitStages(document)
+</script>

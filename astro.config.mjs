@@ -73,6 +73,9 @@ export default defineConfig({
     sitemap({
       filter: (page) =>
         !unlistedSlugs.some((slug) => page.includes(`/ehdotukset/${slug}/`)) &&
+        // The debate game is noindex until launch (see DebateBody.astro).
+        !page.includes('/debaattipeli/') &&
+        !page.includes('/debate-lab/') &&
         (blogHasPosts || !page.includes('/blogi/')),
       // Emits xhtml:link alternates per URL, so hreflang reaches crawlers via
       // the sitemap as well as the <head>. Mirrors BaseLayout's link rel=alternate.

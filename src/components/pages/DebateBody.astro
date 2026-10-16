@@ -1,0 +1,36 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro'
+import DebateGame from '../debate/DebateGame.astro'
+import type { Locale } from '../../lib/content'
+import { ui } from '../../lib/debate/data'
+import { format } from '../../lib/debate/text'
+
+interface Props {
+  locale: Locale
+}
+
+const { locale } = Astro.props
+const t = (key: string) => format({ key }, locale, ui)
+// noindex until launch (implementation plan, phase 6); also kept out of the
+// sitemap in astro.config.mjs.
+---
+
+<BaseLayout
+  locale={locale}
+  title={`${t('page.title')} — markkinavihreat.fi`}
+  description={t('page.description')}
+  path="/debaattipeli/"
+  noindex
+>
+  <section class="content-max mx-auto px-4 pt-12 pb-6 sm:px-6">
+    <h1 class="text-4xl sm:text-5xl">{t('page.title')}</h1>
+    <p class="text-harmaa mt-4 max-w-2xl">{t('page.lead')}</p>
+  </section>
+
+  <section class="bg-metsa px-2 py-6 sm:py-10">
+    <DebateGame locale={locale} />
+    <noscript>
+      <p class="text-kerma mt-4 text-center">{t('page.noscript')}</p>
+    </noscript>
+  </section>
+</BaseLayout>
