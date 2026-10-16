@@ -6,7 +6,7 @@ import type { StageBox, StageText } from '../../lib/debate/stageTexts'
  * their box (speech boxes by height, grid labels and status names by width).
  */
 const FAMILIES = ['Debate Pixelify', 'Debate Silkscreen', 'Debate Jersey', 'Debate Micro']
-const BOXES: StageBox[] = ['top', 'bottom', 'label', 'status']
+const BOXES: StageBox[] = ['top', 'bottom', 'label', 'status', 'tag']
 
 const escape = (s: string) =>
   s.replace(/[&<>"]/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' })[c]!)
@@ -35,6 +35,12 @@ function measure(probe: HTMLElement, item: StageText): boolean {
     label.textContent = item.text
     const room = button.clientWidth - parseFloat(getComputedStyle(button).paddingLeft)
     return label.getBoundingClientRect().width <= room
+  }
+  if (item.box === 'tag') {
+    const tag = q('[data-debate-tag="bottom"]')
+    tag.hidden = false
+    tag.textContent = item.text
+    return tag.scrollWidth <= tag.clientWidth
   }
   const name = q('.debate-status-player .debate-status-name')
   name.textContent = item.text
@@ -81,7 +87,7 @@ export async function runFitCheck(): Promise<void> {
   }
   report.innerHTML =
     '<table class="lab-table"><thead><tr><th>Font</th><th>Top box</th><th>Bottom box</th>' +
-    '<th>Grid labels</th><th>Status names</th><th></th></tr></thead><tbody>' +
+    '<th>Grid labels</th><th>Status names</th><th>Phase labels</th><th></th></tr></thead><tbody>' +
     rows.join('') +
     '</tbody></table>' +
     details.join('')

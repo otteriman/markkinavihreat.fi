@@ -115,20 +115,50 @@
   overflow: hidden;
 }
 
+/* 6px top padding clears the phase label on the border; the top box gives
+   up 2px at the bottom so three lines still fit in it. */
 .debate-box-top {
-  top: 4px;
+  top: 8px;
   height: 48px;
+  padding: 6px 6px 2px;
 }
 
 .debate-box-bottom {
   top: 160px;
   height: 52px;
+  padding-top: 6px;
 }
 
 .debate-text {
   margin: 0;
   white-space: pre-line;
   overflow-wrap: break-word;
+}
+
+/* Phase labels: a dark tab on each box's top edge ("Hyökkäys: Velkapaniikki",
+   "Millä teemalla vastaat?"). 10px tall, straddling the 2px border, so it
+   ends where the box's text begins. */
+.debate-tag {
+  position: absolute;
+  left: 10px;
+  max-width: 212px;
+  margin: 0;
+  padding: 0 4px;
+  border-radius: 2px;
+  background: var(--gb-3);
+  color: var(--gb-0);
+  line-height: 10px;
+  white-space: nowrap;
+  overflow: hidden;
+  z-index: 1;
+}
+
+.debate-tag-top {
+  top: 4px;
+}
+
+.debate-tag-bottom {
+  top: 156px;
 }
 
 /* Status boxes: name, KANNATUS and its bar. */
@@ -144,7 +174,7 @@
 
 .debate-status-enemy {
   left: 6px;
-  top: 58px;
+  top: 62px;
 }
 
 .debate-status-player {
@@ -190,7 +220,7 @@
 
 .debate-sprite-enemy {
   right: 14px;
-  top: 56px;
+  top: 60px;
 }
 
 .debate-sprite-player {
@@ -280,6 +310,7 @@
 /* The end screen covers the stage: result, strong replies, play again. */
 .debate-end {
   position: absolute;
+  z-index: 2;
   inset: 4px;
   display: flex;
   flex-direction: column;

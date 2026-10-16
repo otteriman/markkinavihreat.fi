@@ -11,8 +11,12 @@ import type { Enemy, UiStrings } from './types'
  * - Every line waits for a tap or key press before the next one.
  * - An effect text ("Se oli erittäin tehokas!") is followed straight away by
  *   the hit (bar drains), then the wait, as the spec orders.
- * - A prompt ("Miten vastaat?") only pauses briefly before its option grid.
- * - A new round clears the enemy's speech box.
+ * - Each box has a phase label on its top edge. The enemy's shows his move
+ *   ("Hyökkäys: Velkapaniikki", "Puolustus"); the bottom one shows the
+ *   player's ("Vastaus: Veroparatiisit", "Hyökkäys: Huoltovarmuus").
+ * - A prompt ("Millä teemalla vastaat?") isn't typed: it becomes the bottom
+ *   label over the option grid, which appears at once.
+ * - A new round and the ending clear the enemy's box and both labels.
  */
 export type Step =
   | {
@@ -24,6 +28,13 @@ export type Step =
       clearTop?: boolean
     }
   | { kind: 'wait'; until: 'advance' | 'pause' }
+  | {
+      /** Phase labels on the boxes' top edges: a string sets one, null clears it, absent keeps it. */
+      kind: 'tags'
+      top?: string | null
+      bottom?: string | null
+      announce?: string
+    }
   | {
       kind: 'hit'
       target: Side
@@ -37,6 +48,13 @@ export type Step =
   | { kind: 'end'; result: BattleResult; text: string }
 
 export type PromptEvent = Extract<BattleEvent, { type: 'prompt' }>
+
+const PHASE_TAG = {
+  enemyAttack: { box: 'top', key: 'tag.enemyAttack' },
+  enemyDefense: { box: 'top', key: 'tag.enemyDefense' },
+  reply: { box: 'bottom', key: 'tag.reply' },
+  playerAttack: { box: 'bottom', key: 'tag.playerAttack' },
+} as const
 
 export function planSteps(
   events: BattleEvent[],
@@ -54,13 +72,24 @@ export function planSteps(
     switch (event.type) {
       case 'narrate': {
         const text = format(event.message, locale, ui)
-        const isRound = 'key' in event.message && event.message.key === 'round.start'
+        if (next?.type === 'prompt') {
+          // The prompt is the grid's label rather than a line of its own.
+          steps.push({ kind: 'tags', bottom: text, announce: text })
+          break
+        }
+        const key = 'key' in event.message ? event.message.key : ''
+        const isRound = key === 'round.start'
+        if (isRound || key.startsWith('end.')) steps.push({ kind: 'tags', top: null, bottom: null })
         steps.push({ kind: 'type', box: 'bottom', text, announce: text, clearTop: isRound })
         lastNarration = text
         // A hit right after an effect text plays before the wait (the spec's order).
-        if (next?.type !== 'hit') {
-          steps.push({ kind: 'wait', until: next?.type === 'prompt' ? 'pause' : 'advance' })
-        }
+        if (next?.type !== 'hit') steps.push({ kind: 'wait', until: 'advance' })
+        break
+      }
+      case 'phase': {
+        const { box, key } = PHASE_TAG[event.phase]
+        const vars = 'name' in event ? { name: event.name } : undefined
+        steps.push({ kind: 'tags', [box]: format({ key, vars }, locale, ui) })
         break
       }
       case 'say': {

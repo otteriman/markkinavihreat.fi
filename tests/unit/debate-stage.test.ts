@@ -69,7 +69,7 @@ describe('stageTexts', () => {
 
   it('covers every language and box', () => {
     for (const locale of ['fi', 'sv', 'en'] as const) {
-      for (const box of ['top', 'bottom', 'label', 'status'] as const) {
+      for (const box of ['top', 'bottom', 'label', 'status', 'tag'] as const) {
         expect(texts.some((t) => t.locale === locale && t.box === box)).toBe(true)
       }
     }

@@ -44,6 +44,7 @@ export class StageView {
   private boxes: Record<Box, HTMLElement>
   private texts: Record<Box, HTMLElement>
   private more: Record<Box, HTMLElement>
+  private tags: Record<Box, HTMLElement>
   private options: HTMLElement
   private live: HTMLElement
   private end: HTMLElement
@@ -63,6 +64,7 @@ export class StageView {
     this.boxes = { top: q('[data-debate-box="top"]'), bottom: q('[data-debate-box="bottom"]') }
     this.texts = { top: q('[data-debate-top]'), bottom: q('[data-debate-bottom]') }
     this.more = { top: q('[data-debate-more="top"]'), bottom: q('[data-debate-more="bottom"]') }
+    this.tags = { top: q('[data-debate-tag="top"]'), bottom: q('[data-debate-tag="bottom"]') }
     this.options = q('[data-debate-options]')
     this.live = q('[data-debate-live]')
     this.end = q('[data-debate-end]')
@@ -86,6 +88,7 @@ export class StageView {
     this.end.hidden = true
     this.more.top.hidden = true
     this.more.bottom.hidden = true
+    this.setTags({ kind: 'tags', top: null, bottom: null })
     this.stage.tabIndex = 0
     this.stage.focus({ preventScroll: true })
   }
@@ -134,6 +137,17 @@ export class StageView {
 
   pause(): Promise<void> {
     return sleep(PROMPT_PAUSE_MS, this.opts.signal)
+  }
+
+  /** Sets or clears the phase labels on the boxes' top edges. */
+  setTags(step: Extract<Step, { kind: 'tags' }>): void {
+    for (const box of ['top', 'bottom'] as const) {
+      const value = step[box]
+      if (value === undefined) continue
+      this.tags[box].textContent = value ?? ''
+      this.tags[box].hidden = !value
+    }
+    if (step.announce) this.announce(step.announce)
   }
 
   /** Types `text` into a box letter by letter; a tap or key press shows it all at once. */

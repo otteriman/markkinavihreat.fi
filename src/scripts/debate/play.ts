@@ -50,6 +50,9 @@ export async function playDebate(root: HTMLElement, options: PlayOptions): Promi
         case 'wait':
           await (step.until === 'advance' ? view.waitForAdvance() : view.pause())
           break
+        case 'tags':
+          view.setTags(step)
+          break
         case 'hit':
           await view.hit(step)
           break

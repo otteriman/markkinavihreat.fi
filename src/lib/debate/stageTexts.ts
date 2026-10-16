@@ -3,7 +3,7 @@ import { format, localize } from './text'
 import { QUALITIES, type Enemy, type Localized, type UiStrings } from './types'
 
 /** Where a text appears on the stage, which decides how much room it has. */
-export type StageBox = 'top' | 'bottom' | 'label' | 'status'
+export type StageBox = 'top' | 'bottom' | 'label' | 'status' | 'tag'
 
 export interface StageText {
   box: StageBox
@@ -27,8 +27,9 @@ export function stageTexts(enemies: Enemy[], ui: UiStrings): StageText[] {
 
     add('status', t('status.player'), 'ui.json status.player')
     add('bottom', t('round.start', { round: 4, rounds: 4 }), 'ui.json round.start')
-    for (const key of ['prompt.reply', 'prompt.attack', 'end.playAgain']) {
-      add('bottom', t(key), `ui.json ${key}`)
+    add('bottom', t('end.playAgain'), 'ui.json end.playAgain')
+    for (const key of ['prompt.reply', 'prompt.attack', 'tag.enemyDefense']) {
+      add('tag', t(key), `ui.json ${key}`)
     }
     for (const q of QUALITIES) {
       add('bottom', t(`effect.attack.${q}`), `ui.json effect.attack.${q}`)
@@ -53,8 +54,10 @@ export function stageTexts(enemies: Enemy[], ui: UiStrings): StageText[] {
           `${src} announce`,
         )
         add('top', localize(a.line, locale), `${src} line`)
+        add('tag', t('tag.enemyAttack', { name: a.name }), `${src} name`)
         a.replies.forEach((r, i) => {
           add('label', localize(r.label, locale), `${src} replies[${i}].label`)
+          add('tag', t('tag.reply', { name: r.label }), `${src} replies[${i}].label`)
           add('bottom', localize(r.say, locale), `${src} replies[${i}].say`)
           add('top', localize(r.reaction, locale), `${src} replies[${i}].reaction`)
         })
@@ -62,6 +65,7 @@ export function stageTexts(enemies: Enemy[], ui: UiStrings): StageText[] {
       for (const a of enemy.playerAttacks) {
         const src = `${a.id}.json`
         add('label', localize(a.label, locale), `${src} label`)
+        add('tag', t('tag.playerAttack', { name: a.label }), `${src} label`)
         add('bottom', localize(a.say, locale), `${src} say`)
         a.defenses.forEach((d, i) =>
           add('top', localize(d.say, locale), `${src} defenses[${i}].say`),
@@ -74,7 +78,7 @@ export function stageTexts(enemies: Enemy[], ui: UiStrings): StageText[] {
 
 /** The longest text per box in `locale`, for previews of the worst case. */
 export function longestTexts(texts: StageText[], locale: Locale): Record<StageBox, string> {
-  const best = { top: '', bottom: '', label: '', status: '' }
+  const best = { top: '', bottom: '', label: '', status: '', tag: '' }
   for (const t of texts) {
     if (t.locale === locale && t.text.length > best[t.box].length) best[t.box] = t.text
   }

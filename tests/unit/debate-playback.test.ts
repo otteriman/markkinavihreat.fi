@@ -8,18 +8,23 @@ import { specDifficulty, specEnemy } from './debate-fixtures'
 const enemy = specEnemy()
 const plan = (events: Parameters<typeof planSteps>[0]) => planSteps(events, 'fi', ui, enemy)
 
-/** Compact form: "type:bottom", "wait:advance", "hit:player", "prompt:reply", "end". */
+/**
+ * Compact form: "type:bottom", "wait:advance", "hit:player", "prompt:reply",
+ * "end", and for labels the boxes they change: "tags:top", "tags:top,bottom".
+ */
 const shape = (steps: Step[]) =>
   steps.map((s) =>
-    s.kind === 'type'
-      ? `type:${s.box}`
-      : s.kind === 'wait'
-        ? `wait:${s.until}`
-        : s.kind === 'hit'
-          ? `hit:${s.target}`
-          : s.kind === 'prompt'
-            ? `prompt:${s.prompt.kind}`
-            : 'end',
+    s.kind === 'tags'
+      ? `tags:${(['top', 'bottom'] as const).filter((b) => b in s).join(',')}`
+      : s.kind === 'type'
+        ? `type:${s.box}`
+        : s.kind === 'wait'
+          ? `wait:${s.until}`
+          : s.kind === 'hit'
+            ? `hit:${s.target}`
+            : s.kind === 'prompt'
+              ? `prompt:${s.prompt.kind}`
+              : 'end',
   )
 
 function battle() {
@@ -29,23 +34,33 @@ function battle() {
 }
 
 describe('planSteps', () => {
-  it('opening: each line waits for the player, the prompt only pauses before the grid', () => {
+  it('opening: each line waits for the player; the prompt becomes the grid’s label', () => {
     const { start } = battle()
-    expect(shape(plan(start.events))).toEqual([
+    const steps = plan(start.events)
+    expect(shape(steps)).toEqual([
       'type:bottom', // Villi … ilmestyi!
       'wait:advance',
       'type:top', // opening line
       'wait:advance',
+      'tags:top,bottom', // a new round clears both labels
       'type:bottom', // KIERROS 1/4
       'wait:advance',
       'type:bottom', // … käytti …!
       'wait:advance',
+      'tags:top', // Hyökkäys: <attack>
       'type:top', // attack line
       'wait:advance',
-      'type:bottom', // Miten vastaat?
-      'wait:pause',
+      'tags:bottom', // Millä teemalla vastaat?
       'prompt:reply',
     ])
+    const tags = steps.filter((s) => s.kind === 'tags')
+    const attack = start.state.enemyAttacks[0]
+    expect(tags[1]).toEqual({ kind: 'tags', top: `Hyökkäys: ${attack.name.fi}` })
+    expect(tags[2]).toEqual({
+      kind: 'tags',
+      bottom: 'Millä teemalla vastaat?',
+      announce: 'Millä teemalla vastaat?',
+    })
   })
 
   it('a reply: lines, then the effect text with the hit before the wait', () => {
@@ -53,6 +68,7 @@ describe('planSteps', () => {
     const index = start.state.enemyAttacks[0].replies.findIndex((r) => r.quality === 'medium')
     const steps = plan(chooseReply(start.state, index).events)
     expect(shape(steps)).toEqual([
+      'tags:bottom', // Vastaus: <reply>
       'type:bottom', // the player's line
       'wait:advance',
       'type:top', // the enemy's reaction
@@ -60,12 +76,27 @@ describe('planSteps', () => {
       'type:bottom', // Torjuit osan hyökkäyksestä!
       'hit:player',
       'wait:advance',
-      'type:bottom', // Millä hyökkäät?
-      'wait:pause',
+      'tags:bottom', // Millä teemalla hyökkäät?
       'prompt:attack',
     ])
+    const label = start.state.enemyAttacks[0].replies[index].label.fi
+    expect(steps[0]).toEqual({ kind: 'tags', bottom: `Vastaus: ${label}` })
+    expect(steps.at(-2)).toMatchObject({ bottom: 'Millä teemalla hyökkäät?' })
     const hit = steps.find((s) => s.kind === 'hit')
     expect(hit).toMatchObject({ damage: 15, from: 100, to: 85, announce: 'Sinä: kannatus 85' })
+  })
+
+  it('an attack: the player’s attack label, then the enemy’s defense label', () => {
+    const { rng, start } = battle()
+    const afterReply = chooseReply(start.state, 0).state
+    const steps = plan(chooseAttack(afterReply, 'vahva1', rng).events)
+    expect(steps.slice(0, 5)).toMatchObject([
+      { kind: 'tags', bottom: 'Hyökkäys: vahva1 label fi' },
+      { kind: 'type', box: 'bottom', text: 'vahva1 say fi' },
+      { kind: 'wait', until: 'advance' },
+      { kind: 'tags', top: 'Puolustus' },
+      { kind: 'type', box: 'top' },
+    ])
   })
 
   it('names the speaker for screen readers and localizes', () => {
@@ -89,9 +120,10 @@ describe('planSteps', () => {
     const start = startBattle({ enemy, difficulty, attackSlots: 6, rng })
     const weak = start.state.enemyAttacks[0].replies.findIndex((r) => r.quality === 'weak')
     const steps = plan(chooseReply(start.state, weak).events)
-    expect(shape(steps).slice(-5)).toEqual([
+    expect(shape(steps).slice(-6)).toEqual([
       'hit:player',
       'wait:advance',
+      'tags:top,bottom', // the ending clears both labels
       'type:bottom', // Kannatuksesi romahti...
       'wait:advance',
       'end',

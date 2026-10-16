@@ -14,7 +14,7 @@ import { LOCALES } from '../../lib/content'
 import { config, enemies, ui } from '../../lib/debate/data'
 import { SPRITES, spriteSvg } from '../../lib/debate/sprites'
 import { longestTexts, stageTexts } from '../../lib/debate/stageTexts'
-import { localize } from '../../lib/debate/text'
+import { format, localize } from '../../lib/debate/text'
 
 const FONTS = [
   { id: 'jersey', name: 'Jersey 10, 12px (shipped)' },
@@ -122,8 +122,8 @@ const replyGrid = (locale: (typeof LOCALES)[number]) =>
     <section>
       <h2 class="text-2xl">2. Stage states</h2>
       <p class="text-harmaa mt-2 max-w-2xl">
-        The shipped font in each language: the opening, the reply grid, the attack grid (two attacks
-        used) and a mid-battle moment with the longest player line.
+        The shipped font in each language, with the phase labels: the opening, the reply grid, the
+        attack grid (two attacks used) and a mid-battle moment with the longest player line.
       </p>
       {
         LOCALES.map((locale) => {
@@ -139,6 +139,14 @@ const replyGrid = (locale: (typeof LOCALES)[number]) =>
                   preview={{
                     top: localize(enemy.attacks[0].line, locale),
                     options: replyGrid(locale),
+                    tags: {
+                      top: format(
+                        { key: 'tag.enemyAttack', vars: { name: enemy.attacks[0].name } },
+                        locale,
+                        ui,
+                      ),
+                      bottom: format({ key: 'prompt.reply' }, locale, ui),
+                    },
                   }}
                 />
                 <DebateGame
@@ -149,6 +157,14 @@ const replyGrid = (locale: (typeof LOCALES)[number]) =>
                     options: attackGrid(locale),
                     player: 70,
                     enemy: 85,
+                    tags: {
+                      top: format(
+                        { key: 'tag.enemyAttack', vars: { name: enemy.attacks[2].name } },
+                        locale,
+                        ui,
+                      ),
+                      bottom: format({ key: 'prompt.attack' }, locale, ui),
+                    },
                   }}
                 />
                 <DebateGame
@@ -159,6 +175,14 @@ const replyGrid = (locale: (typeof LOCALES)[number]) =>
                     bottom: worst.longest.bottom,
                     player: 25,
                     enemy: 55,
+                    tags: {
+                      top: format({ key: 'tag.enemyDefense' }, locale, ui),
+                      bottom: format(
+                        { key: 'tag.playerAttack', vars: { name: enemy.playerAttacks[3].label } },
+                        locale,
+                        ui,
+                      ),
+                    },
                   }}
                 />
               </div>

@@ -24,16 +24,40 @@
     "needsReview": ["sv", "en"]
   },
   "prompt.reply": {
-    "fi": "Miten vastaat?",
-    "sv": "Hur svarar du?",
-    "en": "How do you reply?",
-    "needsReview": ["sv", "en"]
+    "fi": "Millä teemalla vastaat?",
+    "sv": "Med vilket tema svarar du?",
+    "en": "Which theme do you reply with?",
+    "needsReview": ["fi", "sv", "en"]
   },
   "prompt.attack": {
-    "fi": "Millä hyökkäät?",
-    "sv": "Vad går du till angrepp med?",
-    "en": "What’s your attack?",
-    "needsReview": ["sv", "en"]
+    "fi": "Millä teemalla hyökkäät?",
+    "sv": "Med vilket tema går du till angrepp?",
+    "en": "Which theme do you attack with?",
+    "needsReview": ["fi", "sv", "en"]
+  },
+  "tag.enemyAttack": {
+    "fi": "Hyökkäys: {name}",
+    "sv": "Angrepp: {name}",
+    "en": "Attack: {name}",
+    "needsReview": ["fi", "sv", "en"]
+  },
+  "tag.reply": {
+    "fi": "Vastaus: {name}",
+    "sv": "Svar: {name}",
+    "en": "Reply: {name}",
+    "needsReview": ["fi", "sv", "en"]
+  },
+  "tag.playerAttack": {
+    "fi": "Hyökkäys: {name}",
+    "sv": "Angrepp: {name}",
+    "en": "Attack: {name}",
+    "needsReview": ["fi", "sv", "en"]
+  },
+  "tag.enemyDefense": {
+    "fi": "Puolustus",
+    "sv": "Försvar",
+    "en": "Defence",
+    "needsReview": ["fi", "sv", "en"]
   },
   "effect.attack.strong": {
     "fi": "Se ei toiminut ollenkaan...",

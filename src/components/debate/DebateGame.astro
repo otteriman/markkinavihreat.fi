@@ -20,6 +20,8 @@ export interface StagePreview {
   bottom?: string
   /** Fills the bottom box with an option grid instead of text. */
   options?: { label: string; used?: boolean; current?: boolean }[]
+  /** Phase labels on the boxes' top edges. */
+  tags?: { top?: string; bottom?: string }
   player?: number
   enemy?: number
 }
@@ -49,6 +51,7 @@ const fill = (kannatus: number | undefined) => (kannatus ?? 100) / 100
 // `?difficulty=` switches presets only in development and noindex previews.
 const difficultyParam = import.meta.env.DEV || import.meta.env.NOINDEX === 'true'
 const controlsId = `debate-controls-${locale}`
+const promptId = `debate-prompt-${locale}`
 ---
 
 <div
@@ -68,6 +71,14 @@ const controlsId = `debate-controls-${locale}`
     tabindex={play ? '-1' : undefined}
     style={scale ? `--debate-scale: ${scale}` : undefined}
   >
+    <p
+      class="debate-tag debate-tag-top"
+      data-debate-tag="top"
+      aria-hidden="true"
+      hidden={!preview?.tags?.top}
+    >
+      {preview?.tags?.top}
+    </p>
     <div class="debate-box debate-box-top" data-debate-box="top" hidden={play}>
       <p class="debate-text" data-debate-top aria-hidden="true">{play ? '' : top}</p>
       <span class="debate-more" data-debate-more="top" hidden></span>
@@ -121,7 +132,12 @@ const controlsId = `debate-controls-${locale}`
         )
       }
       <span class="debate-more" data-debate-more="bottom" hidden></span>
-      <ul class="debate-options" data-debate-options hidden={!options}>
+      <ul
+        class="debate-options"
+        data-debate-options
+        hidden={!options}
+        aria-labelledby={play ? promptId : undefined}
+      >
         {
           options?.map((o) => (
             <li>
@@ -138,6 +154,16 @@ const controlsId = `debate-controls-${locale}`
         }
       </ul>
     </div>
+
+    <p
+      class="debate-tag debate-tag-bottom"
+      data-debate-tag="bottom"
+      id={play ? promptId : undefined}
+      aria-hidden="true"
+      hidden={!preview?.tags?.bottom}
+    >
+      {preview?.tags?.bottom}
+    </p>
 
     <div class="debate-end" data-debate-end hidden>
       <p class="debate-end-result" data-debate-end-result></p>
