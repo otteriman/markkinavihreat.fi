@@ -284,11 +284,6 @@
   cursor: default;
 }
 
-/* The start button sits where the text would. */
-.debate-start {
-  width: auto;
-}
-
 /* ▼ in a speech box's corner: the line is done, tap or press a key to go on. */
 .debate-more {
   position: absolute;

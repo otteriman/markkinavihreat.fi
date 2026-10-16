@@ -36,7 +36,6 @@ export const REQUIRED_UI_KEYS = [
   'end.playAgain',
   'sound.on',
   'sound.off',
-  'start',
   'a11y.you',
   'a11y.used',
   'a11y.hit',

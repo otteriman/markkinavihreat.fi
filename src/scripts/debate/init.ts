@@ -4,30 +4,36 @@ import { DifficultyError, resolveDifficulty } from '../../lib/debate/difficulty'
 import type { Difficulty } from '../../lib/debate/types'
 import { playDebate } from './play'
 
+/** How much of the stage must be on screen before the battle starts by itself. */
+const VISIBLE_TO_START = 0.5
+
 /**
- * The standalone game page: the start button begins a battle, and the end
- * screen's "Play again" starts the next one straight away.
+ * The standalone game page: the battle starts by itself as soon as the stage
+ * is (mostly) on screen, so its first lines aren't typed out below the fold,
+ * and the end screen's "Play again" starts the next one straight away.
  */
 export function startDebateGames(root: ParentNode): void {
   for (const frame of root.querySelectorAll<HTMLElement>('[data-debate-play]')) {
-    const start = frame.querySelector<HTMLButtonElement>('[data-debate-start]')
-    if (!start) continue
     const difficulty = pickDifficulty(frame)
-    start.addEventListener(
-      'click',
-      async () => {
-        start.hidden = true
-        frame.scrollIntoView({ block: 'center' })
-        for (;;) {
-          await playDebate(frame, {
-            locale: frame.lang as Locale,
-            enemy: frame.dataset.debateEnemy,
-            difficulty,
-          })
-        }
+    const run = async () => {
+      for (;;) {
+        await playDebate(frame, {
+          locale: frame.lang as Locale,
+          enemy: frame.dataset.debateEnemy,
+          difficulty,
+        })
+      }
+    }
+    const stage = frame.querySelector('.debate-stage') ?? frame
+    const observer = new IntersectionObserver(
+      (entries) => {
+        if (!entries.some((e) => e.isIntersecting)) return
+        observer.disconnect()
+        void run()
       },
-      { once: true },
+      { threshold: VISIBLE_TO_START },
     )
+    observer.observe(stage)
   }
 }
 

@@ -149,12 +149,6 @@
     "en": "Sound off",
     "needsReview": ["sv", "en"]
   },
-  "start": {
-    "fi": "Aloita väittely",
-    "sv": "Starta debatten",
-    "en": "Start the debate",
-    "needsReview": ["fi", "sv", "en"]
-  },
   "a11y.you": {
     "fi": "Sinä",
     "sv": "Du",

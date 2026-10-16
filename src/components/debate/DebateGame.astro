@@ -5,8 +5,8 @@
  * narration or the option grid. Self-contained (styles scoped under .debate),
  * so it can sit on its own page or, later, inside another page.
  *
- * With `play`, the stage is playable: a start button begins a battle
- * (src/scripts/debate/init.ts drives it). Without, it's a still picture of
+ * With `play`, the stage is playable: a battle starts by itself once the
+ * stage is in view (src/scripts/debate/init.ts drives it). Without, it's a still picture of
  * the opening or of the `preview` the lab page passes in.
  */
 import '../../styles/debate.css'
@@ -119,18 +119,6 @@ const promptId = `debate-prompt-${locale}`
       <p class="debate-text" data-debate-bottom aria-hidden="true" hidden={!!options}>
         {play ? '' : bottom}
       </p>
-      {
-        play && (
-          <button
-            type="button"
-            class="debate-option debate-start"
-            data-debate-start
-            aria-current="true"
-          >
-            <span class="debate-option-label">{t('start')}</span>
-          </button>
-        )
-      }
       <span class="debate-more" data-debate-more="bottom" hidden></span>
       <ul
         class="debate-options"

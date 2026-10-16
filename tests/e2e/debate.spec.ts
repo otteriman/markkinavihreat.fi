@@ -4,9 +4,24 @@ import { expect, test, type Page } from '@playwright/test'
 // launch, /debate-lab/ isn't built and ?difficulty= is ignored.
 
 const pages = [
-  { path: '/debaattipeli/', lang: 'fi', title: 'Vihreä väittely', start: 'Aloita väittely' },
-  { path: '/sv/debaattipeli/', lang: 'sv', title: 'Grön debatt', start: 'Starta debatten' },
-  { path: '/en/debaattipeli/', lang: 'en', title: 'Green debate', start: 'Start the debate' },
+  {
+    path: '/debaattipeli/',
+    lang: 'fi',
+    title: 'Vihreä väittely',
+    intro: 'Villi kansalliskonservatiivi ilmestyi!',
+  },
+  {
+    path: '/sv/debaattipeli/',
+    lang: 'sv',
+    title: 'Grön debatt',
+    intro: 'En vild nationalkonservativ dök upp!',
+  },
+  {
+    path: '/en/debaattipeli/',
+    lang: 'en',
+    title: 'Green debate',
+    intro: 'A wild national conservative appeared!',
+  },
 ]
 
 /** Option grids ignore picks for their first 300 ms, the end screen for 800 ms. */
@@ -17,8 +32,8 @@ const stage = (page: Page) => page.locator('.debate-stage')
 const grid = (page: Page) => page.locator('[data-debate-options]')
 const endScreen = (page: Page) => page.locator('[data-debate-end]')
 
-for (const { path, lang, title, start } of pages) {
-  test(`debate page shows the stage and a start button (${lang})`, async ({ page }) => {
+for (const { path, lang, title, intro } of pages) {
+  test(`debate page starts the battle by itself (${lang})`, async ({ page }) => {
     await page.goto(path)
     await expect(page.locator('h1')).toHaveText(title)
     await expect(page.locator('meta[name="robots"]')).toHaveAttribute(
@@ -26,7 +41,9 @@ for (const { path, lang, title, start } of pages) {
       'noindex, nofollow',
     )
     await expect(page.getByRole('group', { name: title })).toBeVisible()
-    await expect(page.getByRole('button', { name: start })).toBeVisible()
+    // No start button: the opening line types out by itself, with focus in the game.
+    await expect(page.locator('[data-debate-bottom]')).toHaveText(intro)
+    await expect(stage(page)).toBeFocused()
     await expect(stage(page).locator('svg')).toHaveCount(2)
   })
 }
@@ -35,8 +52,7 @@ test('a whole battle by keyboard, with Play again', async ({ page }) => {
   test.setTimeout(90_000)
   await page.emulateMedia({ reducedMotion: 'reduce' })
   await page.goto('/debaattipeli/')
-  await page.getByRole('button', { name: 'Aloita väittely' }).focus()
-  await page.keyboard.press('Enter')
+  await expect(page.locator('[data-debate-bottom]')).not.toHaveText('')
 
   let attackGrids = 0
   const deadline = Date.now() + 60_000
@@ -57,7 +73,16 @@ test('a whole battle by keyboard, with Play again', async ({ page }) => {
           await page.keyboard.press('ArrowRight')
         }
       }
+      const attacking = (await options.count()) === 6
       await page.keyboard.press('Enter')
+      if (attacking && attackGrids === 1) {
+        // Attacking empties the enemy's box, label and all, until he answers.
+        await expect(page.locator('[data-debate-tag="bottom"]')).toHaveText(/^Hyökkäys: /)
+        await expect(page.locator('[data-debate-box="top"]')).toBeHidden()
+        await expect(page.locator('[data-debate-tag="top"]')).toBeHidden()
+        await page.keyboard.press('Enter')
+        await expect(page.locator('[data-debate-tag="top"]')).toHaveText('Puolustus')
+      }
     } else {
       await page.keyboard.press('Enter')
       await page.waitForTimeout(20)
@@ -87,7 +112,6 @@ test('a whole battle by tapping on a phone, with typing and bars', async ({ brow
   })
   const page = await context.newPage()
   await page.goto('/en/debaattipeli/')
-  await page.getByRole('button', { name: 'Start the debate' }).tap()
 
   // The first line types out; a tap shows it all at once.
   await expect(page.locator('[data-debate-bottom]')).not.toHaveText('')
@@ -111,6 +135,15 @@ test('a whole battle by tapping on a phone, with typing and bars', async ({ brow
   const scores = await page.locator('[data-debate-kannatus]').allInnerTexts()
   expect(scores.some((s) => Number(s) < 100)).toBe(true)
   await context.close()
+})
+
+test('the battle waits until the stage is on screen', async ({ page }) => {
+  await page.setViewportSize({ width: 1280, height: 300 })
+  await page.goto('/debaattipeli/')
+  await page.waitForTimeout(500)
+  await expect(page.locator('[data-debate-bottom]')).toHaveText('')
+  await stage(page).scrollIntoViewIfNeeded()
+  await expect(page.locator('[data-debate-bottom]')).not.toHaveText('')
 })
 
 test('production ignores ?difficulty=', async ({ page }) => {
