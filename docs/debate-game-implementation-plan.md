@@ -251,7 +251,7 @@ One route per language, thin wrappers that hardcode the locale (AGENTS.md; no `[
 | sv       | `/sv/debattspel/`  | `src/pages/sv/debattspel/index.astro`  |
 | en       | `/en/debate-game/` | `src/pages/en/debate-game/index.astro` |
 
-The Swedish and English slugs are proposals (the quiz branch's slugs for its own sv/en routes should be checked and matched in style; see open question 1). `BaseLayout` already emits `hreflang` alternates from the `path` prop, so the three pages are linked as alternates. A small language note appears on the page if any string in that locale is still `TODO` or `needsReview` (falls back to Finnish for `TODO` strings rather than showing the placeholder).
+`BaseLayout` already emits `hreflang` alternates from the `path` prop, so the three pages are linked as alternates. A small language note appears on the page if any string in that locale is still `TODO` or `needsReview` (falls back to Finnish for `TODO` strings rather than showing the placeholder).
 
 `/debate-lab/` is added to `src/pages/[lab].astro` (dev and `NOINDEX=true` only). Until launch: `noindex` on all three pages and excluded from the sitemap in `astro.config.mjs`, next to the quiz entries. Nav/Footer entry only at launch.
 
@@ -306,7 +306,7 @@ You play the game after Phase 3 (the preview URL from CI works for that) and tun
 
 `.github/workflows/ci.yml` (on `main`) runs format, lint, check, translations, unit tests, build, `check:og` and e2e on every PR. This branch also carries `.github/workflows/preview-pages.yml`, copied unchanged from the quiz branch, so each push builds a `noindex` GitHub Pages preview at `/<repo>/<branch-slug>/debaattipeli/`. The `BASE_PATH` handling lives in the quiz branch's `astro.config.mjs`; until that lands on `main`, previews of this branch serve from `/`, and the game's font and asset URLs must therefore go through Astro's base-aware helpers. The two branches' workflow files are identical, so merging either first is conflict-free.
 
-## 10. Open questions
+## 10. Resolved questions
 
-1. **Swedish and English slugs:** the plan proposes `/sv/debattspel/` and `/en/debate-game/`. Should they match the quiz branch's sv/en naming style instead (and should the Finnish `/debaattipeli/` stay as is)?
-2. **Cross-linking with the quiz:** none planned for now. Decide after you've played it (section 5.2).
+1. **URLs:** `/debaattipeli/`, `/sv/debattspel/` and `/en/debate-game/` are confirmed.
+2. **Cross-linking with the quiz:** none for now. Revisit after playing the game (section 5.2).
