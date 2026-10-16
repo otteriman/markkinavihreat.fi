@@ -333,39 +333,24 @@
   width: auto;
 }
 
-/* Hit: the sprite shakes, then the status blinks while its bar drains. */
-.debate-shake {
-  animation: debate-shake 320ms steps(8);
+/* Hit: the avatar flashes, fully transparent then fully opaque, three times
+   in a second (view.ts FLASH_MS). Three a second is the WCAG 2.3.1 limit. */
+.debate-flash {
+  animation: debate-flash 333ms steps(1, end) 3;
 }
 
-@keyframes debate-shake {
-  0%,
+@keyframes debate-flash {
+  0% {
+    opacity: 0;
+  }
   50% {
-    transform: translateX(-2px);
-  }
-  25%,
-  75% {
-    transform: translateX(2px);
-  }
-  100% {
-    transform: none;
-  }
-}
-
-.debate-blink {
-  animation: debate-blink 240ms steps(1) infinite;
-}
-
-@keyframes debate-blink {
-  50% {
-    opacity: 0.35;
+    opacity: 1;
   }
 }
 
 @media (prefers-reduced-motion: reduce) {
   .debate-more,
-  .debate-shake,
-  .debate-blink {
+  .debate-flash {
     animation: none;
   }
 }

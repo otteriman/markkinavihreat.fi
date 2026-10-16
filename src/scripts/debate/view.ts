@@ -13,7 +13,7 @@ import type { Difficulty, UiStrings } from '../../lib/debate/types'
 export interface ViewOptions {
   locale: Locale
   ui: UiStrings
-  /** Instant text and no shake/blink. */
+  /** Instant text and no hit flash. */
   reduce: boolean
   msPerChar: number
   signal: AbortSignal
@@ -29,6 +29,8 @@ const PROMPT_PAUSE_MS = 450
  */
 const GRID_GRACE_MS = 300
 const END_GRACE_MS = 800
+/** Matches the .debate-flash animation: 3 × 333 ms, within WCAG's three flashes a second. */
+const FLASH_MS = 1000
 
 const sleep = (ms: number, signal: AbortSignal) =>
   new Promise<void>((resolve, reject) => {
@@ -202,7 +204,10 @@ export class StageView {
     bar?.style.setProperty('--fill', String(Math.max(0, value) / this.max[side]))
   }
 
-  /** The hit: the target shakes, then its bar drains point by point while its status blinks. */
+  /**
+   * The hit: the target's avatar flashes (fully transparent, fully opaque,
+   * three times in about a second) while its bar drains point by point.
+   */
   async hit(step: Extract<Step, { kind: 'hit' }>): Promise<void> {
     const { signal, reduce } = this.opts
     this.announce(step.announce, true)
@@ -212,17 +217,19 @@ export class StageView {
       return
     }
     const sprite = this.root.querySelector<HTMLElement>(`.debate-sprite-${step.target}`)
-    const status = this.root.querySelector<HTMLElement>(`.debate-status-${step.target}`)
-    sprite?.classList.add('debate-shake')
-    await sleep(320, signal)
-    sprite?.classList.remove('debate-shake')
-    status?.classList.add('debate-blink')
-    const perPoint = Math.max(12, Math.min(30, 600 / step.damage))
-    for (let value = step.from - 1; value >= step.to; value--) {
-      this.setKannatus(step.target, value)
-      await sleep(perPoint, signal)
+    sprite?.classList.add('debate-flash')
+    const drain = async () => {
+      const perPoint = Math.max(12, Math.min(30, 600 / step.damage))
+      for (let value = step.from - 1; value >= step.to; value--) {
+        this.setKannatus(step.target, value)
+        await sleep(perPoint, signal)
+      }
     }
-    status?.classList.remove('debate-blink')
+    try {
+      await Promise.all([sleep(FLASH_MS, signal), drain()])
+    } finally {
+      sprite?.classList.remove('debate-flash')
+    }
   }
 
   /**

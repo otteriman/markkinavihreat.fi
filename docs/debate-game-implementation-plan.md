@@ -40,7 +40,7 @@ The quiz uses **no JS framework**. It is Astro plus plain TypeScript, and the ga
 - The game itself makes no third-party requests: its font and everything else is served from our own origin. (The site-wide layout, `BaseLayout.astro`, still loads Hanken Grotesk from Google Fonts and Font Awesome from cdnjs on every page, the game page included. Changing that is a site-wide decision outside this plan.)
 - Original pixel art only. No Pokémon sprites, music, logos or names. No real politicians or party logos.
 - Content rules from the spec: positions, not people; no slurs or jokes about ethnicity or immigrants.
-- Accessibility: every action reachable by tap, click and keyboard (arrows plus Enter/Space). Real `<button>`s, live-region narration for screen readers, `prefers-reduced-motion` replaces typing, shake and blink with instant changes. Sound is off by default with a mute toggle.
+- Accessibility: every action reachable by tap, click and keyboard (arrows plus Enter/Space). Real `<button>`s, live-region narration for screen readers, `prefers-reduced-motion` replaces typing and the hit flash with instant changes. Sound is off by default with a mute toggle.
 - Don't invent facts or copy beyond what's needed. Translations drafted by Claude are marked `needsReview` for sv (and en where the Finnish wording is idiomatic and hard to render); Finnish is the source of truth.
 
 ## 3. Architecture
@@ -235,7 +235,7 @@ Presets can also extend each other (`"extends": "normal"` plus overrides), so "h
 ## 4. Art and font (no designer, no third parties)
 
 - **Sprites** as arrays of strings (one char per pixel: digits 0–3 = palette shade, `.` = transparent) in `src/lib/debate/sprites.ts`, converted to inline SVG `<rect>` runs. Player from behind (bottom left), enemy from the front (top right): a generic mid-aged man in a fleece vest and cap, original design. The enemy's sprite id comes from `enemy.json`, so a new enemy brings a new sprite entry.
-- Animations by CSS class: `shake` (hit), `blink` (KANNATUS drops), slide-in at the intro. Bars drain with `steps()` easing to look 8-bit.
+- Animations by CSS class: `flash` (the hit avatar turns fully transparent and back, three times in a second, while its bar drains; this replaced the spec's shake and status blink on request), slide-in at the intro. Bars drain with `steps()` easing to look 8-bit.
 - **Self-hosted font.** One pixel font under an open licence (SIL OFL), committed as a subsetted `woff2` in the repo with its licence text next to it, loaded by an `@font-face` in our own CSS with `font-display: swap`. It must have **ä, ö and å** (Swedish needs å). No Google Fonts link, no npm font package, so no new dependency. The font file is imported through Astro's asset pipeline so its URL respects `BASE_PATH` in branch previews. **Chosen in Phase 2: Jersey 10 at 12 px** (12 px line height). Compared on `/debate-lab/` against Pixelify Sans, Silkscreen and Micro 5, measuring every battle text in all three languages against its box: Jersey 10 fits everything (widest label 82 of 97 px), has unambiguous digits (Pixelify's 5 reads as S) and lowercase (Silkscreen is capitals only), and is narrow enough that sv/en lines wrap less. VT323 and Press Start 2P were ruled out by glyph width before the lab. The candidates stay in the lab for comparison.
 - The quiz's bonus level loads Patrick Hand from Google Fonts; that is the quiz's business and the game does not depend on it.
 
@@ -294,7 +294,7 @@ Each phase ends with `npm run format:check && npm run lint && npm run check && n
    - Option grids ignore picks for their first 300 ms and the end screen for 800 ms, so tapping through text can't pick an answer or skip the result by accident.
    - Used attacks stay in the grid, struck through and announced as used to screen readers; picking one does nothing.
    - The zoom also leaves room for the site's sticky nav, so the whole stage fits the screen once started.
-4. **Art and juice:** final sprites, shake/blink, intro slide-in, bar drain, optional chiptune audio and mute, reduced-motion variants.
+4. **Art and juice:** final sprites, intro slide-in, bar drain, optional chiptune audio and mute, reduced-motion variants.
 5. **Polish:** e2e in all three languages, mobile portrait pass, accessibility pass (screen-reader narration, focus order), Lighthouse check, README entry, a short "how to edit the game's content" section in the docs.
 6. **Launch checklist:** sv/en reviewed by a human and `needsReview` cleared (after the game works, not before), remove noindex and the sitemap exclusion, add Nav/Footer entry, PR to `main` for human review.
 
