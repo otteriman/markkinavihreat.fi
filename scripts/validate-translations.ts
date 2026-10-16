@@ -1,5 +1,7 @@
 import { readdirSync, statSync } from 'node:fs'
 import { join } from 'node:path'
+import { formatProblem, translationStatus, validateDebate } from '../src/lib/debate/validate'
+import { loadDebate } from './debate/load'
 
 const LOCALES = ['fi', 'sv', 'en']
 const CONTENT_ROOT = join(process.cwd(), 'src/content')
@@ -53,6 +55,23 @@ for (const collection of readdirSync(CONTENT_ROOT)) {
       hasError = true
     }
   }
+}
+
+// Debate game (src/data/debate/): fi + sv + en for every text, plus its
+// content rules. TODO and needsReview are reported, not failures.
+const debate = loadDebate()
+for (const problem of validateDebate(debate.config, debate.enemies, debate.ui, debate.problems)) {
+  console.error(`[debate] ${formatProblem(problem)}`)
+  hasError = true
+}
+const debateStatus = translationStatus(debate.files)
+const debateReview = Object.entries(debateStatus.review).filter(([, n]) => n > 0)
+if (debateStatus.todo.length > 0 || debateReview.length > 0) {
+  console.log(
+    `[debate] open: ${debateStatus.todo.length} TODO text(s); needsReview ` +
+      (debateReview.map(([l, n]) => `${l} ${n}`).join(', ') || 'none') +
+      ' (see npm run debate:report)',
+  )
 }
 
 if (hasError) {
