@@ -27,7 +27,7 @@ interface Config {
     revealStatus: string
   }
   types: Record<string, string>
-  cues: Record<string, { title: string; detail: string }>
+  cues: Record<string, string>
 }
 
 const wait = (ms: number) => new Promise((resolve) => setTimeout(resolve, ms))
@@ -179,17 +179,21 @@ export function initQuiz() {
     show(stepKey(step), focus)
   }
 
-  /** Tells which way the answer just given moved the tree, e.g. "More freedom". */
+  /** Says what the answer just given indicated, e.g. "…you value freedom." */
   function showCue(id: string) {
     const item = items.find((i): i is Statement => i.id === id && i.kind === 'statement')
     if (!item) return
     const value = answers[id]
     const push = typeof value === 'number' ? value * item.direction : 0
-    const cue =
-      config.cues[push > 0 ? `${item.axis}.up` : push < 0 ? `${item.axis}.down` : 'neutral']
-    const section = sections.get(`a:${id}`)!
-    section.querySelector('[data-cue-title]')!.textContent = cue.title
-    section.querySelector('[data-cue-detail]')!.textContent = cue.detail
+    const key =
+      value === null
+        ? 'skipped'
+        : push > 0
+          ? `${item.axis}.up`
+          : push < 0
+            ? `${item.axis}.down`
+            : 'neutral'
+    sections.get(`a:${id}`)!.querySelector('[data-cue]')!.textContent = config.cues[key]
   }
 
   let finishing = false

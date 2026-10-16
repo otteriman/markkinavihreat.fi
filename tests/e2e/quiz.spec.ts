@@ -127,7 +127,7 @@ test('tapping an after-question card moves on', async ({ page }) => {
   await page.locator('[data-step="q:q1"] [data-answer="0"]').click()
   // A tap in the first moments after the card appears is ignored as a stray one.
   await page.waitForTimeout(500)
-  await page.locator('[data-step="a:q1"] [data-card]').click({ position: { x: 20, y: 20 } })
+  await page.locator('[data-step="a:q1"] [data-cue]').click()
   await expect(page.locator('[data-step="q:q2"]')).toBeVisible()
 })
 
@@ -222,24 +222,32 @@ test.describe('on an iPhone 11 Pro sized screen', () => {
   })
 })
 
-test('after an answer the tree appears with a cue saying which way it grew', async ({ page }) => {
+test('after an answer the tree appears with a sentence on what the answer indicated', async ({
+  page,
+}) => {
   await page.goto(START.fi)
   await page.locator('[data-action="start"]').click()
   await expect(page.locator('#quiz-tree-wrap')).toBeHidden()
   // q1 (markets, agreeing raises it): strongly agree.
   await page.locator('[data-step="q:q1"] [data-answer="2"]').click()
   await expect(page.locator('#quiz-tree-wrap')).toBeVisible()
-  await expect(page.locator('[data-step="a:q1"] [data-cue-title]')).toHaveText('Lisää markkinoita')
+  await expect(page.locator('[data-step="a:q1"] [data-cue]')).toHaveText(
+    'Vastauksesi perusteella luotat markkinoihin.',
+  )
   await page.locator('[data-step="a:q1"] [data-action="continue"]').click()
-  // q2 (environment): skipped, so the tree just grows.
+  // q2 (environment): skipped.
   await page.locator('[data-step="q:q2"] [data-action="skip"]').click()
-  await expect(page.locator('[data-step="a:q2"] [data-cue-title]')).toHaveText('Puu kasvaa')
+  await expect(page.locator('[data-step="a:q2"] [data-cue]')).toHaveText('Ohitit tämän kysymyksen.')
   await page.locator('[data-step="a:q2"] [data-action="continue"]').click()
+  // q3 (freedom): "can't say".
   await page.locator('[data-step="q:q3"] [data-answer="0"]').click()
+  await expect(page.locator('[data-step="a:q3"] [data-cue]')).toHaveText(
+    'Vastauksesi perusteella et kallistu kumpaankaan suuntaan.',
+  )
   await page.locator('[data-step="a:q3"] [data-action="continue"]').click()
   // q4 (markets, reversed): agreeing lowers markets.
   await page.locator('[data-step="q:q4"] [data-answer="2"]').click()
-  await expect(page.locator('[data-step="a:q4"] [data-cue-title]')).toHaveText(
-    'Lisää julkista ohjausta',
+  await expect(page.locator('[data-step="a:q4"] [data-cue]')).toHaveText(
+    'Vastauksesi perusteella luotat julkiseen ohjaukseen.',
   )
 })

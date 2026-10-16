@@ -4,7 +4,7 @@ import FinaleIcon from '../FinaleIcon.astro'
 import QuizBars from '../QuizBars.astro'
 import { items, resultTypes, t } from '../../lib/quiz/data'
 import { renderTree, type TreeInput } from '../../lib/quiz/tree'
-import type { Axis, Finale, GuessInterlude, Statement } from '../../lib/quiz/types'
+import type { Axis, Finale } from '../../lib/quiz/types'
 
 // Development and preview only (see src/pages/[lab].astro): a review sheet for
 // the generated tree, style C (paper-cut). Finnish only, like the rest of the
@@ -21,11 +21,8 @@ const axes: { axis: Axis; label: string; low: string; high: string }[] = [
     high: 'kukat, mehiläiset, linnut',
   },
 ]
-const statements = items.filter((i): i is Statement => i.kind === 'statement')
-const guess = items.find((i): i is GuessInterlude => i.kind === 'guess')!
 const finale = items.find((i): i is Finale => i.kind === 'finale')!
 const tree = (input: TreeInput) => renderTree(input)
-const CARD_LABELS = { fact: 'Fakta', reaction: 'Reaktio', teaser: 'Kiusoittelu' }
 const CUES = [
   'markets.up',
   'markets.down',
@@ -34,6 +31,7 @@ const CUES = [
   'environment.up',
   'environment.down',
   'neutral',
+  'skipped',
 ]
 const labConfig = {
   overall: t('fi', 'result.overall', { percent: '{percent}' }),
@@ -182,46 +180,17 @@ const labConfig = {
     </section>
 
     <section class="mt-12">
-      <h2 class="text-2xl">Kysymysten jälkeiset kortit</h2>
-      <p class="text-harmaa mt-1 text-sm">
-        Kortti odottaa, kunnes vastaaja napauttaa sitä, painaa näppäintä tai Jatka-painiketta.
-      </p>
-      <div class="mt-4 grid gap-3 sm:grid-cols-2">
-        {
-          statements.map((s) => (
-            <div class="card bg-white">
-              <p class="text-eyebrow text-harmaa">
-                {s.id} · {CARD_LABELS[s.after.type]}
-              </p>
-              <p class="mt-2 text-lg font-semibold">{s.after.text.fi}</p>
-              {s.after.type === 'fact' && (
-                <p class="text-harmaa mt-2 text-sm">
-                  Lähde: {s.after.source === 'TODO' ? 'TODO' : s.after.source.label}
-                </p>
-              )}
-            </div>
-          ))
-        }
-        <div class="card bg-white">
-          <p class="text-eyebrow text-harmaa">Arvaus · paljastus</p>
-          <p class="mt-2 text-lg font-semibold">{guess.reveal.fi}</p>
-        </div>
-      </div>
-    </section>
-
-    <section class="mt-12">
       <h2 class="text-2xl">Kasvun suunta vastauksen jälkeen</h2>
       <p class="text-harmaa mt-1 text-sm">
-        Puu tulee näkyviin vasta vastauksen jälkeen, ja tämä teksti kertoo, mihin suuntaan vastaus
-        sitä kasvatti. Luonnoksia: kaikki kieliversiot odottavat tarkistusta.
+        Vastauksen jälkeen näytetään vain kasvava puu ja yksi lause siitä, mitä vastaus kertoi.
+        Luonnoksia: kaikki kieliversiot odottavat tarkistusta.
       </p>
       <div class="mt-4 grid gap-3 sm:grid-cols-2">
         {
           CUES.map((k) => (
             <div class="card bg-white text-center">
               <p class="text-eyebrow text-harmaa">{k}</p>
-              <p class="mt-2 text-xl font-extrabold">{t('fi', `cue.${k}.title`)}</p>
-              <p class="text-harmaa">{t('fi', `cue.${k}.detail`)}</p>
+              <p class="mt-2 text-xl font-extrabold">{t('fi', `cue.${k}`)}</p>
             </div>
           ))
         }

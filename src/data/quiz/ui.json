@@ -83,18 +83,6 @@
     "en": "Strongly agree",
     "needsReview": ["sv"]
   },
-  "card.source": {
-    "fi": "Lähde",
-    "sv": "Källa",
-    "en": "Source",
-    "needsReview": ["sv"]
-  },
-  "card.skipHint": {
-    "fi": "Napauta jatkaaksesi",
-    "sv": "Tryck för att fortsätta",
-    "en": "Tap to continue",
-    "needsReview": ["sv"]
-  },
   "guess.off": {
     "fi": "Arvauksesi oli {n} vuoden päässä.",
     "sv": "Du gissade {n} år fel.",
@@ -311,88 +299,52 @@
     "en": "Your result: {percent}% market green, {type}.",
     "needsReview": ["sv"]
   },
-  "cue.freedom.up.title": {
-    "fi": "Lisää vapautta",
-    "sv": "Mer frihet",
-    "en": "More freedom",
+  "cue.freedom.up": {
+    "fi": "Vastauksesi perusteella arvostat vapautta.",
+    "sv": "Ditt svar tyder på att du värdesätter frihet.",
+    "en": "Your answer suggests you value freedom.",
     "needsReview": ["fi", "sv", "en"]
   },
-  "cue.freedom.up.detail": {
-    "fi": "Latvus kasvaa vapaammin.",
-    "sv": "Kronan växer friare.",
-    "en": "The crown grows freer.",
+  "cue.freedom.down": {
+    "fi": "Vastauksesi perusteella arvostat järjestystä ja turvallisuutta.",
+    "sv": "Ditt svar tyder på att du värdesätter ordning och trygghet.",
+    "en": "Your answer suggests you value order and security.",
     "needsReview": ["fi", "sv", "en"]
   },
-  "cue.freedom.down.title": {
-    "fi": "Lisää järjestystä",
-    "sv": "Mer ordning",
-    "en": "More order",
+  "cue.markets.up": {
+    "fi": "Vastauksesi perusteella luotat markkinoihin.",
+    "sv": "Ditt svar tyder på att du litar på marknaden.",
+    "en": "Your answer suggests you trust markets.",
     "needsReview": ["fi", "sv", "en"]
   },
-  "cue.freedom.down.detail": {
-    "fi": "Latvus pysyy siistinä.",
-    "sv": "Kronan hålls välklippt.",
-    "en": "The crown stays neatly trimmed.",
+  "cue.markets.down": {
+    "fi": "Vastauksesi perusteella luotat julkiseen ohjaukseen.",
+    "sv": "Ditt svar tyder på att du litar på offentlig styrning.",
+    "en": "Your answer suggests you trust public steering.",
     "needsReview": ["fi", "sv", "en"]
   },
-  "cue.markets.up.title": {
-    "fi": "Lisää markkinoita",
-    "sv": "Mer marknad",
-    "en": "More markets",
+  "cue.environment.up": {
+    "fi": "Vastauksesi perusteella pidät ympäristöä tärkeänä.",
+    "sv": "Ditt svar tyder på att miljön är viktig för dig.",
+    "en": "Your answer suggests the environment matters to you.",
     "needsReview": ["fi", "sv", "en"]
   },
-  "cue.markets.up.detail": {
-    "fi": "Puuhun kasvaa rahaa.",
-    "sv": "Pengar växer på trädet.",
-    "en": "Money grows on the tree.",
+  "cue.environment.down": {
+    "fi": "Vastauksesi perusteella toivot ympäristöpolitiikalta maltillisuutta.",
+    "sv": "Ditt svar tyder på att du vill ha en måttfull miljöpolitik.",
+    "en": "Your answer suggests you want moderation in environmental policy.",
     "needsReview": ["fi", "sv", "en"]
   },
-  "cue.markets.down.title": {
-    "fi": "Lisää julkista ohjausta",
-    "sv": "Mer offentlig styrning",
-    "en": "More public steering",
+  "cue.neutral": {
+    "fi": "Vastauksesi perusteella et kallistu kumpaankaan suuntaan.",
+    "sv": "Ditt svar lutar inte åt något håll.",
+    "en": "Your answer doesn't lean either way.",
     "needsReview": ["fi", "sv", "en"]
   },
-  "cue.markets.down.detail": {
-    "fi": "Puuhun kypsyy omenoita.",
-    "sv": "Äpplen mognar på trädet.",
-    "en": "Apples ripen on the tree.",
-    "needsReview": ["fi", "sv", "en"]
-  },
-  "cue.environment.up.title": {
-    "fi": "Lisää luontoa",
-    "sv": "Mer natur",
-    "en": "More nature",
-    "needsReview": ["fi", "sv", "en"]
-  },
-  "cue.environment.up.detail": {
-    "fi": "Ympärille palaa kukkia ja mehiläisiä.",
-    "sv": "Blommor och bin återvänder.",
-    "en": "Flowers and bees return.",
-    "needsReview": ["fi", "sv", "en"]
-  },
-  "cue.environment.down.title": {
-    "fi": "Siistimpi puutarha",
-    "sv": "En prydligare trädgård",
-    "en": "A tidier garden",
-    "needsReview": ["fi", "sv", "en"]
-  },
-  "cue.environment.down.detail": {
-    "fi": "Ympärille kasvaa hoidettu puutarha.",
-    "sv": "En välskött trädgård växer runt trädet.",
-    "en": "A well-kept garden grows around the tree.",
-    "needsReview": ["fi", "sv", "en"]
-  },
-  "cue.neutral.title": {
-    "fi": "Puu kasvaa",
-    "sv": "Trädet växer",
-    "en": "The tree grows",
-    "needsReview": ["fi", "sv", "en"]
-  },
-  "cue.neutral.detail": {
-    "fi": "Tasapaino säilyy.",
-    "sv": "Balansen består.",
-    "en": "The balance holds.",
+  "cue.skipped": {
+    "fi": "Ohitit tämän kysymyksen.",
+    "sv": "Du hoppade över frågan.",
+    "en": "You skipped this question.",
     "needsReview": ["fi", "sv", "en"]
   }
 }

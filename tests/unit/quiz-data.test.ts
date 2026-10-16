@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest'
-import { items, resultTypes, scoredItems, t } from '../../src/lib/quiz/data'
+import { items, resultTypes, t } from '../../src/lib/quiz/data'
 import { LANGS, TYPE_SLUGS } from '../../src/lib/quiz/types'
 import type { Localized } from '../../src/lib/quiz/types'
 
@@ -33,10 +33,6 @@ describe('questions.json', () => {
   it('has non-empty fi, sv and en text everywhere', () => {
     for (const entry of localized(items))
       for (const l of LANGS) expect(entry[l].trim()).not.toBe('')
-  })
-
-  it('gives every statement an after-question card', () => {
-    for (const i of scoredItems) if (i.kind === 'statement') expect(i.after).toBeTruthy()
   })
 
   it('answers every statement with buttons', () => {

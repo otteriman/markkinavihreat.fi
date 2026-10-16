@@ -174,7 +174,6 @@ describe('pickNudges', () => {
     direction: i === 2 ? -1 : 1,
     ui: 'buttons',
     text: { fi: '', sv: '', en: '' },
-    after: { type: 'reaction', text: { fi: '', sv: '', en: '' } },
     relatedLink: { href: { fi: '/', sv: '/', en: '/' }, label: { fi: '', sv: '', en: '' } },
   })) as ScoredItem[]
 

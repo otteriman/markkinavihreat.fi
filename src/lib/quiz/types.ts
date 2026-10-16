@@ -18,11 +18,6 @@ export interface Reviewable {
   needsReview?: Lang[]
 }
 
-export type AfterCard =
-  | { type: 'fact'; text: Localized; source: { label: string; url: string } | 'TODO' }
-  | { type: 'reaction'; text: Localized }
-  | { type: 'teaser'; text: Localized }
-
 export interface Statement extends Reviewable {
   id: string // 'q1' … 'q9'
   kind: 'statement'
@@ -31,7 +26,6 @@ export interface Statement extends Reviewable {
   direction: 1 | -1
   ui: Exclude<AnswerUI, 'imageChoice'>
   text: Localized
-  after: AfterCard
   relatedLink?: { href: Localized; label: Localized }
 }
 
