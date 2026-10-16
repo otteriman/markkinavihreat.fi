@@ -24,7 +24,7 @@ const t = (key: string) => qt(locale, key)
     <p data-bonus-focus tabindex="-1" class="bonus-hand bonus-pop text-5xl" style="--tilt:-4deg">
       {t('bonus.kicker')}
     </p>
-    <p class="bonus-hand bonus-pop bonus-pop-late text-4xl" style="--tilt:3deg">
+    <p class="bonus-hand bonus-pop bonus-pop-late text-4xl" style="--tilt:1.5deg">
       {t('bonus.title')}
     </p>
   </section>
@@ -44,18 +44,34 @@ const t = (key: string) => qt(locale, key)
             {t('bonus.yes')}
           </button>
         </div>
-        <div data-bonus-choices="retry" class="bonus-choices" hidden>
-          <button type="button" data-bonus="again" class="bonus-blob" style="--tilt:4deg">
-            {t('bonus.again')}
-          </button>
-          <button type="button" data-bonus="leave" class="bonus-blob" style="--tilt:-5deg">
-            {t('bonus.leave')}
-          </button>
-        </div>
         <p data-bonus-tickles class="bonus-hand bonus-pop text-3xl" style="--tilt:6deg" hidden>
           {t('bonus.tickles')}
         </p>
       </div>
+    </div>
+  </section>
+
+  <section data-bonus-screen="closeup" class="bonus-screen justify-center gap-4 text-center" hidden>
+    <div
+      class="bonus-closeup bonus-zoom"
+      set:html={personSvg(t('bonus.annoyed'), 'annoyed', 'closeup')}
+    />
+    <p data-bonus-focus tabindex="-1" class="bonus-hand bonus-pop text-5xl" style="--tilt:-5deg">
+      {t('bonus.hmph')}
+    </p>
+  </section>
+
+  <section data-bonus-screen="lost" class="bonus-screen justify-center gap-10 text-center" hidden>
+    <p data-bonus-focus tabindex="-1" class="bonus-hand bonus-pop text-5xl" style="--tilt:-3deg">
+      {t('bonus.lost')}
+    </p>
+    <div data-bonus-choices="retry" class="bonus-choices">
+      <button type="button" data-bonus="again" class="bonus-blob" style="--tilt:4deg">
+        {t('bonus.again')}
+      </button>
+      <button type="button" data-bonus="leave" class="bonus-blob" style="--tilt:-5deg">
+        {t('bonus.leave')}
+      </button>
     </div>
   </section>
 
@@ -73,7 +89,7 @@ const t = (key: string) => qt(locale, key)
     type="application/json"
     data-bonus-config
     is:inline
-    set:html={JSON.stringify({ sad: t('bonus.sad'), tickles: t('bonus.tickles') })}
+    set:html={JSON.stringify({ tickles: t('bonus.tickles') })}
   />
 </div>
 
@@ -166,6 +182,24 @@ const t = (key: string) => qt(locale, key)
     outline: 3px solid #161a14;
     outline-offset: 4px;
   }
+  /* The close-up after "En": Lauri's face, zoomed in. */
+  .bonus-closeup {
+    width: min(78vw, 22rem);
+    margin: 0 auto;
+  }
+  .bonus-closeup svg {
+    width: 100%;
+    height: auto;
+  }
+  [data-bonus-screen]:not([hidden]) .bonus-zoom {
+    animation: bonus-zoom 0.5s cubic-bezier(0.2, 0.9, 0.3, 1.1) both;
+  }
+  @keyframes bonus-zoom {
+    from {
+      opacity: 0;
+      transform: scale(0.55);
+    }
+  }
   .bonus-count {
     display: inline-block;
     min-width: 1ch;
@@ -175,7 +209,7 @@ const t = (key: string) => qt(locale, key)
   }
   .bonus-person[data-mood='neutral'] [data-face='neutral'],
   .bonus-person[data-mood='laugh'] [data-face='laugh'],
-  .bonus-person[data-mood='sad'] [data-face='sad'] {
+  .bonus-person[data-mood='annoyed'] [data-face='annoyed'] {
     display: inline;
   }
   /* The sweater waits off-screen on the left and slides onto Lauri. */
@@ -233,6 +267,7 @@ const t = (key: string) => qt(locale, key)
     }
     .bonus-person.is-tickled .bonus-body,
     [data-bonus-screen]:not([hidden]) .bonus-pop:not([hidden]),
+    [data-bonus-screen]:not([hidden]) .bonus-zoom,
     .bonus-count.is-ticking {
       animation: none;
     }

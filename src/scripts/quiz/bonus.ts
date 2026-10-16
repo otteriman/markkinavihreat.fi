@@ -1,7 +1,8 @@
 /**
  * Runs the bonus level (BonusGame.astro): white-out, title, the sweater game,
- * and the win screen with its 3-2-1 countdown, or the disappointed face with
- * "Try again" / "Leave". Resolves when the overlay has closed again.
+ * and the win screen with its 3-2-1 countdown; or, after "No", a close-up of a
+ * slightly annoyed Lauri ("Hmpmh") and the lost screen with "Try again" /
+ * "Leave". Resolves when the overlay has closed again.
  * Nothing here is scored, stored or sent anywhere.
  */
 export type BonusOutcome = 'won' | 'left'
@@ -18,18 +19,17 @@ export async function playBonus(
   onReturn: () => void = () => {},
 ): Promise<BonusOutcome> {
   const config = JSON.parse(overlay.querySelector('[data-bonus-config]')?.textContent ?? '{}') as {
-    sad: string
     tickles: string
   }
   const status = overlay.querySelector<HTMLElement>('[data-bonus-status]')!
-  const person = overlay.querySelector<SVGSVGElement>('.bonus-person')!
+  const person = overlay.querySelector<SVGSVGElement>('.bonus-figure .bonus-person')!
   const tickles = overlay.querySelector<HTMLElement>('[data-bonus-tickles]')!
   const choices = (which: 'ask' | 'retry') =>
     overlay.querySelector<HTMLElement>(`[data-bonus-choices="${which}"]`)!
   const count = overlay.querySelector<HTMLElement>('[data-bonus-count]')!
   const pause = (ms: number) => wait(reduce ? Math.min(ms, 1000) : ms)
 
-  const screen = (name: 'title' | 'game' | 'win') => {
+  const screen = (name: 'title' | 'game' | 'closeup' | 'lost' | 'win') => {
     overlay.querySelectorAll<HTMLElement>('[data-bonus-screen]').forEach((el) => {
       el.hidden = el.dataset.bonusScreen !== name
     })
@@ -55,7 +55,6 @@ export async function playBonus(
     person.classList.remove('is-dressed', 'is-tickled')
     tickles.hidden = true
     choices('ask').hidden = false
-    choices('retry').hidden = true
     status.textContent = ''
   }
 
@@ -89,11 +88,11 @@ export async function playBonus(
       await pause(2400)
       break
     }
-    // "No": a disappointed face, and the choice to try again or leave.
-    person.dataset.mood = 'sad'
-    status.textContent = config.sad
-    choices('ask').hidden = true
-    choices('retry').hidden = false
+    // "No": a close-up of a slightly annoyed Lauri ("Hmpmh"), then the lost
+    // screen with the choice to try again or leave.
+    screen('closeup')
+    await pause(2200)
+    screen('lost')
     choices('retry').querySelector<HTMLElement>('button')?.focus()
     if ((await choose(choices('retry'))) === 'leave') {
       await close()

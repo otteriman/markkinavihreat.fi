@@ -297,8 +297,11 @@ test.describe('bonus level', () => {
       'Pue Laurille villapaita',
     )
     await overlay.locator('[data-bonus="yes"]').click()
-    await expect(overlay.locator('.bonus-person')).toHaveClass(/is-dressed/)
-    await expect(overlay.locator('.bonus-person')).toHaveAttribute('data-mood', 'laugh')
+    await expect(overlay.locator('.bonus-figure .bonus-person')).toHaveClass(/is-dressed/)
+    await expect(overlay.locator('.bonus-figure .bonus-person')).toHaveAttribute(
+      'data-mood',
+      'laugh',
+    )
     await expect(overlay.locator('[data-bonus-tickles]')).toHaveText('Hihihi, kutittaa!')
     await expect(overlay.locator('[data-bonus-screen="win"]')).toContainText('Voitit pelin!')
     await expect(overlay.locator('[data-bonus-screen="win"]')).toContainText(
@@ -308,16 +311,28 @@ test.describe('bonus level', () => {
     await expect(page.locator('[data-step="q:q4"]')).toBeVisible()
   })
 
-  test('saying no shows a disappointed face, then try again or leave to q4', async ({ page }) => {
+  test('saying no shows an annoyed close-up, then the lost screen with try again or leave', async ({
+    page,
+  }) => {
     const overlay = await reachBonus(page)
     await overlay.locator('[data-bonus="no"]').click()
-    await expect(overlay.locator('.bonus-person')).toHaveAttribute('data-mood', 'sad')
-    await expect(overlay.locator('[data-bonus="again"]')).toBeFocused()
-    // Try again with the keyboard, then say no again and leave.
+    const closeup = overlay.locator('[data-bonus-screen="closeup"]')
+    await expect(closeup).toBeVisible()
+    await expect(closeup).toContainText('Hmpmh')
+    await expect(closeup.locator('.bonus-person')).toHaveAttribute('data-mood', 'annoyed')
+    const lost = overlay.locator('[data-bonus-screen="lost"]')
+    await expect(lost).toContainText('Hävisit pelin', { timeout: 4000 })
+    await expect(lost.locator('[data-bonus="again"]')).toBeFocused()
+    // Try again with the keyboard: back to the game, Lauri neutral again.
     await page.keyboard.press('Enter')
-    await expect(overlay.locator('.bonus-person')).toHaveAttribute('data-mood', 'neutral')
+    await expect(overlay.locator('[data-bonus-screen="game"]')).toBeVisible()
+    await expect(overlay.locator('.bonus-figure .bonus-person')).toHaveAttribute(
+      'data-mood',
+      'neutral',
+    )
+    // No again, then leave: straight back to q4, no win screen.
     await overlay.locator('[data-bonus="no"]').click()
-    await overlay.locator('[data-bonus="leave"]').click()
+    await lost.locator('[data-bonus="leave"]').click({ timeout: 4000 })
     await expect(overlay).toBeHidden()
     await expect(overlay.locator('[data-bonus-screen="win"]')).toBeHidden()
     await expect(page.locator('[data-step="q:q4"]')).toBeVisible()
@@ -341,7 +356,7 @@ test.describe('bonus level', () => {
       await expect(yes).toBeVisible()
       const box = (await yes.boundingBox())!
       expect(box.y + box.height).toBeLessThanOrEqual(635)
-      const figure = (await overlay.locator('.bonus-person').boundingBox())!
+      const figure = (await overlay.locator('.bonus-figure .bonus-person').boundingBox())!
       expect(figure.y + figure.height).toBeLessThanOrEqual(635)
     })
   })

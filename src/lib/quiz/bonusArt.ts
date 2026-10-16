@@ -5,7 +5,7 @@
  * it looks hand drawn but renders the same every time.
  */
 
-export type Mood = 'neutral' | 'laugh' | 'sad'
+export type Mood = 'neutral' | 'laugh' | 'annoyed'
 
 const INK = '#161A14'
 const SKIN = '#FFFFFF'
@@ -376,40 +376,63 @@ function faces(): string {
       2.4,
     ),
   ]
-  const sad = [
+  const annoyed = [
+    // Only a little annoyed: heavy eyelids, brows lowered towards the nose,
+    // and a flat mouth pulled to one side.
     `<circle cx="102" cy="119" r="2.6" fill="${INK}"/>`,
     `<circle cx="138" cy="119" r="2.6" fill="${INK}"/>`,
-    // Inner ends of the eyebrows raised: disappointed, not angry
     line(
       wobble(
         [
-          [92, 101],
+          [93, 114],
+          [102, 112.5],
+          [111, 114],
+        ],
+        'lid-l',
+      ),
+      2.2,
+    ),
+    line(
+      wobble(
+        [
+          [129, 114],
+          [138, 112.5],
+          [147, 114],
+        ],
+        'lid-r',
+      ),
+      2.2,
+    ),
+    line(
+      wobble(
+        [
+          [92, 97],
           [101, 98],
-          [110, 93],
+          [111, 101],
         ],
-        'sad-brow-l',
+        'annoyed-brow-l',
       ),
-      2.2,
+      2.4,
     ),
     line(
       wobble(
         [
-          [130, 93],
+          [129, 101],
           [139, 98],
-          [148, 101],
+          [148, 97],
         ],
-        'sad-brow-r',
+        'annoyed-brow-r',
       ),
-      2.2,
+      2.4,
     ),
     line(
       wobble(
         [
-          [106, 158],
-          [120, 151],
-          [134, 158],
+          [110, 154],
+          [121, 153],
+          [131, 151],
         ],
-        'frown',
+        'annoyed-mouth',
       ),
       2.4,
     ),
@@ -417,7 +440,7 @@ function faces(): string {
   return [
     `<g data-face="neutral">${neutral.join('')}</g>`,
     `<g data-face="laugh">${laugh.join('')}</g>`,
-    `<g data-face="sad">${sad.join('')}</g>`,
+    `<g data-face="annoyed">${annoyed.join('')}</g>`,
   ].join('')
 }
 
@@ -508,13 +531,20 @@ export function sweaterSvg(): string {
   ].join('')
 }
 
+/** The whole figure, or a close-up of the head. */
+const VIEWBOX = { full: '0 0 240 330', closeup: '36 8 168 180' }
+
 /**
  * Lauri as SVG markup. The mood is switched by setting data-mood on the <svg>
  * (CSS hides the other faces); the sweater sits in its own group so it can
  * slide in from the left.
  */
-export function personSvg(label: string, mood: Mood = 'neutral'): string {
-  return `<svg class="bonus-person" data-mood="${mood}" viewBox="0 0 240 330" role="img" aria-label="${label.replace(/"/g, '&quot;')}">
+export function personSvg(
+  label: string,
+  mood: Mood = 'neutral',
+  frame: keyof typeof VIEWBOX = 'full',
+): string {
+  return `<svg class="bonus-person" data-mood="${mood}" viewBox="${VIEWBOX[frame]}" role="img" aria-label="${label.replace(/"/g, '&quot;')}">
 <g class="bonus-body">${body()}<g class="bonus-sweater">${sweaterSvg()}</g><g transform="translate(120 178) scale(1.25) translate(-120 -178)">${head()}${faces()}</g></g>
 </svg>`
 }

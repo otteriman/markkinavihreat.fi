@@ -383,12 +383,6 @@
     "en": "Hee hee, it tickles!",
     "needsReview": ["sv", "en"]
   },
-  "bonus.sad": {
-    "fi": "Lauri näyttää pettyneeltä.",
-    "sv": "Lauri ser besviken ut.",
-    "en": "Lauri looks disappointed.",
-    "needsReview": ["sv", "en"]
-  },
   "bonus.again": {
     "fi": "Uudestaan",
     "sv": "Igen",
@@ -417,6 +411,24 @@
     "fi": "Piirretty mies, Lauri, pyöreät silmälasit päässä.",
     "sv": "En teckning av en man, Lauri, med runda glasögon.",
     "en": "A drawing of a man, Lauri, with round glasses.",
+    "needsReview": ["sv", "en"]
+  },
+  "bonus.hmph": {
+    "fi": "Hmpmh",
+    "sv": "Hmpf",
+    "en": "Hmph",
+    "needsReview": ["sv", "en"]
+  },
+  "bonus.annoyed": {
+    "fi": "Lähikuva Laurista. Hän näyttää hieman ärtyneeltä.",
+    "sv": "En närbild av Lauri. Han ser lite irriterad ut.",
+    "en": "A close-up of Lauri. He looks a little annoyed.",
+    "needsReview": ["sv", "en"]
+  },
+  "bonus.lost": {
+    "fi": "Hävisit pelin",
+    "sv": "Du förlorade spelet",
+    "en": "You lost the game",
     "needsReview": ["sv", "en"]
   }
 }
