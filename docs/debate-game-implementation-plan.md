@@ -1,138 +1,256 @@
 # "Vihreä väittely" debate game: implementation plan
 
-Game spec: "Vihreä väittely – pelin speksi" (Jarkko, Oct 16, 2026). This plan covers how to build it on markkinavihreat.fi at `/debaattipeli/`, alongside the quiz at `/testi/` (branch `claude/admiring-faraday-odeqk2`). Work through the phases in order and stop after each one for review.
+Game spec: "Vihreä väittely – pelin speksi" (Jarkko, Oct 16, 2026). This plan covers how to build it on markkinavihreat.fi at `/debaattipeli/` (and its Swedish and English URLs), alongside the quiz at `/testi/` (branch `claude/admiring-faraday-odeqk2`). Work through the phases in order and stop after each one for review.
+
+## Decisions so far
+
+- **All three languages** (fi, sv, en) from the start, each with its own URL (section 5).
+- **Dialect:** general Finnish, no regional dialect. Player lines are plain colloquial Finnish; the enemy speaks standard Finnish.
+- **Content must be easy to change.** Attacks, replies and defenses will be edited, added and removed often. The data layout is designed around that (section 3.1).
+- **Fonts are self-hosted.** No Google Fonts and no third-party requests from the game.
+- **Spec oddity fixed** (MAAHANMUUTTO / "Rasismi" reply, section 3.1.1).
+- **May become a surprise minigame inside the quiz**, depending on how it feels once playable. The game is built so it can run both standalone and embedded (section 5.2), but embedding is not part of this plan's scope.
 
 ---
 
 ## 1. What the quiz branch tells us (reuse, don't reinvent)
 
-The quiz uses **no JS framework**. It is Astro plus plain TypeScript, and the game should follow the same approach:
+The quiz uses **no JS framework**. It is Astro plus plain TypeScript, and the game follows the same approach:
 
 | Concern          | Quiz approach                                                                                  | Game equivalent                                                     |
 | ---------------- | ---------------------------------------------------------------------------------------------- | ------------------------------------------------------------------- |
-| Routes           | Thin wrappers `src/pages/{,sv/,en/}testi/index.astro` render `components/pages/QuizBody.astro` | `src/pages/debaattipeli/index.astro` etc. render `DebateBody.astro` |
-| Content          | JSON in `src/data/quiz/*.json`, `{fi,sv,en}` per string, `needsReview` flag, "TODO" allowed    | `src/data/debate/*.json`, same shape                                |
+| Routes           | Thin wrappers `src/pages/{,sv/,en/}testi/index.astro` render `components/pages/QuizBody.astro` | Thin wrappers per locale render `components/pages/DebateBody.astro` |
+| Content          | JSON in `src/data/quiz/*.json`, `{fi,sv,en}` per string, `needsReview` flag, "TODO" allowed    | `src/data/debate/**`, same string shape (section 3.1)               |
 | Pure logic       | `src/lib/quiz/*.ts` (scoring, flow, url), no DOM, unit tested with vitest                      | `src/lib/debate/*.ts`: the whole battle engine, no DOM              |
-| Client code      | `src/scripts/quiz/*.ts`, markup server-rendered by Astro, script only wires behaviour          | `src/scripts/debate/*.ts`                                           |
+| Client code      | `src/scripts/quiz/*.ts`; markup is server-rendered, the script only wires behaviour            | `src/scripts/debate/*.ts`                                           |
 | Art              | Code-generated SVG (`bonusArt.ts`), no raster assets                                           | Pixel sprites as string grids rendered to inline SVG                |
-| Dev-only preview | `src/pages/[lab].astro` serves `/quiz-lab/` only in dev or when `NOINDEX=true`                 | Add `/debate-lab/` the same way (sprites, text box, bars)           |
+| Dev-only preview | `src/pages/[lab].astro` serves `/quiz-lab/` only in dev or when `NOINDEX=true`                 | Add `/debate-lab/` the same way                                     |
 | Tests            | `tests/unit/quiz-*.test.ts`, `tests/e2e/quiz*.spec.ts`                                         | `tests/unit/debate-*.test.ts`, `tests/e2e/debate.spec.ts`           |
-| Validation       | `scripts/validate-translations.ts` walks `src/data/quiz` (fi+sv+en, reports TODO/needsReview)  | Extend it to also walk `src/data/debate`                            |
-| Launch gating    | `noindex` plus excluded from the sitemap in `astro.config.mjs` until launch                    | Same, for `/debaattipeli/`                                          |
-| Preview CI       | `.github/workflows/preview-pages.yml` builds a GitHub Pages preview per branch                 | Copied into this branch (see section 9)                             |
+| Validation       | `scripts/validate-translations.ts` walks `src/data/quiz` (reports TODO/needsReview)            | Extend it to also walk `src/data/debate`                            |
+| Launch gating    | `noindex` plus excluded from the sitemap in `astro.config.mjs` until launch                    | Same, for the game's URLs                                           |
+| Preview CI       | `.github/workflows/preview-pages.yml` builds a GitHub Pages preview per branch                 | Already copied into this branch (section 9)                         |
 
-**Decision: no UI framework** (no React/Preact). The game is a small state machine with a text box and a grid of buttons. It keeps the bundle tiny, matches the quiz, and needs no new dependencies (AGENTS.md asks us to ask before adding any).
+**Decision: no UI framework** (no React/Preact). The game is a small state machine, a text box and a grid of buttons. This keeps the bundle tiny, matches the quiz, and needs no new dependencies (AGENTS.md asks us to ask before adding any).
 
 ## 2. Hard constraints
 
-- Static output only, no backend, no saved data. Nothing about the player's choices is stored or sent (no localStorage, cookies or analytics payloads). The spec says "no saved data".
+- Static output only, no backend, no saved data. Nothing about the player's choices is stored or sent (no localStorage, cookies or analytics payloads).
+- No third-party requests at runtime: the font and everything else is served from our own origin.
 - Original pixel art only. No Pokémon sprites, music, logos or names. No real politicians or party logos.
 - Content rules from the spec: positions, not people; no slurs or jokes about ethnicity or immigrants.
 - Accessibility: every action reachable by tap, click and keyboard (arrows plus Enter/Space). Real `<button>`s, live-region narration for screen readers, `prefers-reduced-motion` replaces typing, shake and blink with instant changes. Sound is off by default with a mute toggle.
-- Don't invent copy. The dialect question in the spec is still open (section 10).
+- Don't invent facts or copy beyond what's needed. Translations drafted by Claude are marked `needsReview` for sv (and en where the Finnish wording is idiomatic and hard to render); Finnish is the source of truth.
 
 ## 3. Architecture
 
-### 3.1 Data (`src/data/debate/`)
+### 3.1 Data (`src/data/debate/`): built to be edited
 
-One file per concern, so a second enemy (kokoomuslainen, vasemmistolainen) is a new JSON file with no code changes:
+Goals: a non-developer can change a line, add a reply, add an attack or delete one by editing or adding a single small file, and the checks tell them immediately what is wrong. Nothing in the code refers to a specific attack by name.
 
-- `config.json`: the single tunable object: `startKannatus: 100`, `baseDamage: 30`, `rounds: 4`, damage multiplier per quality (`tehokas: 0`, `kohtalainen: 0.5`, `heikko: 1`), typing speed.
-- `enemies/kansalliskonservatiivi.json`: name, intro line, 4 enemy attacks (announcement, line, 4 replies each with `label`, `player` line, `quality`, `reaction`), 6 player attacks (label, line, tier, 4 defenses each with `quality`, `text`).
-- `ui.json`: all narration and UI strings (intro, round start, prompts, effect texts, ending texts, button labels, mute toggle).
+#### Layout
 
-All strings are `{ fi, sv, en }` objects like the quiz. The spec says the game is Finnish, so `sv`/`en` start as `"TODO"` (accepted by the validator, reported as open items). See open question 1 for routes in other locales.
+```
+src/data/debate/
+  config.json                      all tunable numbers (rounds, damage, typing speed)
+  ui.json                          narration and UI strings (intro, prompts, endings, buttons)
+  enemies/
+    kansalliskonservatiivi/
+      enemy.json                   name, status label, intro line, sprite id
+      attacks/                     the enemy's attacks (he uses 4 per battle)
+        bensapopulismi.json        one file per attack
+        velkakortti.json
+        eu-kritiikki.json
+        maahanmuutto.json
+      defenses/                    the player's attacks and the enemy's possible comebacks
+        huoltovarmuus.json         one file per player attack
+        kotimainen-ruoka.json
+        ratahankkeet.json
+        vihrea-teollisuus.json
+        ilmastokriisi.json
+        lihavero.json
+```
 
-Tier ("Vahva" / "Hyvä" / "Heikko") is **derived from the defenses**, not stored, so the data can't disagree with itself. A test asserts the derived tiers match the spec table.
+Adding an attack is dropping a new JSON file in `attacks/` or `defenses/`; removing it is deleting the file; reordering is not needed because order is random (the player's grid is ordered by an optional `order` number, else by filename). The loader reads the folders with Vite's `import.meta.glob`, so no index file needs updating and no new dependency is needed. A new enemy is a new folder under `enemies/`.
 
-### 3.2 Engine (`src/lib/debate/`), pure and fully unit tested
+#### File shapes
 
-- `types.ts`: `Quality`, `EnemyAttack`, `PlayerAttack`, `Enemy`, `BattleState`, `BattleEvent`.
+An enemy attack (`attacks/maahanmuutto.json`):
+
+```json
+{
+  "announce": { "fi": "MAAHANMUUTTOA", "sv": "TODO", "en": "TODO" },
+  "line": { "fi": "Käynnissä on väestönvaihto!", "sv": "TODO", "en": "TODO" },
+  "replies": [
+    {
+      "id": "talous",
+      "label": { "fi": "Talous", "sv": "TODO", "en": "TODO" },
+      "quality": "strong",
+      "say": {
+        "fi": "Suomi tarvitsee maahanmuuttoa, tätä sanoo myös elinkeinoelämä.",
+        "sv": "TODO",
+        "en": "TODO"
+      },
+      "reaction": { "fi": "...", "sv": "...", "en": "..." }
+    }
+  ]
+}
+```
+
+A player attack (`defenses/huoltovarmuus.json`):
+
+```json
+{
+  "label": { "fi": "Huoltovarmuus", "sv": "TODO", "en": "TODO" },
+  "say": {
+    "fi": "Jokainen litra tuontiöljyä tekee meistä riippuvaisia muista. Oma energia on maanpuolustusta!",
+    "sv": "TODO",
+    "en": "TODO"
+  },
+  "defenses": [
+    {
+      "quality": "medium",
+      "say": { "fi": "Ydinvoimaa sitten! Ei tuulimyllyjä!", "sv": "TODO", "en": "TODO" }
+    },
+    { "quality": "weak", "say": { "fi": "Turve on kotimaista!", "sv": "TODO", "en": "TODO" } }
+  ]
+}
+```
+
+Rules that keep the files simple:
+
+- `quality` is one of `strong | medium | weak` (Finnish labels Tehokas / Kohtalainen / Heikko appear only in docs and the lab page). Damage per quality lives in `config.json`, never in the content files.
+- **A player attack's tier (Vahva / Hyvä / Heikko) is derived from its defenses**, not stored, so the file can't contradict itself. The lab page and `npm run debate:report` show the derived tier and expected damage for every attack, so someone tuning copy sees the effect at once.
+- Ids are optional and default to the file name/position; labels are the only thing the UI shows.
+- Every text field is `{ fi, sv, en }`, optionally with `"needsReview": ["sv"]`, exactly like the quiz.
+
+#### Validation (the safety net for frequent edits)
+
+One shared validator (`src/lib/debate/validate.ts`) used by a unit test, by `scripts/validate-translations.ts` and by a `npm run debate:report` command. It fails with a message that names the file and the rule, for example `enemies/kansalliskonservatiivi/attacks/velkakortti.json: replies need exactly 1 strong, 1 medium, 2 weak (found 2 strong, 1 medium, 1 weak)`.
+
+The rules come from `config.json`, not from the code, so changing the game shape is a config edit:
+
+- every attack has `repliesPerAttack` replies (default 4) with the quality mix from `config.replyMix` (default 1 strong, 1 medium, 2 weak);
+- every player attack has `defensesPerAttack` defenses (default 4) and at least one `strong`;
+- each enemy has at least `rounds` attacks (default 4) and at least `playerAttackSlots` player attacks (default 6, the 2×3 grid); having more than needed is fine, the game draws a random subset, so adding a 5th enemy attack just works;
+- button labels are at most `maxLabelLength` (default 15) characters, in every language;
+- all three languages present; `TODO` and `needsReview` are allowed but listed in the report, like the quiz.
+
+The balance test (section 6) runs on the real data, so a content edit that wrecks the difficulty fails CI with the numbers shown.
+
+#### 3.1.1 Fix: MAAHANMUUTTO "Rasismi" reply
+
+The spec's "Rasismi" reply (player: "Kasvisruoka on tulevaisuutta!", enemy: "Ja nyt viedään makkarakin! Kuulitteko?") was a copy-paste mix-up. It is replaced by a weak reply that makes sense and fits the spec's pattern (a green-voter instinct that backfires, the enemy deflects with a grain of truth, no joke about immigrants):
+
+| Button  | Quality | Player says                | Enemy reacts                                                |
+| ------- | ------- | -------------------------- | ----------------------------------------------------------- |
+| Rasismi | Heikko  | Tuo on rasistista puhetta! | Heti rasistiksi haukutaan. Siksi tästä ei saa puhua ääneen. |
+
+Marked `needsReview` in the data; Swedish and English follow the same meaning. The only change is this reply, quality and role in the 1/1/2 mix stay as in the spec.
+
+### 3.2 Engine (`src/lib/debate/`): pure and fully unit tested
+
+- `types.ts`, `loader.ts` (reads the data via `import.meta.glob`, derives tiers), `validate.ts`.
 - `rng.ts`: injectable RNG (`() => number`) plus a seeded one (mulberry32) for tests.
 - `damage.ts`: `damageFor(quality, config)`.
 - `battle.ts`: an explicit state machine, `step(state, input) -> { state, events }`. Phases: `intro → roundStart → enemyAttack → replyPrompt → replyResolved → attackPrompt → attackResolved → (next round | ending)`. It:
-  - picks the enemy's 4 attacks in random order with no repeats (a shuffled deck of the enemy's 4 attacks);
-  - shuffles the 4 replies per attack;
+  - draws `rounds` enemy attacks at random without repeats from however many exist;
+  - shuffles each attack's replies;
   - tracks used player attacks (each once);
   - picks the enemy defense uniformly at random;
-  - applies damage, checks for KO **immediately after each hit** (so a KO in the enemy half ends the battle before the player's attack);
-  - ends after round 4 with win / lose / tie on points.
-- `ending.ts`: result kind (`koWin`, `koLose`, `pointsWin`, `pointsLose`, `tie`), strong-reply count ("Täydelliset vastaukset: 3/4").
+  - applies damage and checks for KO **immediately after each hit** (a KO in the enemy half ends the battle before the player's attack);
+  - ends after the last round with win / lose / tie on points.
+- `ending.ts`: result kind (`koWin`, `koLose`, `pointsWin`, `pointsLose`, `tie`) and the strong-reply count ("Täydelliset vastaukset: 3/4").
 
-The engine emits **events** (`say-bottom`, `say-top`, `effect`, `drain-bar`, `shake`, `blink`, `end`) and the UI just plays them back. That keeps the engine free of timing and the UI free of rules.
+The engine emits **events** (`say-bottom`, `say-top`, `effect`, `drain-bar`, `shake`, `blink`, `end`) that the UI plays back. The engine has no timing and the UI has no rules.
 
 ### 3.3 UI (`src/components/` + `src/scripts/debate/`)
 
-- `components/pages/DebateBody.astro`: server-renders the static shell (240×216 stage, boxes, status boxes, sprite slots, mute toggle, noscript fallback). Per-locale JSON config goes into a `<script type="application/json">` the way `BonusGame.astro` does, so the script ships no copy.
-- `DebateSprites.astro`: inline SVG sprites (section 4).
-- `scripts/debate/init.ts`: wires the engine to the DOM.
-- `scripts/debate/typewriter.ts`: letter-by-letter text; tap/key completes the line first, then advances. Instant under reduced motion.
-- `scripts/debate/menu.ts`: 2×2 reply grid and 2×3 attack grid; roving focus, arrow keys, cursor arrow, greyed used attacks (`aria-disabled`, not removed).
-- `scripts/debate/audio.ts`: optional WebAudio chiptune bleeps (generated, no audio files); mute toggle; no sound until the first user gesture.
+- `components/DebateGame.astro`: the self-contained game (the 240×216 stage, boxes, status boxes, sprites, mute toggle). It takes a `locale` prop and puts its locale-specific data into a `<script type="application/json">`, the way `BonusGame.astro` does, so the script ships no copy.
+- `components/pages/DebateBody.astro`: the standalone page: `BaseLayout`, title, short intro, `<DebateGame>`, noscript fallback.
+- `scripts/debate/play.ts`: `playDebate(root, options)`: wires engine to DOM and resolves with the result (section 5.2).
+- `scripts/debate/typewriter.ts`: letter-by-letter text; a tap or key completes the line first, then advances. Instant under reduced motion.
+- `scripts/debate/menu.ts`: 2×2 reply grid and 2×3 attack grid; roving focus, arrow keys, cursor arrow, used attacks greyed (`aria-disabled`, not removed).
+- `scripts/debate/audio.ts`: optional WebAudio chiptune bleeps generated in code (no audio files); mute toggle; silent until the first user gesture.
 - Narration is mirrored into an `aria-live="polite"` region.
 
-### 3.4 Rendering approach
+### 3.4 Rendering
 
-Fixed **240×216 logical pixel** stage, DOM + CSS, not `<canvas>`. DOM keeps real buttons, focus and screen-reader support, and text rendering is easy. Scale by **whole numbers** (`floor(min(vw/240, vh/216))`, minimum 1) with CSS `zoom`/`transform`, centred; portrait phones work because 240×216 is nearly square. Pixelated rendering via `image-rendering: pixelated` and `shape-rendering="crispEdges"`.
+Fixed **240×216 logical pixel** stage, DOM + CSS, not `<canvas>`, so buttons, focus and screen readers work. Scaled by **whole numbers** (`floor(min(vw/240, vh/216))`, minimum 1) with CSS `zoom`/`transform`, centred; portrait phones work because 240×216 is nearly square. Pixelated rendering with `image-rendering: pixelated` and `shape-rendering="crispEdges"`. Palette as CSS custom properties: `#0F380F #306230 #8BAC0F #9BBC0F`; all game UI uses only these four. Game CSS is scoped under a `.debate` root so it can't leak into a host page.
 
-Palette as CSS custom properties: `#0F380F #306230 #8BAC0F #9BBC0F`. All UI is drawn from these four.
+## 4. Art and font (no designer, no third parties)
 
-## 4. Art (no designer)
+- **Sprites** as arrays of strings (one char per pixel: digits 0–3 = palette shade, `.` = transparent) in `src/lib/debate/sprites.ts`, converted to inline SVG `<rect>` runs. Player from behind (bottom left), enemy from the front (top right): a generic mid-aged man in a fleece vest and cap, original design. The enemy's sprite id comes from `enemy.json`, so a new enemy brings a new sprite entry.
+- Animations by CSS class: `shake` (hit), `blink` (KANNATUS drops), slide-in at the intro. Bars drain with `steps()` easing to look 8-bit.
+- **Self-hosted font.** One pixel font under an open licence (SIL OFL), committed as a subsetted `woff2` in the repo with its licence text next to it, loaded by an `@font-face` in our own CSS with `font-display: swap`. It must have **ä, ö and å** (Swedish needs å). No Google Fonts link, no npm font package, so no new dependency. The font file is imported through Astro's asset pipeline so its URL respects `BASE_PATH` in branch previews. Candidates, to be compared on `/debate-lab/` in Phase 2 with the longest real labels in all three languages: Pixelify Sans, Silkscreen, VT323 (Press Start 2P is too wide for 240 px). The 15-character label limit is checked against the chosen font in the lab.
+- The quiz's bonus level loads Patrick Hand from Google Fonts; that is the quiz's business and the game does not depend on it.
 
-Same approach as the quiz: generated in code.
+## 5. Routes, languages and integration
 
-- **Sprites** as arrays of strings (one char per pixel, digits 0–3 = palette shade, `.` = transparent) in `src/lib/debate/sprites.ts`, converted to inline SVG `<rect>` runs. Player from behind (bottom left, ~56×56), enemy from the front (top right, ~48×48): a generic mid-aged man in a fleece vest and cap, original design.
-- Animations by CSS class: `shake` (hit), `blink` (KANNATUS drops), entry slide in at the intro.
-- Status boxes, bars and boxes drawn with CSS borders in the palette; bar drains with `steps()` easing to look 8-bit.
-- **Font**: needs ä and ö, legible at small sizes, and short enough that 15-character button labels fit a half-width grid cell. Candidates (all OFL): Pixelify Sans, Silkscreen, VT323, Press Start 2P (the latter is too wide for 240 px). Prototype two in `/debate-lab/` and pick one. The quiz loads Patrick Hand from Google Fonts via `BonusFont.astro`; for consistency do the same unless we decide to self-host (open question 3).
+### 5.1 URLs
 
-## 5. Routes and integration with the quiz
+One route per language, thin wrappers that hardcode the locale (AGENTS.md; no `[[...locale]]` catch-all):
 
-- `src/pages/debaattipeli/index.astro` → `<DebateBody locale="fi" />`, with `sv`/`en` mirrors per AGENTS.md (thin wrappers, hardcoded locale; no catch-all directory).
-- `/debate-lab/` is added to `src/pages/[lab].astro` (dev and `NOINDEX=true` only). If the quiz branch has landed, extend its `getStaticPaths` to return both labs.
-- Layout: `BaseLayout` with `noindex` until launch. `astro.config.mjs` sitemap filter excludes `/debaattipeli/` and `/debate-lab/` next to the quiz entries.
-- **Integration points** (all optional, decide in review): (a) a link from the quiz result page ("Kokeile väittelyä") and the other way round; (b) a shared "play more" card component; (c) the quiz's bonus-level overlay pattern (full screen, focus management, `prefers-reduced-motion`) is reusable as a reference for the game's start/ending screens. The game never reads quiz results.
-- Footer/Nav entry only at launch, not before.
+| Language | URL                | File                                   |
+| -------- | ------------------ | -------------------------------------- |
+| fi       | `/debaattipeli/`   | `src/pages/debaattipeli/index.astro`   |
+| sv       | `/sv/debattspel/`  | `src/pages/sv/debattspel/index.astro`  |
+| en       | `/en/debate-game/` | `src/pages/en/debate-game/index.astro` |
+
+The Swedish and English slugs are proposals (the quiz branch's slugs for its own sv/en routes should be checked and matched in style; see open question 1). `BaseLayout` already emits `hreflang` alternates from the `path` prop, so the three pages are linked as alternates. A small language note appears on the page if any string in that locale is still `TODO` or `needsReview` (falls back to Finnish for `TODO` strings rather than showing the placeholder).
+
+`/debate-lab/` is added to `src/pages/[lab].astro` (dev and `NOINDEX=true` only). Until launch: `noindex` on all three pages and excluded from the sitemap in `astro.config.mjs`, next to the quiz entries. Nav/Footer entry only at launch.
+
+### 5.2 Built to be embeddable (possible quiz minigame)
+
+You may later turn this into a surprise minigame between quiz questions, depending on how it feels. That decision comes after you've played it, so the plan keeps the door open without building the integration now:
+
+- **Standalone-or-embedded API.** `playDebate(root, { locale, reduce, onFinish })` returns a promise resolving with `{ result, strongReplies, kannatus }`, the same shape as the quiz's `playBonus(overlay, reduce, onReturn)`. The standalone page and a future quiz overlay call the same function. All DOM access stays inside `root`, listeners are removed when it resolves (`destroy()`), and CSS is scoped under `.debate`.
+- **Separate component.** `DebateGame.astro` renders only the game; `DebateBody.astro` is the page around it. A quiz page could include `DebateGame` in an overlay like `BonusGame.astro` does.
+- **Length is configuration.** `config.rounds` already drives the battle. A "quick" profile (for example 2 rounds, a 3-minute or shorter game) is a config object, and the balance test is parameterised by profile, so if the full 5-minute battle feels too heavy for the quiz we can ship a lighter variant without code changes. A profile is chosen with an option to `playDebate`, never from the URL in production.
+- **Unscored and private.** Nothing the game does touches quiz answers or scores, and nothing is stored or sent, same as the quiz's bonus level.
+- **What is deliberately not in this plan:** quiz flow changes, a trigger point in `flow.ts`, or cross-links. If you decide to embed it, that is a small follow-up on top of the quiz branch once both have landed.
 
 ## 6. Balance and tests
 
 **Unit (vitest)**, `tests/unit/debate-*.test.ts`:
 
-- `debate-data`: every enemy attack has exactly 4 replies = 1 tehokas + 1 kohtalainen + 2 heikko; every player attack has 4 defenses; derived tiers equal the spec (Huoltovarmuus/Kotimainen ruoka vahva; Ratahankkeet/Vihreä teollisuus hyvä; Ilmastokriisi/Lihavero heikko); button labels ≤ 15 chars; 4 enemy attacks, 6 player attacks.
-- `debate-battle`: no enemy attack repeats; each player attack usable once; KO ends the battle mid-round; round 4 ends on points; tie ending; same seed gives the same battle; damage table (0/15/30).
-- `debate-balance`: Monte-Carlo (e.g. 20 000 seeded battles per strategy) checks the spec's expected values: perfect play → player 100 / enemy ≈ 40; all kohtalainen → 40/40; random play → ≈ 25 vs ≈ 55 and a clear loss rate; tolerance bands, so retuning `config.json` that breaks the intended difficulty fails CI.
-- `debate-typewriter`: line completion and advance semantics (logic part only).
+- `debate-data`: runs the validator on the real data (shape, quality mixes, counts, label lengths, all three languages present), plus the derived tiers against the spec table (Huoltovarmuus and Kotimainen ruoka vahva; Ratahankkeet and Vihreä teollisuus hyvä; Ilmastokriisi and Lihavero heikko) so an accidental retier is flagged. Also validator tests on small broken fixtures, proving each rule produces a clear error.
+- `debate-battle`: no enemy attack repeats; each player attack usable once; KO ends the battle mid-round; the last round ends on points; tie ending; the same seed gives the same battle; damage table (0/15/30); works with more than the minimum number of attacks.
+- `debate-balance`: Monte-Carlo (about 20 000 seeded battles per strategy) against the real data checks the spec's expected values: perfect play player 100 / enemy about 40; all-medium replies 40 / 40; random play about 25 vs 55 with a clear loss rate. Tolerance bands, so retuning that breaks the intended difficulty fails CI and prints the measured numbers.
+- `debate-typewriter`: line completion and advance semantics.
 
-**E2E (playwright)**, `tests/e2e/debate.spec.ts`: page loads with noindex; intro → full 4-round battle by keyboard only (with a fixed seed via a `?seed=` param that is honoured only in dev/preview builds, as with the quiz tests, or via `page.addInitScript` stubbing `Math.random`); tap-only path on a mobile viewport; used attacks are greyed and not selectable; end screen shows result plus "Täydelliset vastaukset: n/4" and "Pelaa uudelleen" restarts in one tap; no hints on any end screen; mute toggle; reduced-motion; no network requests besides fonts; nothing in storage.
+**E2E (playwright)**, `tests/e2e/debate.spec.ts`, run for fi, sv and en: noindex; full battle by keyboard only; tap-only on a mobile viewport; used attacks greyed and not selectable; end screen shows the result, "Täydelliset vastaukset: n/4" (localised) and "Pelaa uudelleen" restarts in one tap; no hints on any end screen; mute toggle; reduced motion; no requests to other origins; nothing in storage; language alternates present. Randomness is made deterministic with `page.addInitScript` stubbing `Math.random`, so no test-only URL parameter ships.
+
+**Report command:** `npm run debate:report` prints, per enemy, every attack and player attack with derived tier, expected damage, TODO/needsReview counts and the longest label per language. Useful when editing copy.
 
 ## 7. Phases
 
 Each phase ends with `npm run format:check && npm run lint && npm run check && npm run validate:translations && npm run test && npm run build` green and a stop for review. One logical change per commit (Conventional Commits), pushed right after.
 
-0. **Branch, CI, plan** (this commit): plan doc and the preview workflow.
-1. **Data and engine**: `config.json`, enemy JSON (all copy exactly as in the spec), `ui.json`; `src/lib/debate/*`; unit and balance tests; extend `validate-translations.ts`. No UI yet.
-2. **Static shell and lab**: `DebateBody.astro`, the 240×216 stage, palette, font prototype, boxes, status boxes, placeholder sprites, `/debate-lab/`, routes for fi/sv/en, noindex and sitemap exclusion.
-3. **Battle UI**: wire engine to DOM: typewriter, 2×2 and 2×3 menus, keyboard and touch, KANNATUS bars, effect texts, endings, end screen, restart.
-4. **Art and juice**: final sprites, shake/blink, intro slide-in, bar drain, optional chiptune audio and mute, reduced-motion variants.
-5. **Polish and integration**: e2e tests, mobile portrait pass, accessibility pass (screen reader narration, focus order), quiz cross-links, Lighthouse check, README entry.
-6. **Launch checklist**: dialect copy filled in, `needsReview` cleared, remove noindex and sitemap exclusion, add Nav/Footer entry, PR to `main` for human review.
+0. **Branch, CI, plan** (done): plan doc and the preview workflow.
+1. **Data, validator and engine:** `config.json`, the per-file enemy data with all spec copy in Finnish (with the fixed "Rasismi" reply), sv/en drafts marked `needsReview`, `ui.json`; `src/lib/debate/*` (loader, validator, battle, rng); unit and balance tests; `debate:report`; extend `validate-translations.ts`. No UI yet.
+2. **Shell, font and lab:** `DebateGame.astro`, `DebateBody.astro`, the 240×216 stage, palette, self-hosted font chosen in the lab, boxes, status boxes, placeholder sprites, `/debate-lab/`, routes for fi/sv/en, noindex and sitemap exclusion.
+3. **Battle UI:** `playDebate` wiring engine to DOM: typewriter, 2×2 and 2×3 menus, keyboard and touch, KANNATUS bars, effect texts, endings, end screen, restart.
+4. **Art and juice:** final sprites, shake/blink, intro slide-in, bar drain, optional chiptune audio and mute, reduced-motion variants.
+5. **Polish:** e2e in all three languages, mobile portrait pass, accessibility pass (screen-reader narration, focus order), Lighthouse check, README entry, a short "how to edit the game's content" section in the docs.
+6. **Launch checklist:** `needsReview` cleared by a human for sv/en, remove noindex and the sitemap exclusion, add Nav/Footer entry, PR to `main` for human review.
+
+You play the game after Phase 4 at the latest (the preview URL from CI works for that); the quiz-embedding decision comes then.
 
 ## 8. Risks
 
-- **Font width**: Finnish compounds (e.g. "Kansalliskonservatiivi", "Joukkoliikenne") in a 240 px stage. Mitigation: font prototype in Phase 2, labels capped at 15 chars, enemy name abbreviated "KANSALLISKONS." as in the spec.
-- **Long lines in boxes**: the longest player lines (~100 characters) must fit the bottom box in 2–3 lines. Mitigation: a data test computing max line length and a lab page showing the longest of each.
-- **Balance drift** when copy or config changes: covered by the Monte-Carlo test.
-- **Merge conflicts with the quiz branch** in `astro.config.mjs` (sitemap filter), `scripts/validate-translations.ts`, `src/pages/[lab].astro`, and the README. They are small, and will be resolved by rebasing onto `main` once the quiz lands. Don't copy the quiz's versions of these files in advance.
+- **Font width:** Finnish and Swedish compounds in a 240 px stage. Mitigation: font comparison in Phase 2 with the longest labels per language, labels capped at 15 characters, enemy name abbreviated as in the spec ("KANSALLISKONS.").
+- **Long lines in boxes:** the longest player lines (about 100 characters, Swedish tends to be longer) must fit the bottom box in 2–3 lines. Mitigation: validator reports line length per language; the lab shows the longest lines.
+- **Balance drift when copy is edited:** covered by the Monte-Carlo test, and by `debate:report`.
+- **Translation quality:** sv and en are drafts until a human reviews them (`needsReview`); satire and political idiom ("verohelvetti", "väestönvaihto") translate poorly, so those get flagged for a native reviewer.
+- **Merge conflicts with the quiz branch** in `astro.config.mjs` (sitemap filter), `scripts/validate-translations.ts`, `src/pages/[lab].astro` and the README. They are small; resolve by rebasing onto `main` once the quiz lands. Don't copy the quiz's versions of these files in advance.
 
 ## 9. CI
 
-`.github/workflows/ci.yml` (on `main`) already runs format, lint, check, translations, unit tests, build, `check:og` and e2e on every PR. This branch also carries `.github/workflows/preview-pages.yml`, copied unchanged from the quiz branch, so each push builds a `noindex` GitHub Pages preview at `/<repo>/<branch-slug>/debaattipeli/` (the `BASE_PATH` handling is already in the quiz branch's `astro.config.mjs`, so the preview base path works once that lands; until then previews serve from `/`). The two branches' workflows are identical, so merging either one first is conflict-free.
+`.github/workflows/ci.yml` (on `main`) runs format, lint, check, translations, unit tests, build, `check:og` and e2e on every PR. This branch also carries `.github/workflows/preview-pages.yml`, copied unchanged from the quiz branch, so each push builds a `noindex` GitHub Pages preview at `/<repo>/<branch-slug>/debaattipeli/`. The `BASE_PATH` handling lives in the quiz branch's `astro.config.mjs`; until that lands on `main`, previews of this branch serve from `/`, and the game's font and asset URLs must therefore go through Astro's base-aware helpers. The two branches' workflow files are identical, so merging either first is conflict-free.
 
 ## 10. Open questions
 
-1. **Locales**: the spec is Finnish-only. Do we build `sv`/`en` routes (with `TODO` strings and the notice "only in Finnish"), or only `/debaattipeli/` and leave sv/en out until translated? Default in this plan: Finnish route only, data model ready for all three.
-2. **Dialect** (spec's open checkbox): which dialect, and who writes the dialect versions of the player lines and UI texts? Until answered, the data keeps the spec's standard-Finnish text with `needsReview` markers.
-3. **Font hosting**: Google Fonts like the quiz, or self-hosted (no third-party request, better for privacy)?
-4. **Spec inconsistency**: in Enemy attack 4 (MAAHANMUUTTO) the reply button "Rasismi" says "Kasvisruoka on tulevaisuutta!", which doesn't match its label and reads oddly next to the enemy's "Ja nyt viedään makkarakin!". Please confirm the intended label and text. Related: the content guidelines rule out jokes about immigrants, so this attack's wording deserves a second pair of eyes before launch.
-5. **Spec detail**: the layout mockup shows no numeric KANNATUS value, while the text says "a draining bar and the number". Plan: show the number (accessible and precise).
-6. **Cross-linking with the quiz**: where, if anywhere, should the two link (result page, bonus level, nav)? Plan: result page card only.
+1. **Swedish and English slugs:** the plan proposes `/sv/debattspel/` and `/en/debate-game/`. Should they match the quiz branch's sv/en naming style instead (and should the Finnish `/debaattipeli/` stay as is)?
+2. **Translations:** Claude drafts sv and en for all lines, marked `needsReview`. Who reviews them before launch?
+3. **Cross-linking with the quiz:** none planned for now. Decide after you've played it (section 5.2).
