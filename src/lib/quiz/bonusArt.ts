@@ -5,7 +5,7 @@
  * it looks hand drawn but renders the same every time.
  */
 
-export type Mood = 'neutral' | 'laugh' | 'annoyed'
+export type Mood = 'neutral' | 'surprised' | 'laugh' | 'annoyed'
 
 const INK = '#161A14'
 const SKIN = '#FFFFFF'
@@ -376,9 +376,37 @@ function faces(): string {
       2.4,
     ),
   ]
+  const surprised = [
+    // The sweater is on its way: eyes wide, brows up, mouth a round "O".
+    `<circle cx="102" cy="116" r="3.2" fill="${INK}"/>`,
+    `<circle cx="138" cy="116" r="3.2" fill="${INK}"/>`,
+    line(
+      wobble(
+        [
+          [92, 95],
+          [101, 91],
+          [111, 93],
+        ],
+        'surprised-brow-l',
+      ),
+      2.2,
+    ),
+    line(
+      wobble(
+        [
+          [129, 93],
+          [139, 91],
+          [148, 95],
+        ],
+        'surprised-brow-r',
+      ),
+      2.2,
+    ),
+    shape(wobble(oval(120, 155, 6, 7.5, 8), 'surprised-mouth', true, 0.4), '#9B3B32', 2.4),
+  ]
   const annoyed = [
-    // Only a little annoyed: heavy eyelids, brows lowered towards the nose,
-    // and a flat mouth pulled to one side.
+    // Only a little annoyed, more unimpressed than angry: heavy eyelids,
+    // level brows and a straight mouth.
     `<circle cx="102" cy="119" r="2.6" fill="${INK}"/>`,
     `<circle cx="138" cy="119" r="2.6" fill="${INK}"/>`,
     line(
@@ -406,9 +434,9 @@ function faces(): string {
     line(
       wobble(
         [
-          [92, 97],
-          [101, 98],
-          [111, 101],
+          [92, 99],
+          [101, 98.5],
+          [111, 99],
         ],
         'annoyed-brow-l',
       ),
@@ -417,9 +445,9 @@ function faces(): string {
     line(
       wobble(
         [
-          [129, 101],
-          [139, 98],
-          [148, 97],
+          [129, 99],
+          [139, 98.5],
+          [148, 99],
         ],
         'annoyed-brow-r',
       ),
@@ -429,8 +457,8 @@ function faces(): string {
       wobble(
         [
           [110, 154],
-          [121, 153],
-          [131, 151],
+          [120, 154],
+          [130, 154],
         ],
         'annoyed-mouth',
       ),
@@ -440,6 +468,7 @@ function faces(): string {
   return [
     `<g data-face="neutral">${neutral.join('')}</g>`,
     `<g data-face="laugh">${laugh.join('')}</g>`,
+    `<g data-face="surprised">${surprised.join('')}</g>`,
     `<g data-face="annoyed">${annoyed.join('')}</g>`,
   ].join('')
 }

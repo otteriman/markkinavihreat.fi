@@ -78,9 +78,11 @@ export async function playBonus(
     const answer = await choose(choices('ask'))
     if (answer === 'yes') {
       choices('ask').hidden = true
-      // The sweater slides in from the left; once it is on, Lauri giggles.
+      // The sweater slides in from the left while Lauri goes "O!"; once it is
+      // on, he giggles.
+      person.dataset.mood = 'surprised'
       person.classList.add('is-dressed')
-      await wait(reduce ? 0 : 950)
+      await wait(reduce ? 600 : 950)
       person.dataset.mood = 'laugh'
       person.classList.add('is-tickled')
       tickles.hidden = false

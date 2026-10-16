@@ -297,6 +297,11 @@ test.describe('bonus level', () => {
       'Pue Laurille villapaita',
     )
     await overlay.locator('[data-bonus="yes"]').click()
+    // "O!" while the sweater comes, then the giggle.
+    await expect(overlay.locator('.bonus-figure .bonus-person')).toHaveAttribute(
+      'data-mood',
+      'surprised',
+    )
     await expect(overlay.locator('.bonus-figure .bonus-person')).toHaveClass(/is-dressed/)
     await expect(overlay.locator('.bonus-figure .bonus-person')).toHaveAttribute(
       'data-mood',
