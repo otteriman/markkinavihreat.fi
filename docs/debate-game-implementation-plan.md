@@ -8,18 +8,18 @@ Game spec: "Vihreä väittely – pelin speksi" (Jarkko, Oct 16, 2026). This pla
 
 The quiz uses **no JS framework**. It is Astro plus plain TypeScript, and the game should follow the same approach:
 
-| Concern          | Quiz approach                                                                                      | Game equivalent                                                    |
-| ---------------- | -------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------ |
-| Routes           | Thin wrappers `src/pages/{,sv/,en/}testi/index.astro` render `components/pages/QuizBody.astro`     | `src/pages/debaattipeli/index.astro` etc. render `DebateBody.astro` |
-| Content          | JSON in `src/data/quiz/*.json`, `{fi,sv,en}` per string, `needsReview` flag, "TODO" allowed        | `src/data/debate/*.json`, same shape                               |
-| Pure logic       | `src/lib/quiz/*.ts` (scoring, flow, url), no DOM, unit tested with vitest                          | `src/lib/debate/*.ts`: the whole battle engine, no DOM             |
-| Client code      | `src/scripts/quiz/*.ts`, markup server-rendered by Astro, script only wires behaviour              | `src/scripts/debate/*.ts`                                          |
-| Art              | Code-generated SVG (`bonusArt.ts`), no raster assets                                               | Pixel sprites as string grids rendered to inline SVG               |
-| Dev-only preview | `src/pages/[lab].astro` serves `/quiz-lab/` only in dev or when `NOINDEX=true`                     | Add `/debate-lab/` the same way (sprites, text box, bars)          |
-| Tests            | `tests/unit/quiz-*.test.ts`, `tests/e2e/quiz*.spec.ts`                                             | `tests/unit/debate-*.test.ts`, `tests/e2e/debate.spec.ts`          |
-| Validation       | `scripts/validate-translations.ts` walks `src/data/quiz` (fi+sv+en, reports TODO/needsReview)      | Extend it to also walk `src/data/debate`                           |
-| Launch gating    | `noindex` plus excluded from the sitemap in `astro.config.mjs` until launch                        | Same, for `/debaattipeli/`                                         |
-| Preview CI       | `.github/workflows/preview-pages.yml` builds a GitHub Pages preview per branch                     | Copied into this branch (see section 9)                            |
+| Concern          | Quiz approach                                                                                  | Game equivalent                                                     |
+| ---------------- | ---------------------------------------------------------------------------------------------- | ------------------------------------------------------------------- |
+| Routes           | Thin wrappers `src/pages/{,sv/,en/}testi/index.astro` render `components/pages/QuizBody.astro` | `src/pages/debaattipeli/index.astro` etc. render `DebateBody.astro` |
+| Content          | JSON in `src/data/quiz/*.json`, `{fi,sv,en}` per string, `needsReview` flag, "TODO" allowed    | `src/data/debate/*.json`, same shape                                |
+| Pure logic       | `src/lib/quiz/*.ts` (scoring, flow, url), no DOM, unit tested with vitest                      | `src/lib/debate/*.ts`: the whole battle engine, no DOM              |
+| Client code      | `src/scripts/quiz/*.ts`, markup server-rendered by Astro, script only wires behaviour          | `src/scripts/debate/*.ts`                                           |
+| Art              | Code-generated SVG (`bonusArt.ts`), no raster assets                                           | Pixel sprites as string grids rendered to inline SVG                |
+| Dev-only preview | `src/pages/[lab].astro` serves `/quiz-lab/` only in dev or when `NOINDEX=true`                 | Add `/debate-lab/` the same way (sprites, text box, bars)           |
+| Tests            | `tests/unit/quiz-*.test.ts`, `tests/e2e/quiz*.spec.ts`                                         | `tests/unit/debate-*.test.ts`, `tests/e2e/debate.spec.ts`           |
+| Validation       | `scripts/validate-translations.ts` walks `src/data/quiz` (fi+sv+en, reports TODO/needsReview)  | Extend it to also walk `src/data/debate`                            |
+| Launch gating    | `noindex` plus excluded from the sitemap in `astro.config.mjs` until launch                    | Same, for `/debaattipeli/`                                          |
+| Preview CI       | `.github/workflows/preview-pages.yml` builds a GitHub Pages preview per branch                 | Copied into this branch (see section 9)                             |
 
 **Decision: no UI framework** (no React/Preact). The game is a small state machine with a text box and a grid of buttons. It keeps the bundle tiny, matches the quiz, and needs no new dependencies (AGENTS.md asks us to ask before adding any).
 
