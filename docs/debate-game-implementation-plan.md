@@ -8,6 +8,8 @@ Game spec: "Vihreä väittely – pelin speksi" (Jarkko, Oct 16, 2026). This pla
 - **Dialect:** general Finnish, no regional dialect. Player lines are plain colloquial Finnish; the enemy speaks standard Finnish.
 - **Content must be easy to change.** Attacks, replies and defenses will be edited, added and removed often. The data layout is designed around that (section 3.1).
 - **Fonts are self-hosted.** No Google Fonts and no third-party requests from the game.
+- **Difficulty is easy to adjust** without touching code or content (section 3.5). We will playtest and tune.
+- **Translations are reviewed later**, after the game works; sv/en are drafts until then.
 - **Spec oddity fixed** (MAAHANMUUTTO / "Rasismi" reply, section 3.1.1).
 - **May become a surprise minigame inside the quiz**, depending on how it feels once playable. The game is built so it can run both standalone and embedded (section 5.2), but embedding is not part of this plan's scope.
 
@@ -51,7 +53,7 @@ Goals: a non-developer can change a line, add a reply, add an attack or delete o
 
 ```
 src/data/debate/
-  config.json                      all tunable numbers (rounds, damage, typing speed)
+  config.json                      structure rules, typing speed, and the difficulty presets (section 3.5)
   ui.json                          narration and UI strings (intro, prompts, endings, buttons)
   enemies/
     kansalliskonservatiivi/
@@ -118,7 +120,7 @@ A player attack (`defenses/huoltovarmuus.json`):
 
 Rules that keep the files simple:
 
-- `quality` is one of `strong | medium | weak` (Finnish labels Tehokas / Kohtalainen / Heikko appear only in docs and the lab page). Damage per quality lives in `config.json`, never in the content files.
+- `quality` is one of `strong | medium | weak` (Finnish labels Tehokas / Kohtalainen / Heikko appear only in docs and the lab page). Damage and every other difficulty number live in `config.json`, never in the content files.
 - **A player attack's tier (Vahva / Hyvä / Heikko) is derived from its defenses**, not stored, so the file can't contradict itself. The lab page and `npm run debate:report` show the derived tier and expected damage for every attack, so someone tuning copy sees the effect at once.
 - Ids are optional and default to the file name/position; labels are the only thing the UI shows.
 - Every text field is `{ fi, sv, en }`, optionally with `"needsReview": ["sv"]`, exactly like the quiz.
@@ -151,7 +153,7 @@ Marked `needsReview` in the data; Swedish and English follow the same meaning. T
 
 - `types.ts`, `loader.ts` (reads the data via `import.meta.glob`, derives tiers), `validate.ts`.
 - `rng.ts`: injectable RNG (`() => number`) plus a seeded one (mulberry32) for tests.
-- `damage.ts`: `damageFor(quality, config)`.
+- `damage.ts`: `damageFor(side, quality, difficulty)`; `difficulty.ts` resolves a preset (with `extends`), validates it and applies dev-only overrides.
 - `battle.ts`: an explicit state machine, `step(state, input) -> { state, events }`. Phases: `intro → roundStart → enemyAttack → replyPrompt → replyResolved → attackPrompt → attackResolved → (next round | ending)`. It:
   - draws `rounds` enemy attacks at random without repeats from however many exist;
   - shuffles each attack's replies;
@@ -176,6 +178,59 @@ The engine emits **events** (`say-bottom`, `say-top`, `effect`, `drain-bar`, `sh
 ### 3.4 Rendering
 
 Fixed **240×216 logical pixel** stage, DOM + CSS, not `<canvas>`, so buttons, focus and screen readers work. Scaled by **whole numbers** (`floor(min(vw/240, vh/216))`, minimum 1) with CSS `zoom`/`transform`, centred; portrait phones work because 240×216 is nearly square. Pixelated rendering with `image-rendering: pixelated` and `shape-rendering="crispEdges"`. Palette as CSS custom properties: `#0F380F #306230 #8BAC0F #9BBC0F`; all game UI uses only these four. Game CSS is scoped under a `.debate` root so it can't leak into a host page.
+
+### 3.5 Difficulty: one place, easy to turn
+
+The spec says "all numbers are tunable in one config object", and we expect to retune after playing. So difficulty is data, not code, and changing it never touches the attack/reply content.
+
+**`config.json` holds named presets** and says which one ships:
+
+```json
+{
+  "difficulty": "normal",
+  "difficulties": {
+    "spec": { "...": "frozen copy of the spec's numbers, used only by tests" },
+    "easy": { "...": "..." },
+    "normal": {
+      "rounds": 4,
+      "player": {
+        "kannatus": 100,
+        "baseDamage": 30,
+        "damage": { "strong": 0, "medium": 0.5, "weak": 1 }
+      },
+      "enemy": {
+        "kannatus": 100,
+        "baseDamage": 30,
+        "damage": { "strong": 0, "medium": 0.5, "weak": 1 }
+      },
+      "enemyDefenseWeights": { "strong": 1, "medium": 1, "weak": 1 },
+      "tieMargin": 0
+    },
+    "hard": { "...": "..." }
+  }
+}
+```
+
+The knobs, in the order you will likely reach for them:
+
+| Knob                                     | What it changes                                                                                                                                                                                     |
+| ---------------------------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `player.kannatus` / `enemy.kannatus`     | Starting health of each side (a head start for either)                                                                                                                                              |
+| `player.baseDamage` / `enemy.baseDamage` | Size of a full hit taken by that side (the spec's 30)                                                                                                                                               |
+| `*.damage.strong / medium / weak`        | Share of the base damage that lands per reply quality (the spec's 0 / 0.5 / 1). Separate per side                                                                                                   |
+| `rounds`                                 | Battle length (and the quick variant for a possible quiz minigame, section 5.2)                                                                                                                     |
+| `enemyDefenseWeights`                    | How likely the enemy's strong / medium / weak defenses are to be picked. Equal weights is the spec's "uniform random"; raising `strong` makes the enemy harder to hurt without editing any defenses |
+| `tieMargin`                              | Points difference that still counts as a tie on the last round (0 = exact tie only)                                                                                                                 |
+
+Presets can also extend each other (`"extends": "normal"` plus overrides), so "hard" is only a few lines.
+
+**How we tune it:**
+
+- **Switch the shipped difficulty** by changing one word (`"difficulty": "normal"`). Edit a number, push, and the CI preview shows the new feel.
+- **Compare presets in the preview:** in dev and in `NOINDEX` builds (the GitHub Pages previews) `?difficulty=easy|normal|hard` overrides the preset. The code is compiled out of the production build, and production always uses the config's value.
+- **See the numbers before playing:** `npm run debate:balance` (optionally `-- --difficulty hard`, or `--set player.damage.medium=0.4` for a one-off experiment without editing files) runs thousands of simulated battles and prints, for several play styles (perfect, mostly good, all medium, random, "answers on green instinct"), the win, tie and loss rates and the average final KANNATUS of both sides. The same table appears in `/debate-lab/` with live number inputs, so you can try a change and see the effect on the win rates before pushing.
+- **Guardrails, not handcuffs:** the balance test (section 6) asserts the exact spec numbers only for the frozen `spec` preset (it protects the engine's maths). For the shipped preset it only enforces loose guardrails stored next to it in `config.json` (for example "perfect play wins at least 95%", "random play wins under 15%"), so tuning stays free and a change that makes the game unwinnable or trivial is still caught. Guardrails are config too; edit them when you deliberately change the design.
+- A player-facing difficulty selector is possible later (the presets already exist), but is not planned. The game's stance is that the first attempt often fails and retrying is one tap.
 
 ## 4. Art and font (no designer, no third parties)
 
@@ -215,33 +270,35 @@ You may later turn this into a surprise minigame between quiz questions, dependi
 **Unit (vitest)**, `tests/unit/debate-*.test.ts`:
 
 - `debate-data`: runs the validator on the real data (shape, quality mixes, counts, label lengths, all three languages present), plus the derived tiers against the spec table (Huoltovarmuus and Kotimainen ruoka vahva; Ratahankkeet and Vihreä teollisuus hyvä; Ilmastokriisi and Lihavero heikko) so an accidental retier is flagged. Also validator tests on small broken fixtures, proving each rule produces a clear error.
+- `debate-difficulty`: presets resolve and `extends` works; unknown or out-of-range knobs give a clear error; `enemyDefenseWeights` shift the pick frequencies as expected; a dev override never applies in a production build.
 - `debate-battle`: no enemy attack repeats; each player attack usable once; KO ends the battle mid-round; the last round ends on points; tie ending; the same seed gives the same battle; damage table (0/15/30); works with more than the minimum number of attacks.
-- `debate-balance`: Monte-Carlo (about 20 000 seeded battles per strategy) against the real data checks the spec's expected values: perfect play player 100 / enemy about 40; all-medium replies 40 / 40; random play about 25 vs 55 with a clear loss rate. Tolerance bands, so retuning that breaks the intended difficulty fails CI and prints the measured numbers.
+- `debate-balance`: Monte-Carlo (about 20 000 seeded battles per strategy). Against the frozen `spec` preset it checks the spec's expected values exactly (perfect play player 100 / enemy about 40; all-medium replies 40 / 40; random play about 25 vs 55). Against the shipped preset it checks only the loose guardrails from `config.json` and prints the measured numbers on failure. A shared simulation module (`src/lib/debate/simulate.ts`) backs this test, `debate:balance` and the lab.
 - `debate-typewriter`: line completion and advance semantics.
 
-**E2E (playwright)**, `tests/e2e/debate.spec.ts`, run for fi, sv and en: noindex; full battle by keyboard only; tap-only on a mobile viewport; used attacks greyed and not selectable; end screen shows the result, "Täydelliset vastaukset: n/4" (localised) and "Pelaa uudelleen" restarts in one tap; no hints on any end screen; mute toggle; reduced motion; no requests to other origins; nothing in storage; language alternates present. Randomness is made deterministic with `page.addInitScript` stubbing `Math.random`, so no test-only URL parameter ships.
+**E2E (playwright)**, `tests/e2e/debate.spec.ts`, run for fi, sv and en: noindex; full battle by keyboard only; tap-only on a mobile viewport; used attacks greyed and not selectable; end screen shows the result, "Täydelliset vastaukset: n/4" (localised) and "Pelaa uudelleen" restarts in one tap; no hints on any end screen; mute toggle; reduced motion; no requests to other origins; nothing in storage; language alternates present. Randomness is made deterministic with `page.addInitScript` stubbing `Math.random`. The only URL parameter is the dev/preview-only `?difficulty=`, compiled out of production (section 3.5); one e2e checks that production ignores it.
 
-**Report command:** `npm run debate:report` prints, per enemy, every attack and player attack with derived tier, expected damage, TODO/needsReview counts and the longest label per language. Useful when editing copy.
+**Report commands:** `npm run debate:balance` (section 3.5) and `npm run debate:report` prints, per enemy, every attack and player attack with derived tier, expected damage, TODO/needsReview counts and the longest label per language. Useful when editing copy.
 
 ## 7. Phases
 
 Each phase ends with `npm run format:check && npm run lint && npm run check && npm run validate:translations && npm run test && npm run build` green and a stop for review. One logical change per commit (Conventional Commits), pushed right after.
 
 0. **Branch, CI, plan** (done): plan doc and the preview workflow.
-1. **Data, validator and engine:** `config.json`, the per-file enemy data with all spec copy in Finnish (with the fixed "Rasismi" reply), sv/en drafts marked `needsReview`, `ui.json`; `src/lib/debate/*` (loader, validator, battle, rng); unit and balance tests; `debate:report`; extend `validate-translations.ts`. No UI yet.
-2. **Shell, font and lab:** `DebateGame.astro`, `DebateBody.astro`, the 240×216 stage, palette, self-hosted font chosen in the lab, boxes, status boxes, placeholder sprites, `/debate-lab/`, routes for fi/sv/en, noindex and sitemap exclusion.
-3. **Battle UI:** `playDebate` wiring engine to DOM: typewriter, 2×2 and 2×3 menus, keyboard and touch, KANNATUS bars, effect texts, endings, end screen, restart.
+1. **Data, validator and engine:** `config.json` with the `spec`, `easy`, `normal` and `hard` presets and guardrails, the per-file enemy data with all spec copy in Finnish (with the fixed "Rasismi" reply), sv/en drafts marked `needsReview`, `ui.json`; `src/lib/debate/*` (loader, validator, battle, rng); unit and balance tests; `debate:report` and `debate:balance`; extend `validate-translations.ts`. No UI yet.
+2. **Shell, font and lab:** `DebateGame.astro`, `DebateBody.astro`, the 240×216 stage, palette, self-hosted font chosen in the lab, boxes, status boxes, placeholder sprites, `/debate-lab/` (including the live difficulty panel), routes for fi/sv/en, noindex and sitemap exclusion.
+3. **Battle UI:** `playDebate` (with the dev/preview `?difficulty=` switch) wiring engine to DOM: typewriter, 2×2 and 2×3 menus, keyboard and touch, KANNATUS bars, effect texts, endings, end screen, restart.
 4. **Art and juice:** final sprites, shake/blink, intro slide-in, bar drain, optional chiptune audio and mute, reduced-motion variants.
 5. **Polish:** e2e in all three languages, mobile portrait pass, accessibility pass (screen-reader narration, focus order), Lighthouse check, README entry, a short "how to edit the game's content" section in the docs.
-6. **Launch checklist:** `needsReview` cleared by a human for sv/en, remove noindex and the sitemap exclusion, add Nav/Footer entry, PR to `main` for human review.
+6. **Launch checklist:** sv/en reviewed by a human and `needsReview` cleared (after the game works, not before), remove noindex and the sitemap exclusion, add Nav/Footer entry, PR to `main` for human review.
 
-You play the game after Phase 4 at the latest (the preview URL from CI works for that); the quiz-embedding decision comes then.
+You play the game after Phase 3 (the preview URL from CI works for that) and tune difficulty from there; the quiz-embedding decision comes after Phase 4 at the latest.
 
 ## 8. Risks
 
 - **Font width:** Finnish and Swedish compounds in a 240 px stage. Mitigation: font comparison in Phase 2 with the longest labels per language, labels capped at 15 characters, enemy name abbreviated as in the spec ("KANSALLISKONS.").
 - **Long lines in boxes:** the longest player lines (about 100 characters, Swedish tends to be longer) must fit the bottom box in 2–3 lines. Mitigation: validator reports line length per language; the lab shows the longest lines.
-- **Balance drift when copy is edited:** covered by the Monte-Carlo test, and by `debate:report`.
+- **Balance drift when copy is edited:** covered by the Monte-Carlo guardrails, `debate:balance` and `debate:report`.
+- **Random variance feels unfair:** the enemy's random defense is by design; if playtesting says it feels bad, `enemyDefenseWeights` softens it without touching content.
 - **Translation quality:** sv and en are drafts until a human reviews them (`needsReview`); satire and political idiom ("verohelvetti", "väestönvaihto") translate poorly, so those get flagged for a native reviewer.
 - **Merge conflicts with the quiz branch** in `astro.config.mjs` (sitemap filter), `scripts/validate-translations.ts`, `src/pages/[lab].astro` and the README. They are small; resolve by rebasing onto `main` once the quiz lands. Don't copy the quiz's versions of these files in advance.
 
@@ -252,5 +309,4 @@ You play the game after Phase 4 at the latest (the preview URL from CI works for
 ## 10. Open questions
 
 1. **Swedish and English slugs:** the plan proposes `/sv/debattspel/` and `/en/debate-game/`. Should they match the quiz branch's sv/en naming style instead (and should the Finnish `/debaattipeli/` stay as is)?
-2. **Translations:** Claude drafts sv and en for all lines, marked `needsReview`. Who reviews them before launch?
-3. **Cross-linking with the quiz:** none planned for now. Decide after you've played it (section 5.2).
+2. **Cross-linking with the quiz:** none planned for now. Decide after you've played it (section 5.2).
