@@ -9,7 +9,7 @@ import type { Enemy, UiStrings } from './types'
  * Pure, so the pacing rules are unit tested without a browser:
  *
  * - Every line waits for a tap or key press before the next one.
- * - An effect text ("Se oli erittäin tehokas!") is followed straight away by
+ * - An effect text ("Hyökkäyksesi oli erittäin tehokas!") is followed straight away by
  *   the hit (bar drains), then the wait, as the spec orders.
  * - Each box has a phase label on its top edge. The enemy's shows his move
  *   ("Hyökkäys: Velkapaniikki", "Puolustus"); the bottom one shows the

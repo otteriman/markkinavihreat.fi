@@ -73,7 +73,7 @@ describe('planSteps', () => {
       'wait:advance',
       'type:top', // the enemy's reaction
       'wait:advance',
-      'type:bottom', // Torjuit osan hyökkäyksestä!
+      'type:bottom', // Torjuit osan hänen hyökkäyksestään!
       'hit:player',
       'wait:advance',
       'tags:bottom', // Millä teemalla hyökkäät?

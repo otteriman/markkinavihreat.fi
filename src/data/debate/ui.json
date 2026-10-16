@@ -60,39 +60,39 @@
     "needsReview": ["fi", "sv", "en"]
   },
   "effect.attack.strong": {
-    "fi": "Se ei toiminut ollenkaan...",
-    "sv": "Det fungerade inte alls...",
-    "en": "It didn’t work at all...",
+    "fi": "Hyökkäyksesi epäonnistui...",
+    "sv": "Ditt angrepp misslyckades...",
+    "en": "Your attack failed...",
     "needsReview": ["sv", "en"]
   },
   "effect.attack.medium": {
-    "fi": "Se onnistui ihan OK.",
-    "sv": "Det gick helt okej.",
-    "en": "It worked, sort of.",
+    "fi": "Hyökkäyksesi tehosi osittain.",
+    "sv": "Ditt angrepp fungerade delvis.",
+    "en": "Your attack partly worked.",
     "needsReview": ["sv", "en"]
   },
   "effect.attack.weak": {
-    "fi": "Se oli erittäin tehokas!",
-    "sv": "Det var mycket effektivt!",
-    "en": "It was very effective!",
+    "fi": "Hyökkäyksesi oli erittäin tehokas!",
+    "sv": "Ditt angrepp var mycket effektivt!",
+    "en": "Your attack was very effective!",
     "needsReview": ["sv", "en"]
   },
   "effect.defend.strong": {
-    "fi": "Torjunta oli hyvin tehokas!",
-    "sv": "Försvaret var mycket effektivt!",
+    "fi": "Torjuntasi oli hyvin tehokas!",
+    "sv": "Ditt försvar var mycket effektivt!",
     "en": "Your defence was very effective!",
     "needsReview": ["sv", "en"]
   },
   "effect.defend.medium": {
-    "fi": "Torjuit osan hyökkäyksestä!",
-    "sv": "Du parerade en del av angreppet!",
-    "en": "You blocked part of the attack!",
+    "fi": "Torjuit osan hänen hyökkäyksestään!",
+    "sv": "Du parerade en del av hans angrepp!",
+    "en": "You blocked part of his attack!",
     "needsReview": ["sv", "en"]
   },
   "effect.defend.weak": {
-    "fi": "Se osui täysillä!",
-    "sv": "Det träffade med full kraft!",
-    "en": "It hit you full force!",
+    "fi": "Puolustuksesi ei tehonnut lainkaan!",
+    "sv": "Ditt försvar hade ingen verkan alls!",
+    "en": "Your defence didn’t work at all!",
     "needsReview": ["sv", "en"]
   },
   "end.koWin": {
