@@ -1,0 +1,138 @@
+{
+  "difficulty": "normal",
+  "difficulties": {
+    "spec": {
+      "rounds": 4,
+      "player": {
+        "kannatus": 100,
+        "baseDamage": 30,
+        "damage": {
+          "strong": 0,
+          "medium": 0.5,
+          "weak": 1
+        }
+      },
+      "enemy": {
+        "kannatus": 100,
+        "baseDamage": 30,
+        "damage": {
+          "strong": 0,
+          "medium": 0.5,
+          "weak": 1
+        }
+      },
+      "enemyDefenseWeights": {
+        "strong": 1,
+        "medium": 1,
+        "weak": 1
+      },
+      "tieMargin": 0
+    },
+    "normal": {
+      "rounds": 4,
+      "player": {
+        "kannatus": 100,
+        "baseDamage": 30,
+        "damage": {
+          "strong": 0,
+          "medium": 0.5,
+          "weak": 1
+        }
+      },
+      "enemy": {
+        "kannatus": 100,
+        "baseDamage": 30,
+        "damage": {
+          "strong": 0,
+          "medium": 0.5,
+          "weak": 1
+        }
+      },
+      "enemyDefenseWeights": {
+        "strong": 1,
+        "medium": 1,
+        "weak": 1
+      },
+      "tieMargin": 0
+    },
+    "easy": {
+      "extends": "normal",
+      "player": {
+        "damage": {
+          "medium": 0.4,
+          "weak": 0.8
+        }
+      }
+    },
+    "hard": {
+      "extends": "normal",
+      "player": {
+        "damage": {
+          "medium": 0.6
+        }
+      },
+      "enemyDefenseWeights": {
+        "strong": 1.5
+      }
+    }
+  },
+  "guardrails": {
+    "easy": {
+      "perfect": {
+        "minWinRate": 0.95
+      },
+      "random": {
+        "maxWinRate": 0.35
+      },
+      "greenInstinct": {
+        "maxWinRate": 0.05
+      }
+    },
+    "normal": {
+      "perfect": {
+        "minWinRate": 0.95
+      },
+      "allMedium": {
+        "minWinRate": 0.25,
+        "maxWinRate": 0.5
+      },
+      "random": {
+        "maxWinRate": 0.2
+      },
+      "greenInstinct": {
+        "maxWinRate": 0.05
+      }
+    },
+    "hard": {
+      "perfect": {
+        "minWinRate": 0.9
+      },
+      "random": {
+        "maxWinRate": 0.15
+      },
+      "greenInstinct": {
+        "maxWinRate": 0.05
+      }
+    }
+  },
+  "rules": {
+    "repliesPerAttack": 4,
+    "replyMix": {
+      "strong": 1,
+      "medium": 1,
+      "weak": 2
+    },
+    "defensesPerAttack": 4,
+    "minStrongDefenses": 1,
+    "playerAttackSlots": 6,
+    "maxLabelLength": 17,
+    "maxLineLength": 120
+  },
+  "tiers": {
+    "vahva": 0.5,
+    "hyva": 0.25
+  },
+  "typing": {
+    "msPerChar": 30
+  }
+}
