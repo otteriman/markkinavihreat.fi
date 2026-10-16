@@ -304,7 +304,7 @@ You play the game after Phase 3 (the preview URL from CI works for that) and tun
 
 ## 9. CI
 
-`.github/workflows/ci.yml` (on `main`) runs format, lint, check, translations, unit tests, build, `check:og` and e2e on every PR. This branch also carries `.github/workflows/preview-pages.yml`, copied unchanged from the quiz branch, so each push builds a `noindex` GitHub Pages preview at `/<repo>/<branch-slug>/debaattipeli/`. The `BASE_PATH` handling lives in the quiz branch's `astro.config.mjs`; until that lands on `main`, previews of this branch serve from `/`, and the game's font and asset URLs must therefore go through Astro's base-aware helpers. The two branches' workflow files are identical, so merging either first is conflict-free.
+`.github/workflows/ci.yml` (on `main`) runs format, lint, check, translations, unit tests, build, `check:og` and e2e on every PR. This branch also carries `.github/workflows/preview-pages.yml`, copied unchanged from the quiz branch, so each push builds a `noindex` GitHub Pages preview at `/<repo>/<branch-slug>/debaattipeli/`. `astro.config.mjs` on `main` already reads `BASE_PATH`, and the game uses no hard-coded absolute URLs (its font goes through Astro's asset pipeline), so the previews work as they are; the preview also includes `/debate-lab/`. The two branches' workflow files are identical, so merging either first is conflict-free.
 
 ## 10. Resolved questions
 
