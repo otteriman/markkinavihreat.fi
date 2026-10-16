@@ -70,20 +70,21 @@ export function setUpDifficultyPanel(): void {
         return (
           `<tr data-strategy="${name}"><td>${label}</td><td>${pct(s.winRate)}</td><td>${pct(s.tieRate)}</td>` +
           `<td>${pct(s.loseRate)}</td><td>${pct(s.koRate)}</td><td>${s.avgPlayer.toFixed(1)}</td>` +
-          `<td>${s.avgEnemy.toFixed(1)}</td><td>${mark}</td></tr>`
+          `<td>${s.avgEnemy.toFixed(1)}</td><td>${s.avgRounds.toFixed(1)}</td><td>${mark}</td></tr>`
         )
       })
       return (
         `<h3 class="mt-4 font-semibold">${enemy.id}</h3>` +
         '<table class="lab-table mt-2"><thead><tr><th>Play style</th><th>Win</th><th>Tie</th>' +
-        '<th>Lose</th><th>KO</th><th>Player</th><th>Enemy</th><th>Guardrail</th></tr></thead><tbody>' +
+        '<th>Lose</th><th>KO</th><th>Player</th><th>Enemy</th><th>Rounds</th><th>Guardrail</th></tr></thead><tbody>' +
         rows.join('') +
         '</tbody></table>'
       )
     })
     results.innerHTML =
       tables.join('') +
-      '<p class="text-harmaa mt-2 text-sm">Player / Enemy: average KANNATUS at the end. ' +
+      '<p class="text-harmaa mt-2 text-sm">Player / Enemy: average KANNATUS at the end; ' +
+      'Rounds: average battle length. ' +
       `Guardrails are those of "${preset.value}" in config.json.</p>`
     const sets = Object.entries(changed).map(([k, v]) => ` --set ${k}=${v}`)
     command.textContent = `npm run debate:balance -- --difficulty ${preset.value}${sets.join('')}`

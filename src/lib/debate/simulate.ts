@@ -112,6 +112,8 @@ export interface SimulationStats {
   koRate: number
   avgPlayer: number
   avgEnemy: number
+  /** Average battle length in rounds. */
+  avgRounds: number
 }
 
 export function simulate(
@@ -127,6 +129,7 @@ export function simulate(
   let ko = 0
   let player = 0
   let foe = 0
+  let rounds = 0
   for (let run = 0; run < runs; run++) {
     let { state } = startBattle({ enemy, difficulty, attackSlots, rng })
     while (state.phase !== 'over') {
@@ -141,6 +144,7 @@ export function simulate(
     if (result.kind === 'koWin' || result.kind === 'koLose') ko++
     player += result.player
     foe += result.enemy
+    rounds += state.round
   }
   return {
     runs,
@@ -150,6 +154,7 @@ export function simulate(
     koRate: ko / runs,
     avgPlayer: player / runs,
     avgEnemy: foe / runs,
+    avgRounds: rounds / runs,
   }
 }
 
@@ -169,5 +174,12 @@ export function checkGuardrail(
   }
   bound('win rate', stats.winRate, rail.minWinRate, rail.maxWinRate)
   bound('lose rate', stats.loseRate, rail.minLoseRate, rail.maxLoseRate)
+  const len = (v: number) => v.toFixed(1)
+  if (rail.minAvgRounds !== undefined && stats.avgRounds < rail.minAvgRounds) {
+    out.push(`${name}: average length ${len(stats.avgRounds)} rounds is below ${rail.minAvgRounds}`)
+  }
+  if (rail.maxAvgRounds !== undefined && stats.avgRounds > rail.maxAvgRounds) {
+    out.push(`${name}: average length ${len(stats.avgRounds)} rounds is above ${rail.maxAvgRounds}`)
+  }
   return out
 }

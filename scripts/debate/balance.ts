@@ -59,7 +59,7 @@ for (const enemy of enemies) {
   console.log(`${enemy.id}`)
   console.log(
     `  ${'play style'.padEnd(48)}${'win'.padStart(7)}${'tie'.padStart(7)}${'lose'.padStart(7)}` +
-      `${'KO'.padStart(7)}${'player'.padStart(7)}${'enemy'.padStart(7)}`,
+      `${'KO'.padStart(7)}${'player'.padStart(7)}${'enemy'.padStart(7)}${'rounds'.padStart(7)}`,
   )
   for (const [key, { label, strategy }] of Object.entries(STRATEGIES)) {
     const s = simulate(enemy, difficulty, config.rules.playerAttackSlots, strategy, { runs, seed })
@@ -69,12 +69,15 @@ for (const enemy of enemies) {
     const mark = rail ? (problems.length ? '  ✗' : '  ✓') : ''
     console.log(
       `  ${label.padEnd(48)}${pct(s.winRate)}${pct(s.tieRate)}${pct(s.loseRate)}${pct(s.koRate)}` +
-        `${num(s.avgPlayer)}${num(s.avgEnemy)}${mark}`,
+        `${num(s.avgPlayer)}${num(s.avgEnemy)}${num(s.avgRounds)}${mark}`,
     )
     problems.forEach((p) => console.log(`      ${p}`))
   }
   console.log()
 }
-console.log('player / enemy = average KANNATUS at the end. ✓ / ✗ = guardrail from config.json.')
+console.log(
+  'player / enemy = average KANNATUS at the end, rounds = average battle length. ' +
+    '✓ / ✗ = guardrail from config.json.',
+)
 if (Object.keys(overrides).length > 0) console.log('Guardrails are not checked with --set.')
 if (breaches > 0) process.exit(1)

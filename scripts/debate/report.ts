@@ -20,7 +20,9 @@ const Q = { strong: 'S', medium: 'M', weak: 'W' }
 
 for (const enemy of enemies) {
   console.log(`\n${enemy.id} (${enemy.status.fi})`)
-  console.log(`\n  Enemy attacks (${enemy.attacks.length}, ${difficulty.rounds} used per battle)`)
+  console.log(
+    `\n  Enemy attacks (${enemy.attacks.length}, one per round, reshuffled when all are used)`,
+  )
   for (const a of enemy.attacks) {
     const replies = a.replies.map((r) => `${r.label.fi} [${Q[r.quality]}]`).join(', ')
     console.log(`    ${a.id.padEnd(20)} ${replies}`)

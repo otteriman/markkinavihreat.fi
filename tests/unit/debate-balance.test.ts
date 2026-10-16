@@ -102,9 +102,11 @@ describe('guardrails on the real content', () => {
       koRate: 0,
       avgPlayer: 0,
       avgEnemy: 0,
+      avgRounds: 6.2,
     }
-    expect(checkGuardrail('random', stats, { maxWinRate: 0.2 })).toEqual([
+    expect(checkGuardrail('random', stats, { maxWinRate: 0.2, maxAvgRounds: 5 })).toEqual([
       'random: win rate 30.0% is above 20.0%',
+      'random: average length 6.2 rounds is above 5',
     ])
   })
 })
