@@ -74,9 +74,19 @@ export function specEnemy(): Enemy {
 }
 
 export const specDifficulty = (): Difficulty => ({
-  rounds: 4,
-  player: { kannatus: 100, baseDamage: 30, damage: { strong: 0, medium: 0.5, weak: 1 } },
-  enemy: { kannatus: 100, baseDamage: 30, damage: { strong: 0, medium: 0.5, weak: 1 } },
+  maxRounds: 4,
+  player: {
+    kannatus: 100,
+    baseDamage: 30,
+    damage: { strong: 0, medium: 0.5, weak: 1 },
+    counter: 0,
+  },
+  enemy: {
+    kannatus: 100,
+    baseDamage: 30,
+    damage: { strong: 0, medium: 0.5, weak: 1 },
+    counter: 0,
+  },
   enemyDefenseWeights: { strong: 1, medium: 1, weak: 1 },
   tieMargin: 0,
 })

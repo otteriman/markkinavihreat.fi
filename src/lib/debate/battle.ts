@@ -1,4 +1,4 @@
-import { damageFor } from './difficulty'
+import { counterFor, damageFor } from './difficulty'
 import { pickWeighted, shuffle, type Rng } from './rng'
 import type { Message } from './text'
 import type { Difficulty, Enemy, EnemyAttack, Localized, PlayerAttack, Quality } from './types'
@@ -7,6 +7,11 @@ import type { Difficulty, Enemy, EnemyAttack, Localized, PlayerAttack, Quality }
  * The battle engine: a pure state machine with no DOM and no timing.
  *
  *   startBattle → reply prompt → chooseReply → attack prompt → chooseAttack → …
+ *
+ * The battle runs until one side's KANNATUS reaches 0; difficulty.maxRounds is
+ * only a safety net that decides on points. A perfect defense makes the
+ * attack backfire on the attacker (difficulty counter damage), which keeps
+ * battles short: about four rounds with the shipped numbers.
  *
  * Each call returns the next state and the events to play back in order. The
  * UI only renders events (narration and the player's lines go in the bottom
@@ -27,9 +32,21 @@ export type BattleEvent =
    * player attacks (`name`: the attack's label), or the enemy defends.
    */
   | { type: 'phase'; phase: 'enemyAttack' | 'reply' | 'playerAttack'; name: Localized }
-  | { type: 'phase'; phase: 'enemyDefense' }
-  /** `target` lost `damage` KANNATUS (may be 0); drain its bar from `from` to `to`. */
-  | { type: 'hit'; target: Side; quality: Quality; damage: number; from: number; to: number }
+  | { type: 'phase'; phase: 'enemyDefense' | 'newRound' }
+  /**
+   * `target` lost `damage` KANNATUS (may be 0); drain its bar from `from` to
+   * `to`. `quality` is the defense's. With `counter`, a perfect defense made
+   * the attack backfire, so the target is the attacker.
+   */
+  | {
+      type: 'hit'
+      target: Side
+      quality: Quality
+      damage: number
+      from: number
+      to: number
+      counter: boolean
+    }
   | { type: 'prompt'; kind: 'reply'; options: ReplyOption[] }
   | { type: 'prompt'; kind: 'attack'; options: AttackOption[] }
   | { type: 'end'; result: BattleResult }
@@ -63,10 +80,15 @@ export interface BattleState {
   phase: 'reply' | 'attack' | 'over'
   /** 1-based. */
   round: number
-  /** The enemy attacks for this battle, one per round, in order. */
+  /**
+   * The enemy's attacks, one per round, in order. A shuffled deck of all his
+   * attacks; when a long battle runs through it, another shuffled deck is
+   * added, so no attack repeats until all have been used.
+   */
   enemyAttacks: EnemyAttack[]
   /** The player's attack grid, in grid order. */
   playerAttacks: PlayerAttack[]
+  /** Player attacks used since the grid was last full; all free up again once every one is used. */
   used: string[]
   /** The current attack's replies in display order (indices into `replies`). */
   replyOrder: number[]
@@ -98,7 +120,7 @@ export function startBattle({ enemy, difficulty, attackSlots, rng }: BattleSetup
     difficulty,
     phase: 'reply',
     round: 0,
-    enemyAttacks: shuffle(enemy.attacks, rng).slice(0, difficulty.rounds),
+    enemyAttacks: shuffle(enemy.attacks, rng),
     playerAttacks,
     used: [],
     replyOrder: [],
@@ -117,21 +139,27 @@ export function startBattle({ enemy, difficulty, attackSlots, rng }: BattleSetup
 
 function nextRound(prev: BattleState, events: BattleEvent[], rng: Rng): Step {
   const round = prev.round + 1
-  const attack = prev.enemyAttacks[round - 1]
+  let enemyAttacks = prev.enemyAttacks
+  if (round > enemyAttacks.length) {
+    // A new deck, never starting with the attack he just used.
+    const deck = shuffle(prev.enemy.attacks, rng)
+    if (deck.length > 1 && deck[0] === enemyAttacks.at(-1)) [deck[0], deck[1]] = [deck[1], deck[0]]
+    enemyAttacks = [...enemyAttacks, ...deck]
+  }
+  const attack = enemyAttacks[round - 1]
   const state: BattleState = {
     ...prev,
     phase: 'reply',
     round,
+    enemyAttacks,
+    used: prev.used.length >= prev.playerAttacks.length ? [] : prev.used,
     replyOrder: shuffle(
       attack.replies.map((_, i) => i),
       rng,
     ),
   }
   events.push(
-    {
-      type: 'narrate',
-      message: { key: 'round.start', vars: { round, rounds: prev.difficulty.rounds } },
-    },
+    { type: 'phase', phase: 'newRound' },
     {
       type: 'narrate',
       message: { key: 'enemy.used', vars: { enemy: prev.enemy.subject, attack: attack.announce } },
@@ -161,12 +189,47 @@ export function attackOptions(state: BattleState): AttackOption[] {
   }))
 }
 
-/** Applies a hit; returns the new KANNATUS and the event. */
-function hit(state: BattleState, target: Side, quality: Quality) {
+/**
+ * One exchange: `defender` answered an attack with a reply or defense of
+ * `quality`. A perfect (strong) defense makes the attack backfire on the
+ * attacker when the difficulty has counter damage; otherwise the defender
+ * takes the damage for its quality. Returns the new state and the hit.
+ */
+function exchange(state: BattleState, defender: Side, quality: Quality) {
+  const attacker: Side = defender === 'player' ? 'enemy' : 'player'
+  const backfire = quality === 'strong' ? counterFor(state.difficulty, attacker) : 0
+  const target = backfire > 0 ? attacker : defender
+  const damage = backfire > 0 ? backfire : damageFor(state.difficulty, defender, quality)
   const from = target === 'player' ? state.player : state.enemyKannatus
-  const damage = damageFor(state.difficulty, target, quality)
   const to = Math.max(0, from - damage)
-  return { to, event: { type: 'hit', target, quality, damage, from, to } as BattleEvent }
+  const next: BattleState =
+    target === 'player' ? { ...state, player: to } : { ...state, enemyKannatus: to }
+  const event: BattleEvent = {
+    type: 'hit',
+    target,
+    quality,
+    damage,
+    from,
+    to,
+    counter: backfire > 0,
+  }
+  return { state: next, event }
+}
+
+/**
+ * The effect text's UI key: by the defense's quality, from the player's side
+ * ("attack" when the player attacked), or the backfire text when it backfired.
+ */
+function effectKey(side: 'attack' | 'defend', quality: Quality, hit: BattleEvent): string {
+  const backfire = hit.type === 'hit' && hit.counter
+  return `effect.${side}.${backfire ? 'backfire' : quality}`
+}
+
+/** A KO ending if either side is out of KANNATUS. */
+function knockout(state: BattleState): ResultKind | null {
+  if (state.player <= 0) return 'koLose'
+  if (state.enemyKannatus <= 0) return 'koWin'
+  return null
 }
 
 function end(state: BattleState, kind: ResultKind, events: BattleEvent[]): Step {
@@ -201,10 +264,9 @@ export function chooseReply(prev: BattleState, index: number): Step {
   const reply = currentAttack(prev).replies[index]
   if (!reply) throw new BattleError(`No reply ${index} for this attack`)
 
-  const { to, event } = hit(prev, 'player', reply.quality)
+  const hit = exchange(prev, 'player', reply.quality)
   const state: BattleState = {
-    ...prev,
-    player: to,
+    ...hit.state,
     repliesGiven: prev.repliesGiven + 1,
     strongReplies: prev.strongReplies + (reply.quality === 'strong' ? 1 : 0),
   }
@@ -212,10 +274,11 @@ export function chooseReply(prev: BattleState, index: number): Step {
     { type: 'phase', phase: 'reply', name: reply.label },
     { type: 'say', who: 'player', text: reply.say },
     { type: 'say', who: 'enemy', text: reply.reaction },
-    { type: 'narrate', message: { key: `effect.defend.${reply.quality}` } },
-    event,
+    { type: 'narrate', message: { key: effectKey('defend', reply.quality, hit.event) } },
+    hit.event,
   ]
-  if (state.player <= 0) return end(state, 'koLose', events)
+  const ko = knockout(state)
+  if (ko) return end(state, ko, events)
 
   const next: BattleState = { ...state, phase: 'attack' }
   events.push(
@@ -242,19 +305,21 @@ export function chooseAttack(prev: BattleState, id: string, rng: Rng): Step {
         rng,
       )
     ]
-  const { to, event } = hit(prev, 'enemy', defense.quality)
-  const state: BattleState = { ...prev, enemyKannatus: to, used: [...prev.used, id] }
+  const hit = exchange(prev, 'enemy', defense.quality)
+  const state: BattleState = { ...hit.state, used: [...prev.used, id] }
   const events: BattleEvent[] = [
     { type: 'phase', phase: 'playerAttack', name: attack.label },
     { type: 'say', who: 'player', text: attack.say },
     { type: 'phase', phase: 'enemyDefense' },
     { type: 'say', who: 'enemy', text: defense.say },
-    { type: 'narrate', message: { key: `effect.attack.${defense.quality}` } },
-    event,
+    { type: 'narrate', message: { key: effectKey('attack', defense.quality, hit.event) } },
+    hit.event,
   ]
-  if (state.enemyKannatus <= 0) return end(state, 'koWin', events)
-  if (state.round < state.difficulty.rounds) return nextRound(state, events, rng)
+  const ko = knockout(state)
+  if (ko) return end(state, ko, events)
+  if (state.round < state.difficulty.maxRounds) return nextRound(state, events, rng)
 
+  // The safety net (maxRounds) was reached: decide on points.
   const diff = state.player - state.enemyKannatus
   const margin = state.difficulty.tieMargin
   return end(state, diff > margin ? 'pointsWin' : diff < -margin ? 'pointsLose' : 'tie', events)

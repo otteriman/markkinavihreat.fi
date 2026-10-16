@@ -1,5 +1,6 @@
 import { describe, expect, it } from 'vitest'
 import {
+  attackOptions,
   BattleError,
   chooseAttack,
   chooseReply,
@@ -10,13 +11,22 @@ import {
 } from '../../src/lib/debate/battle'
 import { seededRng, type Rng } from '../../src/lib/debate/rng'
 import type { Difficulty, Quality } from '../../src/lib/debate/types'
-import { enemyAttack, playerAttack, specDifficulty, specEnemy } from './debate-fixtures'
+import { playerAttack, specDifficulty, specEnemy } from './debate-fixtures'
 
 const start = (
   difficulty: Difficulty = specDifficulty(),
   rng: Rng = seededRng(1),
   enemy = specEnemy(),
 ) => startBattle({ enemy, difficulty, attackSlots: 6, rng })
+
+/** No round limit to speak of, and plenty of KANNATUS. */
+const endless = (): Difficulty => ({
+  ...specDifficulty(),
+  maxRounds: 50,
+  player: { ...specDifficulty().player, kannatus: 1000 },
+  enemy: { ...specDifficulty().enemy, kannatus: 1000 },
+})
+const noDamage = { strong: 0, medium: 0, weak: 0 }
 
 const replyOf = (state: BattleState, quality: Quality) =>
   currentAttack(state).replies.findIndex((r) => r.quality === quality)
@@ -60,7 +70,7 @@ describe('battle flow', () => {
     expect(keys(events)).toEqual([
       'text',
       'say:enemy',
-      'round.start',
+      'phase:newRound',
       'enemy.used',
       'phase:enemyAttack',
       'say:enemy',
@@ -135,17 +145,34 @@ describe('battle flow', () => {
     expect(shuffled).toBe(true)
   })
 
-  it('draws a random subset when there are more enemy attacks than rounds', () => {
-    const enemy = specEnemy()
-    enemy.attacks = ['a', 'b', 'c', 'd', 'e', 'f'].map((id) => enemyAttack(id))
-    const drawn = new Set<string>()
-    for (let seed = 1; seed <= 40; seed++) {
-      const { state } = start(specDifficulty(), seededRng(seed), enemy)
-      expect(state.enemyAttacks).toHaveLength(4)
-      expect(new Set(state.enemyAttacks.map((a) => a.id)).size).toBe(4)
-      state.enemyAttacks.forEach((a) => drawn.add(a.id))
+  it('deals enemy attacks from shuffled decks: all before any repeat, never twice in a row', () => {
+    for (let seed = 1; seed <= 20; seed++) {
+      const rng = seededRng(seed)
+      // Lots of KANNATUS and no damage, so the battle runs for many rounds.
+      const difficulty = { ...endless(), player: { ...endless().player, damage: noDamage } }
+      let { state } = start(difficulty, rng)
+      const seen: string[] = []
+      while (state.round <= 12) {
+        seen.push(currentAttack(state).id)
+        state = chooseReply(state, 0).state
+        state = chooseAttack(state, attackOptions(state).find((o) => !o.used)!.id, rng).state
+      }
+      for (let deck = 0; deck < 3; deck++) {
+        expect(new Set(seen.slice(deck * 4, deck * 4 + 4)).size).toBe(4)
+      }
+      seen.slice(1).forEach((id, i) => expect(id).not.toBe(seen[i]))
     }
-    expect(drawn.size).toBe(6)
+  })
+
+  it('frees the player’s attacks once all six are used', () => {
+    const rng = seededRng(3)
+    let { state } = start({ ...endless(), player: { ...endless().player, damage: noDamage } }, rng)
+    for (let round = 1; round <= 6; round++) {
+      state = chooseReply(state, 0).state
+      state = chooseAttack(state, attackOptions(state).find((o) => !o.used)!.id, rng).state
+    }
+    state = chooseReply(state, 0).state
+    expect(attackOptions(state).every((o) => !o.used)).toBe(true)
   })
 
   it('fills the grid with a random subset, in grid order, when there are more player attacks', () => {
@@ -201,6 +228,82 @@ describe('battle flow', () => {
       seededRng(42),
     )
     expect(a.events).toEqual(b.events)
+  })
+})
+
+describe('backfire (counter damage)', () => {
+  const withCounter = (): Difficulty => ({
+    ...specDifficulty(),
+    player: { ...specDifficulty().player, counter: 0.5 },
+    enemy: { ...specDifficulty().enemy, counter: 0.5 },
+  })
+
+  it('a perfect reply makes the enemy’s attack backfire on him', () => {
+    const { state } = start(withCounter())
+    const { state: next, events } = chooseReply(state, replyOf(state, 'strong'))
+    expect(events.find((e) => e.type === 'hit')).toMatchObject({
+      target: 'enemy',
+      damage: 15,
+      from: 100,
+      to: 85,
+      counter: true,
+    })
+    expect(keys(events)).toContain('effect.defend.backfire')
+    expect([next.player, next.enemyKannatus]).toEqual([100, 85])
+  })
+
+  it('a perfect defense makes the player’s attack backfire on the player', () => {
+    const difficulty = { ...withCounter(), enemyDefenseWeights: { strong: 1, medium: 0, weak: 0 } }
+    const { state } = start(difficulty)
+    const afterReply = chooseReply(state, replyOf(state, 'medium')).state
+    const { events } = chooseAttack(afterReply, 'heikko1', seededRng(2))
+    expect(events.find((e) => e.type === 'hit')).toMatchObject({
+      target: 'player',
+      damage: 15,
+      from: 85,
+      to: 70,
+      counter: true,
+    })
+    expect(keys(events)).toContain('effect.attack.backfire')
+  })
+
+  it('without counter damage a perfect defense just blocks', () => {
+    const { state } = start()
+    const { events } = chooseReply(state, replyOf(state, 'strong'))
+    expect(events.find((e) => e.type === 'hit')).toMatchObject({
+      target: 'player',
+      damage: 0,
+      counter: false,
+    })
+    expect(keys(events)).toContain('effect.defend.strong')
+  })
+
+  it('a backfire can knock the attacker out', () => {
+    const difficulty = withCounter()
+    difficulty.player.kannatus = 15
+    const strongDefense = { ...difficulty, enemyDefenseWeights: { strong: 1, medium: 0, weak: 0 } }
+    const { state } = start(strongDefense)
+    const afterReply = chooseReply(state, replyOf(state, 'strong')).state
+    const { state: over } = chooseAttack(afterReply, 'vahva1', seededRng(1))
+    expect(over.result).toMatchObject({ kind: 'koLose', player: 0 })
+  })
+
+  it('battles run until a knockout, often past four rounds', () => {
+    const difficulty = { ...withCounter(), maxRounds: 50 }
+    let longer = 0
+    for (let seed = 1; seed <= 200; seed++) {
+      const rng = seededRng(seed)
+      let { state } = start(difficulty, rng)
+      while (state.phase !== 'over') {
+        state =
+          state.phase === 'reply'
+            ? chooseReply(state, replyOf(state, 'medium')).state
+            : chooseAttack(state, attackOptions(state).find((o) => !o.used)!.id, rng).state
+      }
+      expect(state.result!.kind).toMatch(/^ko/)
+      if (state.round > 4) longer++
+    }
+    expect(longer).toBeGreaterThan(0)
   })
 })
 

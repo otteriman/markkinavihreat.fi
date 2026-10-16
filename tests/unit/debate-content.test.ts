@@ -87,15 +87,15 @@ describe('validateDebate', () => {
     )
   })
 
-  it('needs enough attacks for the rounds and the grid', () => {
+  it('needs a full grid of player attacks and at least one enemy attack', () => {
+    expect(problemsFor((e) => e.attacks.pop())).toEqual([])
     const problems = problemsFor((e) => {
-      e.attacks.pop()
+      e.attacks = []
       e.playerAttacks.pop()
     })
     expect(problems).toEqual([
       'src/data/debate/enemies/test/player-attacks/: needs at least 6 player attacks to fill the grid (has 5)',
-      'src/data/debate/enemies/test/enemy-attacks/: difficulty "normal" has 4 rounds, so the enemy ' +
-        'needs at least 4 attacks (has 3)',
+      'src/data/debate/enemies/test/enemy-attacks/: needs at least one attack',
     ])
   })
 

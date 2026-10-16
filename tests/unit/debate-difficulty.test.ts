@@ -10,7 +10,7 @@ const config = testConfig({
     harder: { extends: 'hard', enemyDefenseWeights: { strong: 2 } },
     loopA: { extends: 'loopB' },
     loopB: { extends: 'loopA' },
-    broken: { extends: 'normal', rounds: 0, player: { damage: { weak: -1 } } },
+    broken: { extends: 'normal', maxRounds: 0, player: { damage: { weak: -1 } } },
   },
 })
 
@@ -27,9 +27,9 @@ describe('resolveDifficulty', () => {
   })
 
   it('applies one-off overrides by path', () => {
-    const d = resolveDifficulty(config, 'normal', { 'player.damage.medium': 0.4, rounds: 3 })
+    const d = resolveDifficulty(config, 'normal', { 'player.damage.medium': 0.4, maxRounds: 3 })
     expect(d.player.damage.medium).toBe(0.4)
-    expect(d.rounds).toBe(3)
+    expect(d.maxRounds).toBe(3)
   })
 
   it('rejects unknown overrides and groups', () => {
@@ -44,7 +44,7 @@ describe('resolveDifficulty', () => {
     expect(() => resolveDifficulty(config, 'nope')).toThrow('Unknown difficulty "nope"')
     expect(() => resolveDifficulty(config, 'loopA')).toThrow('loops: loopA → loopB → loopA')
     expect(() => resolveDifficulty(config, 'broken')).toThrow(
-      /rounds must be a whole number at least 1 \(is 0\).*player\.damage\.weak must be between 0 and 2/,
+      /maxRounds must be a whole number at least 1 \(is 0\).*player\.damage\.weak must be between 0 and 2/,
     )
   })
 

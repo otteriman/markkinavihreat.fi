@@ -18,7 +18,9 @@ import type { Enemy, UiStrings } from './types'
  *   label over the option grid, which appears at once.
  * - The enemy's box empties (text and label) when a new round starts and when
  *   the player attacks, so it never shows a line he has finished with.
- * - A new round and the ending clear both labels.
+ * - A new round and the ending clear both labels. Rounds aren't announced.
+ * - A backfire (a perfect defense hurting the attacker) is a hit like any
+ *   other; its effect text says whose support dropped.
  */
 export type Step =
   | {
@@ -81,9 +83,7 @@ export function planSteps(
           break
         }
         const key = 'key' in event.message ? event.message.key : ''
-        const isRound = key === 'round.start'
-        if (isRound) steps.push({ kind: 'clear', box: 'top' })
-        if (isRound || key.startsWith('end.')) steps.push({ kind: 'tags', top: null, bottom: null })
+        if (key.startsWith('end.')) steps.push({ kind: 'tags', top: null, bottom: null })
         steps.push({ kind: 'type', box: 'bottom', text, announce: text })
         lastNarration = text
         // A hit right after an effect text plays before the wait (the spec's order).
@@ -91,6 +91,10 @@ export function planSteps(
         break
       }
       case 'phase': {
+        if (event.phase === 'newRound') {
+          steps.push({ kind: 'clear', box: 'top' }, { kind: 'tags', top: null, bottom: null })
+          break
+        }
         const { box, key } = PHASE_TAG[event.phase]
         const vars = 'name' in event ? { name: event.name } : undefined
         const tag = format({ key, vars }, locale, ui)

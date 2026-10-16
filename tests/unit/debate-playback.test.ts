@@ -44,10 +44,8 @@ describe('planSteps', () => {
       'wait:advance',
       'type:top', // opening line
       'wait:advance',
-      'clear:top', // a new round empties the enemy's box…
+      'clear:top', // a new round (not announced) empties the enemy's box…
       'tags:top,bottom', // …and clears both labels
-      'type:bottom', // KIERROS 1/4
-      'wait:advance',
       'type:bottom', // … käytti …!
       'wait:advance',
       'tags:top', // Hyökkäys: <attack>
@@ -115,7 +113,8 @@ describe('planSteps', () => {
     const { rng, start } = battle()
     const afterReply = chooseReply(start.state, 0).state
     const steps = plan(chooseAttack(afterReply, 'vahva1', rng).events)
-    const round = steps.findIndex((s) => s.kind === 'type' && s.text === 'KIERROS 2/4')
+    const round = steps.findIndex((s) => s.kind === 'type' && s.text.includes('käytti'))
+    expect(steps.some((s) => s.kind === 'type' && s.text.includes('KIERROS'))).toBe(false)
     expect(steps.slice(round - 2, round)).toEqual([
       { kind: 'clear', box: 'top' },
       { kind: 'tags', top: null, bottom: null },

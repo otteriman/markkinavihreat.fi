@@ -52,11 +52,12 @@ function check(name: string, d: Obj): Difficulty {
       problems.push(`${path} must be ${integer ? 'a whole number ' : ''}${range} (is ${value})`)
     }
   }
-  num('rounds', 1, Infinity, true)
+  num('maxRounds', 1, Infinity, true)
   for (const side of ['player', 'enemy']) {
     num(`${side}.kannatus`, 1, Infinity, true)
     num(`${side}.baseDamage`, 0)
     for (const q of QUALITIES) num(`${side}.damage.${q}`, 0, 2)
+    num(`${side}.counter`, 0, 2)
   }
   for (const q of QUALITIES) num(`enemyDefenseWeights.${q}`, 0)
   num('tieMargin', 0)
@@ -93,4 +94,10 @@ export function damageFor(
 ): number {
   const s = difficulty[side]
   return Math.round(s.baseDamage * s.damage[quality])
+}
+
+/** Damage `side` takes when its own attack meets a perfect defense (0: no backfire). */
+export function counterFor(difficulty: Difficulty, side: 'player' | 'enemy'): number {
+  const s = difficulty[side]
+  return Math.round(s.baseDamage * s.counter)
 }

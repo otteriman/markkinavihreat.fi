@@ -84,11 +84,20 @@ export interface SideSettings {
   baseDamage: number
   /** Share of `baseDamage` that lands, by the quality of this side's reply or defense. */
   damage: Record<Quality, number>
+  /**
+   * Share of `baseDamage` this side takes when its own attack meets a perfect
+   * (strong) defense: the attack backfires. 0 turns backfiring off.
+   */
+  counter: number
 }
 
 /** A fully resolved difficulty preset: every knob the battle reads. */
 export interface Difficulty {
-  rounds: number
+  /**
+   * The battle runs until one side's KANNATUS reaches 0. This is only a safety
+   * net: if it is reached, the battle is decided on points.
+   */
+  maxRounds: number
   player: SideSettings
   enemy: SideSettings
   /** Relative odds of the enemy picking a defense of each quality. */
@@ -122,6 +131,9 @@ export interface Guardrail {
   maxWinRate?: number
   minLoseRate?: number
   maxLoseRate?: number
+  /** Average battle length in rounds. */
+  minAvgRounds?: number
+  maxAvgRounds?: number
 }
 
 export type Tier = 'vahva' | 'hyva' | 'heikko'

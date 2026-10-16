@@ -17,7 +17,6 @@ import { QUALITIES, type DebateConfig, type Enemy, type Quality, type UiStrings 
 export const REQUIRED_UI_KEYS = [
   'status.player',
   'status.kannatus',
-  'round.start',
   'enemy.used',
   'prompt.reply',
   'prompt.attack',
@@ -27,6 +26,8 @@ export const REQUIRED_UI_KEYS = [
   'tag.enemyDefense',
   ...QUALITIES.map((q) => `effect.attack.${q}`),
   ...QUALITIES.map((q) => `effect.defend.${q}`),
+  'effect.attack.backfire',
+  'effect.defend.backfire',
   'end.koWin',
   'end.koLose',
   'end.pointsWin',
@@ -193,31 +194,8 @@ class Checker {
           `(has ${enemy.playerAttacks.length})`,
       )
     }
-    for (const name of Object.keys(this.config.difficulties)) {
-      const rounds = this.safeRounds(name)
-      if (rounds === undefined) continue
-      if (enemy.attacks.length < rounds) {
-        this.add(
-          `${dir}/enemy-attacks/`,
-          `difficulty "${name}" has ${rounds} rounds, so the enemy needs at least ${rounds} ` +
-            `attacks (has ${enemy.attacks.length})`,
-        )
-      }
-      if (rounds > rules.playerAttackSlots) {
-        this.add(
-          'config.json',
-          `difficulty "${name}" has ${rounds} rounds but the player only has ` +
-            `${rules.playerAttackSlots} attack slots`,
-        )
-      }
-    }
-  }
-
-  private safeRounds(name: string) {
-    try {
-      return resolveDifficulty(this.config, name).rounds
-    } catch {
-      return undefined // reported by config()
+    if (enemy.attacks.length === 0) {
+      this.add(`${dir}/enemy-attacks/`, 'needs at least one attack')
     }
   }
 

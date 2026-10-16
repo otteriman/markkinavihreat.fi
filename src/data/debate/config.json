@@ -2,7 +2,7 @@
   "difficulty": "normal",
   "difficulties": {
     "spec": {
-      "rounds": 4,
+      "maxRounds": 4,
       "player": {
         "kannatus": 100,
         "baseDamage": 30,
@@ -10,7 +10,8 @@
           "strong": 0,
           "medium": 0.5,
           "weak": 1
-        }
+        },
+        "counter": 0
       },
       "enemy": {
         "kannatus": 100,
@@ -19,7 +20,8 @@
           "strong": 0,
           "medium": 0.5,
           "weak": 1
-        }
+        },
+        "counter": 0
       },
       "enemyDefenseWeights": {
         "strong": 1,
@@ -29,7 +31,7 @@
       "tieMargin": 0
     },
     "normal": {
-      "rounds": 4,
+      "maxRounds": 12,
       "player": {
         "kannatus": 100,
         "baseDamage": 30,
@@ -37,7 +39,8 @@
           "strong": 0,
           "medium": 0.5,
           "weak": 1
-        }
+        },
+        "counter": 0.5
       },
       "enemy": {
         "kannatus": 100,
@@ -46,7 +49,8 @@
           "strong": 0,
           "medium": 0.5,
           "weak": 1
-        }
+        },
+        "counter": 0.5
       },
       "enemyDefenseWeights": {
         "strong": 1,
@@ -82,7 +86,7 @@
         "minWinRate": 0.95
       },
       "random": {
-        "maxWinRate": 0.35
+        "maxWinRate": 0.4
       },
       "greenInstinct": {
         "maxWinRate": 0.05
@@ -90,14 +94,14 @@
     },
     "normal": {
       "perfect": {
-        "minWinRate": 0.95
-      },
-      "allMedium": {
-        "minWinRate": 0.25,
-        "maxWinRate": 0.5
+        "minWinRate": 0.95,
+        "minAvgRounds": 3,
+        "maxAvgRounds": 5
       },
       "random": {
-        "maxWinRate": 0.2
+        "maxWinRate": 0.25,
+        "minAvgRounds": 3,
+        "maxAvgRounds": 5
       },
       "greenInstinct": {
         "maxWinRate": 0.05

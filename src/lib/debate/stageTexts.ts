@@ -26,12 +26,11 @@ export function stageTexts(enemies: Enemy[], ui: UiStrings): StageText[] {
       format({ key, vars }, locale, ui)
 
     add('status', t('status.player'), 'ui.json status.player')
-    add('bottom', t('round.start', { round: 4, rounds: 4 }), 'ui.json round.start')
     add('bottom', t('end.playAgain'), 'ui.json end.playAgain')
     for (const key of ['prompt.reply', 'prompt.attack', 'tag.enemyDefense']) {
       add('tag', t(key), `ui.json ${key}`)
     }
-    for (const q of QUALITIES) {
+    for (const q of [...QUALITIES, 'backfire']) {
       add('bottom', t(`effect.attack.${q}`), `ui.json effect.attack.${q}`)
       add('bottom', t(`effect.defend.${q}`), `ui.json effect.defend.${q}`)
     }
