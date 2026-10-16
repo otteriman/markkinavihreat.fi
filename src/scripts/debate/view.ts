@@ -152,14 +152,17 @@ export class StageView {
     if (step.announce) this.announce(step.announce)
   }
 
+  /** Empties the enemy's box and hides it until he speaks again. */
+  clearTop(): void {
+    this.boxes.top.hidden = true
+    this.texts.top.textContent = ''
+    this.more.top.hidden = true
+  }
+
   /** Types `text` into a box letter by letter; a tap or key press shows it all at once. */
   type(step: Extract<Step, { kind: 'type' }>): Promise<void> {
     const { signal, reduce, msPerChar } = this.opts
     const { box, text } = step
-    if (step.clearTop) {
-      this.boxes.top.hidden = true
-      this.texts.top.textContent = ''
-    }
     if (box === 'top') this.boxes.top.hidden = false
     if (box === 'bottom') {
       this.options.hidden = true

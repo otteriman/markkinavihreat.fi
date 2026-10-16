@@ -53,6 +53,9 @@ export async function playDebate(root: HTMLElement, options: PlayOptions): Promi
         case 'tags':
           view.setTags(step)
           break
+        case 'clear':
+          view.clearTop()
+          break
         case 'hit':
           await view.hit(step)
           break

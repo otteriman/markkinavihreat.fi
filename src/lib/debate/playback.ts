@@ -16,7 +16,9 @@ import type { Enemy, UiStrings } from './types'
  *   player's ("Vastaus: Veroparatiisit", "Hyökkäys: Huoltovarmuus").
  * - A prompt ("Millä teemalla vastaat?") isn't typed: it becomes the bottom
  *   label over the option grid, which appears at once.
- * - A new round and the ending clear the enemy's box and both labels.
+ * - The enemy's box empties (text and label) when a new round starts and when
+ *   the player attacks, so it never shows a line he has finished with.
+ * - A new round and the ending clear both labels.
  */
 export type Step =
   | {
@@ -25,8 +27,9 @@ export type Step =
       text: string
       /** The line as screen readers hear it, with the speaker for spoken lines. */
       announce: string
-      clearTop?: boolean
     }
+  /** Empties the enemy's box and hides it until he speaks again. */
+  | { kind: 'clear'; box: 'top' }
   | { kind: 'wait'; until: 'advance' | 'pause' }
   | {
       /** Phase labels on the boxes' top edges: a string sets one, null clears it, absent keeps it. */
@@ -79,8 +82,9 @@ export function planSteps(
         }
         const key = 'key' in event.message ? event.message.key : ''
         const isRound = key === 'round.start'
+        if (isRound) steps.push({ kind: 'clear', box: 'top' })
         if (isRound || key.startsWith('end.')) steps.push({ kind: 'tags', top: null, bottom: null })
-        steps.push({ kind: 'type', box: 'bottom', text, announce: text, clearTop: isRound })
+        steps.push({ kind: 'type', box: 'bottom', text, announce: text })
         lastNarration = text
         // A hit right after an effect text plays before the wait (the spec's order).
         if (next?.type !== 'hit') steps.push({ kind: 'wait', until: 'advance' })
@@ -89,7 +93,13 @@ export function planSteps(
       case 'phase': {
         const { box, key } = PHASE_TAG[event.phase]
         const vars = 'name' in event ? { name: event.name } : undefined
-        steps.push({ kind: 'tags', [box]: format({ key, vars }, locale, ui) })
+        const tag = format({ key, vars }, locale, ui)
+        // The player's attack: the enemy's last line and its label go.
+        if (event.phase === 'playerAttack') {
+          steps.push({ kind: 'clear', box: 'top' }, { kind: 'tags', top: null, bottom: tag })
+        } else {
+          steps.push({ kind: 'tags', [box]: tag })
+        }
         break
       }
       case 'say': {

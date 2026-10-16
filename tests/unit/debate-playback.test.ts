@@ -16,15 +16,17 @@ const shape = (steps: Step[]) =>
   steps.map((s) =>
     s.kind === 'tags'
       ? `tags:${(['top', 'bottom'] as const).filter((b) => b in s).join(',')}`
-      : s.kind === 'type'
-        ? `type:${s.box}`
-        : s.kind === 'wait'
-          ? `wait:${s.until}`
-          : s.kind === 'hit'
-            ? `hit:${s.target}`
-            : s.kind === 'prompt'
-              ? `prompt:${s.prompt.kind}`
-              : 'end',
+      : s.kind === 'clear'
+        ? `clear:${s.box}`
+        : s.kind === 'type'
+          ? `type:${s.box}`
+          : s.kind === 'wait'
+            ? `wait:${s.until}`
+            : s.kind === 'hit'
+              ? `hit:${s.target}`
+              : s.kind === 'prompt'
+                ? `prompt:${s.prompt.kind}`
+                : 'end',
   )
 
 function battle() {
@@ -42,7 +44,8 @@ describe('planSteps', () => {
       'wait:advance',
       'type:top', // opening line
       'wait:advance',
-      'tags:top,bottom', // a new round clears both labels
+      'clear:top', // a new round empties the enemy's box…
+      'tags:top,bottom', // …and clears both labels
       'type:bottom', // KIERROS 1/4
       'wait:advance',
       'type:bottom', // … käytti …!
@@ -90,8 +93,10 @@ describe('planSteps', () => {
     const { rng, start } = battle()
     const afterReply = chooseReply(start.state, 0).state
     const steps = plan(chooseAttack(afterReply, 'vahva1', rng).events)
-    expect(steps.slice(0, 5)).toMatchObject([
-      { kind: 'tags', bottom: 'Hyökkäys: vahva1 label fi' },
+    expect(steps.slice(0, 6)).toMatchObject([
+      // The enemy's previous line and its label go when the player attacks.
+      { kind: 'clear', box: 'top' },
+      { kind: 'tags', top: null, bottom: 'Hyökkäys: vahva1 label fi' },
       { kind: 'type', box: 'bottom', text: 'vahva1 say fi' },
       { kind: 'wait', until: 'advance' },
       { kind: 'tags', top: 'Puolustus' },
@@ -110,8 +115,11 @@ describe('planSteps', () => {
     const { rng, start } = battle()
     const afterReply = chooseReply(start.state, 0).state
     const steps = plan(chooseAttack(afterReply, 'vahva1', rng).events)
-    const round = steps.find((s) => s.kind === 'type' && s.text === 'KIERROS 2/4')
-    expect(round).toMatchObject({ clearTop: true })
+    const round = steps.findIndex((s) => s.kind === 'type' && s.text === 'KIERROS 2/4')
+    expect(steps.slice(round - 2, round)).toEqual([
+      { kind: 'clear', box: 'top' },
+      { kind: 'tags', top: null, bottom: null },
+    ])
   })
 
   it('ends with the end narration, its wait, and the result', () => {
