@@ -1,5 +1,10 @@
 {
   "needsReview": ["sv", "en"],
+  "name": {
+    "fi": "EU-kritiikki",
+    "sv": "EU-kritik",
+    "en": "EU criticism"
+  },
   "announce": {
     "fi": "EU-KRITIIKKIÄ",
     "sv": "EU-KRITIK",

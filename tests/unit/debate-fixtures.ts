@@ -19,6 +19,7 @@ export function enemyAttack(
   return {
     id,
     source: `enemies/test/enemy-attacks/${id}.json`,
+    name: txt(`${id} name`),
     announce: txt(`${id} announce`),
     line: txt(`${id} line`),
     replies: qualities.map((quality, i) => ({

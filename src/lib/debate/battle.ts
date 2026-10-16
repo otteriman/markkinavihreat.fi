@@ -21,6 +21,13 @@ export type BattleEvent =
   | { type: 'narrate'; message: Message }
   /** A line spoken by one side: the player's in the bottom box, the enemy's in the top box. */
   | { type: 'say'; who: Side; text: Localized }
+  /**
+   * Whose move it is now, for the stage's phase labels: the enemy attacks
+   * (`name`: the attack), the player replies (`name`: the reply's label), the
+   * player attacks (`name`: the attack's label), or the enemy defends.
+   */
+  | { type: 'phase'; phase: 'enemyAttack' | 'reply' | 'playerAttack'; name: Localized }
+  | { type: 'phase'; phase: 'enemyDefense' }
   /** `target` lost `damage` KANNATUS (may be 0); drain its bar from `from` to `to`. */
   | { type: 'hit'; target: Side; quality: Quality; damage: number; from: number; to: number }
   | { type: 'prompt'; kind: 'reply'; options: ReplyOption[] }
@@ -129,6 +136,7 @@ function nextRound(prev: BattleState, events: BattleEvent[], rng: Rng): Step {
       type: 'narrate',
       message: { key: 'enemy.used', vars: { enemy: prev.enemy.subject, attack: attack.announce } },
     },
+    { type: 'phase', phase: 'enemyAttack', name: attack.name },
     { type: 'say', who: 'enemy', text: attack.line },
     { type: 'narrate', message: { key: 'prompt.reply' } },
     { type: 'prompt', kind: 'reply', options: replyOptions(state) },
@@ -201,6 +209,7 @@ export function chooseReply(prev: BattleState, index: number): Step {
     strongReplies: prev.strongReplies + (reply.quality === 'strong' ? 1 : 0),
   }
   const events: BattleEvent[] = [
+    { type: 'phase', phase: 'reply', name: reply.label },
     { type: 'say', who: 'player', text: reply.say },
     { type: 'say', who: 'enemy', text: reply.reaction },
     { type: 'narrate', message: { key: `effect.defend.${reply.quality}` } },
@@ -236,7 +245,9 @@ export function chooseAttack(prev: BattleState, id: string, rng: Rng): Step {
   const { to, event } = hit(prev, 'enemy', defense.quality)
   const state: BattleState = { ...prev, enemyKannatus: to, used: [...prev.used, id] }
   const events: BattleEvent[] = [
+    { type: 'phase', phase: 'playerAttack', name: attack.label },
     { type: 'say', who: 'player', text: attack.say },
+    { type: 'phase', phase: 'enemyDefense' },
     { type: 'say', who: 'enemy', text: defense.say },
     { type: 'narrate', message: { key: `effect.attack.${defense.quality}` } },
     event,

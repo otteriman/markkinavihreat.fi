@@ -1,5 +1,10 @@
 {
   "needsReview": ["sv", "en"],
+  "name": {
+    "fi": "Bensapopulismi",
+    "sv": "Bensinpopulism",
+    "en": "Fuel populism"
+  },
   "announce": {
     "fi": "BENSAPOPULISMIA",
     "sv": "BENSINPOPULISM",

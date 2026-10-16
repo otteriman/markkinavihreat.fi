@@ -49,7 +49,9 @@ const keys = (events: BattleEvent[]) =>
         : 'text'
       : e.type === 'say'
         ? `say:${e.who}`
-        : e.type,
+        : e.type === 'phase'
+          ? `phase:${e.phase}`
+          : e.type,
   )
 
 describe('battle flow', () => {
@@ -60,10 +62,12 @@ describe('battle flow', () => {
       'say:enemy',
       'round.start',
       'enemy.used',
+      'phase:enemyAttack',
       'say:enemy',
       'prompt.reply',
       'prompt',
     ])
+    expect(events[4]).toMatchObject({ name: state.enemyAttacks[0].name })
     expect(state.phase).toBe('reply')
     const prompt = events.at(-1)
     expect(prompt).toMatchObject({ type: 'prompt', kind: 'reply' })
@@ -74,6 +78,7 @@ describe('battle flow', () => {
     const { state } = start()
     const { events, state: next } = chooseReply(state, replyOf(state, 'medium'))
     expect(keys(events)).toEqual([
+      'phase:reply',
       'say:player',
       'say:enemy',
       'effect.defend.medium',
@@ -81,8 +86,24 @@ describe('battle flow', () => {
       'prompt.attack',
       'prompt',
     ])
-    expect(events[3]).toMatchObject({ target: 'player', damage: 15, from: 100, to: 85 })
+    expect(events[0]).toMatchObject({
+      name: state.enemyAttacks[0].replies[replyOf(state, 'medium')].label,
+    })
+    expect(events[4]).toMatchObject({ target: 'player', damage: 15, from: 100, to: 85 })
     expect(next.phase).toBe('attack')
+  })
+
+  it('after an attack: the player’s attack phase, then the enemy’s defense phase', () => {
+    const { state } = start()
+    const afterReply = chooseReply(state, replyOf(state, 'strong')).state
+    const { events } = chooseAttack(afterReply, 'hyva1', seededRng(4))
+    expect(keys(events).slice(0, 4)).toEqual([
+      'phase:playerAttack',
+      'say:player',
+      'phase:enemyDefense',
+      'say:enemy',
+    ])
+    expect(events[0]).toMatchObject({ name: { fi: 'hyva1 label fi' } })
   })
 
   it('uses each enemy attack at most once and shuffles the reply order', () => {

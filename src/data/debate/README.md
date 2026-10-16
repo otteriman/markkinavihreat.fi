@@ -25,7 +25,7 @@ Every text is written in all three languages: `{ "fi": "…", "sv": "…", "en":
 ## Common edits
 
 - **Change a line:** edit the text in its file.
-- **Add an enemy attack:** copy a file in `enemy-attacks/` under a new name and edit it. Each attack needs exactly 1 `strong`, 1 `medium` and 2 `weak` replies. The battle draws its attacks at random from every file there, so having more attacks than rounds is fine.
+- **Add an enemy attack:** copy a file in `enemy-attacks/` under a new name and edit it. `name` is the attack on its own, shown on the enemy's box ("Hyökkäys: Velkapaniikki"); `announce` is the form that fits the narration ("Konservatiivi käytti VELKAPANIIKKIA!"). Each attack needs exactly 1 `strong`, 1 `medium` and 2 `weak` replies. The battle draws its attacks at random from every file there, so having more attacks than rounds is fine.
 - **Add a player attack:** copy a file in `player-attacks/` and edit it. Each attack needs 4 enemy comebacks, and at least one of them must be `strong`. `order` sets its place in the 2×3 grid. If there are more than 6 player attacks, each battle shows a random 6.
 - **Remove an attack:** delete its file. The enemy needs at least as many attacks as there are rounds, and the player at least 6.
 - **Make an attack stronger or weaker:** change the `quality` of the enemy's comebacks. An attack's tier (Vahva / Hyvä / Heikko) is never written down; `debate:report` works it out from the comebacks.

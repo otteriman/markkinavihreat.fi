@@ -21,6 +21,10 @@ export const REQUIRED_UI_KEYS = [
   'enemy.used',
   'prompt.reply',
   'prompt.attack',
+  'tag.enemyAttack',
+  'tag.reply',
+  'tag.playerAttack',
+  'tag.enemyDefense',
   ...QUALITIES.map((q) => `effect.attack.${q}`),
   ...QUALITIES.map((q) => `effect.defend.${q}`),
   'end.koWin',
@@ -118,6 +122,7 @@ class Checker {
     for (const attack of enemy.attacks) {
       const f = attack.source
       this.needsReview(f, 'file', (attack as unknown as Obj).needsReview)
+      this.text(f, 'name', attack.name, 'label')
       this.text(f, 'announce', attack.announce, 'label')
       this.text(f, 'line', attack.line, 'line')
       if (!Array.isArray(attack.replies)) {

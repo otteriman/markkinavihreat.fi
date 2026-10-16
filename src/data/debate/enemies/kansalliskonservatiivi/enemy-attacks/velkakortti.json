@@ -1,5 +1,10 @@
 {
   "needsReview": ["sv", "en"],
+  "name": {
+    "fi": "Velkapaniikki",
+    "sv": "Skuldpanik",
+    "en": "Debt panic"
+  },
   "announce": {
     "fi": "VELKAPANIIKKIA",
     "sv": "SKULDPANIK",

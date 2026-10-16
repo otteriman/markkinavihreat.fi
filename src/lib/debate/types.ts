@@ -33,6 +33,8 @@ export interface EnemyAttack {
   id: string
   /** Path of the source file inside src/data/debate/, for error messages. */
   source: string
+  /** The attack's name on its own, for the phase label: "Hyökkäys: {name}". */
+  name: Localized
   /** The attack's name as it fits "{enemy} käytti {attack}!". */
   announce: Localized
   /** The enemy's line (top box). */
