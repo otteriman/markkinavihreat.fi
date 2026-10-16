@@ -296,7 +296,12 @@ Each phase ends with `npm run format:check && npm run lint && npm run check && n
    - Option grids ignore picks for their first 300 ms and the end screen for 800 ms, so tapping through text can't pick an answer or skip the result by accident.
    - Used attacks stay in the grid, struck through and announced as used to screen readers; picking one does nothing.
    - The zoom also leaves room for the site's sticky nav, so the whole stage fits the screen once started.
-4. **Art and juice:** final sprites, intro slide-in, bar drain, optional chiptune audio and mute, reduced-motion variants.
+4. **Art and juice** (done): final sprites, intro slide-in, bar drain, optional chiptune audio and mute, reduced-motion variants. Decisions:
+   - **Sprites** (`src/lib/debate/sprites.ts`), original pixel art drawn as text grids: the national conservative from the front (48 × 50: cap, frown, mustache, fleece vest over a flannel shirt, arms crossed) and Markkinavihreä from behind (56 × 50: tidy hair, shirt collar, blazer, a finger raised mid-argument). Larger than the Phase 2 placeholders, closer to Game Boy proportions; the layout keeps both clear of the status boxes and labels.
+   - **Entrance:** both sides slide in from their own edge as a battle starts (an `enter` event from the engine), before the opening line. A playable stage is rendered with both off stage, so nothing flashes before the battle; without JavaScript they're shown as usual.
+   - **Hits** flash the avatar (from the earlier request) and the bar drains meanwhile; the beaten enemy slides out (earlier request).
+   - **Sound** (`src/scripts/debate/audio.ts`): square-wave chiptune made with the Web Audio API, no audio files: a quiet blip while text types, a tick when the cursor moves, a chirp on a pick, a thud for hits, a falling wobble for backfires, a jingle when he flees and a falling one when the player loses. Off by default behind a toggle under the stage ("Äänet päälle" / "Äänet pois"); the AudioContext is only created by that click, and nothing is remembered between visits.
+   - **Reduced motion:** no typing, flashing, sliding or blinking cue; text and sprites simply appear. Sound is separate (the toggle).
 5. **Polish:** e2e in all three languages, mobile portrait pass, accessibility pass (screen-reader narration, focus order), Lighthouse check, README entry, a short "how to edit the game's content" section in the docs.
 6. **Launch checklist:** sv/en reviewed by a human and `needsReview` cleared (after the game works, not before), remove noindex and the sitemap exclusion, add Nav/Footer entry, PR to `main` for human review.
 
