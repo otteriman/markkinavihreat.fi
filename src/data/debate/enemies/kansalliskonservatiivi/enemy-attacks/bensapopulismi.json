@@ -1,0 +1,87 @@
+{
+  "needsReview": ["sv", "en"],
+  "announce": {
+    "fi": "BENSAPOPULISMIA",
+    "sv": "BENSINPOPULISM",
+    "en": "FUEL POPULISM"
+  },
+  "line": {
+    "fi": "Euron pensa! Jakeluvelvoite kurittaa maaseudun ihmistä!",
+    "sv": "Bensin för en euro! Distributionsskyldigheten straffar folk på landsbygden!",
+    "en": "Fuel for a euro! The biofuel mandate punishes people in the countryside!"
+  },
+  "replies": [
+    {
+      "label": {
+        "fi": "Omavaraisuus",
+        "sv": "Egen energi",
+        "en": "Self-reliance"
+      },
+      "quality": "strong",
+      "say": {
+        "fi": "Joka tankillinen on rahaa ulkomaiselle öljylle. Kotimainen biokaasu ja sähkö pitävät eurot Suomessa.",
+        "sv": "Varje full tank är pengar till utländsk olja. Inhemsk biogas och el håller eurona i Finland.",
+        "en": "Every tankful is money for foreign oil. Domestic biogas and electricity keep the euros in Finland."
+      },
+      "reaction": {
+        "fi": "...",
+        "sv": "...",
+        "en": "..."
+      }
+    },
+    {
+      "label": {
+        "fi": "Käyttökulut",
+        "sv": "Driftskostnad",
+        "en": "Running costs"
+      },
+      "quality": "medium",
+      "say": {
+        "fi": "Sähköautolla ajat satasen muutamalla eurolla.",
+        "sv": "Med elbil kör du tio mil för några euro.",
+        "en": "An electric car does a hundred kilometres for a few euros."
+      },
+      "reaction": {
+        "fi": "Ja itse auto maksaa 50 000!",
+        "sv": "Och själva bilen kostar 50 000!",
+        "en": "And the car itself costs 50,000!"
+      }
+    },
+    {
+      "label": {
+        "fi": "Joukkoliikenne",
+        "sv": "Kollektivtrafik",
+        "en": "Public transport"
+      },
+      "quality": "weak",
+      "say": {
+        "fi": "Panostetaan joukkoliikenteeseen!",
+        "sv": "Vi satsar på kollektivtrafiken!",
+        "en": "Let’s invest in public transport!"
+      },
+      "reaction": {
+        "fi": "Meidän kylään bussi kulkee kerran viikossa. Torstaisin.",
+        "sv": "Till vår by går bussen en gång i veckan. På torsdagar.",
+        "en": "The bus comes to our village once a week. On Thursdays."
+      }
+    },
+    {
+      "label": {
+        "fi": "Ilmastotiede",
+        "sv": "Klimatforskning",
+        "en": "Climate science"
+      },
+      "quality": "weak",
+      "say": {
+        "fi": "IPCC:n uusimman raportin mukaan...",
+        "sv": "Enligt IPCC:s senaste rapport...",
+        "en": "According to the latest IPCC report..."
+      },
+      "reaction": {
+        "fi": "Taas niitä raportteja. Tankki ei täyty raporteilla.",
+        "sv": "Rapporter igen. Tanken fylls inte med rapporter.",
+        "en": "Reports again. You can’t fill a tank with reports."
+      }
+    }
+  ]
+}

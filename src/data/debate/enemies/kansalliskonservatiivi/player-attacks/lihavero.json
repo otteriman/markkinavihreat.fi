@@ -1,0 +1,48 @@
+{
+  "needsReview": ["sv", "en"],
+  "order": 6,
+  "label": {
+    "fi": "Lihavero",
+    "sv": "Köttskatt",
+    "en": "Meat tax"
+  },
+  "say": {
+    "fi": "Lihalle vero, ilmastolle hyvää!",
+    "sv": "Skatt på kött, bra för klimatet!",
+    "en": "Tax the meat, help the climate!"
+  },
+  "defenses": [
+    {
+      "quality": "strong",
+      "say": {
+        "fi": "Makkaravero! Kuulitteko, kansalaiset?!",
+        "sv": "Korvskatt! Hörde ni det, medborgare?!",
+        "en": "A sausage tax! Did you hear that, citizens?!"
+      }
+    },
+    {
+      "quality": "strong",
+      "say": {
+        "fi": "Ja suomalainen karjatila menee nurin!",
+        "sv": "Och den finländska boskapsgården går omkull!",
+        "en": "And the Finnish cattle farm goes under!"
+      }
+    },
+    {
+      "quality": "strong",
+      "say": {
+        "fi": "Kotimainen liha kallistuu, tuontiliha voittaa.",
+        "sv": "Inhemskt kött blir dyrare, importköttet vinner.",
+        "en": "Domestic meat gets pricier, imported meat wins."
+      }
+    },
+    {
+      "quality": "medium",
+      "say": {
+        "fi": "Minä syön mitä haluan.",
+        "sv": "Jag äter vad jag vill.",
+        "en": "I’ll eat what I want."
+      }
+    }
+  ]
+}

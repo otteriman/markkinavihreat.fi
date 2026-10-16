@@ -1,0 +1,24 @@
+{
+  "needsReview": ["sv", "en"],
+  "status": {
+    "fi": "KANSALLISKONS.",
+    "sv": "NATIONALKONS.",
+    "en": "NATIONAL CONS."
+  },
+  "subject": {
+    "fi": "Konservatiivi",
+    "sv": "Konservativen",
+    "en": "The conservative"
+  },
+  "appear": {
+    "fi": "Villi kansalliskonservatiivi ilmestyi!",
+    "sv": "En vild nationalkonservativ dök upp!",
+    "en": "A wild national conservative appeared!"
+  },
+  "opening": {
+    "fi": "Vihervassarihan se siellä!",
+    "sv": "Jaså, där har vi ju en grön vänsterhippie!",
+    "en": "Well, if it isn’t a green leftie!"
+  },
+  "sprite": "kansalliskonservatiivi"
+}

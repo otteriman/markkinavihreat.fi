@@ -1,0 +1,128 @@
+{
+  "status.player": {
+    "fi": "MARKKINAVIHREÄ",
+    "sv": "MARKNADSGRÖN",
+    "en": "MARKET GREEN",
+    "needsReview": ["sv", "en"]
+  },
+  "status.kannatus": {
+    "fi": "KANNATUS",
+    "sv": "STÖD",
+    "en": "SUPPORT",
+    "needsReview": ["sv", "en"]
+  },
+  "round.start": {
+    "fi": "KIERROS {round}/{rounds}",
+    "sv": "RUNDA {round}/{rounds}",
+    "en": "ROUND {round}/{rounds}",
+    "needsReview": ["sv", "en"]
+  },
+  "enemy.used": {
+    "fi": "{enemy} käytti {attack}!",
+    "sv": "{enemy} använde {attack}!",
+    "en": "{enemy} used {attack}!",
+    "needsReview": ["sv", "en"]
+  },
+  "prompt.reply": {
+    "fi": "Miten vastaat?",
+    "sv": "Hur svarar du?",
+    "en": "How do you reply?",
+    "needsReview": ["sv", "en"]
+  },
+  "prompt.attack": {
+    "fi": "Millä hyökkäät?",
+    "sv": "Vad går du till angrepp med?",
+    "en": "What’s your attack?",
+    "needsReview": ["sv", "en"]
+  },
+  "effect.attack.strong": {
+    "fi": "Se ei toiminut ollenkaan...",
+    "sv": "Det fungerade inte alls...",
+    "en": "It didn’t work at all...",
+    "needsReview": ["sv", "en"]
+  },
+  "effect.attack.medium": {
+    "fi": "Se onnistui ihan OK.",
+    "sv": "Det gick helt okej.",
+    "en": "It worked, sort of.",
+    "needsReview": ["sv", "en"]
+  },
+  "effect.attack.weak": {
+    "fi": "Se oli erittäin tehokas!",
+    "sv": "Det var mycket effektivt!",
+    "en": "It was very effective!",
+    "needsReview": ["sv", "en"]
+  },
+  "effect.defend.strong": {
+    "fi": "Torjunta oli hyvin tehokas!",
+    "sv": "Försvaret var mycket effektivt!",
+    "en": "Your defence was very effective!",
+    "needsReview": ["sv", "en"]
+  },
+  "effect.defend.medium": {
+    "fi": "Torjuit osan hyökkäyksestä!",
+    "sv": "Du parerade en del av angreppet!",
+    "en": "You blocked part of the attack!",
+    "needsReview": ["sv", "en"]
+  },
+  "effect.defend.weak": {
+    "fi": "Se osui täysillä!",
+    "sv": "Det träffade med full kraft!",
+    "en": "It hit you full force!",
+    "needsReview": ["sv", "en"]
+  },
+  "end.koWin": {
+    "fi": "{enemy} vaihtoi puheenaihetta! Voitit väittelyn!",
+    "sv": "{enemy} bytte samtalsämne! Du vann debatten!",
+    "en": "{enemy} changed the subject! You won the debate!",
+    "needsReview": ["sv", "en"]
+  },
+  "end.koLose": {
+    "fi": "Kannatuksesi romahti... Heräät puoluetoimistolta.",
+    "sv": "Ditt stöd rasade... Du vaknar upp på partikansliet.",
+    "en": "Your support collapsed... You wake up at party HQ.",
+    "needsReview": ["sv", "en"]
+  },
+  "end.pointsWin": {
+    "fi": "VAALI-ILTA! Voitit väittelyn {playerScore}–{enemyScore}!",
+    "sv": "VALVAKA! Du vann debatten {playerScore}–{enemyScore}!",
+    "en": "ELECTION NIGHT! You won the debate {playerScore}–{enemyScore}!",
+    "needsReview": ["sv", "en"]
+  },
+  "end.pointsLose": {
+    "fi": "VAALI-ILTA! Hävisit väittelyn {playerScore}–{enemyScore}.",
+    "sv": "VALVAKA! Du förlorade debatten {playerScore}–{enemyScore}.",
+    "en": "ELECTION NIGHT! You lost the debate {playerScore}–{enemyScore}.",
+    "needsReview": ["sv", "en"]
+  },
+  "end.tie": {
+    "fi": "Tasapeli! Hallitusneuvottelut jatkuvat...",
+    "sv": "Oavgjort! Regeringsförhandlingarna fortsätter...",
+    "en": "It’s a tie! Coalition talks continue...",
+    "needsReview": ["sv", "en"]
+  },
+  "end.strongReplies": {
+    "fi": "Täydelliset vastaukset: {count}/{total}",
+    "sv": "Perfekta svar: {count}/{total}",
+    "en": "Perfect replies: {count}/{total}",
+    "needsReview": ["sv", "en"]
+  },
+  "end.playAgain": {
+    "fi": "Pelaa uudelleen",
+    "sv": "Spela igen",
+    "en": "Play again",
+    "needsReview": ["sv", "en"]
+  },
+  "sound.on": {
+    "fi": "Äänet päälle",
+    "sv": "Ljud på",
+    "en": "Sound on",
+    "needsReview": ["sv", "en"]
+  },
+  "sound.off": {
+    "fi": "Äänet pois",
+    "sv": "Ljud av",
+    "en": "Sound off",
+    "needsReview": ["sv", "en"]
+  }
+}

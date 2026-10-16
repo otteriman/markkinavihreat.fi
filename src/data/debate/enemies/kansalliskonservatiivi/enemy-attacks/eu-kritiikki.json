@@ -1,0 +1,87 @@
+{
+  "needsReview": ["sv", "en"],
+  "announce": {
+    "fi": "EU-KRITIIKKIÄ",
+    "sv": "EU-KRITIK",
+    "en": "EU CRITICISM"
+  },
+  "line": {
+    "fi": "Bryssel päättää jo kaikesta! Suomi maksaa ja EU määrää!",
+    "sv": "Bryssel bestämmer redan allt! Finland betalar och EU befaller!",
+    "en": "Brussels already decides everything! Finland pays and the EU gives the orders!"
+  },
+  "replies": [
+    {
+      "label": {
+        "fi": "Turvallisuus",
+        "sv": "Säkerhet",
+        "en": "Security"
+      },
+      "quality": "strong",
+      "say": {
+        "fi": "Venäjän naapurissa EU on meidän turva. Yksin pieni maa on heikko.",
+        "sv": "Som Rysslands granne är EU vårt skydd. Ensamt är ett litet land svagt.",
+        "en": "Next door to Russia, the EU keeps us safe. Alone, a small country is weak."
+      },
+      "reaction": {
+        "fi": "...",
+        "sv": "...",
+        "en": "..."
+      }
+    },
+    {
+      "label": {
+        "fi": "Sisämarkkinat",
+        "sv": "Inre marknaden",
+        "en": "Single market"
+      },
+      "quality": "medium",
+      "say": {
+        "fi": "Yli puolet viennistämme menee EU-maihin. Suomalainen työ tarvitsee sisämarkkinat.",
+        "sv": "Över hälften av vår export går till EU-länder. Finländska jobb behöver den inre marknaden.",
+        "en": "Over half our exports go to EU countries. Finnish jobs need the single market."
+      },
+      "reaction": {
+        "fi": "Vientiä oli ennen EU:takin!",
+        "sv": "Vi exporterade före EU också!",
+        "en": "We were exporting before the EU too!"
+      }
+    },
+    {
+      "label": {
+        "fi": "Eurooppalaisuus",
+        "sv": "Europeiskhet",
+        "en": "Being European"
+      },
+      "quality": "weak",
+      "say": {
+        "fi": "Olemme ylpeitä eurooppalaisia!",
+        "sv": "Vi är stolta européer!",
+        "en": "We are proud Europeans!"
+      },
+      "reaction": {
+        "fi": "Minä olen suomalainen. Piste.",
+        "sv": "Jag är finländare. Punkt.",
+        "en": "I am Finnish. Full stop."
+      }
+    },
+    {
+      "label": {
+        "fi": "Vihreä siirtymä",
+        "sv": "Grön omställning",
+        "en": "Green transition"
+      },
+      "quality": "weak",
+      "say": {
+        "fi": "EU:n ilmastotavoitteet vievät meitä oikeaan suuntaan!",
+        "sv": "EU:s klimatmål leder oss i rätt riktning!",
+        "en": "The EU’s climate targets are taking us in the right direction!"
+      },
+      "reaction": {
+        "fi": "Juuri tätä minä tarkoitin! Kohta Bryssel päättää saunastakin!",
+        "sv": "Det är precis det jag menar! Snart bestämmer Bryssel om bastun också!",
+        "en": "That’s exactly my point! Next, Brussels will decide about our saunas too!"
+      }
+    }
+  ]
+}

@@ -1,0 +1,89 @@
+{
+  "needsReview": ["sv", "en"],
+  "announce": {
+    "fi": "MAAHANMUUTTOA",
+    "sv": "INVANDRING",
+    "en": "IMMIGRATION"
+  },
+  "line": {
+    "fi": "Käynnissä on väestönvaihto!",
+    "sv": "Ett befolkningsutbyte pågår!",
+    "en": "A population replacement is under way!"
+  },
+  "replies": [
+    {
+      "label": {
+        "fi": "Talous",
+        "sv": "Ekonomi",
+        "en": "Economy"
+      },
+      "quality": "strong",
+      "say": {
+        "fi": "Suomi tarvitsee maahanmuuttoa, tätä sanoo myös elinkeinoelämä.",
+        "sv": "Finland behöver invandring, det säger också näringslivet.",
+        "en": "Finland needs immigration, and business leaders say so too."
+      },
+      "reaction": {
+        "fi": "...",
+        "sv": "...",
+        "en": "..."
+      }
+    },
+    {
+      "label": {
+        "fi": "Mukailu",
+        "sv": "Medgivande",
+        "en": "Meet halfway"
+      },
+      "quality": "medium",
+      "say": {
+        "fi": "Maahanmuuttoon liittyy aitoja ongelmia, ja niihin pitää kiinnittää huomiota.",
+        "sv": "Invandringen har verkliga problem, och dem måste vi ta på allvar.",
+        "en": "Immigration does bring real problems, and we have to pay attention to them."
+      },
+      "reaction": {
+        "fi": "No johan vihreätkin on älynneet, ettei me voida tehdä Helsingistä Mokadishua!",
+        "sv": "Äntligen har till och med de gröna fattat att vi inte kan göra Helsingfors till Mogadishu!",
+        "en": "So even the greens finally get that we can’t turn Helsinki into Mogadishu!"
+      }
+    },
+    {
+      "label": {
+        "fi": "Tilastot",
+        "sv": "Statistik",
+        "en": "Statistics"
+      },
+      "quality": "weak",
+      "say": {
+        "fi": "Tilastojen mukaan...",
+        "sv": "Enligt statistiken...",
+        "en": "According to the statistics..."
+      },
+      "reaction": {
+        "fi": "Tilastot tehdään Helsingissä.",
+        "sv": "Statistiken görs i Helsingfors.",
+        "en": "Statistics are made in Helsinki."
+      }
+    },
+    {
+      "label": {
+        "fi": "Rasismi",
+        "sv": "Rasism",
+        "en": "Racism"
+      },
+      "quality": "weak",
+      "say": {
+        "fi": "Tuo on rasistista puhetta!",
+        "sv": "Det där är rasistiskt prat!",
+        "en": "That’s racist talk!",
+        "needsReview": ["fi", "sv", "en"]
+      },
+      "reaction": {
+        "fi": "Heti rasistiksi haukutaan. Siksi tästä ei saa puhua ääneen.",
+        "sv": "Genast kallas man rasist. Det är därför ingen vågar säga något.",
+        "en": "Straight away I’m a racist. That’s why nobody dares say anything.",
+        "needsReview": ["fi", "sv", "en"]
+      }
+    }
+  ]
+}

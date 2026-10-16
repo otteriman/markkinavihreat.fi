@@ -1,0 +1,87 @@
+{
+  "needsReview": ["sv", "en"],
+  "announce": {
+    "fi": "VELKAPANIIKKIA",
+    "sv": "SKULDPANIK",
+    "en": "DEBT PANIC"
+  },
+  "line": {
+    "fi": "Rahaa ei ole! Lapsemme maksavat teidän viherhaaveenne!",
+    "sv": "Pengarna är slut! Våra barn får betala era gröna drömmar!",
+    "en": "There’s no money! Our children will pay for your green dreams!"
+  },
+  "replies": [
+    {
+      "label": {
+        "fi": "Veroparatiisit",
+        "sv": "Skatteparadis",
+        "en": "Tax havens"
+      },
+      "quality": "strong",
+      "say": {
+        "fi": "Rahaa on, se vain valuu suuryhtiöiden mukana veroparatiiseihin. Suomen verot Suomeen!",
+        "sv": "Pengar finns, de rinner bara iväg till skatteparadis med storbolagen. Finlands skatter till Finland!",
+        "en": "There is money, it just flows to tax havens with the big corporations. Finland’s taxes belong in Finland!"
+      },
+      "reaction": {
+        "fi": "...",
+        "sv": "...",
+        "en": "..."
+      }
+    },
+    {
+      "label": {
+        "fi": "Hyvinvointi",
+        "sv": "Välfärd",
+        "en": "Welfare"
+      },
+      "quality": "medium",
+      "say": {
+        "fi": "Koulu, terveyskeskus ja vanhustenhoito ovat sitä, mistä Suomi on rakennettu.",
+        "sv": "Skolan, hälsocentralen och äldreomsorgen är det som Finland är byggt på.",
+        "en": "Schools, health centres and elderly care are what Finland was built on."
+      },
+      "reaction": {
+        "fi": "Kaunista puhetta. Mutta millä rahalla?",
+        "sv": "Vackert talat. Men med vilka pengar?",
+        "en": "Nice words. But with what money?"
+      }
+    },
+    {
+      "label": {
+        "fi": "Veronkorotus",
+        "sv": "Skattehöjning",
+        "en": "Tax hike"
+      },
+      "quality": "weak",
+      "say": {
+        "fi": "Nostetaan veroja!",
+        "sv": "Vi höjer skatterna!",
+        "en": "Let’s raise taxes!"
+      },
+      "reaction": {
+        "fi": "Verohelvetti! Kiitos, että sanoit sen ääneen.",
+        "sv": "Skattehelvete! Tack för att du sa det högt.",
+        "en": "Tax hell! Thanks for saying it out loud."
+      }
+    },
+    {
+      "label": {
+        "fi": "Varallisuusvero",
+        "sv": "Förmögenhetsskatt",
+        "en": "Wealth tax"
+      },
+      "quality": "weak",
+      "say": {
+        "fi": "Säädetään varallisuusvero!",
+        "sv": "Vi inför en förmögenhetsskatt!",
+        "en": "Let’s bring in a wealth tax!"
+      },
+      "reaction": {
+        "fi": "Kateusvero! Häätää kaikki rikkaat ulkomaille!",
+        "sv": "Avundsskatt! Den jagar alla rika utomlands!",
+        "en": "An envy tax! It’ll chase every rich person abroad!"
+      }
+    }
+  ]
+}
