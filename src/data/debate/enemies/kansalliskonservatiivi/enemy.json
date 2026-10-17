@@ -25,5 +25,17 @@
     "sv": "Konservativen förlorade debatten och flydde till Twitter!",
     "en": "The conservative lost the debate and fled to Twitter!"
   },
+  "opensDebate": {
+    "fi": "Kansalliskonservatiivi aloittaa väittelyn.",
+    "sv": "Den nationalkonservative inleder debatten.",
+    "en": "The national conservative opens the debate.",
+    "needsReview": ["sv", "en"]
+  },
+  "changesTopic": {
+    "fi": "Kansalliskonservatiivi vaihtaa puheenaihetta.",
+    "sv": "Den nationalkonservative byter ämne.",
+    "en": "The national conservative changes the subject.",
+    "needsReview": ["sv", "en"]
+  },
   "sprite": "kansalliskonservatiivi"
 }

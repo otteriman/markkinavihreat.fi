@@ -128,6 +128,7 @@ describe('validateDebate', () => {
     cfg.presentation = {} as never
     expect(problemsFor(() => {}, cfg)).toEqual([
       'src/data/debate/config.json: presentation.announceEnemyAttack must be true or false',
+      'src/data/debate/config.json: presentation.announceTurns must be true or false',
     ])
   })
 

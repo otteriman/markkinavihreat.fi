@@ -50,6 +50,11 @@ export type BattleEvent =
   | { type: 'phase'; phase: 'enemyDefense' | 'newRound' }
   /** Both sides take the stage (they slide in when the battle starts). */
   | { type: 'enter' }
+  /**
+   * Whose turn it is to attack: the enemy's (`first` on his first attack)
+   * or the player's. Narrated only with presentation.announceTurns.
+   */
+  | { type: 'turn'; who: Side; first: boolean }
   /** `who` leaves the stage (the enemy slides out when knocked out). */
   | { type: 'exit'; who: Side }
   /** A special character steps in (before a critical hit), says `text`, and leaves. */
@@ -216,6 +221,7 @@ function nextRound(prev: BattleState, events: BattleEvent[], rng: Rng): Step {
   }
   events.push(
     { type: 'phase', phase: 'newRound' },
+    { type: 'turn', who: 'enemy', first: round === 1 },
     {
       type: 'narrate',
       message: { key: 'enemy.used', vars: { enemy: prev.enemy.subject, attack: attack.announce } },
@@ -412,6 +418,7 @@ export function chooseReply(prev: BattleState, index: number, rng?: Rng): Step {
 
   const next: BattleState = { ...state, phase: 'attack' }
   events.push(
+    { type: 'turn', who: 'player', first: false },
     { type: 'narrate', message: { key: 'prompt.attack' } },
     { type: 'prompt', kind: 'attack', options: attackOptions(next) },
   )

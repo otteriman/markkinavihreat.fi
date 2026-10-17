@@ -43,6 +43,7 @@ export const REQUIRED_UI_KEYS = [
   'end.tie',
   'end.strongReplies',
   'end.playAgain',
+  'turn.player',
   'intro.title',
   'intro.start',
   'sound.on',
@@ -183,6 +184,8 @@ class Checker {
     this.text(file, 'appear', enemy.appear, 'bottomLine')
     this.text(file, 'opening', enemy.opening, 'line')
     this.text(file, 'defeat', enemy.defeat, 'bottomLine')
+    this.text(file, 'opensDebate', enemy.opensDebate, 'bottomLine')
+    this.text(file, 'changesTopic', enemy.changesTopic, 'bottomLine')
     if (typeof enemy.sprite !== 'string' || !enemy.sprite) this.add(file, 'sprite is missing')
     else if (!(enemy.sprite in SPRITES)) {
       this.add(file, `sprite "${enemy.sprite}" doesn’t exist in src/lib/debate/sprites.ts`)
@@ -279,8 +282,10 @@ class Checker {
         `rules.replyMix adds up to ${total} but rules.repliesPerAttack is ${rules.repliesPerAttack}`,
       )
     }
-    if (typeof this.config.presentation?.announceEnemyAttack !== 'boolean') {
-      this.add('config.json', 'presentation.announceEnemyAttack must be true or false')
+    for (const key of ['announceEnemyAttack', 'announceTurns'] as const) {
+      if (typeof this.config.presentation?.[key] !== 'boolean') {
+        this.add('config.json', `presentation.${key} must be true or false`)
+      }
     }
     if (!(difficulty in difficulties)) {
       this.add('config.json', `"difficulty" names "${difficulty}", which isn’t in "difficulties"`)

@@ -19,6 +19,10 @@ import type { Enemy, PresentationOptions, UiStrings } from './types'
  * - The enemy's box empties (text and label) when a new round starts and when
  *   the player attacks, so it never shows a line he has finished with.
  * - A new round and the ending clear both labels. Rounds aren't announced.
+ * - With presentation.announceTurns, a line says whose turn it is as each
+ *   side's attack begins ("Kansalliskonservatiivi vaihtaa puheenaihetta.",
+ *   "Sinun vuorosi valita puheenaihe."); the player's clears his box and
+ *   the labels first.
  * - Both sides slide in as the battle starts; a knocked-out enemy slides off
  *   the stage before his defeat line; when the player loses, the screen
  *   closes to dark in a circle before the end screen.
@@ -91,7 +95,7 @@ export function planSteps(
   locale: Locale,
   ui: UiStrings,
   enemy: Enemy,
-  { announceEnemyAttack = true }: Partial<PresentationOptions> = {},
+  { announceEnemyAttack = true, announceTurns = true }: Partial<PresentationOptions> = {},
 ): Step[] {
   const steps: Step[] = []
   const you = format({ key: 'a11y.you' }, locale, ui)
@@ -179,6 +183,22 @@ export function planSteps(
       case 'enter':
         steps.push({ kind: 'enter' })
         break
+      case 'turn': {
+        // config.json presentation.announceTurns: false skips these lines.
+        if (!announceTurns) break
+        const text =
+          event.who === 'enemy'
+            ? localize(event.first ? enemy.opensDebate : enemy.changesTopic, locale)
+            : format({ key: 'turn.player' }, locale, ui)
+        if (event.who === 'player') {
+          steps.push({ kind: 'clear', box: 'top' }, { kind: 'tags', top: null, bottom: null })
+        }
+        steps.push(
+          { kind: 'type', box: 'bottom', text, announce: text },
+          { kind: 'wait', until: 'advance' },
+        )
+        break
+      }
       case 'specialEnter':
         steps.push({ kind: 'cutIn', special: event.special.id })
         break

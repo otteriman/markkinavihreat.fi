@@ -15,7 +15,7 @@ Both also run in CI (`npm run validate:translations`, `npm run test`).
 config.json                       difficulty presets, guardrails, content rules
 ui.json                           narration and UI texts ("{enemy} käytti {attack}!" …)
 enemies/<enemy>/
-  enemy.json                      name, intro texts, defeat line, sprite
+  enemy.json                      name, intro texts, turn lines, defeat line, sprite
   enemy-attacks/<id>.json         one enemy attack and the player's 4 replies to it
   player-attacks/<id>.json        one player attack and the enemy's 4 comebacks to it
 specials/<id>.json                a special character who can step in for a critical hit
@@ -59,12 +59,12 @@ Quality means how good the _defender's_ answer is: `strong` blocks the hit compl
 
 Length limits, set in `config.json` under `rules`, follow the boxes:
 
-| Text                                      | Limit                        | Where it shows                       |
-| ----------------------------------------- | ---------------------------- | ------------------------------------ |
-| Labels (replies, attacks, names)          | 22 (`maxLabelLength`)        | the option grid and the status boxes |
-| The enemy's lines                         | 120 (`maxLineLength`)        | his box, three lines                 |
-| The player's lines, `appear` and `defeat` | 160 (`maxBottomLineLength`)  | the bottom box, four lines           |
-| A special character's lines               | 200 (`maxSpecialLineLength`) | his box during a cut-in, four lines  |
+| Text                                                   | Limit                        | Where it shows                       |
+| ------------------------------------------------------ | ---------------------------- | ------------------------------------ |
+| Labels (replies, attacks, names)                       | 22 (`maxLabelLength`)        | the option grid and the status boxes |
+| The enemy's lines                                      | 120 (`maxLineLength`)        | his box, three lines                 |
+| The player's lines, `appear`, `defeat`, the turn lines | 160 (`maxBottomLineLength`)  | the bottom box, four lines           |
+| A special character's lines                            | 200 (`maxSpecialLineLength`) | his box during a cut-in, four lines  |
 
 Characters are only a rough guide, since letters differ in width. The debate lab (`/debate-lab/`) measures every text in its real box, in all three languages, and lists any that don't fit.
 
@@ -85,6 +85,8 @@ Characters are only a rough guide, since letters differ in width. The debate lab
 | `critical.extraMin`, `critical.extraMax` | A critical hit's extra damage: a whole number in this range, every value equally likely. Leave `critical` out and they never happen |
 
 `config.json` → `presentation.announceEnemyAttack` decides whether each enemy attack is narrated ("Konservatiivi käytti VELKAPANIIKKIA!") before his line. It's `false` for now, because the label on his box ("Hyökkäys: Velkapaniikki") already names the attack; set it to `true` to bring the narration back. Each attack's `announce` text stays in its file either way.
+
+`presentation.announceTurns` decides whether each round starts with a line naming whose turn it is: the enemy's `opensDebate` ("Kansalliskonservatiivi aloittaa väittelyn.") in the first round and his `changesTopic` ("Kansalliskonservatiivi vaihtaa puheenaihetta.") in later rounds, then `ui.json`'s `turn.player` ("Sinun vuorosi valita puheenaihe.") before the player picks an attack. Each waits for a press. It's `true` for now; set it to `false` to drop the lines. The texts stay in their files either way.
 
 How a battle runs: each round the enemy attacks and you reply, then you attack and he defends. A `strong` answer blocks the hit and, with `counter` above 0, turns it back on the attacker; `medium` lets part of it through; `weak` all of it. There is no fixed number of rounds: the first side out of KANNATUS loses. The shipped numbers aim for about four rounds; `npm run debate:balance` shows the average length.
 

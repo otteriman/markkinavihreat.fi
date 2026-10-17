@@ -147,6 +147,7 @@
     "msPerChar": 30
   },
   "presentation": {
-    "announceEnemyAttack": false
+    "announceEnemyAttack": false,
+    "announceTurns": true
   }
 }

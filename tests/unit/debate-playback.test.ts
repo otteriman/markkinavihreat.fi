@@ -6,7 +6,9 @@ import { seededRng } from '../../src/lib/debate/rng'
 import { specDifficulty, specEnemy, testSpecial } from './debate-fixtures'
 
 const enemy = specEnemy()
-const plan = (events: Parameters<typeof planSteps>[0]) => planSteps(events, 'fi', ui, enemy)
+/** Turn announcements off, so the shapes below test the rest; one test turns them on. */
+const plan = (events: Parameters<typeof planSteps>[0]) =>
+  planSteps(events, 'fi', ui, enemy, { announceTurns: false })
 
 /**
  * Compact form: "type:bottom", "wait:advance", "hit:player", "prompt:reply",
@@ -69,7 +71,10 @@ describe('planSteps', () => {
 
   it('without the attack narration: no "käytti" line, a fresh bottom box, the label read out', () => {
     const { start } = battle()
-    const steps = planSteps(start.events, 'fi', ui, enemy, { announceEnemyAttack: false })
+    const steps = planSteps(start.events, 'fi', ui, enemy, {
+      announceEnemyAttack: false,
+      announceTurns: false,
+    })
     expect(shape(steps)).toEqual([
       'enter',
       'type:bottom', // Villi … ilmestyi!
@@ -224,6 +229,7 @@ describe('planSteps', () => {
       'fi',
       ui,
       critEnemy,
+      { announceTurns: false },
     )
     expect(shape(steps)).toEqual([
       'tags:bottom', // Vastaus: <reply>
@@ -254,5 +260,43 @@ describe('planSteps', () => {
     })
     expect(steps[14]).toMatchObject({ text: 'Kriittinen osuma!' })
     expect(steps[15]).toMatchObject({ kind: 'hit', damage: 35, critical: true })
+  })
+
+  it('with announceTurns: whose turn it is, before each side’s attack', () => {
+    const { rng, start } = battle()
+    const opening = planSteps(start.events, 'fi', ui, enemy)
+    const lines = (steps: Step[]) =>
+      steps.flatMap((s) => (s.kind === 'type' && s.box === 'bottom' ? [s.text] : []))
+    // His first attack opens the debate, after the opening lines.
+    expect(lines(opening)).toContain('opens fi')
+    const afterReply = chooseReply(start.state, 0)
+    const replySteps = planSteps(afterReply.events, 'fi', ui, enemy)
+    // The player's turn: his box and the labels go, then the line, before the grid.
+    const turn = replySteps.findIndex(
+      (s) => s.kind === 'type' && s.text === 'Sinun vuorosi valita puheenaihe.',
+    )
+    expect(replySteps.slice(turn - 2, turn + 2)).toEqual([
+      { kind: 'clear', box: 'top' },
+      { kind: 'tags', top: null, bottom: null },
+      {
+        kind: 'type',
+        box: 'bottom',
+        text: 'Sinun vuorosi valita puheenaihe.',
+        announce: 'Sinun vuorosi valita puheenaihe.',
+      },
+      { kind: 'wait', until: 'advance' },
+    ])
+    // A later attack of his changes the subject.
+    const next = planSteps(chooseAttack(afterReply.state, 'vahva1', rng).events, 'fi', ui, enemy)
+    expect(lines(next)).toContain('changes fi')
+    expect(lines(next)).not.toContain('opens fi')
+  })
+
+  it('without announceTurns, none of the turn lines', () => {
+    const { start } = battle()
+    const steps = planSteps(chooseReply(start.state, 0).events, 'fi', ui, enemy, {
+      announceTurns: false,
+    })
+    expect(steps.some((s) => s.kind === 'type' && s.text.startsWith('Sinun vuorosi'))).toBe(false)
   })
 })

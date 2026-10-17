@@ -61,7 +61,9 @@ const keys = (events: BattleEvent[]) =>
         ? `say:${e.who}`
         : e.type === 'phase'
           ? `phase:${e.phase}`
-          : e.type,
+          : e.type === 'turn'
+            ? `turn:${e.who}${e.first ? ':first' : ''}`
+            : e.type,
   )
 
 describe('battle flow', () => {
@@ -72,13 +74,14 @@ describe('battle flow', () => {
       'text',
       'say:enemy',
       'phase:newRound',
+      'turn:enemy:first', // Kansalliskonservatiivi aloittaa väittelyn.
       'enemy.used',
       'phase:enemyAttack',
       'say:enemy',
       'prompt.reply',
       'prompt',
     ])
-    expect(events[5]).toMatchObject({ name: state.enemyAttacks[0].name })
+    expect(events[6]).toMatchObject({ name: state.enemyAttacks[0].name })
     expect(state.phase).toBe('reply')
     const prompt = events.at(-1)
     expect(prompt).toMatchObject({ type: 'prompt', kind: 'reply' })
@@ -94,6 +97,7 @@ describe('battle flow', () => {
       'say:enemy',
       'effect.defend.medium',
       'hit',
+      'turn:player', // Sinun vuorosi valita puheenaihe.
       'prompt.attack',
       'prompt',
     ])
@@ -102,6 +106,14 @@ describe('battle flow', () => {
     })
     expect(events[4]).toMatchObject({ target: 'player', damage: 15, from: 100, to: 85 })
     expect(next.phase).toBe('attack')
+  })
+
+  it('a later round starts with the enemy changing the subject', () => {
+    const { state } = start()
+    const afterReply = chooseReply(state, replyOf(state, 'strong')).state
+    const { events } = chooseAttack(afterReply, 'hyva1', seededRng(4))
+    const turns = events.filter((e) => e.type === 'turn')
+    expect(turns).toEqual([{ type: 'turn', who: 'enemy', first: false }])
   })
 
   it('after an attack: the player’s attack phase, then the enemy’s defense phase', () => {
@@ -453,6 +465,7 @@ describe('critical hits (special characters)', () => {
         'narrate', // the effect text
         'narrate', // Kriittinen osuma!
         'hit',
+        'turn',
         'narrate',
         'prompt',
       ])

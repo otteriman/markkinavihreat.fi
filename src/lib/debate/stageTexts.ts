@@ -52,6 +52,7 @@ export function stageTexts(
     }
     add('bottom', t('end.strongReplies', { count: 4, total: 4 }), 'ui.json end.strongReplies')
     add('bottom', t('effect.critical'), 'ui.json effect.critical')
+    add('bottom', t('turn.player'), 'ui.json turn.player')
     for (const s of Object.values(specials)) {
       add('tag', localize(s.name, locale), `${s.source} name`)
       add('cutinBottom', localize(s.appear, locale), `${s.source} appear`)
@@ -72,6 +73,8 @@ export function stageTexts(
       add('top', localize(enemy.opening, locale), `${e}/enemy.json opening`)
       const scores = { enemy: enemy.subject, playerScore: 100, enemyScore: 100 }
       add('bottom', localize(enemy.defeat, locale), `${e}/enemy.json defeat`)
+      add('bottom', localize(enemy.opensDebate, locale), `${e}/enemy.json opensDebate`)
+      add('bottom', localize(enemy.changesTopic, locale), `${e}/enemy.json changesTopic`)
       for (const kind of ['koLose', 'koLoseResult', 'pointsWin', 'pointsLose', 'tie']) {
         add('bottom', t(`end.${kind}`, scores), `ui.json end.${kind}`)
       }

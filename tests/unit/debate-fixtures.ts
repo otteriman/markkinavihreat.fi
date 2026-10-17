@@ -62,6 +62,8 @@ export function specEnemy(): Enemy {
     appear: txt('appear'),
     opening: txt('opening'),
     defeat: txt('defeat'),
+    opensDebate: txt('opens'),
+    changesTopic: txt('changes'),
     sprite: 'kansalliskonservatiivi',
     attacks: ['a1', 'a2', 'a3', 'a4'].map((id) => enemyAttack(id)),
     playerAttacks: [
@@ -120,7 +122,7 @@ export function testConfig(overrides: Partial<DebateConfig> = {}): DebateConfig 
     },
     tiers: { vahva: 0.5, hyva: 0.25 },
     typing: { msPerChar: 30 },
-    presentation: { announceEnemyAttack: true },
+    presentation: { announceEnemyAttack: true, announceTurns: true },
     ...overrides,
   }
 }

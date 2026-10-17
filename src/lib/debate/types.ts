@@ -117,6 +117,10 @@ export interface Enemy {
    * "Konservatiivi hävisi väittelyn, ja pakeni Twitteriin!".
    */
   defeat: Localized
+  /** Narration as he makes the first attack, e.g. "Kansalliskonservatiivi aloittaa väittelyn.". */
+  opensDebate: Localized
+  /** Narration as he makes each later attack, e.g. "Kansalliskonservatiivi vaihtaa puheenaihetta.". */
+  changesTopic: Localized
   /** Sprite id (src/lib/debate/sprites.ts, added in a later phase). */
   sprite: string
   attacks: EnemyAttack[]
@@ -229,4 +233,10 @@ export interface PresentationOptions {
    * is all it takes to bring the line back.
    */
   announceEnemyAttack: boolean
+  /**
+   * Say whose turn it is as each side's attack begins: the enemy's
+   * opensDebate / changesTopic, and ui.json turn.player ("Sinun vuorosi
+   * valita puheenaihe."). Turn it off and the battle goes on without them.
+   */
+  announceTurns: boolean
 }

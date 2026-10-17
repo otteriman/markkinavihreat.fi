@@ -143,6 +143,12 @@
     "en": "Perfect replies: {count}/{total}",
     "needsReview": ["sv", "en"]
   },
+  "turn.player": {
+    "fi": "Sinun vuorosi valita puheenaihe.",
+    "sv": "Din tur att välja ämne.",
+    "en": "Your turn to pick a topic.",
+    "needsReview": ["sv", "en"]
+  },
   "intro.title": {
     "fi": "Poliittinen väittelypeli",
     "sv": "Politiskt debattspel",
