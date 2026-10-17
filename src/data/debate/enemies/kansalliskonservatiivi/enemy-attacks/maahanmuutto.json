@@ -11,9 +11,9 @@
     "en": "IMMIGRATION"
   },
   "line": {
-    "fi": "Käynnissä on väestönvaihto!",
-    "sv": "Ett befolkningsutbyte pågår!",
-    "en": "A population replacement is under way!"
+    "fi": "Ääliöliberaalit tekevät länsimaissa väestönvaihtoa! Se pitää pysäyttää ennenkuin on liian myöhäistä.",
+    "sv": "",
+    "en": ""
   },
   "replies": [
     {
@@ -24,7 +24,7 @@
       },
       "quality": "strong",
       "say": {
-        "fi": "Suomi tarvitsee maahanmuuttoa, tätä sanoo myös elinkeinoelämä.",
+        "fi": "Suomi tarvitsee maahanmuuttoa, näin sanoo myös elinkeinoelämä.",
         "sv": "Finland behöver invandring, det säger också näringslivet.",
         "en": "Finland needs immigration, and business leaders say so too."
       },
@@ -65,9 +65,9 @@
         "en": "According to the statistics..."
       },
       "reaction": {
-        "fi": "Tilastot tehdään Helsingissä.",
-        "sv": "Statistiken görs i Helsingfors.",
-        "en": "Statistics are made in Helsinki."
+        "fi": "Tilastojen mukaan tietyt kansalaisuudet ovat yliedustettuina väkivalta- ja raikaustilastoissa.",
+        "sv": "",
+        "en": ""
       }
     },
     {
@@ -78,15 +78,15 @@
       },
       "quality": "weak",
       "say": {
-        "fi": "Tuo on rasistista puhetta!",
-        "sv": "Det där är rasistiskt prat!",
-        "en": "That’s racist talk!",
+        "fi": "Tuo on täysin rasistista puhetta ja vastoin yhdenvertaisia ihmisoikeuksia!",
+        "sv": "",
+        "en": "",
         "needsReview": ["fi", "sv", "en"]
       },
       "reaction": {
-        "fi": "Heti rasistiksi haukutaan. Siksi tästä ei saa puhua ääneen.",
-        "sv": "Genast kallas man rasist. Det är därför ingen vågar säga något.",
-        "en": "Straight away I’m a racist. That’s why nobody dares say anything.",
+        "fi": "Niin justiinsa, jokainen joka puhuu maahanmuuton ongelmista on teidän mielestä heti rasisti.",
+        "sv": "",
+        "en": "",
         "needsReview": ["fi", "sv", "en"]
       }
     }
