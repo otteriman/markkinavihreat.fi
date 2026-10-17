@@ -55,8 +55,9 @@ const replyBy = (preference: (state: BattleState) => Quality[]) => (state: Battl
 const randomReply = (state: BattleState, rng: Rng) =>
   state.replyOrder[Math.floor(rng() * state.replyOrder.length)]
 
+/** The attacks offered this round. */
 const available = (state: BattleState) =>
-  state.playerAttacks.filter((a) => !state.used.includes(a.id))
+  state.playerAttacks.filter((a) => state.offer.includes(a.id))
 
 /** The unused attack with the highest (or lowest) expected damage. */
 const attackBy = (best: boolean) => (state: BattleState) => {

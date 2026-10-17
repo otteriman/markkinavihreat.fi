@@ -86,7 +86,6 @@ export interface ReplyOption {
 export interface AttackOption {
   id: string
   label: Localized
-  used: boolean
 }
 
 export type ResultKind = 'koWin' | 'koLose' | 'pointsWin' | 'pointsLose' | 'tie'
@@ -114,10 +113,18 @@ export interface BattleState {
    * added, so no attack repeats until all have been used.
    */
   enemyAttacks: EnemyAttack[]
-  /** The player's attack grid, in grid order. */
+  /** All the player's attacks, in grid order. */
   playerAttacks: PlayerAttack[]
-  /** Player attacks used since the grid was last full; all free up again once every one is used. */
+  /** Player attacks used since the pool was last full; all free up again once every one is used. */
   used: string[]
+  /**
+   * The attacks offered at this round's attack prompt, in grid order: up to
+   * `attackSlots` picked at random from the unused ones (all of them when
+   * fewer are left). Picked as the round starts, so the prompt needs no rng.
+   */
+  offer: string[]
+  /** Size of the attack grid (config.json rules.playerAttackSlots). */
+  attackSlots: number
   /** The current attack's replies in display order (indices into `replies`). */
   replyOrder: number[]
   player: number
@@ -151,9 +158,6 @@ export function startBattle({
   specials = {},
   firstAttack,
 }: BattleSetup): Step {
-  // More player attacks than grid slots: a random subset, kept in grid order.
-  const picked = new Set(shuffle(enemy.playerAttacks, rng).slice(0, attackSlots))
-  const playerAttacks = enemy.playerAttacks.filter((a) => picked.has(a))
   const state: BattleState = {
     enemy,
     difficulty,
@@ -161,8 +165,10 @@ export function startBattle({
     phase: 'reply',
     round: 0,
     enemyAttacks: openWith(shuffle(enemy.attacks, rng), firstAttack),
-    playerAttacks,
+    playerAttacks: enemy.playerAttacks,
     used: [],
+    offer: [],
+    attackSlots,
     replyOrder: [],
     player: difficulty.player.kannatus,
     enemyKannatus: difficulty.enemy.kannatus,
@@ -194,12 +200,15 @@ function nextRound(prev: BattleState, events: BattleEvent[], rng: Rng): Step {
     enemyAttacks = [...enemyAttacks, ...deck]
   }
   const attack = enemyAttacks[round - 1]
+  // Every attack used: the pool fills up again.
+  const used = prev.used.length >= prev.playerAttacks.length ? [] : prev.used
   const state: BattleState = {
     ...prev,
     phase: 'reply',
     round,
     enemyAttacks,
-    used: prev.used.length >= prev.playerAttacks.length ? [] : prev.used,
+    used,
+    offer: offerAttacks(prev.playerAttacks, used, prev.attackSlots, rng),
     replyOrder: shuffle(
       attack.replies.map((_, i) => i),
       rng,
@@ -219,6 +228,13 @@ function nextRound(prev: BattleState, events: BattleEvent[], rng: Rng): Step {
   return { state, events }
 }
 
+/** Up to `slots` unused attacks, picked at random, in grid order (ids). */
+function offerAttacks(pool: PlayerAttack[], used: string[], slots: number, rng: Rng): string[] {
+  const unused = pool.filter((a) => !used.includes(a.id))
+  const picked = new Set(shuffle(unused, rng).slice(0, slots))
+  return unused.filter((a) => picked.has(a)).map((a) => a.id)
+}
+
 export function currentAttack(state: BattleState): EnemyAttack {
   return state.enemyAttacks[state.round - 1]
 }
@@ -228,12 +244,12 @@ export function replyOptions(state: BattleState): ReplyOption[] {
   return state.replyOrder.map((index) => ({ index, label: replies[index].label }))
 }
 
+/** This round's attack grid: the offered attacks, in grid order. */
 export function attackOptions(state: BattleState): AttackOption[] {
-  return state.playerAttacks.map((a) => ({
-    id: a.id,
-    label: a.label,
-    used: state.used.includes(a.id),
-  }))
+  return state.offer.map((id) => {
+    const attack = state.playerAttacks.find((a) => a.id === id)!
+    return { id, label: attack.label }
+  })
 }
 
 /**
@@ -410,6 +426,8 @@ export function chooseAttack(prev: BattleState, id: string, rng: Rng): Step {
   const attack = prev.playerAttacks.find((a) => a.id === id)
   if (!attack) throw new BattleError(`No player attack "${id}" in this battle`)
   if (prev.used.includes(id)) throw new BattleError(`Player attack "${id}" was already used`)
+  if (!prev.offer.includes(id))
+    throw new BattleError(`Player attack "${id}" isn’t offered this round`)
 
   const weights = prev.difficulty.enemyDefenseWeights
   const defense =

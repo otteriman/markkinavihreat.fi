@@ -167,12 +167,6 @@
     "en": "You",
     "needsReview": ["fi", "sv", "en"]
   },
-  "a11y.used": {
-    "fi": "käytetty",
-    "sv": "använd",
-    "en": "used",
-    "needsReview": ["fi", "sv", "en"]
-  },
   "a11y.hit": {
     "fi": "{name}: kannatus {value}",
     "sv": "{name}: stöd {value}",

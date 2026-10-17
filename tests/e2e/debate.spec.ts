@@ -56,25 +56,22 @@ test('a whole battle by keyboard, with Play again', async ({ page }) => {
   await expect(page.locator('[data-debate-bottom]')).not.toHaveText('')
 
   let attackGrids = 0
+  let firstAttack = ''
   const deadline = Date.now() + 60_000
   while (Date.now() < deadline && !(await endScreen(page).isVisible())) {
     if (await grid(page).isVisible()) {
       await page.waitForTimeout(GRID_GRACE)
       const options = grid(page).getByRole('button')
-      if ((await options.count()) === 6) {
+      const attacking =
+        (await page.locator('[data-debate-tag="bottom"]').textContent()) ===
+        'Millä teemalla hyökkäät?'
+      if (attacking) {
         attackGrids++
-        if (attackGrids === 2) {
-          // The first attack was used in round 1: it stays in the grid but can't be picked.
-          await page.keyboard.press('ArrowLeft')
-          await expect(options.first()).toBeFocused()
-          await expect(options.first()).toHaveAttribute('aria-disabled', 'true')
-          await page.keyboard.press('Enter')
-          await expect(grid(page)).toBeVisible()
-          await expect(page.locator('[data-debate-live]')).toContainText('käytetty')
-          await page.keyboard.press('ArrowRight')
-        }
+        // Enter picks the first option; a used attack isn't offered again.
+        if (attackGrids === 1) firstAttack = (await options.first().textContent()) ?? ''
+        if (attackGrids === 2) await expect(grid(page)).not.toContainText(firstAttack)
+        expect(await options.count()).toBeLessThanOrEqual(6)
       }
-      const attacking = (await options.count()) === 6
       await page.keyboard.press('Enter')
       if (attacking && attackGrids === 1) {
         // Attacking empties the enemy's box, label and all, until he answers.
@@ -126,7 +123,7 @@ test('a whole battle by tapping on a phone, with typing and bars', async ({ brow
   while (Date.now() < deadline && !(await endScreen(page).isVisible())) {
     if (await grid(page).isVisible()) {
       await page.waitForTimeout(GRID_GRACE)
-      await grid(page).locator('button:not([aria-disabled])').first().tap()
+      await grid(page).getByRole('button').first().tap()
     } else {
       await stage(page).tap({ position: { x: 60, y: 60 } })
     }
@@ -255,7 +252,7 @@ test('a critical hit: the editorial writer steps in, the hit lands harder', asyn
       await page.waitForTimeout(GRID_GRACE)
       const his = grid(page).getByRole('button', { name: scene.reply, exact: true })
       if (await his.count()) await his.click()
-      else await grid(page).locator('button:not([aria-disabled])').first().click()
+      else await grid(page).getByRole('button').first().click()
     } else {
       await page.keyboard.press('Enter')
       await page.waitForTimeout(20)

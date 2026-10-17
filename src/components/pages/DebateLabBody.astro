@@ -43,7 +43,6 @@ const fi = worstCase('fi')
 const attackGrid = (locale: (typeof LOCALES)[number]) =>
   enemy.playerAttacks.slice(0, config.rules.playerAttackSlots).map((a, i) => ({
     label: localize(a.label, locale),
-    used: i === 1 || i === 4,
     current: i === 2,
   }))
 const specialScenes = Object.values(specials).map((special) => ({
@@ -131,7 +130,7 @@ const replyGrid = (locale: (typeof LOCALES)[number]) =>
       <h2 class="text-2xl">2. Stage states</h2>
       <p class="text-harmaa mt-2 max-w-2xl">
         The shipped font in each language, with the phase labels: the opening, the reply grid, the
-        attack grid (two attacks used) and a mid-battle moment with the longest player line.
+        attack grid and a mid-battle moment with the longest player line.
       </p>
       {
         LOCALES.map((locale) => {

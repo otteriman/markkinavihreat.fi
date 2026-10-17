@@ -156,7 +156,7 @@ describe('battle flow', () => {
       while (state.round <= 12) {
         seen.push(currentAttack(state).id)
         state = chooseReply(state, 0).state
-        state = chooseAttack(state, attackOptions(state).find((o) => !o.used)!.id, rng).state
+        state = chooseAttack(state, attackOptions(state)[0].id, rng).state
       }
       for (let deck = 0; deck < 3; deck++) {
         expect(new Set(seen.slice(deck * 4, deck * 4 + 4)).size).toBe(4)
@@ -170,40 +170,76 @@ describe('battle flow', () => {
     let { state } = start({ ...endless(), player: { ...endless().player, damage: noDamage } }, rng)
     for (let round = 1; round <= 6; round++) {
       state = chooseReply(state, 0).state
-      state = chooseAttack(state, attackOptions(state).find((o) => !o.used)!.id, rng).state
+      state = chooseAttack(state, attackOptions(state)[0].id, rng).state
     }
     state = chooseReply(state, 0).state
-    expect(attackOptions(state).every((o) => !o.used)).toBe(true)
+    expect(attackOptions(state)).toHaveLength(6)
   })
 
-  it('fills the grid with a random subset, in grid order, when there are more player attacks', () => {
+  /** The fixture enemy with three more attacks: nine in the pool, a grid of six. */
+  const nineAttacks = () => {
     const enemy = specEnemy()
     enemy.playerAttacks = [
       ...enemy.playerAttacks,
-      playerAttack('extra', ['strong', 'weak', 'weak', 'weak'], 7),
+      playerAttack('extra1', ['strong', 'weak', 'weak', 'weak'], 7),
+      playerAttack('extra2', ['strong', 'weak', 'medium', 'weak'], 8),
+      playerAttack('extra3', ['strong', 'strong', 'weak', 'weak'], 9),
     ]
-    const { state } = startBattle({
-      enemy,
-      difficulty: specDifficulty(),
-      attackSlots: 6,
-      rng: seededRng(3),
-    })
-    expect(state.playerAttacks).toHaveLength(6)
-    const orders = state.playerAttacks.map((a) => a.order ?? 99)
-    expect(orders).toEqual([...orders].sort((a, b) => a - b))
+    return enemy
+  }
+
+  it('offers six random attacks from a bigger pool each round, in grid order', () => {
+    const offers = new Set<string>()
+    for (let seed = 1; seed <= 30; seed++) {
+      const enemy = nineAttacks()
+      const { state } = startBattle({
+        enemy,
+        difficulty: specDifficulty(),
+        attackSlots: 6,
+        rng: seededRng(seed),
+      })
+      expect(state.playerAttacks).toHaveLength(9)
+      const options = attackOptions(chooseReply(state, 0).state)
+      expect(options).toHaveLength(6)
+      const order = options.map((o) => enemy.playerAttacks.findIndex((a) => a.id === o.id))
+      expect(order).toEqual([...order].sort((a, b) => a - b))
+      offers.add(options.map((o) => o.id).join())
+    }
+    expect(offers.size).toBeGreaterThan(5)
   })
 
-  it('lets each player attack be used once and marks it used', () => {
-    const { state } = start()
+  it('never offers a used attack; offers what is left, then refills the pool', () => {
+    const rng = seededRng(4)
+    const difficulty = { ...endless(), player: { ...endless().player, damage: noDamage } }
+    let { state } = startBattle({ enemy: nineAttacks(), difficulty, attackSlots: 6, rng })
+    const sizes: number[] = []
+    for (let round = 1; round <= 10; round++) {
+      state = chooseReply(state, 0).state
+      const options = attackOptions(state)
+      sizes.push(options.length)
+      expect(options.some((o) => state.used.includes(o.id))).toBe(false)
+      state = chooseAttack(state, options[0].id, rng).state
+    }
+    // 9 unused, 8, 7, 6: a full grid; then 5, 4, 3, 2, 1 left; then the pool refills.
+    expect(sizes).toEqual([6, 6, 6, 6, 5, 4, 3, 2, 1, 6])
+  })
+
+  it('rejects a used attack and one that isn’t offered', () => {
+    const { state } = startBattle({
+      enemy: nineAttacks(),
+      difficulty: specDifficulty(),
+      attackSlots: 6,
+      rng: seededRng(2),
+    })
     const afterReply = chooseReply(state, replyOf(state, 'strong')).state
+    const offered = attackOptions(afterReply).map((o) => o.id)
+    const missing = afterReply.playerAttacks.find((a) => !offered.includes(a.id))!.id
+    expect(() => chooseAttack(afterReply, missing, seededRng(1))).toThrow('isn’t offered')
     const rng = seededRng(2)
-    const afterAttack = chooseAttack(afterReply, 'vahva1', rng).state
-    const back = chooseReply(afterAttack, replyOf(afterAttack, 'strong'))
-    const prompt = back.events.at(-1)
-    if (prompt?.type !== 'prompt' || prompt.kind !== 'attack')
-      throw new Error('expected attack prompt')
-    expect(prompt.options.find((o) => o.id === 'vahva1')?.used).toBe(true)
-    expect(() => chooseAttack(back.state, 'vahva1', rng)).toThrow('already used')
+    const afterAttack = chooseAttack(afterReply, offered[0], rng).state
+    const back = chooseReply(afterAttack, replyOf(afterAttack, 'strong')).state
+    expect(attackOptions(back).map((o) => o.id)).not.toContain(offered[0])
+    expect(() => chooseAttack(back, offered[0], rng)).toThrow('already used')
   })
 
   it('rejects choices out of turn and unknown ids', () => {
@@ -299,7 +335,7 @@ describe('backfire (counter damage)', () => {
         state =
           state.phase === 'reply'
             ? chooseReply(state, replyOf(state, 'medium')).state
-            : chooseAttack(state, attackOptions(state).find((o) => !o.used)!.id, rng).state
+            : chooseAttack(state, attackOptions(state)[0].id, rng).state
       }
       expect(state.result!.kind).toMatch(/^ko/)
       if (state.round > 4) longer++

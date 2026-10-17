@@ -369,27 +369,17 @@ export class StageView {
   }
 
   /**
-   * Shows the option grid (2×2 replies, 2×3 attacks) and resolves with the
-   * reply index or attack id the player picks. Arrow keys move the cursor,
-   * Enter, Space, a click or a tap picks. Used attacks stay in place, greyed
-   * out, and can't be picked. The cursor starts on the first option that
-   * isn't used, or on `start` (a reply index or attack id) if given.
+   * Shows the option grid (2×2 replies, up to 2×3 attacks) and resolves with
+   * the reply index or attack id the player picks. Arrow keys move the
+   * cursor, Enter, Space, a click or a tap picks. The cursor starts on the
+   * first option, or on `start` (a reply index or attack id) if given.
    */
   choose(prompt: PromptEvent, start?: number | string): Promise<number | string> {
     const { signal, locale } = this.opts
     const items =
       prompt.kind === 'reply'
-        ? prompt.options.map((o) => ({
-            value: o.index as number | string,
-            label: o.label,
-            used: false,
-          }))
-        : prompt.options.map((o) => ({
-            value: o.id as number | string,
-            label: o.label,
-            used: o.used,
-          }))
-    const usedText = this.t('a11y.used')
+        ? prompt.options.map((o) => ({ value: o.index as number | string, label: o.label }))
+        : prompt.options.map((o) => ({ value: o.id as number | string, label: o.label }))
     const buttons = items.map((item) => {
       const button = document.createElement('button')
       button.type = 'button'
@@ -398,13 +388,6 @@ export class StageView {
       label.className = 'debate-option-label'
       label.textContent = localize(item.label, locale)
       button.append(label)
-      if (item.used) {
-        button.setAttribute('aria-disabled', 'true')
-        const note = document.createElement('span')
-        note.className = 'sr-only'
-        note.textContent = ` (${usedText})`
-        button.append(note)
-      }
       return button
     })
     this.options.replaceChildren(
@@ -419,14 +402,10 @@ export class StageView {
     this.options.hidden = false
 
     const shownAt = performance.now()
-    const preferred = items.findIndex((i) => i.value === start && !i.used)
-    let current =
-      preferred >= 0
-        ? preferred
-        : Math.max(
-            0,
-            items.findIndex((i) => !i.used),
-          )
+    let current = Math.max(
+      0,
+      items.findIndex((i) => i.value === start),
+    )
     const select = (index: number, focus = true) => {
       if (index !== current) this.opts.sounds.move()
       current = index
@@ -475,11 +454,6 @@ export class StageView {
           'click',
           () => {
             if (performance.now() - shownAt < GRID_GRACE_MS) return
-            if (items[i].used) {
-              select(i)
-              this.announce(`${localize(items[i].label, locale)}: ${usedText}`)
-              return
-            }
             this.opts.sounds.select()
             finish()
             resolve(items[i].value)

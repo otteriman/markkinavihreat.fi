@@ -19,7 +19,7 @@ export interface StagePreview {
   top?: string
   bottom?: string
   /** Fills the bottom box with an option grid instead of text. */
-  options?: { label: string; used?: boolean; current?: boolean }[]
+  options?: { label: string; current?: boolean }[]
   /** Phase labels on the boxes' top edges. */
   tags?: { top?: string; bottom?: string }
   player?: number
@@ -156,7 +156,6 @@ const promptId = `debate-prompt-${locale}`
               <button
                 type="button"
                 class="debate-option"
-                aria-disabled={o.used ? 'true' : undefined}
                 aria-current={o.current ? 'true' : undefined}
               >
                 <span class="debate-option-label">{o.label}</span>

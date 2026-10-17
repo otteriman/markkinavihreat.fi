@@ -46,7 +46,6 @@ export const REQUIRED_UI_KEYS = [
   'sound.on',
   'sound.off',
   'a11y.you',
-  'a11y.used',
   'a11y.hit',
   'a11y.controls',
   'page.title',

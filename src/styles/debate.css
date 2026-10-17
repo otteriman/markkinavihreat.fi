@@ -314,13 +314,6 @@
   outline: none;
 }
 
-.debate-option[aria-disabled='true'] {
-  color: var(--gb-2);
-  text-decoration: line-through;
-  text-decoration-thickness: 1px;
-  cursor: default;
-}
-
 /* ▼ in a speech box's corner: the line is done, tap or press a key to go on. */
 .debate-more {
   position: absolute;
