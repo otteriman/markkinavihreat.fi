@@ -52,7 +52,7 @@ A critical hit can happen on any reply (in `enemy-attacks/`) or enemy comeback (
 
 The extra damage goes to whoever that hit was going to hurt. On a weak or medium reply, that's the player; on an enemy's weak or medium comeback, it's the enemy. So put the trigger where the character's line fits the side he is backing.
 
-**Add a special character:** copy `specials/paakirjoitustoimittaja.json` under a new name and edit `name` (the label over his line), `appear` (the narration as he steps in) and `sprite`. Add his sprite to `src/lib/debate/sprites.ts` (48 × 50, shown twice that size in the cut-in). Then use his file name in `by` on any reply or comeback.
+**Add a special character:** copy `specials/paakirjoitustoimittaja.json` under a new name and edit `name` (the label over his line), `appear` (the narration as he steps in) and `sprite`. Add his sprite to `src/lib/debate/sprites.ts` (48 × 50, shown twice that size in the cut-in). Then use his file name in `by` on any reply or comeback. To see him in action, open the debate lab (`/debate-lab/`, development and previews only): under _Special characters_, each link starts a battle in which he steps in on the first reply.
 
 Quality means how good the _defender's_ answer is: `strong` blocks the hit completely, `medium` blocks half of it and `weak` lets the whole hit through (with the shipped numbers, 0, 15 or 30 points).
 

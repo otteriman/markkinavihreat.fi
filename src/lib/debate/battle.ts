@@ -137,6 +137,8 @@ export interface BattleSetup {
   rng: Rng
   /** Special characters by id; without them, critical triggers never fire. */
   specials?: Record<string, Special>
+  /** An enemy attack (file name) to open with; the rest of the deck stays shuffled. */
+  firstAttack?: string
 }
 
 export function startBattle({
@@ -145,6 +147,7 @@ export function startBattle({
   attackSlots,
   rng,
   specials = {},
+  firstAttack,
 }: BattleSetup): Step {
   // More player attacks than grid slots: a random subset, kept in grid order.
   const picked = new Set(shuffle(enemy.playerAttacks, rng).slice(0, attackSlots))
@@ -155,7 +158,7 @@ export function startBattle({
     specials,
     phase: 'reply',
     round: 0,
-    enemyAttacks: shuffle(enemy.attacks, rng),
+    enemyAttacks: openWith(shuffle(enemy.attacks, rng), firstAttack),
     playerAttacks,
     used: [],
     replyOrder: [],
@@ -171,6 +174,12 @@ export function startBattle({
     { type: 'say', who: 'enemy', text: enemy.opening },
   ]
   return nextRound(state, events, rng)
+}
+
+/** The deck with attack `id` moved to the front (unchanged without one). */
+function openWith(deck: EnemyAttack[], id: string | undefined): EnemyAttack[] {
+  const first = deck.find((a) => a.id === id)
+  return first ? [first, ...deck.filter((a) => a !== first)] : deck
 }
 
 function nextRound(prev: BattleState, events: BattleEvent[], rng: Rng): Step {

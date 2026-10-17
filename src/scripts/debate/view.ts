@@ -348,9 +348,10 @@ export class StageView {
    * Shows the option grid (2×2 replies, 2×3 attacks) and resolves with the
    * reply index or attack id the player picks. Arrow keys move the cursor,
    * Enter, Space, a click or a tap picks. Used attacks stay in place, greyed
-   * out, and can't be picked.
+   * out, and can't be picked. The cursor starts on the first option that
+   * isn't used, or on `start` (a reply index or attack id) if given.
    */
-  choose(prompt: PromptEvent): Promise<number | string> {
+  choose(prompt: PromptEvent, start?: number | string): Promise<number | string> {
     const { signal, locale } = this.opts
     const items =
       prompt.kind === 'reply'
@@ -394,10 +395,14 @@ export class StageView {
     this.options.hidden = false
 
     const shownAt = performance.now()
-    let current = Math.max(
-      0,
-      items.findIndex((i) => !i.used),
-    )
+    const preferred = items.findIndex((i) => i.value === start && !i.used)
+    let current =
+      preferred >= 0
+        ? preferred
+        : Math.max(
+            0,
+            items.findIndex((i) => !i.used),
+          )
     const select = (index: number, focus = true) => {
       if (index !== current) this.opts.sounds.move()
       current = index

@@ -48,8 +48,9 @@ const top = preview?.top ?? localize(enemy.opening, locale)
 const bottom = preview?.bottom ?? localize(enemy.appear, locale)
 const options = preview?.options
 const fill = (kannatus: number | undefined) => (kannatus ?? 100) / 100
-// `?difficulty=` switches presets only in development and noindex previews.
-const difficultyParam = import.meta.env.DEV || import.meta.env.NOINDEX === 'true'
+// Preview-only URL parameters (`?difficulty=`, `?special=`) work only in
+// development and noindex previews.
+const previewParams = import.meta.env.DEV || import.meta.env.NOINDEX === 'true'
 const controlsId = `debate-controls-${locale}`
 const promptId = `debate-prompt-${locale}`
 ---
@@ -60,7 +61,7 @@ const promptId = `debate-prompt-${locale}`
   data-debate-fixed-scale={scale}
   data-debate-play={play ? '' : undefined}
   data-debate-enemy={enemy.id}
-  data-debate-difficulty-param={play && difficultyParam ? '' : undefined}
+  data-debate-preview-params={play && previewParams ? '' : undefined}
   lang={locale}
 >
   <div

@@ -6,12 +6,14 @@
  *   2. Stage states in each language, with the longest real texts.
  *   3. Sprites at several sizes.
  *   4. Difficulty: change any knob and see simulated win rates at once.
+ *   5. Special characters: links that start a battle where each one steps in.
  */
 import '../../styles/debate-lab.css'
 import BaseLayout from '../../layouts/BaseLayout.astro'
 import DebateGame from '../debate/DebateGame.astro'
 import { LOCALES } from '../../lib/content'
 import { config, enemies, specials, ui } from '../../lib/debate/data'
+import { defenseTriggerCount, replyTriggers } from '../../lib/debate/scenes'
 import { SPRITES, spriteSvg } from '../../lib/debate/sprites'
 import { longestTexts, stageTexts } from '../../lib/debate/stageTexts'
 import { format, localize } from '../../lib/debate/text'
@@ -44,6 +46,13 @@ const attackGrid = (locale: (typeof LOCALES)[number]) =>
     used: i === 1 || i === 4,
     current: i === 2,
   }))
+const GAME_PATHS = { fi: '/debaattipeli/', sv: '/sv/debaattipeli/', en: '/en/debaattipeli/' }
+const specialScenes = Object.values(specials).map((special) => ({
+  special,
+  replies: replyTriggers(enemies, special.id),
+  defenses: defenseTriggerCount(enemies, special.id),
+}))
+
 const replyGrid = (locale: (typeof LOCALES)[number]) =>
   enemy.attacks[0].replies.map((r, i) => ({ label: localize(r.label, locale), current: i === 0 }))
 ---
@@ -265,6 +274,60 @@ const replyGrid = (locale: (typeof LOCALES)[number]) =>
         id="difficulty-command"
         class="bg-surface-greige mt-4 overflow-x-auto rounded p-3 text-sm">
       </pre>
+    </section>
+
+    <section>
+      <h2 class="text-2xl">5. Special characters</h2>
+      <p class="text-harmaa mt-2 max-w-2xl">
+        Each link starts the game with a battle in which the character steps in on the first reply:
+        the battle opens with an attack whose reply calls him in, the cursor starts on that reply,
+        and he always comes when called (for the rest of that battle too). Press Enter at the reply
+        prompt to see his cut-in, line and exit. Works in development and previews only.
+      </p>
+      <ul class="mt-4 space-y-4">
+        {
+          specialScenes.map(({ special, replies, defenses }) => (
+            <li class="flex flex-wrap items-center gap-4">
+              <div
+                class="debate"
+                style="background: var(--gb-0); padding: 6px"
+                set:html={spriteSvg(special.sprite)}
+              />
+              <div>
+                <p class="font-semibold">
+                  {special.name.fi} <code class="text-sm font-normal">{special.id}</code>
+                </p>
+                {replies.length > 0 ? (
+                  <p class="text-sm">
+                    Called in by{' '}
+                    {replies
+                      .map((t) => `“${t.replyLabel.fi}” (${t.attackName.fi}, ${t.enemy})`)
+                      .join(', ')}
+                    {defenses > 0 && `, and by ${defenses} enemy comeback(s)`}
+                  </p>
+                ) : (
+                  <p class="text-sm">
+                    Only enemy comebacks call him in ({defenses}), so there is no scene link yet.
+                  </p>
+                )}
+                {replies.length > 0 && (
+                  <p class="mt-1 flex gap-3">
+                    {LOCALES.map((locale) => (
+                      <a
+                        class="underline"
+                        href={`${GAME_PATHS[locale]}?special=${special.id}`}
+                        data-special-scene={special.id}
+                      >
+                        Start scene ({locale})
+                      </a>
+                    ))}
+                  </p>
+                )}
+              </div>
+            </li>
+          ))
+        }
+      </ul>
     </section>
   </div>
 

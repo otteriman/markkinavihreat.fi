@@ -1,9 +1,16 @@
 import type { Locale } from '../../lib/content'
-import { chooseAttack, chooseReply, startBattle, type BattleResult } from '../../lib/debate/battle'
+import {
+  chooseAttack,
+  chooseReply,
+  currentAttack,
+  startBattle,
+  type BattleResult,
+} from '../../lib/debate/battle'
 import { config, enemies, specials, ui } from '../../lib/debate/data'
 import { resolveDifficulty } from '../../lib/debate/difficulty'
 import { planSteps, type Step } from '../../lib/debate/playback'
 import type { Rng } from '../../lib/debate/rng'
+import { specialScene } from '../../lib/debate/scenes'
 import type { Difficulty } from '../../lib/debate/types'
 import { silent, type Sounds } from './audio'
 import { StageView } from './view'
@@ -22,6 +29,12 @@ export interface PlayOptions {
   signal?: AbortSignal
   /** Sound effects; silent by default. */
   sounds?: Sounds
+  /**
+   * A preview scene (the lab's links): special character `special` always
+   * steps in when called, the battle opens with an attack whose reply calls
+   * him in, and the reply grid's cursor starts on that reply.
+   */
+  scene?: { special: string }
 }
 
 /**
@@ -31,9 +44,14 @@ export interface PlayOptions {
  * loops it for "Play again") and any page that embeds the game later.
  */
 export async function playDebate(root: HTMLElement, options: PlayOptions): Promise<BattleResult> {
-  const enemy = options.enemy ? enemies.find((e) => e.id === options.enemy) : enemies[0]
-  if (!enemy) throw new Error(`Unknown debate enemy "${options.enemy}"`)
-  const difficulty = options.difficulty ?? resolveDifficulty(config)
+  const found = options.enemy ? enemies.find((e) => e.id === options.enemy) : enemies[0]
+  if (!found) throw new Error(`Unknown debate enemy "${options.enemy}"`)
+  const scene = options.scene ? specialScene(found, options.scene.special) : null
+  const enemy = scene?.enemy ?? found
+  let difficulty = options.difficulty ?? resolveDifficulty(config)
+  if (scene && !difficulty.critical) {
+    difficulty = { ...difficulty, critical: { chance: 1, extraMin: 5, extraMax: 10 } }
+  }
   const rng = options.rng ?? Math.random
   const view = new StageView(root, {
     locale: options.locale,
@@ -93,6 +111,7 @@ export async function playDebate(root: HTMLElement, options: PlayOptions): Promi
     attackSlots: config.rules.playerAttackSlots,
     rng,
     specials,
+    firstAttack: scene?.firstAttack ?? undefined,
   })
   for (;;) {
     const stop = await perform(planSteps(events, options.locale, ui, enemy, config.presentation))
@@ -103,7 +122,12 @@ export async function playDebate(root: HTMLElement, options: PlayOptions): Promi
       await view.showEnd(stop)
       return stop.result
     }
-    const choice = await view.choose(stop.prompt)
+    // In a scene, the reply grid's cursor starts on the reply that calls him in.
+    const sceneReply =
+      options.scene && stop.prompt.kind === 'reply'
+        ? currentAttack(state).replies.findIndex((r) => r.critical?.by === options.scene!.special)
+        : -1
+    const choice = await view.choose(stop.prompt, sceneReply >= 0 ? sceneReply : undefined)
     ;({ state, events } =
       stop.prompt.kind === 'reply'
         ? chooseReply(state, choice as number, rng)

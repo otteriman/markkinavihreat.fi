@@ -190,11 +190,9 @@ test('the battle waits until the stage is on screen', async ({ page }) => {
   await expect(page.locator('[data-debate-bottom]')).not.toHaveText('')
 })
 
-test('production ignores ?difficulty=', async ({ page }) => {
-  await page.goto('/debaattipeli/?difficulty=easy')
-  expect(
-    await page.locator('[data-debate]').getAttribute('data-debate-difficulty-param'),
-  ).toBeNull()
+test('production ignores ?difficulty= and ?special=', async ({ page }) => {
+  await page.goto('/debaattipeli/?difficulty=easy&special=paakirjoitustoimittaja')
+  expect(await page.locator('[data-debate]').getAttribute('data-debate-preview-params')).toBeNull()
   await expect(page.locator('[data-debate-note]')).toBeHidden()
 })
 
