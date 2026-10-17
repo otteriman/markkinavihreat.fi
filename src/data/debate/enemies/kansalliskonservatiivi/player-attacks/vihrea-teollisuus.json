@@ -7,41 +7,41 @@
     "en": "Green industry"
   },
   "say": {
-    "fi": "Akkutehtaat ja vetylaitokset tuovat tuhansia teollisuustyöpaikkoja maakuntiin.",
-    "sv": "Batterifabriker och vätgasanläggningar ger tusentals industrijobb i regionerna.",
-    "en": "Battery plants and hydrogen facilities bring thousands of industrial jobs to the regions."
+    "fi": "Uusiutuva energiantuotanto, akkutehtaat ja muu energiasiirtymä tuo kymmeniä tuhansia työpaikkoja maakuntiin.",
+    "sv": ",
+    "en": ""
   },
   "defenses": [
     {
       "quality": "strong",
       "say": {
-        "fi": "Ja ulkomaiset yhtiöt vievät voitot!",
-        "sv": "Och utländska bolag tar vinsterna!",
-        "en": "And foreign companies take the profits!"
+        "fi": "Ja samalla tuhoaa perinteisiä työpaikkoja. Ja akkutehtaissa ja tuulihumpassa ulkomaiset yhtiöt käärivät voitot.",
+        "sv": "",
+        "en": ""
       }
     },
     {
       "quality": "medium",
       "say": {
-        "fi": "Ja tuulivoimalat pilaavat maiseman.",
-        "sv": "Och vindkraftverken förstör landskapet.",
-        "en": "And the wind turbines ruin the landscape."
+        "fi": "Ja jokaisen takapihalle pitää pystyttää tuulimylly. Koko kansallismaisemamme menee pilalle.",
+        "sv": "",
+        "en": ""
       }
     },
     {
       "quality": "strong",
       "say": {
-        "fi": "Ja sähkön hinta nousee, kun tehtaat imevät kaiken!",
-        "sv": "Och elpriset stiger när fabrikerna suger åt sig allt!",
-        "en": "And power prices go up when the factories suck it all up!"
+        "fi": "Ja sähkön hinta nousee, ja tavalliset suomalaiset maksavat laskun.",
+        "sv": "",
+        "en": ""
       }
     },
     {
       "quality": "weak",
       "say": {
-        "fi": "Ennen tehtiin paperia, se oli oikeaa teollisuutta!",
-        "sv": "Förr gjorde vi papper, det var riktig industri!",
-        "en": "We used to make paper. That was real industry!"
+        "fi": "Mutta tämä viherhumputus ajaa alas paperitehtaat, ja aiheuttaa joukkotyöttömyyttä.",
+        "sv": "",
+        "en": ""
       }
     }
   ]
