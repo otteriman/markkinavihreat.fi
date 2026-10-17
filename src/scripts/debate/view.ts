@@ -41,7 +41,7 @@ const IRIS_MS = 1200
 const IRIS_HOLD_MS = 400
 /** Match the .debate-cutin opening and closing animations. */
 const CUT_IN_MS = 700
-const CUT_OUT_MS = 500
+const CUT_OUT_MS = 1200
 
 /** Hides both sprites (off stage) until a battle's entrance. */
 export function hideSprites(root: ParentNode): void {

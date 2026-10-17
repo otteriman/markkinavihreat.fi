@@ -460,12 +460,13 @@
   }
 }
 
-/* A special character's cut-in (view.ts CUT_IN_MS / CUT_OUT_MS): a striped
-   band over the middle of the stage, between the two boxes (y 60–174: over
-   the player's status box, which ends at 173, and clear of the bottom label
-   at 176), with the character twice his usual size. The
-   band opens from its middle line, then he slides in from the right; on the
-   way out he slides off to the left and the band closes. */
+/* A special character's cut-in (view.ts CUT_IN_MS / CUT_OUT_MS): a band over
+   the middle of the stage, between the two boxes (y 60–174: over the
+   player's status box, which ends at 173, and clear of the bottom label at
+   176), with the character twice his usual size. The band opens from its
+   middle line, then he slides in from the right. On the way out he drifts
+   off to the left, gathering speed as he fades, and only then does the band
+   close. */
 .debate-cutin {
   position: absolute;
   z-index: 1;
@@ -476,8 +477,32 @@
   box-sizing: border-box;
   border-top: 2px solid var(--gb-3);
   border-bottom: 2px solid var(--gb-3);
-  background: repeating-linear-gradient(to bottom, var(--gb-1) 0 5px, var(--gb-0) 5px 6px);
+  background: var(--gb-1);
   overflow: hidden;
+}
+
+/* Behind him, thin diagonal lines in the two lightest greens drift slowly to
+   the right, a pixel at a time (16px every 2 s): movement without flashing.
+   On a pseudo-element, so the band's own opening animation doesn't replace it. */
+.debate-cutin::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background-image: linear-gradient(
+    45deg,
+    var(--gb-0) 0 7%,
+    transparent 7% 50%,
+    var(--gb-0) 50% 57%,
+    transparent 57%
+  );
+  background-size: 16px 16px;
+  animation: debate-cutin-lines 2s steps(16) infinite;
+}
+
+@keyframes debate-cutin-lines {
+  to {
+    background-position: 16px 0;
+  }
 }
 
 /* 96 × 100 (2× a 48 × 50 sprite), centred in the band. */
@@ -501,11 +526,11 @@
 }
 
 .debate-cutin.debate-closing {
-  animation: debate-cutin-open 200ms steps(4) 300ms reverse both;
+  animation: debate-cutin-open 360ms steps(6) 840ms reverse both;
 }
 
 .debate-cutin.debate-closing .debate-cutin-sprite {
-  animation: debate-cutin-out 300ms steps(6) both;
+  animation: debate-cutin-out 900ms cubic-bezier(0.5, 0, 0.8, 0.4) both;
 }
 
 @keyframes debate-cutin-open {
@@ -522,7 +547,8 @@
 
 @keyframes debate-cutin-out {
   to {
-    transform: translateX(-170px);
+    transform: translateX(-140px);
+    opacity: 0;
   }
 }
 
@@ -573,6 +599,7 @@
   .debate-flash,
   .debate-shake,
   .debate-cutin,
+  .debate-cutin::before,
   .debate-cutin-sprite {
     animation: none !important;
   }
