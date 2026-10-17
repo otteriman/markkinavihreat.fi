@@ -103,6 +103,10 @@ test('a whole battle by keyboard, with Play again', async ({ page }) => {
   }
 
   await expect(endScreen(page)).toBeVisible()
+  // Won or lost, as a heading over the result (a tie, which is rare, has none).
+  if ((await endScreen(page).getAttribute('data-result')) !== 'tie') {
+    await expect(endScreen(page).getByRole('heading')).toHaveText(/^(Voitit|Hävisit) pelin$/)
+  }
   await expect(page.getByRole('button', { name: 'Pelaa uudelleen' })).toBeFocused()
   await page.waitForTimeout(END_GRACE)
   await page.keyboard.press('Enter')

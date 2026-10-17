@@ -107,6 +107,18 @@
     "en": "Your defence didn’t work at all!",
     "needsReview": ["sv", "en"]
   },
+  "end.heading.win": {
+    "fi": "Voitit pelin",
+    "sv": "Du vann spelet",
+    "en": "You won the game",
+    "needsReview": ["sv", "en"]
+  },
+  "end.heading.lose": {
+    "fi": "Hävisit pelin",
+    "sv": "Du förlorade spelet",
+    "en": "You lost the game",
+    "needsReview": ["sv", "en"]
+  },
   "end.koLose": {
     "fi": "Silmissäsi pimenee...",
     "sv": "Det svartnar för ögonen...",

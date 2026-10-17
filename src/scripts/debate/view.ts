@@ -460,13 +460,16 @@ export class StageView {
     })
   }
 
-  /** The end screen: the result and "Play again". */
+  /** The end screen: a heading, the result and "Play again". */
   showEnd(step: Extract<Step, { kind: 'end' }>): Promise<void> {
     const { signal } = this.opts
+    const heading = this.end.querySelector<HTMLElement>('[data-debate-end-heading]')!
+    heading.textContent = step.heading ?? ''
+    heading.hidden = !step.heading
     this.end.querySelector('[data-debate-end-result]')!.textContent = step.text
     this.end.dataset.result = step.result.kind
     this.end.hidden = false
-    this.announce(step.text)
+    this.announce(step.heading ? `${step.heading}. ${step.text}` : step.text)
     const again = this.end.querySelector<HTMLButtonElement>('[data-debate-again]')!
     again.focus({ preventScroll: true })
     return new Promise((resolve, reject) => {

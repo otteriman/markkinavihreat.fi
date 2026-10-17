@@ -79,7 +79,8 @@ export type Step =
   | { kind: 'prompt'; prompt: PromptEvent }
   /** The screen goes dark in a closing circle (the player lost). */
   | { kind: 'irisOut' }
-  | { kind: 'end'; result: BattleResult; text: string }
+  /** The end screen: a heading (won or lost; none on a tie), the result text. */
+  | { kind: 'end'; result: BattleResult; heading: string | null; text: string }
 
 export type PromptEvent = Extract<BattleEvent, { type: 'prompt' }>
 
@@ -89,6 +90,13 @@ const PHASE_TAG = {
   reply: { box: 'bottom', key: 'tag.reply' },
   playerAttack: { box: 'bottom', key: 'tag.playerAttack' },
 } as const
+
+/** "Voitit pelin" or "Hävisit pelin" over the end screen; a tie has none. */
+function endHeading(kind: BattleResult['kind'], locale: Locale, ui: UiStrings): string | null {
+  if (kind === 'tie') return null
+  const won = kind === 'koWin' || kind === 'pointsWin'
+  return format({ key: won ? 'end.heading.win' : 'end.heading.lose' }, locale, ui)
+}
 
 export function planSteps(
   events: BattleEvent[],
@@ -228,7 +236,12 @@ export function planSteps(
         if (event.result.kind === 'koLose' || event.result.kind === 'pointsLose') {
           steps.push({ kind: 'irisOut' })
         }
-        steps.push({ kind: 'end', result: event.result, text: endText })
+        steps.push({
+          kind: 'end',
+          result: event.result,
+          heading: endHeading(event.result.kind, locale, ui),
+          text: endText,
+        })
         break
     }
   })

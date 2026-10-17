@@ -43,6 +43,8 @@ export function stageTexts(
 
     add('status', t('status.player'), 'ui.json status.player')
     add('bottom', t('end.playAgain'), 'ui.json end.playAgain')
+    add('bottom', t('end.heading.win'), 'ui.json end.heading.win')
+    add('bottom', t('end.heading.lose'), 'ui.json end.heading.lose')
     for (const key of ['prompt.reply', 'prompt.attack', 'tag.enemyDefense']) {
       add('tag', t(key), `ui.json ${key}`)
     }

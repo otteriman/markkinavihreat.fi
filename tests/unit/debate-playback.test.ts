@@ -181,6 +181,7 @@ describe('planSteps', () => {
     expect(steps.at(-3)).toMatchObject({ text: 'defeat fi' })
     expect(steps.at(-1)).toMatchObject({
       kind: 'end',
+      heading: 'Voitit pelin',
       text: 'defeat fi',
       result: { kind: 'koWin' },
     })
@@ -204,9 +205,18 @@ describe('planSteps', () => {
     expect(steps.at(-4)).toMatchObject({ kind: 'type', text: 'Silmissäsi pimenee...' })
     expect(steps.at(-1)).toMatchObject({
       kind: 'end',
+      heading: 'Hävisit pelin',
       text: 'Kannatuksesi romahti. Heräät puoluetoimistolta.',
       result: { kind: 'koLose' },
     })
+  })
+
+  it('the end screen’s heading: won or lost, none on a tie', () => {
+    const endOf = (kind: 'pointsWin' | 'pointsLose' | 'tie') =>
+      plan([{ type: 'end', result: { kind, player: 50, enemy: 50 } }]).at(-1)
+    expect(endOf('pointsWin')).toMatchObject({ heading: 'Voitit pelin' })
+    expect(endOf('pointsLose')).toMatchObject({ heading: 'Hävisit pelin' })
+    expect(endOf('tie')).toMatchObject({ heading: null })
   })
 
   it('a critical hit: the cut-in, his line under his name, then the hit', () => {

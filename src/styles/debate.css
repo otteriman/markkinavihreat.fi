@@ -347,7 +347,7 @@
   }
 }
 
-/* The end screen covers the stage: the result and play again. */
+/* The end screen covers the stage: won or lost, the result, play again. */
 .debate-end {
   position: absolute;
   z-index: 2;
@@ -367,6 +367,12 @@
 
 .debate-end p {
   margin: 0;
+}
+
+.debate-end-heading {
+  margin: 0 0 4px;
+  font-size: 24px;
+  line-height: 22px;
 }
 
 .debate-end .debate-option {
