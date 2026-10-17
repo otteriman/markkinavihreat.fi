@@ -102,6 +102,14 @@
         "fi": "Eli kateusvero, joka häätää kaikki rikkaat ulkomaille!",
         "sv": "Avundsskatt! Den jagar alla rika utomlands!",
         "en": "An envy tax! It’ll chase every rich person abroad!"
+      },
+      "critical": {
+        "by": "ekonomisti",
+        "say": {
+          "fi": "Varallisuusvero haittaisi investointeja Suomeen ja kilpailukykyämme. Tähän Suomella ei ole varaa.",
+          "sv": "TODO",
+          "en": "TODO"
+        }
       }
     }
   ]

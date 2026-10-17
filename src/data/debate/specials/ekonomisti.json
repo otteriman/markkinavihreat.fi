@@ -1,0 +1,14 @@
+{
+  "needsReview": ["fi"],
+  "name": {
+    "fi": "Ekonomisti",
+    "sv": "TODO",
+    "en": "TODO"
+  },
+  "appear": {
+    "fi": "Ekonomisti astuu esiin!",
+    "sv": "TODO",
+    "en": "TODO"
+  },
+  "sprite": "ekonomisti"
+}
