@@ -7,7 +7,7 @@
     "en": "Climate crisis"
   },
   "say": {
-    "fi": "Ilmastokriisi on aikamme suurin uhka!",
+    "fi": "Ilmastokriisi on aikamme suurin ongelma, joka uhkaa eritoten lastenlastemme tulevaisuutta.",
     "sv": "Klimatkrisen är vår tids största hot!",
     "en": "The climate crisis is the greatest threat of our time!"
   },
@@ -15,15 +15,15 @@
     {
       "quality": "strong",
       "say": {
-        "fi": "Kiina saastuttaa viikossa enemmän kuin Suomi vuodessa!",
-        "sv": "Kina förorenar mer på en vecka än Finland på ett år!",
-        "en": "China pollutes more in a week than Finland does in a year!"
+        "fi": "Kiina saastuttaa viikossa enemmän kuin Suomi vuodessa.",
+        "sv": "Kina förorenar mer på en vecka än Finland på ett år.",
+        "en": "China pollutes more in a week than Finland does in a year."
       }
     },
     {
       "quality": "strong",
       "say": {
-        "fi": "Suomen osuus on promille!",
+        "fi": "Suomen osuus ilmastonmuutoksesta on promille!",
         "sv": "Finlands andel är en promille!",
         "en": "Finland’s share is a tenth of a percent!"
       }
@@ -31,17 +31,17 @@
     {
       "quality": "strong",
       "say": {
-        "fi": "Ilmastohysteriaa!",
-        "sv": "Klimathysteri!",
-        "en": "Climate hysteria!"
+        "fi": "Ilmastohysteriaa ja pelottelua, ongelma on muiden maiden liikakansoitus.",
+        "sv": "",
+        "en": ""
       }
     },
     {
       "quality": "medium",
       "say": {
-        "fi": "Täällä on pakkasta, lämpenemistä odotellessa.",
-        "sv": "Här är det minusgrader, i väntan på uppvärmningen.",
-        "en": "It’s freezing here. Still waiting for the warming."
+        "fi": "Ulkona on -20c, ihme höpinää taas. Ilmasto on aina vaihdellut.",
+        "sv": "",
+        "en": ""
       }
     }
   ]
