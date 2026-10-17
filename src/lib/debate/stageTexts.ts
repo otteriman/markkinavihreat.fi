@@ -2,7 +2,8 @@ import { LOCALES, type Locale } from '../content'
 import { format, localize } from './text'
 import {
   QUALITIES,
-  type CriticalTrigger,
+  criticalTriggers,
+  type Critical,
   type Enemy,
   type Localized,
   type Special,
@@ -51,9 +52,13 @@ export function stageTexts(
       add('tag', localize(s.name, locale), `${s.source} name`)
       add('bottom', localize(s.appear, locale), `${s.source} appear`)
     }
-    /** A special character's line (top box), from a reply's or defense's trigger. */
-    const critical = (trigger: CriticalTrigger | undefined, source: string) => {
-      if (trigger) add('top', localize(trigger.say, locale), `${source}.critical.say`)
+    /** Special characters' lines (top box), from a reply's or defense's triggers. */
+    const critical = (critical: Critical | undefined, source: string) => {
+      const triggers = criticalTriggers({ critical })
+      triggers.forEach((t, i) => {
+        const at = Array.isArray(critical) ? `critical[${i}]` : 'critical'
+        add('top', localize(t.say, locale), `${source}.${at}.say`)
+      })
     }
 
     for (const enemy of enemies) {

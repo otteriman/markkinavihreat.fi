@@ -36,19 +36,20 @@ Every text is written in all three languages: `{ "fi": "…", "sv": "…", "en":
 
 A special character is someone outside the debate who can step in mid-battle, say something and make a hit **critical**: it does extra damage. The first one is the Pääkirjoitustoimittaja (`specials/paakirjoitustoimittaja.json`). When he steps in, a band opens over the middle of the stage and he slides in. The narration says he steps forward, his line goes in the top box under his name, and he leaves. Then the usual effect text is shown, followed by "Kriittinen osuma!". The hit lands with extra damage and the stage shakes.
 
-A critical hit can happen on any reply (in `enemy-attacks/`) or enemy comeback (in `player-attacks/`) that has a `critical` field, and only when that answer's hit does damage. For example, on the reply "Veronkorotus":
+A critical hit can happen on any reply (in `enemy-attacks/`) or enemy comeback (in `player-attacks/`) that has a `critical` field, and only when that answer's hit does damage. As shipped, it always happens then (the difficulty's `critical.chance` is 1). For example, on the reply "Veronkorotus":
 
 ```json
 "critical": {
   "by": "paakirjoitustoimittaja",
-  "say": { "fi": "Veronkorotukset tappaisivat Suomen kilpailukyvyn…", "sv": "…", "en": "…" },
-  "chance": 0.5
+  "say": { "fi": "Veronkorotukset tappaisivat Suomen kilpailukyvyn…", "sv": "…", "en": "…" }
 }
 ```
 
 - `by`: the special character's file name in `specials/`, without `.json`.
-- `say`: what he says. It's a line, so at most 120 characters.
-- `chance`: the odds that he steps in, from 0 to 1. It's optional; leave it out to use the difficulty's `critical.chance`.
+- `say`: what he says. It's a line, so at most 120 characters (his line goes in the enemy's box, which holds three lines).
+- `chance`: optional, the odds that he steps in, from 0 to 1. Leave it out to use the difficulty's `critical.chance`.
+
+An answer can also have several triggers, as a list: `"critical": [{ "by": …, "say": … }, { "by": …, "say": … }]`. Then one of them, picked at random, steps in; each can be a different character, or the same one with different lines.
 
 The extra damage goes to whoever that hit was going to hurt. On a weak or medium reply, that's the player; on an enemy's weak or medium comeback, it's the enemy. So put the trigger where the character's line fits the side he is backing.
 
@@ -71,7 +72,7 @@ Labels can be at most 17 characters, and lines at most 120. The limits are set i
 | `player.damage`, `enemy.damage`          | Share of the hit that lands, by quality of that side's answer (0–2)                                                                 |
 | `enemyDefenseWeights`                    | Odds of the enemy picking a strong / medium / weak comeback (1/1/1 = even)                                                          |
 | `tieMargin`                              | On points (after `maxRounds`), a difference up to this counts as a tie                                                              |
-| `critical.chance`                        | Odds (0–1) that a special character steps in on an answer with a `critical` trigger that sets no `chance` of its own                |
+| `critical.chance`                        | Odds (0–1) that a special character steps in on an answer with a `critical` trigger that sets no `chance` of its own (1: always)    |
 | `critical.extraMin`, `critical.extraMax` | A critical hit's extra damage: a whole number in this range, every value equally likely. Leave `critical` out and they never happen |
 
 `config.json` → `presentation.announceEnemyAttack` decides whether each enemy attack is narrated ("Konservatiivi käytti VELKAPANIIKKIA!") before his line. It's `false` for now, because the label on his box ("Hyökkäys: Velkapaniikki") already names the attack; set it to `true` to bring the narration back. Each attack's `announce` text stays in its file either way.

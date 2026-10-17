@@ -59,7 +59,7 @@
       },
       "tieMargin": 0,
       "critical": {
-        "chance": 0.5,
+        "chance": 1,
         "extraMin": 5,
         "extraMax": 10
       }

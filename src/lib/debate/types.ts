@@ -27,7 +27,7 @@ export interface Reply {
   /** The enemy's comeback (top box). */
   reaction: Localized
   /** A special character may step in and make this reply's hit critical. */
-  critical?: CriticalTrigger
+  critical?: Critical
 }
 
 export interface EnemyAttack {
@@ -49,7 +49,7 @@ export interface Defense {
   quality: Quality
   say: Localized
   /** A special character may step in and make this defense's hit critical. */
-  critical?: CriticalTrigger
+  critical?: Critical
 }
 
 /**
@@ -71,14 +71,23 @@ export interface Special {
 
 /**
  * On a reply or defense: when its hit does damage, special character `by`
- * may step in (with `chance`, or the difficulty's critical.chance), say
- * `say`, and make the hit critical: it does extra damage.
+ * steps in (with `chance`, or the difficulty's critical.chance, 1 as
+ * shipped), says `say`, and makes the hit critical: it does extra damage.
  */
 export interface CriticalTrigger {
   by: string
   say: Localized
   /** 0–1; defaults to the difficulty's critical.chance. */
   chance?: number
+}
+
+/** One trigger, or several: then one of them, picked at random, is rolled. */
+export type Critical = CriticalTrigger | CriticalTrigger[]
+
+/** A reply's or defense's critical triggers as a list (empty without any). */
+export function criticalTriggers(item: { critical?: Critical }): CriticalTrigger[] {
+  const { critical } = item
+  return critical === undefined ? [] : Array.isArray(critical) ? critical : [critical]
 }
 
 export interface PlayerAttack {

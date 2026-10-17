@@ -1,3 +1,4 @@
+import { readdirSync, readFileSync } from 'node:fs'
 import { expect, test, type Page } from '@playwright/test'
 
 // The debate game, against the production build: the page is noindex until
@@ -207,8 +208,40 @@ test('debate page loads its font from the site itself', async ({ page }) => {
   expect(new URL(fonts[0]).origin).toBe(new URL(page.url()).origin)
 })
 
+/**
+ * The first weak reply that calls the editorial writer in, with the texts the
+ * test expects, read from the content so copy edits don't break the test.
+ */
+function editorScene() {
+  const dir = 'src/data/debate/enemies/kansalliskonservatiivi/enemy-attacks'
+  const json = (path: string) => JSON.parse(readFileSync(path, 'utf-8'))
+  for (const file of readdirSync(dir).sort()) {
+    const attack = json(`${dir}/${file}`)
+    for (const reply of attack.replies) {
+      const triggers = [reply.critical ?? []].flat()
+      // Math.random → 0 picks the first trigger.
+      if (reply.quality === 'weak' && triggers[0]?.by === 'paakirjoitustoimittaja') {
+        const ui = json('src/data/debate/ui.json')
+        const editor = json('src/data/debate/specials/paakirjoitustoimittaja.json')
+        return {
+          attack: attack.name.fi as string,
+          reply: reply.label.fi as string,
+          reaction: reply.reaction.fi as string,
+          line: triggers[0].say.fi as string,
+          name: editor.name.fi as string,
+          appear: editor.appear.fi as string,
+          effect: ui['effect.defend.weak'].fi as string,
+          critical: ui['effect.critical'].fi as string,
+        }
+      }
+    }
+  }
+  throw new Error('No weak reply calls the editorial writer in')
+}
+
 test('a critical hit: the editorial writer steps in, the hit lands harder', async ({ page }) => {
-  // Math.random → 0: every roll succeeds, so "Veronkorotus" always calls him in,
+  const scene = editorScene()
+  // Math.random → 0: every roll succeeds, so his reply always calls him in,
   // with the smallest extra damage (5).
   await page.addInitScript(() => {
     Math.random = () => 0
@@ -220,8 +253,8 @@ test('a critical hit: the editorial writer steps in, the hit lands harder', asyn
     expect(Date.now(), 'the editorial writer never stepped in').toBeLessThan(deadline)
     if (await grid(page).isVisible()) {
       await page.waitForTimeout(GRID_GRACE)
-      const tax = grid(page).getByRole('button', { name: 'Veronkorotus' })
-      if (await tax.count()) await tax.click()
+      const his = grid(page).getByRole('button', { name: scene.reply, exact: true })
+      if (await his.count()) await his.click()
       else await grid(page).locator('button:not([aria-disabled])').first().click()
     } else {
       await page.keyboard.press('Enter')
@@ -229,28 +262,22 @@ test('a critical hit: the editorial writer steps in, the hit lands harder', asyn
     }
   }
   const before = Number(await page.locator('[data-debate-kannatus="player"]').textContent())
-  await expect(page.locator('[data-debate-bottom]')).toHaveText(
-    'Pääkirjoitustoimittaja astuu esiin!',
-  )
+  await expect(page.locator('[data-debate-bottom]')).toHaveText(scene.appear)
   await page.keyboard.press('Enter')
   await page.keyboard.press('Enter')
-  await expect(page.locator('[data-debate-tag="top"]')).toHaveText('Pääkirjoitustoimittaja')
-  await expect(page.locator('[data-debate-top]')).toContainText('Veronkorotukset tappaisivat')
+  await expect(page.locator('[data-debate-tag="top"]')).toHaveText(scene.name)
+  await expect(page.locator('[data-debate-top]')).toHaveText(scene.line)
   await page.keyboard.press('Enter')
   await page.keyboard.press('Enter')
   await expect(cutin).toBeHidden()
   // His box and both labels are back as they were before the cut-in.
-  await expect(page.locator('[data-debate-top]')).toHaveText(
-    'Verohelvetti! Kiitos, että sanoit sen ääneen.',
-  )
-  await expect(page.locator('[data-debate-tag="top"]')).toHaveText('Hyökkäys: Velkapaniikki')
-  await expect(page.locator('[data-debate-tag="bottom"]')).toHaveText('Vastaus: Veronkorotus')
-  await expect(page.locator('[data-debate-bottom]')).toHaveText(
-    'Puolustuksesi ei tehonnut lainkaan!',
-  )
+  await expect(page.locator('[data-debate-top]')).toHaveText(scene.reaction)
+  await expect(page.locator('[data-debate-tag="top"]')).toHaveText(`Hyökkäys: ${scene.attack}`)
+  await expect(page.locator('[data-debate-tag="bottom"]')).toHaveText(`Vastaus: ${scene.reply}`)
+  await expect(page.locator('[data-debate-bottom]')).toHaveText(scene.effect)
   await page.keyboard.press('Enter')
   await page.keyboard.press('Enter')
-  await expect(page.locator('[data-debate-bottom]')).toHaveText('Kriittinen osuma!')
+  await expect(page.locator('[data-debate-bottom]')).toHaveText(scene.critical)
   // A weak reply's full hit (30) plus the extra 5.
   await expect(page.locator('[data-debate-kannatus="player"]')).toHaveText(String(before - 35))
 })

@@ -11,7 +11,7 @@ import { resolveDifficulty } from '../../lib/debate/difficulty'
 import { planSteps, type Step } from '../../lib/debate/playback'
 import type { Rng } from '../../lib/debate/rng'
 import { specialScene } from '../../lib/debate/scenes'
-import type { Difficulty } from '../../lib/debate/types'
+import { criticalTriggers, type Difficulty } from '../../lib/debate/types'
 import { silent, type Sounds } from './audio'
 import { StageView } from './view'
 
@@ -125,7 +125,9 @@ export async function playDebate(root: HTMLElement, options: PlayOptions): Promi
     // In a scene, the reply grid's cursor starts on the reply that calls him in.
     const sceneReply =
       options.scene && stop.prompt.kind === 'reply'
-        ? currentAttack(state).replies.findIndex((r) => r.critical?.by === options.scene!.special)
+        ? currentAttack(state).replies.findIndex((r) =>
+            criticalTriggers(r).some((t) => t.by === options.scene!.special),
+          )
         : -1
     const choice = await view.choose(stop.prompt, sceneReply >= 0 ? sceneReply : undefined)
     ;({ state, events } =

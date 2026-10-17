@@ -108,10 +108,20 @@ class Checker {
     }
   }
 
-  /** A reply's or defense's optional `critical`: who steps in, what he says, the odds. */
+  /**
+   * A reply's or defense's optional `critical`: one trigger, or a list of
+   * them (one is picked at random). Each says who steps in, what he says and,
+   * optionally, the odds.
+   */
   critical(file: string, where: string, value: unknown) {
     if (value === undefined) return
-    const at = `${where}.critical`
+    if (Array.isArray(value)) {
+      if (value.length === 0) this.add(file, `${where}.critical is an empty list`)
+      value.forEach((t, i) => this.trigger(file, `${where}.critical[${i}]`, t))
+    } else this.trigger(file, `${where}.critical`, value)
+  }
+
+  trigger(file: string, at: string, value: unknown) {
     if (!isObj(value)) return this.add(file, `${at} must be { "by": …, "say": … }`)
     if (typeof value.by !== 'string' || !(value.by in this.specials)) {
       const known = Object.keys(this.specials).join(', ') || 'none'

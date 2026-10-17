@@ -1,4 +1,4 @@
-import type { Enemy, Localized } from './types'
+import { criticalTriggers, type Critical, type Enemy, type Localized } from './types'
 
 /**
  * Preview scenes for testing special characters: the lab links to
@@ -22,7 +22,7 @@ export function replyTriggers(enemies: Enemy[], special: string): ReplyTrigger[]
   return enemies.flatMap((enemy) =>
     enemy.attacks.flatMap((attack) =>
       attack.replies.flatMap((reply, i) =>
-        reply.critical?.by === special
+        criticalTriggers(reply).some((t) => t.by === special)
           ? [
               {
                 enemy: enemy.id,
@@ -44,7 +44,9 @@ export function defenseTriggerCount(enemies: Enemy[], special: string): number {
     (n, enemy) =>
       n +
       enemy.playerAttacks.reduce(
-        (m, attack) => m + attack.defenses.filter((d) => d.critical?.by === special).length,
+        (m, attack) =>
+          m +
+          attack.defenses.filter((d) => criticalTriggers(d).some((t) => t.by === special)).length,
         0,
       ),
     0,
@@ -53,15 +55,18 @@ export function defenseTriggerCount(enemies: Enemy[], special: string): number {
 
 /**
  * The battle setup for `special`'s scene: a copy of `enemy` in which every
- * trigger naming him always fires, and the attack to open with (the first
- * one with a reply that calls him in), or null if no reply of this enemy does.
+ * reply or comeback that can call him in calls only him, always, and the
+ * attack to open with (the first one with a reply that calls him in), or
+ * null if no reply of this enemy does.
  */
 export function specialScene(
   enemy: Enemy,
   special: string,
 ): { enemy: Enemy; firstAttack: string | null } {
-  const always = <T extends { critical?: { by: string } }>(item: T): T =>
-    item.critical?.by === special ? { ...item, critical: { ...item.critical, chance: 1 } } : item
+  const always = <T extends { critical?: Critical }>(item: T): T => {
+    const his = criticalTriggers(item).filter((t) => t.by === special)
+    return his.length > 0 ? { ...item, critical: his.map((t) => ({ ...t, chance: 1 })) } : item
+  }
   const copy: Enemy = {
     ...enemy,
     attacks: enemy.attacks.map((a) => ({ ...a, replies: a.replies.map(always) })),

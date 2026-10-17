@@ -3,6 +3,7 @@ import { startBattle } from '../../src/lib/debate/battle'
 import { enemies } from '../../src/lib/debate/data'
 import { seededRng } from '../../src/lib/debate/rng'
 import { defenseTriggerCount, replyTriggers, specialScene } from '../../src/lib/debate/scenes'
+import { criticalTriggers } from '../../src/lib/debate/types'
 import { specDifficulty, specEnemy, txt } from './debate-fixtures'
 
 /** The fixture enemy with the editor on a2's third reply (chance 0.1) and one comeback. */
@@ -29,14 +30,23 @@ describe('special character scenes', () => {
     expect(replyTriggers([enemy], 'nobody')).toEqual([])
   })
 
-  it('a scene opens with his attack and makes his triggers always fire', () => {
+  it('a scene opens with his attack, and his triggers always fire and crowd out others', () => {
     const enemy = enemyWithEditor()
+    // Another character shares the comeback with him.
+    enemy.playerAttacks[0].defenses[1].critical = [
+      { by: 'columnist', say: txt('other') },
+      { by: 'editor', say: txt('line') },
+    ]
     const scene = specialScene(enemy, 'editor')
     expect(scene.firstAttack).toBe('a2')
-    expect(scene.enemy.attacks[1].replies[2].critical?.chance).toBe(1)
-    expect(scene.enemy.playerAttacks[0].defenses[1].critical?.chance).toBe(1)
+    expect(criticalTriggers(scene.enemy.attacks[1].replies[2])).toEqual([
+      { by: 'editor', say: txt('line'), chance: 1 },
+    ])
+    expect(criticalTriggers(scene.enemy.playerAttacks[0].defenses[1])).toEqual([
+      { by: 'editor', say: txt('line'), chance: 1 },
+    ])
     // The content itself is untouched.
-    expect(enemy.attacks[1].replies[2].critical?.chance).toBe(0.1)
+    expect(criticalTriggers(enemy.attacks[1].replies[2])[0].chance).toBe(0.1)
     expect(specialScene(specEnemy(), 'editor').firstAttack).toBeNull()
   })
 

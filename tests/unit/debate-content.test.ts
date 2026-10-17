@@ -135,6 +135,11 @@ describe('validateDebate', () => {
     const enemy = specEnemy()
     enemy.attacks[0].replies[2].critical = { by: 'nobody', say: txt('line') }
     enemy.playerAttacks[0].defenses[1].critical = { by: 'editor', say: txt('line'), chance: 2 }
+    enemy.playerAttacks[1].defenses[0].critical = [
+      { by: 'editor', say: txt('line') },
+      { by: 'ghost' },
+    ] as never
+    enemy.playerAttacks[2].defenses[0].critical = []
     const editor = { ...testSpecial(), sprite: 'ghost' }
     const ui = Object.fromEntries(['status.player'].map((k) => [k, txt(k)]))
     const problems = validateDebate(testConfig(), [enemy], ui, [], { editor })
@@ -145,6 +150,11 @@ describe('validateDebate', () => {
         '"nobody", which isn’t in specials/ (known: editor)',
       'src/data/debate/enemies/test/player-attacks/vahva1.json: ' +
         'defenses[1].critical.chance must be a number from 0 to 1 (is 2)',
+      'src/data/debate/enemies/test/player-attacks/vahva2.json: defenses[0].critical[1].by names ' +
+        '"ghost", which isn’t in specials/ (known: editor)',
+      'src/data/debate/enemies/test/player-attacks/vahva2.json: ' +
+        'defenses[0].critical[1].say is missing (needs "fi", "sv" and "en")',
+      'src/data/debate/enemies/test/player-attacks/hyva1.json: defenses[0].critical is an empty list',
       'src/data/debate/specials/editor.json: sprite "ghost" doesn’t exist in src/lib/debate/sprites.ts',
     ])
   })

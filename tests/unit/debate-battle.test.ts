@@ -11,7 +11,7 @@ import {
 } from '../../src/lib/debate/battle'
 import { seededRng, type Rng } from '../../src/lib/debate/rng'
 import type { Difficulty, Quality } from '../../src/lib/debate/types'
-import { playerAttack, specDifficulty, specEnemy, testSpecial } from './debate-fixtures'
+import { playerAttack, specDifficulty, specEnemy, testSpecial, txt } from './debate-fixtures'
 
 const start = (
   difficulty: Difficulty = specDifficulty(),
@@ -475,5 +475,36 @@ describe('critical hits (special characters)', () => {
     const { events } = chooseAttack(afterReply, 'vahva1', seededRng(3))
     expect(events.map((e) => e.type)).toContain('specialEnter')
     expect(events.find((e) => e.type === 'hit')).toMatchObject({ target: 'enemy', critical: true })
+  })
+
+  it('with several triggers on one answer, one of them, picked at random, steps in', () => {
+    const columnist = { ...editor, id: 'columnist', name: txt('columnist name') }
+    const enemy = specEnemy()
+    for (const a of enemy.attacks) {
+      for (const r of a.replies) {
+        r.critical = [
+          { by: 'editor', say: txt('editor line') },
+          { by: 'columnist', say: txt('columnist line') },
+        ]
+      }
+    }
+    const { state } = startBattle({
+      enemy,
+      difficulty: { ...specDifficulty(), critical: { chance: 1, extraMin: 5, extraMax: 10 } },
+      attackSlots: 6,
+      rng: seededRng(1),
+      specials: { editor, columnist },
+    })
+    const seen = new Map<string, number>()
+    for (let seed = 1; seed <= 200; seed++) {
+      const { events } = chooseReply(state, replyOf(state, 'weak'), seededRng(seed))
+      const say = events.find((e) => e.type === 'specialSay')
+      expect(say, 'chance 1: someone always steps in').toBeDefined()
+      if (say?.type !== 'specialSay') continue
+      expect(say.text).toEqual(txt(`${say.special.id} line`))
+      seen.set(say.special.id, (seen.get(say.special.id) ?? 0) + 1)
+    }
+    expect(seen.get('editor')).toBeGreaterThan(70)
+    expect(seen.get('columnist')).toBeGreaterThan(70)
   })
 })

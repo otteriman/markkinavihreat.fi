@@ -1,15 +1,16 @@
 import { counterFor, criticalExtra, damageFor } from './difficulty'
 import { pickWeighted, shuffle, type Rng } from './rng'
 import type { Message } from './text'
-import type {
-  CriticalTrigger,
-  Difficulty,
-  Enemy,
-  EnemyAttack,
-  Localized,
-  PlayerAttack,
-  Quality,
-  Special,
+import {
+  criticalTriggers,
+  type CriticalTrigger,
+  type Difficulty,
+  type Enemy,
+  type EnemyAttack,
+  type Localized,
+  type PlayerAttack,
+  type Quality,
+  type Special,
 } from './types'
 
 /**
@@ -22,9 +23,10 @@ import type {
  * attack backfire on the attacker (difficulty counter damage), which keeps
  * battles short: about four rounds with the shipped numbers.
  *
- * A reply or defense can carry a `critical` trigger: when its hit does damage,
+ * A reply or defense can carry `critical` triggers: when its hit does damage,
  * a special character (src/data/debate/specials/) may step in, say his line,
- * and make the hit critical, adding difficulty.critical's extra damage.
+ * and make the hit critical, adding difficulty.critical's extra damage. With
+ * several triggers, one is picked at random and rolled.
  *
  * Each call returns the next state and the events to play back in order. The
  * UI only renders events (narration and the player's lines go in the bottom
@@ -247,16 +249,16 @@ function exchange(
   state: BattleState,
   defender: Side,
   quality: Quality,
-  trigger?: CriticalTrigger,
+  triggers: CriticalTrigger[],
   rng?: Rng,
 ) {
   const attacker: Side = defender === 'player' ? 'enemy' : 'player'
   const backfire = quality === 'strong' ? counterFor(state.difficulty, attacker) : 0
   const target = backfire > 0 ? attacker : defender
   const base = backfire > 0 ? backfire : damageFor(state.difficulty, defender, quality)
-  const special = criticalBy(state, base, trigger, rng)
+  const steppedIn = criticalBy(state, base, triggers, rng)
   // criticalBy only finds someone when there is an rng to roll with.
-  const extra = special ? criticalExtra(state.difficulty, rng!) : 0
+  const extra = steppedIn ? criticalExtra(state.difficulty, rng!) : 0
   const damage = base + extra
   const from = target === 'player' ? state.player : state.enemyKannatus
   const to = Math.max(0, from - damage)
@@ -270,23 +272,29 @@ function exchange(
     from,
     to,
     counter: backfire > 0,
-    critical: special !== null,
+    critical: steppedIn !== null,
     extra,
   }
-  return { state: next, event, special: special && trigger ? { special, say: trigger.say } : null }
+  return { state: next, event, special: steppedIn }
 }
 
-/** The special character who steps in to make a hit of `damage` critical, or null. */
+/**
+ * Who steps in to make a hit of `damage` critical, and his line, or null:
+ * one of `triggers` (picked at random if there are several), rolled with
+ * its chance or the difficulty's.
+ */
 function criticalBy(
   state: BattleState,
   damage: number,
-  trigger: CriticalTrigger | undefined,
+  triggers: CriticalTrigger[],
   rng: Rng | undefined,
-): Special | null {
+): { special: Special; say: Localized } | null {
   const settings = state.difficulty.critical
-  const special = trigger && state.specials[trigger.by]
-  if (!special || !settings || !rng || damage <= 0) return null
-  return rng() < (trigger.chance ?? settings.chance) ? special : null
+  if (triggers.length === 0 || !settings || !rng || damage <= 0) return null
+  const trigger = triggers.length > 1 ? triggers[Math.floor(rng() * triggers.length)] : triggers[0]
+  const special = state.specials[trigger.by]
+  if (!special) return null
+  return rng() < (trigger.chance ?? settings.chance) ? { special, say: trigger.say } : null
 }
 
 /**
@@ -368,7 +376,7 @@ export function chooseReply(prev: BattleState, index: number, rng?: Rng): Step {
   const reply = currentAttack(prev).replies[index]
   if (!reply) throw new BattleError(`No reply ${index} for this attack`)
 
-  const hit = exchange(prev, 'player', reply.quality, reply.critical, rng)
+  const hit = exchange(prev, 'player', reply.quality, criticalTriggers(reply), rng)
   const state: BattleState = {
     ...hit.state,
     repliesGiven: prev.repliesGiven + 1,
@@ -411,7 +419,7 @@ export function chooseAttack(prev: BattleState, id: string, rng: Rng): Step {
         rng,
       )
     ]
-  const hit = exchange(prev, 'enemy', defense.quality, defense.critical, rng)
+  const hit = exchange(prev, 'enemy', defense.quality, criticalTriggers(defense), rng)
   const state: BattleState = { ...hit.state, used: [...prev.used, id] }
   const events: BattleEvent[] = [
     { type: 'phase', phase: 'playerAttack', name: attack.label },
