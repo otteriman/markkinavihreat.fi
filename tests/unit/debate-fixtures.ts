@@ -108,6 +108,7 @@ export function testConfig(overrides: Partial<DebateConfig> = {}): DebateConfig 
     },
     tiers: { vahva: 0.5, hyva: 0.25 },
     typing: { msPerChar: 30 },
+    presentation: { announceEnemyAttack: true },
     ...overrides,
   }
 }

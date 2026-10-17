@@ -138,5 +138,8 @@
   },
   "typing": {
     "msPerChar": 30
+  },
+  "presentation": {
+    "announceEnemyAttack": false
   }
 }

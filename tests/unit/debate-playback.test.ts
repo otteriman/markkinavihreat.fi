@@ -67,6 +67,31 @@ describe('planSteps', () => {
     })
   })
 
+  it('without the attack narration: no "käytti" line, a fresh bottom box, the label read out', () => {
+    const { start } = battle()
+    const steps = planSteps(start.events, 'fi', ui, enemy, { announceEnemyAttack: false })
+    expect(shape(steps)).toEqual([
+      'enter',
+      'type:bottom', // Villi … ilmestyi!
+      'wait:advance',
+      'type:top', // opening line
+      'wait:advance',
+      'clear:top',
+      'tags:top,bottom',
+      'clear:bottom', // the last exchange's text goes; nothing replaces it
+      'tags:top', // Hyökkäys: <attack>
+      'type:top', // attack line
+      'wait:advance',
+      'tags:bottom', // Millä teemalla vastaat?
+      'prompt:reply',
+    ])
+    const attack = start.state.enemyAttacks[0]
+    expect(steps.some((s) => s.kind === 'type' && s.text.includes('käytti'))).toBe(false)
+    expect(steps.find((s) => s.kind === 'type' && s.text === attack.line.fi)).toMatchObject({
+      announce: `Hyökkäys: ${attack.name.fi}. subject fi: ${attack.line.fi}`,
+    })
+  })
+
   it('a reply: lines, then the effect text with the hit before the wait', () => {
     const { start } = battle()
     const index = start.state.enemyAttacks[0].replies.findIndex((r) => r.quality === 'medium')

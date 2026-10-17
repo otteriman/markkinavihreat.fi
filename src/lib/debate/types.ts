@@ -148,6 +148,8 @@ export interface DebateConfig {
   /** Player attack tiers by expected damage, as a share of a full hit on the enemy. */
   tiers: { vahva: number; hyva: number }
   typing: { msPerChar: number }
+  /** How the battle is shown; doesn't change the rules. */
+  presentation: PresentationOptions
   /** The preset the game ships with. */
   difficulty: string
   difficulties: Record<string, DifficultyPreset>
@@ -156,3 +158,13 @@ export interface DebateConfig {
 }
 
 export type UiStrings = Record<string, Localized>
+
+export interface PresentationOptions {
+  /**
+   * Narrate each enemy attack ("Konservatiivi käytti VELKAPANIIKKIA!") before
+   * his line. Off by default: the label on his box ("Hyökkäys: Velkapaniikki")
+   * already names it. The texts stay in the content, so turning this back on
+   * is all it takes to bring the line back.
+   */
+  announceEnemyAttack: boolean
+}

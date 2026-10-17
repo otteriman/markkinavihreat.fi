@@ -58,7 +58,7 @@ export async function playDebate(root: HTMLElement, options: PlayOptions): Promi
           view.setTags(step)
           break
         case 'clear':
-          view.clearTop()
+          view.clear(step.box)
           break
         case 'enter':
           await view.enter()
@@ -85,7 +85,7 @@ export async function playDebate(root: HTMLElement, options: PlayOptions): Promi
     rng,
   })
   for (;;) {
-    const stop = await perform(planSteps(events, options.locale, ui, enemy))
+    const stop = await perform(planSteps(events, options.locale, ui, enemy, config.presentation))
     if (stop.kind === 'end') {
       if (stop.result.kind === 'koLose' || stop.result.kind === 'pointsLose') {
         ;(options.sounds ?? silent).lose()

@@ -114,6 +114,14 @@ describe('validateDebate', () => {
     ])
   })
 
+  it('needs the presentation setting to be true or false', () => {
+    const cfg = testConfig()
+    cfg.presentation = {} as never
+    expect(problemsFor(() => {}, cfg)).toEqual([
+      'src/data/debate/config.json: presentation.announceEnemyAttack must be true or false',
+    ])
+  })
+
   it('reports missing UI strings', () => {
     const problems = validateDebate(testConfig(), [specEnemy()], {}).map(formatProblem)
     expect(problems).toContain('src/data/debate/ui.json: "prompt.reply" is missing')

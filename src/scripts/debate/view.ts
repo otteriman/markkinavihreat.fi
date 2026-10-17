@@ -167,11 +167,11 @@ export class StageView {
     if (step.announce) this.announce(step.announce)
   }
 
-  /** Empties the enemy's box and hides it until he speaks again. */
-  clearTop(): void {
-    this.boxes.top.hidden = true
-    this.texts.top.textContent = ''
-    this.more.top.hidden = true
+  /** Empties a box; the enemy's (top) is also hidden until he speaks again. */
+  clear(box: Box): void {
+    if (box === 'top') this.boxes.top.hidden = true
+    this.texts[box].textContent = ''
+    this.more[box].hidden = true
   }
 
   /** Types `text` into a box letter by letter; a tap or key press shows it all at once. */

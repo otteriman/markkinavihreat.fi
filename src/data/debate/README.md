@@ -49,6 +49,8 @@ Labels can be at most 17 characters, and lines at most 120. The limits are set i
 | `enemyDefenseWeights`                   | Odds of the enemy picking a strong / medium / weak comeback (1/1/1 = even)                                                          |
 | `tieMargin`                             | On points (after `maxRounds`), a difference up to this counts as a tie                                                              |
 
+`config.json` → `presentation.announceEnemyAttack` decides whether each enemy attack is narrated ("Konservatiivi käytti VELKAPANIIKKIA!") before his line. It's `false` for now, because the label on his box ("Hyökkäys: Velkapaniikki") already names the attack; set it to `true` to bring the narration back. Each attack's `announce` text stays in its file either way.
+
 How a battle runs: each round the enemy attacks and you reply, then you attack and he defends. A `strong` answer blocks the hit and, with `counter` above 0, turns it back on the attacker; `medium` blocks half; `weak` lets the whole hit through. There is no fixed number of rounds: the first side out of KANNATUS loses. The shipped numbers aim for about four rounds; `npm run debate:balance` shows the average length.
 
 A preset can start from another one with `"extends": "normal"` and list only what it changes. `spec` is a frozen copy of the original spec's numbers that the tests use; don't edit it.

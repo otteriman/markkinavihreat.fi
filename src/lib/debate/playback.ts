@@ -1,7 +1,7 @@
 import type { Locale } from '../content'
 import type { BattleEvent, BattleResult, Side } from './battle'
 import { format, localize } from './text'
-import type { Enemy, UiStrings } from './types'
+import type { Enemy, PresentationOptions, UiStrings } from './types'
 
 /**
  * Turns the engine's events into steps for the stage to perform: which box a
@@ -32,8 +32,8 @@ export type Step =
       /** The line as screen readers hear it, with the speaker for spoken lines. */
       announce: string
     }
-  /** Empties the enemy's box and hides it until he speaks again. */
-  | { kind: 'clear'; box: 'top' }
+  /** Empties a box; the enemy's is also hidden until he speaks again. */
+  | { kind: 'clear'; box: 'top' | 'bottom' }
   | { kind: 'wait'; until: 'advance' | 'pause' }
   | {
       /** Phase labels on the boxes' top edges: a string sets one, null clears it, absent keeps it. */
@@ -74,16 +74,22 @@ export function planSteps(
   locale: Locale,
   ui: UiStrings,
   enemy: Enemy,
+  { announceEnemyAttack = true }: Partial<PresentationOptions> = {},
 ): Step[] {
   const steps: Step[] = []
   const you = format({ key: 'a11y.you' }, locale, ui)
   const foe = localize(enemy.subject, locale)
   let lastNarration = ''
+  /** Without the attack's narration, screen readers hear his label before his line. */
+  let attackLabel = ''
 
   events.forEach((event, i) => {
     const next = events[i + 1]
     switch (event.type) {
       case 'narrate': {
+        // config.json presentation.announceEnemyAttack: false skips "… käytti …!".
+        const key = 'key' in event.message ? event.message.key : ''
+        if (key === 'enemy.used' && !announceEnemyAttack) break
         const text = format(event.message, locale, ui)
         if (next?.type === 'prompt') {
           // The prompt is the grid's label rather than a line of its own.
@@ -101,11 +107,14 @@ export function planSteps(
       case 'phase': {
         if (event.phase === 'newRound') {
           steps.push({ kind: 'clear', box: 'top' }, { kind: 'tags', top: null, bottom: null })
+          // No narration will replace the last exchange's text, so it goes now.
+          if (!announceEnemyAttack) steps.push({ kind: 'clear', box: 'bottom' })
           break
         }
         const { box, key } = PHASE_TAG[event.phase]
         const vars = 'name' in event ? { name: event.name } : undefined
         const tag = format({ key, vars }, locale, ui)
+        if (event.phase === 'enemyAttack' && !announceEnemyAttack) attackLabel = tag
         // The player's attack: the enemy's last line and its label go.
         if (event.phase === 'playerAttack') {
           steps.push({ kind: 'clear', box: 'top' }, { kind: 'tags', top: null, bottom: tag })
@@ -117,11 +126,13 @@ export function planSteps(
       case 'say': {
         const text = localize(event.text, locale)
         const speaker = event.who === 'enemy' ? foe : you
+        const label = event.who === 'enemy' && attackLabel ? `${attackLabel}. ` : ''
+        attackLabel = ''
         steps.push({
           kind: 'type',
           box: event.who === 'enemy' ? 'top' : 'bottom',
           text,
-          announce: `${speaker}: ${text}`,
+          announce: `${label}${speaker}: ${text}`,
         })
         steps.push({ kind: 'wait', until: next?.type === 'prompt' ? 'pause' : 'advance' })
         break

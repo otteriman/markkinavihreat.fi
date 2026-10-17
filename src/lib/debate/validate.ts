@@ -208,6 +208,9 @@ class Checker {
         `rules.replyMix adds up to ${total} but rules.repliesPerAttack is ${rules.repliesPerAttack}`,
       )
     }
+    if (typeof this.config.presentation?.announceEnemyAttack !== 'boolean') {
+      this.add('config.json', 'presentation.announceEnemyAttack must be true or false')
+    }
     if (!(difficulty in difficulties)) {
       this.add('config.json', `"difficulty" names "${difficulty}", which isn’t in "difficulties"`)
     }
