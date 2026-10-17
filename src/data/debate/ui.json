@@ -96,9 +96,9 @@
     "needsReview": ["sv", "en"]
   },
   "effect.defend.medium": {
-    "fi": "Torjuit osan hänen hyökkäyksestään!",
-    "sv": "Du parerade en del av hans angrepp!",
-    "en": "You blocked part of his attack!",
+    "fi": "Puolustuksesi tehosi jotenkuten.",
+    "sv": "Ditt försvar fungerade sådär.",
+    "en": "Your defence sort of worked.",
     "needsReview": ["sv", "en"]
   },
   "effect.defend.weak": {
