@@ -265,7 +265,7 @@
 .debate-options {
   display: grid;
   grid-template-columns: 1fr 1fr;
-  column-gap: 4px;
+  gap: 2px 4px;
   margin: 0;
   padding: 0;
   list-style: none;
@@ -275,9 +275,12 @@
   display: block;
   width: 100%;
   margin: 0;
-  /* 3px above and below make each row 18px: easier to hit on a phone. */
-  padding: 3px 0 3px 9px;
-  border: 0;
+  /* Each option is an 18px-tall button (easier to hit on a phone) with a
+     faint border, barely darker than the background, that shows how far
+     the hit area goes. Three rows and their 2px gaps fill the bottom box. */
+  padding: 2px 0 2px 8px;
+  border: 1px solid var(--gb-1);
+  border-radius: 2px;
   background: none;
   color: inherit;
   font: inherit;
@@ -300,7 +303,7 @@
   content: '';
   position: absolute;
   left: 1px;
-  top: calc(3px + (var(--debate-line) - 7px) / 2);
+  top: calc(2px + (var(--debate-line) - 7px) / 2);
   width: 4px;
   height: 7px;
   background: currentColor;
@@ -360,6 +363,7 @@
 
 .debate-end .debate-option {
   width: auto;
+  padding-right: 4px;
 }
 
 /* Hit: the avatar flashes, fully transparent then fully opaque, three times
