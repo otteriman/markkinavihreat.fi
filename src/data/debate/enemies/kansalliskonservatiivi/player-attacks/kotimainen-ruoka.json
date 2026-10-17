@@ -2,46 +2,46 @@
   "needsReview": ["sv", "en"],
   "order": 2,
   "label": {
-    "fi": "Kotimainen ruoka",
-    "sv": "Inhemsk mat",
-    "en": "Domestic food"
+    "fi": "Kotimainen kasvisruoka",
+    "sv": "",
+    "en": ""
   },
   "say": {
-    "fi": "Suomalainen viljelijä ansaitsee reilun hinnan. Kotimaista ruokaa kouluihin ja armeijaan!",
-    "sv": "Den finländska bonden förtjänar ett rättvist pris. Inhemsk mat i skolorna och armén!",
-    "en": "Finnish farmers deserve a fair price. Domestic food in schools and the army!"
+    "fi": "Suomessa olisi järkevintä lisätä kasvisruuan tuotantoa, saisimme lisää ja halvempaa kotimaista ruokaa.",
+    "sv": "",
+    "en": ""
   },
   "defenses": [
     {
       "quality": "medium",
       "say": {
-        "fi": "Te haluatte vain kieltää lihan!",
-        "sv": "Ni vill bara förbjuda kött!",
-        "en": "You just want to ban meat!"
+        "fi": "Haluatte vain ideologisesti kieltää lihansyönnin ja tuputtaa elämäntapaanne muille.",
+        "sv": "",
+        "en": ""
       }
     },
     {
       "quality": "weak",
       "say": {
-        "fi": "Kauppojen hinnat ovat jo nyt liian korkeat!",
-        "sv": "Priserna i butikerna är redan för höga!",
-        "en": "Shop prices are already too high!"
+        "fi": "Juurikin ne teidän mangosmoothiet ja muut hömppäkasvikset nimenomaan rahdataan toiselta puolen maapalloa.",
+        "sv": "",
+        "en": ""
       }
     },
     {
       "quality": "weak",
       "say": {
-        "fi": "Armeijan hernekeitto on aina ollut kotimaista!",
-        "sv": "Arméns ärtsoppa har alltid varit inhemsk!",
-        "en": "The army’s pea soup has always been Finnish!"
+        "fi": "Ihminen on sekasyöjä, eli kyllä lihaakin pitää syödä. Ideologista sekoilua teidän jutut taas.",
+        "sv": "",
+        "en": ""
       }
     },
     {
       "quality": "strong",
       "say": {
-        "fi": "Ensin lihavero, nyt tämä? Te ajatte karjatilat alas!",
-        "sv": "Först köttskatt, nu det här? Ni kör ner boskapsgårdarna!",
-        "en": "First a meat tax, now this? You’re running cattle farms into the ground!"
+        "fi": "Ensin lihavero, nyt tämä? Te ajatte suomalaiset karjatilat konkursseihin!",
+        "sv": "",
+        "en": ""
       }
     }
   ]
