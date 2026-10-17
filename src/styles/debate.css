@@ -201,9 +201,15 @@
   top: 62px;
 }
 
+/* The player's opens downwards instead: borders left and top, so it reads
+   as the bottom half's. Bottom at y 173, just above the bottom label (176). */
 .debate-status-player {
   right: 6px;
-  top: 130px;
+  top: 136px;
+  padding: 3px 4px 2px;
+  border-top: 2px solid var(--gb-3);
+  border-bottom: 0;
+  border-radius: 3px 0 0;
 }
 
 .debate-status-name {
@@ -242,7 +248,7 @@
   position: absolute;
 }
 
-/* Enemy 48 × 50 (bottom at y 108, 22px above the player's status at 130,
+/* Enemy 48 × 50 (bottom at y 108, 28px above the player's status at 136,
    so the status reads as the player's, not his); player 56 × 50 (between the
    enemy's status and the bottom label at 176). */
 .debate-sprite-enemy {
