@@ -50,7 +50,6 @@ export function stageTexts(
       add('bottom', t(`effect.attack.${q}`), `ui.json effect.attack.${q}`)
       add('bottom', t(`effect.defend.${q}`), `ui.json effect.defend.${q}`)
     }
-    add('bottom', t('end.strongReplies', { count: 4, total: 4 }), 'ui.json end.strongReplies')
     add('bottom', t('effect.critical'), 'ui.json effect.critical')
     add('bottom', t('turn.player'), 'ui.json turn.player')
     for (const s of Object.values(specials)) {

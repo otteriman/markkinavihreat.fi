@@ -1,8 +1,8 @@
 import type { Locale } from '../../lib/content'
 import type { Side } from '../../lib/debate/battle'
 import type { PromptEvent, Step } from '../../lib/debate/playback'
-import { format, localize } from '../../lib/debate/text'
-import type { Difficulty, UiStrings } from '../../lib/debate/types'
+import { localize } from '../../lib/debate/text'
+import type { Difficulty } from '../../lib/debate/types'
 import type { Sounds } from './audio'
 
 /**
@@ -13,7 +13,6 @@ import type { Sounds } from './audio'
  */
 export interface ViewOptions {
   locale: Locale
-  ui: UiStrings
   /** Instant text and no hit flash. */
   reduce: boolean
   msPerChar: number
@@ -91,10 +90,6 @@ export class StageView {
     this.options = q('[data-debate-options]')
     this.live = q('[data-debate-live]')
     this.end = q('[data-debate-end]')
-  }
-
-  private t(key: string, vars?: Record<string, number>) {
-    return format({ key, vars }, this.opts.locale, this.opts.ui)
   }
 
   /** Back to the start of a battle: full bars, empty boxes. */
@@ -465,18 +460,13 @@ export class StageView {
     })
   }
 
-  /** The end screen: the result, the strong-reply count and "Play again". */
+  /** The end screen: the result and "Play again". */
   showEnd(step: Extract<Step, { kind: 'end' }>): Promise<void> {
     const { signal } = this.opts
-    const strong = this.t('end.strongReplies', {
-      count: step.result.strongReplies,
-      total: step.result.repliesGiven,
-    })
     this.end.querySelector('[data-debate-end-result]')!.textContent = step.text
-    this.end.querySelector('[data-debate-end-strong]')!.textContent = strong
     this.end.dataset.result = step.result.kind
     this.end.hidden = false
-    this.announce(`${step.text} ${strong}`)
+    this.announce(step.text)
     const again = this.end.querySelector<HTMLButtonElement>('[data-debate-again]')!
     again.focus({ preventScroll: true })
     return new Promise((resolve, reject) => {

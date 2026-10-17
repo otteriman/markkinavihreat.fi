@@ -137,12 +137,6 @@
     "en": "It’s a tie! Coalition talks continue...",
     "needsReview": ["sv", "en"]
   },
-  "end.strongReplies": {
-    "fi": "Täydelliset vastaukset: {count}/{total}",
-    "sv": "Perfekta svar: {count}/{total}",
-    "en": "Perfect replies: {count}/{total}",
-    "needsReview": ["sv", "en"]
-  },
   "turn.player": {
     "fi": "Sinun vuorosi valita puheenaihe.",
     "sv": "Din tur att välja ämne.",

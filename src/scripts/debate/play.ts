@@ -57,7 +57,6 @@ export async function playDebate(root: HTMLElement, options: PlayOptions): Promi
   const rng = options.rng ?? Math.random
   const view = new StageView(root, {
     locale: options.locale,
-    ui,
     reduce: options.reduceMotion ?? matchMedia('(prefers-reduced-motion: reduce)').matches,
     msPerChar: config.typing.msPerChar,
     signal: options.signal ?? new AbortController().signal,

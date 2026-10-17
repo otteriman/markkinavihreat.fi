@@ -99,9 +99,6 @@ export interface BattleResult {
   kind: ResultKind
   player: number
   enemy: number
-  /** Replies of quality "strong", out of `repliesGiven`. */
-  strongReplies: number
-  repliesGiven: number
 }
 
 export interface BattleState {
@@ -134,8 +131,6 @@ export interface BattleState {
   replyOrder: number[]
   player: number
   enemyKannatus: number
-  strongReplies: number
-  repliesGiven: number
   result: BattleResult | null
 }
 
@@ -177,8 +172,6 @@ export function startBattle({
     replyOrder: [],
     player: difficulty.player.kannatus,
     enemyKannatus: difficulty.enemy.kannatus,
-    strongReplies: 0,
-    repliesGiven: 0,
     result: null,
   }
   const events: BattleEvent[] = [
@@ -361,8 +354,6 @@ function end(state: BattleState, kind: ResultKind, events: BattleEvent[]): Step 
     kind,
     player: state.player,
     enemy: state.enemyKannatus,
-    strongReplies: state.strongReplies,
-    repliesGiven: state.repliesGiven,
   }
   if (kind === 'koWin') {
     // The enemy flees the stage, with his own defeat line.
@@ -399,11 +390,7 @@ export function chooseReply(prev: BattleState, index: number, rng?: Rng): Step {
   if (!reply) throw new BattleError(`No reply ${index} for this attack`)
 
   const hit = exchange(prev, 'player', reply.quality, criticalTriggers(reply), rng)
-  const state: BattleState = {
-    ...hit.state,
-    repliesGiven: prev.repliesGiven + 1,
-    strongReplies: prev.strongReplies + (reply.quality === 'strong' ? 1 : 0),
-  }
+  const { state } = hit
   const events: BattleEvent[] = [
     { type: 'phase', phase: 'reply', name: reply.label },
     { type: 'say', who: 'player', text: reply.say },

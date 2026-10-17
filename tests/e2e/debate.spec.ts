@@ -103,7 +103,6 @@ test('a whole battle by keyboard, with Play again', async ({ page }) => {
   }
 
   await expect(endScreen(page)).toBeVisible()
-  await expect(endScreen(page)).toContainText(/Täydelliset vastaukset: \d\/\d/)
   await expect(page.getByRole('button', { name: 'Pelaa uudelleen' })).toBeFocused()
   await page.waitForTimeout(END_GRACE)
   await page.keyboard.press('Enter')
@@ -147,7 +146,7 @@ test('a whole battle by tapping on a phone, with typing and bars', async ({ brow
       await stage(page).tap({ position: { x: 60, y: 60 } })
     }
   }
-  await expect(endScreen(page)).toContainText(/Perfect replies: \d\/\d/)
+  await expect(endScreen(page)).toBeVisible()
   // The end screen leaves full screen, and the history entry it added.
   await expect(page.locator('[data-debate]')).not.toHaveClass(/debate-fullscreen/)
   expect(new URL(page.url()).pathname).toBe('/en/debaattipeli/')

@@ -42,7 +42,6 @@ export const REQUIRED_UI_KEYS = [
   'end.pointsWin',
   'end.pointsLose',
   'end.tie',
-  'end.strongReplies',
   'end.playAgain',
   'turn.player',
   'intro.title',

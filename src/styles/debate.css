@@ -347,7 +347,7 @@
   }
 }
 
-/* The end screen covers the stage: result, strong replies, play again. */
+/* The end screen covers the stage: the result and play again. */
 .debate-end {
   position: absolute;
   z-index: 2;

@@ -365,8 +365,6 @@ describe('battle endings', () => {
     expect(after.result).toMatchObject({
       kind: 'koLose',
       player: 0,
-      repliesGiven: 1,
-      strongReplies: 0,
     })
     expect(keys(events).slice(-2)).toEqual(['end.koLose', 'end'])
   })
@@ -379,7 +377,7 @@ describe('battle endings', () => {
     const { state } = start(difficulty)
     const afterReply = chooseReply(state, replyOf(state, 'strong')).state
     const { state: after, events } = chooseAttack(afterReply, 'vahva1', seededRng(1))
-    expect(after.result).toMatchObject({ kind: 'koWin', enemy: 0, strongReplies: 1 })
+    expect(after.result).toMatchObject({ kind: 'koWin', enemy: 0 })
     // He slides off the stage, then his own defeat line.
     expect(events.slice(-3)).toEqual([
       { type: 'exit', who: 'enemy' },
@@ -398,7 +396,6 @@ describe('battle endings', () => {
       kind: 'tie',
       player: 100,
       enemy: 100,
-      strongReplies: 4,
     })
 
     const win = play('strong', ['vahva1', 'vahva2', 'hyva1', 'hyva2'], {
