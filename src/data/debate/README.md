@@ -55,7 +55,7 @@ The extra damage goes to whoever that hit was going to hurt. On a weak or medium
 
 **Add a special character:** copy `specials/paakirjoitustoimittaja.json` under a new name and edit `name` (the label over his line), `appear` (the narration as he steps in) and `sprite`. Add his sprite to `src/lib/debate/sprites.ts` (48 × 50, shown twice that size in the cut-in). Then use his file name in `by` on any reply or comeback. To see him in action, open the debate lab (`/debate-lab/`, development and previews only): under _Special characters_, each link starts a battle in which he steps in on the first reply.
 
-Quality means how good the _defender's_ answer is: `strong` blocks the hit completely, `medium` blocks half of it and `weak` lets the whole hit through (with the shipped numbers, 0, 15 or 30 points).
+Quality means how good the _defender's_ answer is: `strong` blocks the hit completely, `medium` lets part of it through and `weak` all of it. The shipped numbers punish the player harder than the enemy: a player's reply costs 0, 24 or 36 points, an enemy's comeback 0, 15 or 30, and an attack that meets a perfect defense backfires on the player for 24 points (on the enemy for 15).
 
 Length limits, set in `config.json` under `rules`, follow the boxes:
 
@@ -86,7 +86,7 @@ Characters are only a rough guide, since letters differ in width. The debate lab
 
 `config.json` → `presentation.announceEnemyAttack` decides whether each enemy attack is narrated ("Konservatiivi käytti VELKAPANIIKKIA!") before his line. It's `false` for now, because the label on his box ("Hyökkäys: Velkapaniikki") already names the attack; set it to `true` to bring the narration back. Each attack's `announce` text stays in its file either way.
 
-How a battle runs: each round the enemy attacks and you reply, then you attack and he defends. A `strong` answer blocks the hit and, with `counter` above 0, turns it back on the attacker; `medium` blocks half; `weak` lets the whole hit through. There is no fixed number of rounds: the first side out of KANNATUS loses. The shipped numbers aim for about four rounds; `npm run debate:balance` shows the average length.
+How a battle runs: each round the enemy attacks and you reply, then you attack and he defends. A `strong` answer blocks the hit and, with `counter` above 0, turns it back on the attacker; `medium` lets part of it through; `weak` all of it. There is no fixed number of rounds: the first side out of KANNATUS loses. The shipped numbers aim for about four rounds; `npm run debate:balance` shows the average length.
 
 A preset can start from another one with `"extends": "normal"` and list only what it changes. `spec` is a frozen copy of the original spec's numbers that the tests use; don't edit it.
 

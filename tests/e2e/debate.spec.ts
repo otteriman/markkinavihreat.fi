@@ -205,6 +205,14 @@ test('debate page loads its font from the site itself', async ({ page }) => {
   expect(new URL(fonts[0]).origin).toBe(new URL(page.url()).origin)
 })
 
+/** What a weak reply plus the smallest critical extra costs the player, from config.json. */
+function weakHit() {
+  const config = JSON.parse(readFileSync('src/data/debate/config.json', 'utf-8'))
+  const normal = config.difficulties[config.difficulty]
+  const player = normal.player
+  return Math.round(player.baseDamage * player.damage.weak) + normal.critical.extraMin
+}
+
 /**
  * The first weak reply that calls the editorial writer in, with the texts the
  * test expects, read from the content so copy edits don't break the test.
@@ -229,6 +237,8 @@ function editorScene() {
           appear: editor.appear.fi as string,
           effect: ui['effect.defend.weak'].fi as string,
           critical: ui['effect.critical'].fi as string,
+          // A weak reply's full hit plus the smallest extra (Math.random → 0).
+          damage: weakHit(),
         }
       }
     }
@@ -275,8 +285,10 @@ test('a critical hit: the editorial writer steps in, the hit lands harder', asyn
   await page.keyboard.press('Enter')
   await page.keyboard.press('Enter')
   await expect(page.locator('[data-debate-bottom]')).toHaveText(scene.critical)
-  // A weak reply's full hit (30) plus the extra 5.
-  await expect(page.locator('[data-debate-kannatus="player"]')).toHaveText(String(before - 35))
+  // KANNATUS stops at 0 if the hit knocks the player out.
+  await expect(page.locator('[data-debate-kannatus="player"]')).toHaveText(
+    String(Math.max(0, before - scene.damage)),
+  )
 })
 
 test('the stage scales to fit a phone', async ({ page }) => {
