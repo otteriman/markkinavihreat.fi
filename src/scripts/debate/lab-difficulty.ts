@@ -1,4 +1,4 @@
-import { config, enemies } from '../../lib/debate/data'
+import { config, enemies, specials } from '../../lib/debate/data'
 import { DifficultyError, resolveDifficulty } from '../../lib/debate/difficulty'
 import { checkGuardrail, simulate, STRATEGIES } from '../../lib/debate/simulate'
 import type { Difficulty, StrategyName } from '../../lib/debate/types'
@@ -63,7 +63,10 @@ export function setUpDifficultyPanel(): void {
     const rails = config.guardrails[preset.value] ?? {}
     const tables = enemies.map((enemy) => {
       const rows = Object.entries(STRATEGIES).map(([name, { label, strategy }]) => {
-        const s = simulate(enemy, difficulty, config.rules.playerAttackSlots, strategy, { runs })
+        const s = simulate(enemy, difficulty, config.rules.playerAttackSlots, strategy, {
+          runs,
+          specials,
+        })
         const rail = rails[name as StrategyName]
         const breaches = rail ? checkGuardrail(name as StrategyName, s, rail) : []
         const mark = rail ? (breaches.length ? `✗ ${breaches.join('; ')}` : '✓') : ''

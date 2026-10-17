@@ -21,7 +21,7 @@ const option = (name: string) => {
   return values
 }
 
-const { config, enemies } = loadDebate()
+const { config, enemies, specials } = loadDebate()
 const name = option('difficulty')[0] ?? config.difficulty
 const runs = Number(option('runs')[0] ?? 20_000)
 const seed = Number(option('seed')[0] ?? 1)
@@ -62,7 +62,11 @@ for (const enemy of enemies) {
       `${'KO'.padStart(7)}${'player'.padStart(7)}${'enemy'.padStart(7)}${'rounds'.padStart(7)}`,
   )
   for (const [key, { label, strategy }] of Object.entries(STRATEGIES)) {
-    const s = simulate(enemy, difficulty, config.rules.playerAttackSlots, strategy, { runs, seed })
+    const s = simulate(enemy, difficulty, config.rules.playerAttackSlots, strategy, {
+      runs,
+      seed,
+      specials,
+    })
     const rail = rails[key as StrategyName]
     const problems = rail ? checkGuardrail(key as StrategyName, s, rail) : []
     breaches += problems.length

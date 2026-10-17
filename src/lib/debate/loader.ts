@@ -1,4 +1,4 @@
-import type { Enemy, EnemyAttack, PlayerAttack } from './types'
+import type { Enemy, EnemyAttack, PlayerAttack, Special } from './types'
 
 /** A content problem, tied to the file it's in (relative to src/data/debate/). */
 export interface Problem {
@@ -65,6 +65,35 @@ export function assembleEnemies(files: Record<string, unknown>): {
     })
   }
   return { enemies, problems }
+}
+
+const SPECIAL = /specials\/([^/]+)\.json$/
+
+/**
+ * Builds the special characters from `specials/<id>.json` files, keyed by id.
+ * Like assembleEnemies, the files come from import.meta.glob or the file
+ * system; validate.ts checks their content.
+ */
+export function assembleSpecials(files: Record<string, unknown>): {
+  specials: Record<string, Special>
+  problems: Problem[]
+} {
+  const specials: Record<string, Special> = {}
+  const problems: Problem[] = []
+  for (const path of Object.keys(files).sort()) {
+    const match = SPECIAL.exec(path)
+    const file = path.slice(path.lastIndexOf('specials/'))
+    if (!match) {
+      problems.push({
+        file,
+        message: 'unexpected file: special characters go in specials/<id>.json',
+      })
+      continue
+    }
+    const id = match[1]
+    specials[id] = { ...(files[path] as object), id, source: file } as Special
+  }
+  return { specials, problems }
 }
 
 /** Grid order: by `order`, then attacks without one, by id. */

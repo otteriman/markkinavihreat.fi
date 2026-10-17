@@ -11,7 +11,7 @@ import {
 } from '../../src/lib/debate/battle'
 import { seededRng, type Rng } from '../../src/lib/debate/rng'
 import type { Difficulty, Quality } from '../../src/lib/debate/types'
-import { playerAttack, specDifficulty, specEnemy } from './debate-fixtures'
+import { playerAttack, specDifficulty, specEnemy, testSpecial } from './debate-fixtures'
 
 const start = (
   difficulty: Difficulty = specDifficulty(),
@@ -378,5 +378,102 @@ describe('battle endings', () => {
     }
     const { state } = play('strong', ['vahva1', 'vahva2', 'hyva1', 'hyva2'], difficulty)
     expect(state.result).toMatchObject({ kind: 'tie', player: 100, enemy: 40 })
+  })
+})
+
+describe('critical hits (special characters)', () => {
+  const editor = testSpecial()
+  const critical = { chance: 0.5, extraMin: 5, extraMax: 10 }
+  const line = { fi: 'editor line fi', sv: 'editor line sv', en: 'editor line en' }
+  /** The fixture enemy, with a critical trigger on every reply and defense. */
+  const enemyWithTriggers = (chance?: number) => {
+    const enemy = specEnemy()
+    const trigger = { by: 'editor', say: line, ...(chance === undefined ? {} : { chance }) }
+    for (const a of enemy.attacks) for (const r of a.replies) r.critical = trigger
+    for (const a of enemy.playerAttacks) for (const d of a.defenses) d.critical = trigger
+    return enemy
+  }
+  const setup = (chance?: number, difficulty: Difficulty = { ...specDifficulty(), critical }) =>
+    startBattle({
+      enemy: enemyWithTriggers(chance),
+      difficulty,
+      attackSlots: 6,
+      rng: seededRng(1),
+      specials: { editor },
+    })
+
+  it('he steps in, speaks, leaves, and the hit does 5–10 more damage', () => {
+    const { state } = setup(1)
+    for (let seed = 1; seed <= 30; seed++) {
+      const { events, state: next } = chooseReply(state, replyOf(state, 'weak'), seededRng(seed))
+      expect(events.map((e) => e.type)).toEqual([
+        'phase',
+        'say',
+        'say',
+        'specialEnter',
+        'narrate', // Pääkirjoitustoimittaja astuu esiin!
+        'specialSay',
+        'specialExit',
+        'narrate', // the effect text
+        'narrate', // Kriittinen osuma!
+        'hit',
+        'narrate',
+        'prompt',
+      ])
+      expect(events[4]).toEqual({ type: 'narrate', message: { text: editor.appear } })
+      expect(events[5]).toEqual({ type: 'specialSay', special: editor, text: line })
+      expect(keys(events)).toContain('effect.critical')
+      const hit = events.find((e) => e.type === 'hit')!
+      expect(hit).toMatchObject({ target: 'player', critical: true, from: 100 })
+      if (hit.type !== 'hit') throw new Error()
+      expect(hit.extra).toBeGreaterThanOrEqual(5)
+      expect(hit.extra).toBeLessThanOrEqual(10)
+      expect(hit.damage).toBe(30 + hit.extra)
+      expect(next.player).toBe(100 - hit.damage)
+    }
+  })
+
+  it('uses the difficulty’s chance when the trigger sets none, about half the time', () => {
+    const { state } = setup()
+    let crits = 0
+    for (let seed = 1; seed <= 400; seed++) {
+      const { events } = chooseReply(state, replyOf(state, 'weak'), seededRng(seed))
+      if (events.some((e) => e.type === 'specialEnter')) crits++
+    }
+    expect(crits / 400).toBeGreaterThan(0.4)
+    expect(crits / 400).toBeLessThan(0.6)
+  })
+
+  it('never fires on a hit that does no damage, with chance 0, or without an rng', () => {
+    const { state } = setup(1)
+    const blocked = chooseReply(state, replyOf(state, 'strong'), seededRng(1)).events
+    expect(blocked.some((e) => e.type === 'specialEnter')).toBe(false)
+    const never = setup(0).state
+    expect(
+      chooseReply(never, replyOf(never, 'weak'), seededRng(1)).events.some(
+        (e) => e.type === 'specialEnter',
+      ),
+    ).toBe(false)
+    const noRng = chooseReply(state, replyOf(state, 'weak')).events
+    expect(noRng.find((e) => e.type === 'hit')).toMatchObject({ damage: 30, critical: false })
+  })
+
+  it('never fires without critical settings in the difficulty', () => {
+    const { state } = setup(1, specDifficulty())
+    const { events } = chooseReply(state, replyOf(state, 'weak'), seededRng(1))
+    expect(events.find((e) => e.type === 'hit')).toMatchObject({ damage: 30, critical: false })
+  })
+
+  it('works on the enemy’s defenses too: the player’s attack hits harder', () => {
+    const difficulty = {
+      ...specDifficulty(),
+      critical,
+      enemyDefenseWeights: { strong: 0, medium: 0, weak: 1 },
+    }
+    const { state } = setup(1, difficulty)
+    const afterReply = chooseReply(state, replyOf(state, 'strong'), seededRng(1)).state
+    const { events } = chooseAttack(afterReply, 'vahva1', seededRng(3))
+    expect(events.map((e) => e.type)).toContain('specialEnter')
+    expect(events.find((e) => e.type === 'hit')).toMatchObject({ target: 'enemy', critical: true })
   })
 })

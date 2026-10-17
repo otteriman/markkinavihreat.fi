@@ -60,7 +60,13 @@ for (const collection of readdirSync(CONTENT_ROOT)) {
 // Debate game (src/data/debate/): fi + sv + en for every text, plus its
 // content rules. TODO and needsReview are reported, not failures.
 const debate = loadDebate()
-for (const problem of validateDebate(debate.config, debate.enemies, debate.ui, debate.problems)) {
+for (const problem of validateDebate(
+  debate.config,
+  debate.enemies,
+  debate.ui,
+  debate.problems,
+  debate.specials,
+)) {
   console.error(`[debate] ${formatProblem(problem)}`)
   hasError = true
 }

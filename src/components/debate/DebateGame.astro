@@ -11,7 +11,7 @@
  */
 import '../../styles/debate.css'
 import type { Locale } from '../../lib/content'
-import { enemies, ui } from '../../lib/debate/data'
+import { enemies, specials, ui } from '../../lib/debate/data'
 import { spriteSvg } from '../../lib/debate/sprites'
 import { format, localize } from '../../lib/debate/text'
 
@@ -121,6 +121,22 @@ const promptId = `debate-prompt-${locale}`
           style={`--fill: ${fill(preview?.player)}`}></span>
       </span>
     </div>
+
+    {
+      /* A special character's cut-in, over the middle of the stage (view.ts cutIn). */
+      play && Object.keys(specials).length > 0 && (
+        <div class="debate-cutin" data-debate-cutin aria-hidden="true" hidden>
+          {Object.values(specials).map((s) => (
+            <div
+              class="debate-cutin-sprite"
+              data-debate-special={s.id}
+              hidden
+              set:html={spriteSvg(s.sprite)}
+            />
+          ))}
+        </div>
+      )
+    }
 
     <div class="debate-box debate-box-bottom" data-debate-box="bottom">
       <p class="debate-text" data-debate-bottom aria-hidden="true" hidden={!!options}>

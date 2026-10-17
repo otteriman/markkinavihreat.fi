@@ -1,6 +1,6 @@
-import { readdirSync, readFileSync, statSync } from 'node:fs'
+import { existsSync, readdirSync, readFileSync, statSync } from 'node:fs'
 import { join, relative } from 'node:path'
-import { assembleEnemies } from '../../src/lib/debate/loader'
+import { assembleEnemies, assembleSpecials } from '../../src/lib/debate/loader'
 import type { DebateConfig, UiStrings } from '../../src/lib/debate/types'
 
 /**
@@ -31,6 +31,20 @@ export function loadDebate() {
   )
   const config = readJson(join(DEBATE_DIR, 'config.json')) as DebateConfig
   const ui = readJson(join(DEBATE_DIR, 'ui.json')) as UiStrings
+  const specialsDir = join(DEBATE_DIR, 'specials')
+  const specialFiles = Object.fromEntries(
+    (existsSync(specialsDir) ? readdirSync(specialsDir) : [])
+      .filter((entry) => entry.endsWith('.json'))
+      .map((entry) => [`specials/${entry}`, readJson(join(specialsDir, entry))]),
+  )
   const { enemies, problems } = assembleEnemies(files)
-  return { config, ui, enemies, problems, files: { ...files, 'ui.json': ui } }
+  const { specials, problems: specialProblems } = assembleSpecials(specialFiles)
+  return {
+    config,
+    ui,
+    enemies,
+    specials,
+    problems: [...problems, ...specialProblems],
+    files: { ...files, ...specialFiles, 'ui.json': ui },
+  }
 }

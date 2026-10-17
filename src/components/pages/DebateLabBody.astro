@@ -11,7 +11,7 @@ import '../../styles/debate-lab.css'
 import BaseLayout from '../../layouts/BaseLayout.astro'
 import DebateGame from '../debate/DebateGame.astro'
 import { LOCALES } from '../../lib/content'
-import { config, enemies, ui } from '../../lib/debate/data'
+import { config, enemies, specials, ui } from '../../lib/debate/data'
 import { SPRITES, spriteSvg } from '../../lib/debate/sprites'
 import { longestTexts, stageTexts } from '../../lib/debate/stageTexts'
 import { format, localize } from '../../lib/debate/text'
@@ -23,7 +23,7 @@ const FONTS = [
   { id: 'micro', name: 'Micro 5, 11px' },
 ]
 
-const texts = stageTexts(enemies, ui)
+const texts = stageTexts(enemies, ui, specials)
 const enemy = enemies[0]
 
 /** The worst case in `locale`: longest lines in both boxes, longest labels in the grid. */

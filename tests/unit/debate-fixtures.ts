@@ -6,6 +6,7 @@ import type {
   Localized,
   PlayerAttack,
   Quality,
+  Special,
 } from '../../src/lib/debate/types'
 
 /** Test fixtures for the debate game: small, made-up content with known qualities. */
@@ -90,6 +91,15 @@ export const specDifficulty = (): Difficulty => ({
   },
   enemyDefenseWeights: { strong: 1, medium: 1, weak: 1 },
   tieMargin: 0,
+})
+
+/** A special character for critical-hit tests. */
+export const testSpecial = (): Special => ({
+  id: 'editor',
+  source: 'specials/editor.json',
+  name: txt('editor name'),
+  appear: txt('editor appear'),
+  sprite: 'kansalliskonservatiivi',
 })
 
 export function testConfig(overrides: Partial<DebateConfig> = {}): DebateConfig {

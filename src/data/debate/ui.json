@@ -89,6 +89,12 @@
     "en": "Your defence was very effective! His attack backfired on him.",
     "needsReview": ["fi", "sv", "en"]
   },
+  "effect.critical": {
+    "fi": "Kriittinen osuma!",
+    "sv": "Kritisk träff!",
+    "en": "Critical hit!",
+    "needsReview": ["sv", "en"]
+  },
   "effect.defend.medium": {
     "fi": "Torjuit osan hänen hyökkäyksestään!",
     "sv": "Du parerade en del av hans angrepp!",

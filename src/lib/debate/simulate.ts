@@ -8,6 +8,7 @@ import type {
   Guardrail,
   PlayerAttack,
   Quality,
+  Special,
   StrategyName,
   Tier,
 } from './types'
@@ -121,7 +122,16 @@ export function simulate(
   difficulty: Difficulty,
   attackSlots: number,
   strategy: Strategy,
-  { runs = 10_000, seed = 1 }: { runs?: number; seed?: number } = {},
+  {
+    runs = 10_000,
+    seed = 1,
+    specials = {},
+  }: {
+    runs?: number
+    seed?: number
+    /** Special characters, so critical hits count; without them none happen. */
+    specials?: Record<string, Special>
+  } = {},
 ): SimulationStats {
   const rng = seededRng(seed)
   let win = 0
@@ -131,11 +141,11 @@ export function simulate(
   let foe = 0
   let rounds = 0
   for (let run = 0; run < runs; run++) {
-    let { state } = startBattle({ enemy, difficulty, attackSlots, rng })
+    let { state } = startBattle({ enemy, difficulty, attackSlots, rng, specials })
     while (state.phase !== 'over') {
       state =
         state.phase === 'reply'
-          ? chooseReply(state, strategy.reply(state, rng)).state
+          ? chooseReply(state, strategy.reply(state, rng), rng).state
           : chooseAttack(state, strategy.attack(state, rng), rng).state
     }
     const result = state.result!

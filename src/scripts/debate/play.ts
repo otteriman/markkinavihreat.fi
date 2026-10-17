@@ -1,6 +1,6 @@
 import type { Locale } from '../../lib/content'
 import { chooseAttack, chooseReply, startBattle, type BattleResult } from '../../lib/debate/battle'
-import { config, enemies, ui } from '../../lib/debate/data'
+import { config, enemies, specials, ui } from '../../lib/debate/data'
 import { resolveDifficulty } from '../../lib/debate/difficulty'
 import { planSteps, type Step } from '../../lib/debate/playback'
 import type { Rng } from '../../lib/debate/rng'
@@ -72,6 +72,12 @@ export async function playDebate(root: HTMLElement, options: PlayOptions): Promi
         case 'irisOut':
           await view.irisOut()
           break
+        case 'cutIn':
+          await view.cutIn(step.special)
+          break
+        case 'cutOut':
+          await view.cutOut()
+          break
         case 'prompt':
         case 'end':
           return step
@@ -86,6 +92,7 @@ export async function playDebate(root: HTMLElement, options: PlayOptions): Promi
     difficulty,
     attackSlots: config.rules.playerAttackSlots,
     rng,
+    specials,
   })
   for (;;) {
     const stop = await perform(planSteps(events, options.locale, ui, enemy, config.presentation))
@@ -99,7 +106,7 @@ export async function playDebate(root: HTMLElement, options: PlayOptions): Promi
     const choice = await view.choose(stop.prompt)
     ;({ state, events } =
       stop.prompt.kind === 'reply'
-        ? chooseReply(state, choice as number)
+        ? chooseReply(state, choice as number, rng)
         : chooseAttack(state, choice as string, rng))
   }
 }

@@ -2,7 +2,14 @@ import { LOCALES, type Locale } from '../content'
 import { DifficultyError, resolveDifficulty } from './difficulty'
 import type { Problem } from './loader'
 import { SPRITES } from './sprites'
-import { QUALITIES, type DebateConfig, type Enemy, type Quality, type UiStrings } from './types'
+import {
+  QUALITIES,
+  type DebateConfig,
+  type Enemy,
+  type Quality,
+  type Special,
+  type UiStrings,
+} from './types'
 
 /**
  * Checks the debate game's content and config against the rules in
@@ -28,6 +35,7 @@ export const REQUIRED_UI_KEYS = [
   ...QUALITIES.map((q) => `effect.defend.${q}`),
   'effect.attack.backfire',
   'effect.defend.backfire',
+  'effect.critical',
   'end.koLose',
   'end.koLoseResult',
   'end.pointsWin',
@@ -61,7 +69,10 @@ const describeMix = (mix: Record<Quality, number>) =>
 
 class Checker {
   problems: Problem[] = []
-  constructor(private config: DebateConfig) {}
+  constructor(
+    private config: DebateConfig,
+    private specials: Record<string, Special> = {},
+  ) {}
 
   add(file: string, message: string) {
     this.problems.push({ file, message })
@@ -94,6 +105,37 @@ class Checker {
     if (value === undefined) return
     if (!Array.isArray(value) || value.some((l) => !LOCALES.includes(l as Locale))) {
       this.add(file, `${where}.needsReview must be a list of languages, e.g. ["sv", "en"]`)
+    }
+  }
+
+  /** A reply's or defense's optional `critical`: who steps in, what he says, the odds. */
+  critical(file: string, where: string, value: unknown) {
+    if (value === undefined) return
+    const at = `${where}.critical`
+    if (!isObj(value)) return this.add(file, `${at} must be { "by": …, "say": … }`)
+    if (typeof value.by !== 'string' || !(value.by in this.specials)) {
+      const known = Object.keys(this.specials).join(', ') || 'none'
+      this.add(
+        file,
+        `${at}.by names "${String(value.by)}", which isn’t in specials/ (known: ${known})`,
+      )
+    }
+    this.text(file, `${at}.say`, value.say, 'line')
+    const chance = value.chance
+    if (chance !== undefined && (typeof chance !== 'number' || chance < 0 || chance > 1)) {
+      this.add(file, `${at}.chance must be a number from 0 to 1 (is ${JSON.stringify(chance)})`)
+    }
+  }
+
+  special(special: Special) {
+    const file = special.source
+    this.needsReview(file, 'file', (special as unknown as Obj).needsReview)
+    // On the phase label, not in the grid: the lab's fit check measures it.
+    this.text(file, 'name', special.name)
+    this.text(file, 'appear', special.appear, 'line')
+    if (typeof special.sprite !== 'string' || !special.sprite) this.add(file, 'sprite is missing')
+    else if (!(special.sprite in SPRITES)) {
+      this.add(file, `sprite "${special.sprite}" doesn’t exist in src/lib/debate/sprites.ts`)
     }
   }
 
@@ -143,6 +185,7 @@ class Checker {
         this.quality(f, where, reply.quality)
         this.text(f, `${where}.say`, reply.say, 'line')
         this.text(f, `${where}.reaction`, reply.reaction, 'line')
+        this.critical(f, where, reply.critical)
       })
       const mix = count(attack.replies.map((r) => (isObj(r) ? r.quality : undefined)))
       if (QUALITIES.some((q) => mix[q] !== rules.replyMix[q])) {
@@ -176,6 +219,7 @@ class Checker {
         if (!isObj(defense)) return this.add(f, `${where} is not an object`)
         this.quality(f, where, defense.quality)
         this.text(f, `${where}.say`, defense.say, 'line')
+        this.critical(f, where, defense.critical)
       })
       const strong = attack.defenses.filter((d) => isObj(d) && d.quality === 'strong').length
       if (strong < rules.minStrongDefenses) {
@@ -251,13 +295,15 @@ export function validateDebate(
   enemies: Enemy[],
   ui: UiStrings,
   loadProblems: Problem[] = [],
+  specials: Record<string, Special> = {},
 ): Problem[] {
-  const checker = new Checker(config)
+  const checker = new Checker(config, specials)
   checker.problems.push(...loadProblems)
   checker.settings()
   checker.ui(ui)
   if (enemies.length === 0) checker.add('enemies/', 'there are no enemies')
   for (const enemy of enemies) checker.enemy(enemy)
+  for (const special of Object.values(specials)) checker.special(special)
   return checker.problems
 }
 

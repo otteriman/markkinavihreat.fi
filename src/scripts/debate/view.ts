@@ -39,6 +39,9 @@ const ENTER_MS = 800
 /** Matches the .debate-iris animation, then a moment of darkness. */
 const IRIS_MS = 1200
 const IRIS_HOLD_MS = 400
+/** Match the .debate-cutin opening and closing animations. */
+const CUT_IN_MS = 700
+const CUT_OUT_MS = 500
 
 /** Hides both sprites (off stage) until a battle's entrance. */
 export function hideSprites(root: ParentNode): void {
@@ -112,6 +115,9 @@ export class StageView {
     this.more.top.hidden = true
     this.more.bottom.hidden = true
     this.setTags({ kind: 'tags', top: null, bottom: null })
+    const cutin = this.root.querySelector<HTMLElement>('[data-debate-cutin]')
+    if (cutin) cutin.hidden = true
+    this.stage.classList.remove('debate-shake')
     // Off stage until the battle's entrance (enter()).
     hideSprites(this.root)
     this.stage.tabIndex = 0
@@ -233,17 +239,21 @@ export class StageView {
 
   /**
    * The hit: the target's avatar flashes (fully transparent, fully opaque,
-   * three times in about a second) while its bar drains point by point.
+   * three times in about a second) while its bar drains point by point. A
+   * critical hit also shakes the stage, with a heavier sound.
    */
   async hit(step: Extract<Step, { kind: 'hit' }>): Promise<void> {
     const { signal, reduce } = this.opts
     this.announce(step.announce, true)
     if (step.damage <= 0) return
     this.opts.sounds.hit(step.backfire)
+    if (step.critical) this.opts.sounds.critical()
     if (reduce) {
       this.setKannatus(step.target, step.to)
       return
     }
+    // The shake (.debate-shake) runs once, well within the flash.
+    if (step.critical) this.stage.classList.add('debate-shake')
     const sprite = this.root.querySelector<HTMLElement>(`.debate-sprite-${step.target}`)
     sprite?.classList.add('debate-flash')
     const drain = async () => {
@@ -257,6 +267,7 @@ export class StageView {
       await Promise.all([sleep(FLASH_MS, signal), drain()])
     } finally {
       sprite?.classList.remove('debate-flash')
+      this.stage.classList.remove('debate-shake')
     }
   }
 
@@ -287,6 +298,43 @@ export class StageView {
     iris.hidden = false
     iris.classList.add('debate-closing')
     await sleep(IRIS_MS + IRIS_HOLD_MS, this.opts.signal)
+  }
+
+  /**
+   * A special character's cut-in: a band opens over the middle of the stage
+   * and he slides in, twice his usual size. Instant with reduced motion.
+   */
+  async cutIn(special: string): Promise<void> {
+    const cutin = this.root.querySelector<HTMLElement>('[data-debate-cutin]')
+    if (!cutin) return
+    cutin.querySelectorAll<HTMLElement>('[data-debate-special]').forEach((s) => {
+      s.hidden = s.dataset.debateSpecial !== special
+    })
+    cutin.classList.remove('debate-closing')
+    cutin.hidden = false
+    this.opts.sounds.cutIn()
+    if (this.opts.reduce) return
+    cutin.classList.add('debate-opening')
+    try {
+      await sleep(CUT_IN_MS, this.opts.signal)
+    } finally {
+      cutin.classList.remove('debate-opening')
+    }
+  }
+
+  /** He slides off and the band closes. */
+  async cutOut(): Promise<void> {
+    const cutin = this.root.querySelector<HTMLElement>('[data-debate-cutin]')
+    if (!cutin) return
+    if (!this.opts.reduce) {
+      cutin.classList.add('debate-closing')
+      try {
+        await sleep(CUT_OUT_MS, this.opts.signal)
+      } finally {
+        cutin.classList.remove('debate-closing')
+      }
+    }
+    cutin.hidden = true
   }
 
   /** `who` slides off the stage (instantly gone with reduced motion). */

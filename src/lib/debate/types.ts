@@ -26,6 +26,8 @@ export interface Reply {
   say: Localized
   /** The enemy's comeback (top box). */
   reaction: Localized
+  /** A special character may step in and make this reply's hit critical. */
+  critical?: CriticalTrigger
 }
 
 export interface EnemyAttack {
@@ -46,6 +48,37 @@ export interface EnemyAttack {
 export interface Defense {
   quality: Quality
   say: Localized
+  /** A special character may step in and make this defense's hit critical. */
+  critical?: CriticalTrigger
+}
+
+/**
+ * A special character (src/data/debate/specials/<id>.json): someone outside
+ * the debate who can step in, say something and turn a hit into a critical
+ * hit. Any reply or defense can call one in with a `critical` trigger.
+ */
+export interface Special {
+  /** File name without .json; triggers name it in `by`. */
+  id: string
+  source: string
+  /** His name, on the label over his line, e.g. "Pääkirjoitustoimittaja". */
+  name: Localized
+  /** Narration as he steps in, e.g. "Pääkirjoitustoimittaja astuu esiin!". */
+  appear: Localized
+  /** Sprite id (src/lib/debate/sprites.ts). */
+  sprite: string
+}
+
+/**
+ * On a reply or defense: when its hit does damage, special character `by`
+ * may step in (with `chance`, or the difficulty's critical.chance), say
+ * `say`, and make the hit critical: it does extra damage.
+ */
+export interface CriticalTrigger {
+  by: string
+  say: Localized
+  /** 0–1; defaults to the difficulty's critical.chance. */
+  chance?: number
 }
 
 export interface PlayerAttack {
@@ -109,12 +142,27 @@ export interface Difficulty {
   enemyDefenseWeights: Record<Quality, number>
   /** A final points difference up to this counts as a tie. */
   tieMargin: number
+  /**
+   * Critical hits (special characters stepping in). Without this, they never
+   * happen. `chance` is the default odds for a trigger that sets none; a
+   * critical hit does `extraMin`–`extraMax` more damage (a whole number,
+   * every value equally likely).
+   */
+  critical?: CriticalSettings
+}
+
+export interface CriticalSettings {
+  chance: number
+  extraMin: number
+  extraMax: number
 }
 
 /** A preset as written in config.json: any subset of the knobs, plus `extends`. */
 export type DifficultyPreset = DeepPartial<Difficulty> & { extends?: string }
 
-type DeepPartial<T> = { [K in keyof T]?: T[K] extends object ? DeepPartial<T[K]> : T[K] }
+type DeepPartial<T> = {
+  [K in keyof T]?: NonNullable<T[K]> extends object ? DeepPartial<NonNullable<T[K]>> : T[K]
+}
 
 /** Rules the content must follow; the validator reads them from config.json. */
 export interface ContentRules {

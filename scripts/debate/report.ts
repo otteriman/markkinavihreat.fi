@@ -13,7 +13,7 @@ import { loadDebate } from './load'
  * under the shipped difficulty, the longest texts per language, open
  * translation work, and any content problems (exits 1 if there are some).
  */
-const { config, ui, enemies, problems: loadProblems, files } = loadDebate()
+const { config, ui, enemies, specials, problems: loadProblems, files } = loadDebate()
 const difficulty = resolveDifficulty(config)
 const TIER = { vahva: 'Vahva', hyva: 'Hyvä', heikko: 'Heikko' }
 const Q = { strong: 'S', medium: 'M', weak: 'W' }
@@ -75,7 +75,7 @@ console.log('\nTranslations')
 console.log(`  needsReview: ${LOCALES.map((l) => `${l} ${status.review[l]}`).join(', ')} texts`)
 console.log(`  TODO: ${status.todo.length ? [...new Set(status.todo)].join(', ') : 'none'}`)
 
-const problems = validateDebate(config, enemies, ui, loadProblems)
+const problems = validateDebate(config, enemies, ui, loadProblems, specials)
 console.log(`\nContent check: ${problems.length ? `${problems.length} problem(s)` : 'OK'}`)
 problems.forEach((p) => console.log(`  ${formatProblem(p)}`))
 if (problems.length > 0) process.exit(1)

@@ -1,14 +1,23 @@
 import { describe, expect, it } from 'vitest'
-import { config, enemies, loadProblems, ui } from '../../src/lib/debate/data'
-import { assembleEnemies } from '../../src/lib/debate/loader'
+import { config, enemies, loadProblems, specials, ui } from '../../src/lib/debate/data'
+import { assembleEnemies, assembleSpecials } from '../../src/lib/debate/loader'
 import { format, localize } from '../../src/lib/debate/text'
 import { formatProblem, translationStatus, validateDebate } from '../../src/lib/debate/validate'
 import type { Enemy } from '../../src/lib/debate/types'
-import { enemyAttack, playerAttack, specEnemy, testConfig, txt } from './debate-fixtures'
+import {
+  enemyAttack,
+  playerAttack,
+  specEnemy,
+  testConfig,
+  testSpecial,
+  txt,
+} from './debate-fixtures'
 
 describe('the real debate content', () => {
   it('passes every content rule', () => {
-    expect(validateDebate(config, enemies, ui, loadProblems).map(formatProblem)).toEqual([])
+    expect(validateDebate(config, enemies, ui, loadProblems, specials).map(formatProblem)).toEqual(
+      [],
+    )
   })
 
   it('has the kansalliskonservatiivi with its attacks', () => {
@@ -122,6 +131,24 @@ describe('validateDebate', () => {
     ])
   })
 
+  it('checks critical triggers and special characters', () => {
+    const enemy = specEnemy()
+    enemy.attacks[0].replies[2].critical = { by: 'nobody', say: txt('line') }
+    enemy.playerAttacks[0].defenses[1].critical = { by: 'editor', say: txt('line'), chance: 2 }
+    const editor = { ...testSpecial(), sprite: 'ghost' }
+    const ui = Object.fromEntries(['status.player'].map((k) => [k, txt(k)]))
+    const problems = validateDebate(testConfig(), [enemy], ui, [], { editor })
+      .filter((p) => p.file !== 'ui.json')
+      .map(formatProblem)
+    expect(problems).toEqual([
+      'src/data/debate/enemies/test/enemy-attacks/a1.json: replies[2].critical.by names ' +
+        '"nobody", which isn’t in specials/ (known: editor)',
+      'src/data/debate/enemies/test/player-attacks/vahva1.json: ' +
+        'defenses[1].critical.chance must be a number from 0 to 1 (is 2)',
+      'src/data/debate/specials/editor.json: sprite "ghost" doesn’t exist in src/lib/debate/sprites.ts',
+    ])
+  })
+
   it('reports missing UI strings', () => {
     const problems = validateDebate(testConfig(), [specEnemy()], {}).map(formatProblem)
     expect(problems).toContain('src/data/debate/ui.json: "prompt.reply" is missing')
@@ -166,6 +193,17 @@ describe('assembleEnemies', () => {
       'enemies/foe/notes.json',
       'enemies/ghost/enemy.json',
     ])
+  })
+})
+
+describe('assembleSpecials', () => {
+  it('builds special characters by file name and reports stray files', () => {
+    const { specials, problems } = assembleSpecials({
+      '../../data/debate/specials/editor.json': { name: txt('n'), appear: txt('a'), sprite: 'x' },
+      '../../data/debate/specials/sub/odd.json': {},
+    })
+    expect(specials.editor).toMatchObject({ id: 'editor', source: 'specials/editor.json' })
+    expect(problems.map((p) => p.file)).toEqual(['specials/sub/odd.json'])
   })
 })
 

@@ -1,0 +1,14 @@
+{
+  "needsReview": ["sv", "en"],
+  "name": {
+    "fi": "Pääkirjoitustoimittaja",
+    "sv": "Ledarskribenten",
+    "en": "Editorial writer"
+  },
+  "appear": {
+    "fi": "Pääkirjoitustoimittaja astuu esiin!",
+    "sv": "Ledarskribenten kliver fram!",
+    "en": "The editorial writer steps forward!"
+  },
+  "sprite": "paakirjoitustoimittaja"
+}

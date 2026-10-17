@@ -1,6 +1,13 @@
 import { LOCALES, type Locale } from '../content'
 import { format, localize } from './text'
-import { QUALITIES, type Enemy, type Localized, type UiStrings } from './types'
+import {
+  QUALITIES,
+  type CriticalTrigger,
+  type Enemy,
+  type Localized,
+  type Special,
+  type UiStrings,
+} from './types'
 
 /** Where a text appears on the stage, which decides how much room it has. */
 export type StageBox = 'top' | 'bottom' | 'label' | 'status' | 'tag'
@@ -17,7 +24,11 @@ export interface StageText {
  * Every text the battle can show, in every language, with the box it goes in.
  * The lab page measures these against each font to find any that don't fit.
  */
-export function stageTexts(enemies: Enemy[], ui: UiStrings): StageText[] {
+export function stageTexts(
+  enemies: Enemy[],
+  ui: UiStrings,
+  specials: Record<string, Special> = {},
+): StageText[] {
   const out: StageText[] = []
   for (const locale of LOCALES) {
     const add = (box: StageBox, text: string, source: string) =>
@@ -35,6 +46,15 @@ export function stageTexts(enemies: Enemy[], ui: UiStrings): StageText[] {
       add('bottom', t(`effect.defend.${q}`), `ui.json effect.defend.${q}`)
     }
     add('bottom', t('end.strongReplies', { count: 4, total: 4 }), 'ui.json end.strongReplies')
+    add('bottom', t('effect.critical'), 'ui.json effect.critical')
+    for (const s of Object.values(specials)) {
+      add('tag', localize(s.name, locale), `${s.source} name`)
+      add('bottom', localize(s.appear, locale), `${s.source} appear`)
+    }
+    /** A special character's line (top box), from a reply's or defense's trigger. */
+    const critical = (trigger: CriticalTrigger | undefined, source: string) => {
+      if (trigger) add('top', localize(trigger.say, locale), `${source}.critical.say`)
+    }
 
     for (const enemy of enemies) {
       const e = enemy.id
@@ -60,6 +80,7 @@ export function stageTexts(enemies: Enemy[], ui: UiStrings): StageText[] {
           add('tag', t('tag.reply', { name: r.label }), `${src} replies[${i}].label`)
           add('bottom', localize(r.say, locale), `${src} replies[${i}].say`)
           add('top', localize(r.reaction, locale), `${src} replies[${i}].reaction`)
+          critical(r.critical, `${src} replies[${i}]`)
         })
       }
       for (const a of enemy.playerAttacks) {
@@ -67,9 +88,10 @@ export function stageTexts(enemies: Enemy[], ui: UiStrings): StageText[] {
         add('label', localize(a.label, locale), `${src} label`)
         add('tag', t('tag.playerAttack', { name: a.label }), `${src} label`)
         add('bottom', localize(a.say, locale), `${src} say`)
-        a.defenses.forEach((d, i) =>
-          add('top', localize(d.say, locale), `${src} defenses[${i}].say`),
-        )
+        a.defenses.forEach((d, i) => {
+          add('top', localize(d.say, locale), `${src} defenses[${i}].say`)
+          critical(d.critical, `${src} defenses[${i}]`)
+        })
       }
     }
   }

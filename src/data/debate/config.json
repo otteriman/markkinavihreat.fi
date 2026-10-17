@@ -57,7 +57,12 @@
         "medium": 1,
         "weak": 1
       },
-      "tieMargin": 0
+      "tieMargin": 0,
+      "critical": {
+        "chance": 0.5,
+        "extraMin": 5,
+        "extraMax": 10
+      }
     },
     "easy": {
       "extends": "normal",

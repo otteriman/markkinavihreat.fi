@@ -3,7 +3,7 @@ import { chooseAttack, chooseReply, startBattle } from '../../src/lib/debate/bat
 import { ui } from '../../src/lib/debate/data'
 import { planSteps, type Step } from '../../src/lib/debate/playback'
 import { seededRng } from '../../src/lib/debate/rng'
-import { specDifficulty, specEnemy } from './debate-fixtures'
+import { specDifficulty, specEnemy, testSpecial } from './debate-fixtures'
 
 const enemy = specEnemy()
 const plan = (events: Parameters<typeof planSteps>[0]) => planSteps(events, 'fi', ui, enemy)
@@ -202,5 +202,61 @@ describe('planSteps', () => {
       text: 'Kannatuksesi romahti. Heräät puoluetoimistolta.',
       result: { kind: 'koLose' },
     })
+  })
+
+  it('a critical hit: the cut-in, his line under his name, then the hit', () => {
+    const editor = testSpecial()
+    const critEnemy = specEnemy()
+    const say = { fi: 'editor line fi', sv: 'editor line sv', en: 'editor line en' }
+    for (const a of critEnemy.attacks)
+      for (const r of a.replies) r.critical = { by: 'editor', say, chance: 1 }
+    const difficulty = { ...specDifficulty(), critical: { chance: 1, extraMin: 5, extraMax: 5 } }
+    const start = startBattle({
+      enemy: critEnemy,
+      difficulty,
+      attackSlots: 6,
+      rng: seededRng(5),
+      specials: { editor },
+    })
+    const weak = start.state.enemyAttacks[0].replies.findIndex((r) => r.quality === 'weak')
+    const steps = planSteps(
+      chooseReply(start.state, weak, seededRng(1)).events,
+      'fi',
+      ui,
+      critEnemy,
+    )
+    expect(shape(steps)).toEqual([
+      'tags:bottom', // Vastaus: <reply>
+      'type:bottom', // the player's line
+      'wait:advance',
+      'type:top', // the enemy's reaction
+      'wait:advance',
+      'clear:top', // his box and both labels go…
+      'tags:top,bottom',
+      'cutIn', // …and the cut-in opens
+      'type:bottom', // Pääkirjoitustoimittaja astuu esiin!
+      'wait:advance',
+      'tags:top', // his name
+      'type:top', // his line
+      'wait:advance',
+      'cutOut',
+      'clear:top',
+      'tags:top',
+      'type:bottom', // Puolustuksesi ei tehonnut lainkaan!
+      'wait:advance',
+      'type:bottom', // Kriittinen osuma!
+      'hit:player',
+      'wait:advance',
+      'tags:bottom',
+      'prompt:attack',
+    ])
+    expect(steps[7]).toEqual({ kind: 'cutIn', special: 'editor' })
+    expect(steps[10]).toEqual({ kind: 'tags', top: 'editor name fi' })
+    expect(steps[11]).toMatchObject({
+      text: 'editor line fi',
+      announce: 'editor name fi: editor line fi',
+    })
+    expect(steps[18]).toMatchObject({ text: 'Kriittinen osuma!' })
+    expect(steps[19]).toMatchObject({ kind: 'hit', damage: 35, critical: true })
   })
 })

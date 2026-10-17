@@ -44,7 +44,7 @@ for (const { path, lang, title, intro } of pages) {
     // No start button: the opening line types out by itself, with focus in the game.
     await expect(page.locator('[data-debate-bottom]')).toHaveText(intro)
     await expect(stage(page)).toBeFocused()
-    await expect(stage(page).locator('svg')).toHaveCount(2)
+    await expect(stage(page).locator('.debate-sprite svg')).toHaveCount(2)
   })
 }
 
@@ -207,6 +207,48 @@ test('debate page loads its font from the site itself', async ({ page }) => {
   await page.evaluate(() => document.fonts.ready)
   expect(fonts).toHaveLength(1)
   expect(new URL(fonts[0]).origin).toBe(new URL(page.url()).origin)
+})
+
+test('a critical hit: the editorial writer steps in, the hit lands harder', async ({ page }) => {
+  // Math.random → 0: every roll succeeds, so "Veronkorotus" always calls him in,
+  // with the smallest extra damage (5).
+  await page.addInitScript(() => {
+    Math.random = () => 0
+  })
+  await page.goto('/debaattipeli/')
+  const cutin = page.locator('[data-debate-cutin]')
+  const deadline = Date.now() + 60_000
+  while (!(await cutin.isVisible())) {
+    expect(Date.now(), 'the editorial writer never stepped in').toBeLessThan(deadline)
+    if (await grid(page).isVisible()) {
+      await page.waitForTimeout(GRID_GRACE)
+      const tax = grid(page).getByRole('button', { name: 'Veronkorotus' })
+      if (await tax.count()) await tax.click()
+      else await grid(page).locator('button:not([aria-disabled])').first().click()
+    } else {
+      await page.keyboard.press('Enter')
+      await page.waitForTimeout(20)
+    }
+  }
+  const before = Number(await page.locator('[data-debate-kannatus="player"]').textContent())
+  await expect(page.locator('[data-debate-bottom]')).toHaveText(
+    'Pääkirjoitustoimittaja astuu esiin!',
+  )
+  await page.keyboard.press('Enter')
+  await page.keyboard.press('Enter')
+  await expect(page.locator('[data-debate-tag="top"]')).toHaveText('Pääkirjoitustoimittaja')
+  await expect(page.locator('[data-debate-top]')).toContainText('Veronkorotukset tappaisivat')
+  await page.keyboard.press('Enter')
+  await page.keyboard.press('Enter')
+  await expect(cutin).toBeHidden()
+  await expect(page.locator('[data-debate-bottom]')).toHaveText(
+    'Puolustuksesi ei tehonnut lainkaan!',
+  )
+  await page.keyboard.press('Enter')
+  await page.keyboard.press('Enter')
+  await expect(page.locator('[data-debate-bottom]')).toHaveText('Kriittinen osuma!')
+  // A weak reply's full hit (30) plus the extra 5.
+  await expect(page.locator('[data-debate-kannatus="player"]')).toHaveText(String(before - 35))
 })
 
 test('the stage scales to fit a phone', async ({ page }) => {

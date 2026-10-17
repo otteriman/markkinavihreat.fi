@@ -15,6 +15,10 @@ export interface Sounds {
   select(): void
   /** Someone lost KANNATUS; `backfire` when an attack turned on the attacker. */
   hit(backfire: boolean): void
+  /** A special character's cut-in opens. */
+  cutIn(): void
+  /** A critical hit lands (on top of the hit sound). */
+  critical(): void
   /** The enemy flees the stage. */
   win(): void
   /** The player lost. */
@@ -112,6 +116,23 @@ export class Chiptune implements Sounds {
     }
   }
 
+  cutIn(): void {
+    if (!this.ctx) return
+    const t = this.now
+    // A quick rising sweep, then a two-note sting.
+    this.tone(330, t, 0.16, 1320, 0.6)
+    this.tone(784, t + 0.18, 0.08)
+    this.tone(1047, t + 0.27, 0.16)
+  }
+
+  critical(): void {
+    if (!this.ctx) return
+    const t = this.now
+    // A heavier, longer crunch under the hit, and a falling growl.
+    this.noise(t, 0.35, 1)
+    this.tone(150, t + 0.05, 0.35, 50, 0.9)
+  }
+
   win(): void {
     if (!this.ctx) return
     const t = this.now
@@ -131,6 +152,8 @@ export const silent: Sounds = {
   move() {},
   select() {},
   hit() {},
+  cutIn() {},
+  critical() {},
   win() {},
   lose() {},
 }

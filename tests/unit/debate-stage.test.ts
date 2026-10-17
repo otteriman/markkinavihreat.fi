@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest'
-import { enemies, ui } from '../../src/lib/debate/data'
+import { enemies, specials, ui } from '../../src/lib/debate/data'
 import { checkSprite, SPRITES, spriteSvg, SpriteError } from '../../src/lib/debate/sprites'
 import { longestTexts, stageTexts } from '../../src/lib/debate/stageTexts'
 import { validateDebate, formatProblem } from '../../src/lib/debate/validate'
@@ -65,7 +65,7 @@ describe('stageScale', () => {
 })
 
 describe('stageTexts', () => {
-  const texts = stageTexts(enemies, ui)
+  const texts = stageTexts(enemies, ui, specials)
 
   it('covers every language and box', () => {
     for (const locale of ['fi', 'sv', 'en'] as const) {

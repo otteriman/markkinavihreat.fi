@@ -68,6 +68,14 @@
         "fi": "Verohelvetti! Kiitos, että sanoit sen ääneen.",
         "sv": "Skattehelvete! Tack för att du sa det högt.",
         "en": "Tax hell! Thanks for saying it out loud."
+      },
+      "critical": {
+        "by": "paakirjoitustoimittaja",
+        "say": {
+          "fi": "Veronkorotukset tappaisivat Suomen kilpailukyvyn ja talouden! On pakko pistää vain suu säkkiä myöten!",
+          "sv": "Skattehöjningar skulle döda Finlands konkurrenskraft och ekonomi! Vi måste helt enkelt sätta tæring efter näring!",
+          "en": "Tax hikes would kill Finland’s competitiveness and economy! We simply have to cut our coat according to our cloth!"
+        }
       }
     },
     {

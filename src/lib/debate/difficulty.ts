@@ -61,6 +61,13 @@ function check(name: string, d: Obj): Difficulty {
   }
   for (const q of QUALITIES) num(`enemyDefenseWeights.${q}`, 0)
   num('tieMargin', 0)
+  if (d.critical !== undefined) {
+    num('critical.chance', 0, 1)
+    num('critical.extraMin', 0, Infinity, true)
+    num('critical.extraMax', 0, Infinity, true)
+    const c = d.critical as Record<string, number>
+    if (c.extraMax < c.extraMin) problems.push('critical.extraMax can’t be less than extraMin')
+  }
   const weights = d.enemyDefenseWeights as Record<string, number> | undefined
   if (weights && QUALITIES.every((q) => weights[q] === 0)) {
     problems.push('enemyDefenseWeights can’t all be 0')
@@ -84,6 +91,12 @@ export function resolveDifficulty(
   let d = flatten(config, name)
   for (const [path, value] of Object.entries(overrides)) d = setPath(d, path, value)
   return check(name, d)
+}
+
+/** A critical hit's extra damage: extraMin–extraMax, each value equally likely. */
+export function criticalExtra(difficulty: Difficulty, rng: () => number): number {
+  const { extraMin, extraMax } = difficulty.critical!
+  return extraMin + Math.floor(rng() * (extraMax - extraMin + 1))
 }
 
 /** Damage `side` takes from a hit answered with a reply or defense of `quality`. */

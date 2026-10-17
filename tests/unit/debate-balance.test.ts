@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest'
-import { config, enemies } from '../../src/lib/debate/data'
+import { config, enemies, specials } from '../../src/lib/debate/data'
 import { resolveDifficulty } from '../../src/lib/debate/difficulty'
 import {
   checkGuardrail,
@@ -85,6 +85,7 @@ describe('guardrails on the real content', () => {
           const strategy = STRATEGIES[name as StrategyName].strategy
           const stats = simulate(enemy, difficulty, config.rules.playerAttackSlots, strategy, {
             runs: 4000,
+            specials,
           })
           return checkGuardrail(name as StrategyName, stats, rail!).map((m) => `${enemy.id}: ${m}`)
         }),

@@ -460,6 +460,105 @@
   }
 }
 
+/* A special character's cut-in (view.ts CUT_IN_MS / CUT_OUT_MS): a striped
+   band over the middle of the stage, between the two boxes (y 60–174: over
+   the player's status box, which ends at 173, and clear of the bottom label
+   at 176), with the character twice his usual size. The
+   band opens from its middle line, then he slides in from the right; on the
+   way out he slides off to the left and the band closes. */
+.debate-cutin {
+  position: absolute;
+  z-index: 1;
+  left: 0;
+  top: 60px;
+  width: 240px;
+  height: 114px;
+  box-sizing: border-box;
+  border-top: 2px solid var(--gb-3);
+  border-bottom: 2px solid var(--gb-3);
+  background: repeating-linear-gradient(to bottom, var(--gb-1) 0 5px, var(--gb-0) 5px 6px);
+  overflow: hidden;
+}
+
+/* 96 × 100 (2× a 48 × 50 sprite), centred in the band. */
+.debate-cutin-sprite {
+  position: absolute;
+  left: 72px;
+  top: 5px;
+}
+
+.debate-cutin-sprite svg {
+  width: 96px;
+  height: 100px;
+}
+
+.debate-cutin.debate-opening {
+  animation: debate-cutin-open 240ms steps(4) both;
+}
+
+.debate-cutin.debate-opening .debate-cutin-sprite {
+  animation: debate-cutin-in 400ms steps(8) 260ms both;
+}
+
+.debate-cutin.debate-closing {
+  animation: debate-cutin-open 200ms steps(4) 300ms reverse both;
+}
+
+.debate-cutin.debate-closing .debate-cutin-sprite {
+  animation: debate-cutin-out 300ms steps(6) both;
+}
+
+@keyframes debate-cutin-open {
+  from {
+    transform: scaleY(0);
+  }
+}
+
+@keyframes debate-cutin-in {
+  from {
+    transform: translateX(170px);
+  }
+}
+
+@keyframes debate-cutin-out {
+  to {
+    transform: translateX(-170px);
+  }
+}
+
+/* A critical hit shakes the whole stage, a few pixels, for half a second. */
+.debate-stage.debate-shake {
+  animation: debate-shake 480ms steps(1) both;
+}
+
+@keyframes debate-shake {
+  0% {
+    transform: translate(3px, 0);
+  }
+  12.5% {
+    transform: translate(-3px, 1px);
+  }
+  25% {
+    transform: translate(2px, -1px);
+  }
+  37.5% {
+    transform: translate(-2px, 1px);
+  }
+  50% {
+    transform: translate(2px, 0);
+  }
+  62.5% {
+    transform: translate(-1px, -1px);
+  }
+  75% {
+    transform: translate(1px, 0);
+  }
+  87.5%,
+  100% {
+    transform: none;
+  }
+}
+
 @media (prefers-reduced-motion: reduce) {
   .debate-exit {
     animation: none !important;
@@ -471,7 +570,10 @@
   }
 
   .debate-more,
-  .debate-flash {
-    animation: none;
+  .debate-flash,
+  .debate-shake,
+  .debate-cutin,
+  .debate-cutin-sprite {
+    animation: none !important;
   }
 }
