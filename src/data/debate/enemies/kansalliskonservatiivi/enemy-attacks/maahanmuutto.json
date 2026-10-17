@@ -76,9 +76,9 @@
         "en": "According to the statistics..."
       },
       "reaction": {
-        "fi": "Tilastojen mukaan tietyt kansalaisuudet ovat yliedustettuina väkivalta- ja raikaustilastoissa.",
-        "sv": "Enligt statistiken är vissa nationaliteter överrepresenterade i statistiken över våld och våldtäkter.",
-        "en": "According to the statistics, certain nationalities are overrepresented in violence and rape figures.",
+        "fi": "Tilastojen mukaan tietyt kansalaisuudet ovat yliedustettuina kaikenlaisissa ikävissä asioissa.",
+        "sv": "",
+        "en": "",
         "needsReview": ["sv", "en"]
       }
     },
