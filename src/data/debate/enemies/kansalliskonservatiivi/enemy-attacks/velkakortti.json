@@ -11,9 +11,9 @@
     "en": "DEBT PANIC"
   },
   "line": {
-    "fi": "Rahaa ei ole! Lapsemme maksavat teidän viherhaaveenne!",
-    "sv": "Pengarna är slut! Våra barn får betala era gröna drömmar!",
-    "en": "There’s no money! Our children will pay for your green dreams!"
+    "fi": "Rahaa ei ole! Teidän velkaralli jää lapsiemme maksettavaksi!",
+    "sv": "",
+    "en": ""
   },
   "replies": [
     {
@@ -24,9 +24,9 @@
       },
       "quality": "strong",
       "say": {
-        "fi": "Rahaa on, se vain valuu suuryhtiöiden mukana veroparatiiseihin. Suomen verot Suomeen!",
-        "sv": "Pengar finns, de rinner bara iväg till skatteparadis med storbolagen. Finlands skatter till Finland!",
-        "en": "There is money, it just flows to tax havens with the big corporations. Finland’s taxes belong in Finland!"
+        "fi": "Rahaa on, se vain valuu suuryhtiöiden mukana veroparatiiseihin. Puututaan verokikkailuun, ja hankitaan verot Suomeen!",
+        "sv": "",
+        "en": ""
       },
       "reaction": {
         "fi": "...",
@@ -36,18 +36,18 @@
     },
     {
       "label": {
-        "fi": "Hyvinvointi",
+        "fi": "Hyvinvointivaltio",
         "sv": "Välfärd",
         "en": "Welfare"
       },
       "quality": "medium",
       "say": {
-        "fi": "Koulu, terveyskeskus ja vanhustenhoito ovat sitä, mistä Suomi on rakennettu.",
-        "sv": "Skolan, hälsocentralen och äldreomsorgen är det som Finland är byggt på.",
-        "en": "Schools, health centres and elderly care are what Finland was built on."
+        "fi": "Suomen menestys perustuu hyvinvointivaltioon: Koulu, terveyskeskus ja vanhustenhoito ovat elintärkeitä.",
+        "sv": "",
+        "en": ""
       },
       "reaction": {
-        "fi": "Kaunista puhetta. Mutta millä rahalla?",
+        "fi": "Kaunista puhetta. Mutta mistä rahat?",
         "sv": "Vackert talat. Men med vilka pengar?",
         "en": "Nice words. But with what money?"
       }
@@ -60,14 +60,14 @@
       },
       "quality": "weak",
       "say": {
-        "fi": "Nostetaan veroja!",
-        "sv": "Vi höjer skatterna!",
-        "en": "Let’s raise taxes!"
+        "fi": "Suomessa veroaste on laskenut 2000-luvulla merkittävästi. Nostetaan siis veroja.",
+        "sv": "",
+        "en": ""
       },
       "reaction": {
-        "fi": "Verohelvetti! Kiitos, että sanoit sen ääneen.",
-        "sv": "Skattehelvete! Tack för att du sa det högt.",
-        "en": "Tax hell! Thanks for saying it out loud."
+        "fi": "Eli tehdään Suomesta verohelvetti? Kiitos, että sanoit sen ääneen.",
+        "sv": "",
+        "en": ""
       },
       "critical": {
         "by": "paakirjoitustoimittaja",
@@ -91,7 +91,7 @@
         "en": "Let’s bring in a wealth tax!"
       },
       "reaction": {
-        "fi": "Kateusvero! Häätää kaikki rikkaat ulkomaille!",
+        "fi": "Eli kateusvero, joka häätää kaikki rikkaat ulkomaille!",
         "sv": "Avundsskatt! Den jagar alla rika utomlands!",
         "en": "An envy tax! It’ll chase every rich person abroad!"
       }
