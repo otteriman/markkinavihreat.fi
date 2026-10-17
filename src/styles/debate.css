@@ -461,19 +461,18 @@
 }
 
 /* A special character's cut-in (view.ts CUT_IN_MS / CUT_OUT_MS): a band over
-   the middle of the stage, between the two boxes (y 60–174: over the
-   player's status box, which ends at 173, and clear of the bottom label at
-   176), with the character twice his usual size. The band opens from its
-   middle line, then he slides in from the right. On the way out he drifts
-   off to the left, gathering speed as he fades, and only then does the band
-   close. */
+   the middle of the stage, between the two boxes as the cut-in lays them out
+   (y 72–198, see .debate-cutting-in), with the character twice his usual
+   size. The band opens from its middle line, then he slides in from the
+   right. On the way out he drifts off to the left, gathering speed as he
+   fades, and only then does the band close. */
 .debate-cutin {
   position: absolute;
   z-index: 1;
   left: 0;
-  top: 60px;
+  top: 72px;
   width: 240px;
-  height: 114px;
+  height: 126px;
   box-sizing: border-box;
   border-top: 2px solid var(--gb-3);
   border-bottom: 2px solid var(--gb-3);
@@ -505,11 +504,11 @@
   }
 }
 
-/* 96 × 100 (2× a 48 × 50 sprite), centred in the band. */
+/* 96 × 100 (2× a 48 × 50 sprite), centred in the band (122px inside its borders). */
 .debate-cutin-sprite {
   position: absolute;
   left: 72px;
-  top: 5px;
+  top: 11px;
 }
 
 .debate-cutin-sprite svg {
@@ -550,6 +549,25 @@
     transform: translateX(-140px);
     opacity: 0;
   }
+}
+
+/* While a cut-in is open (view.ts adds .debate-cutting-in), the stage is
+   laid out for it: the enemy's box grows to four lines (y 8–68) for the
+   special character's longer lines, the bottom box shrinks to three (y 202–252)
+   for the narration, the band sits between them, and the HP areas and both
+   sides step out of sight. */
+.debate-cutting-in .debate-box-top {
+  height: 60px;
+}
+
+.debate-cutting-in .debate-box-bottom {
+  top: 202px;
+  height: 50px;
+}
+
+.debate-cutting-in .debate-status,
+.debate-cutting-in .debate-sprite {
+  visibility: hidden;
 }
 
 /* A critical hit shakes the whole stage, a few pixels, for half a second. */

@@ -6,13 +6,23 @@ import type { StageBox, StageText } from '../../lib/debate/stageTexts'
  * their box (speech boxes by height, grid labels and status names by width).
  */
 const FAMILIES = ['Debate Pixelify', 'Debate Silkscreen', 'Debate Jersey', 'Debate Micro']
-const BOXES: StageBox[] = ['top', 'bottom', 'label', 'status', 'tag']
+const BOXES: StageBox[] = ['top', 'bottom', 'label', 'status', 'tag', 'cutinTop', 'cutinBottom']
 
 const escape = (s: string) =>
   s.replace(/[&<>"]/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' })[c]!)
 
 function measure(probe: HTMLElement, item: StageText): boolean {
   const q = <T extends HTMLElement>(sel: string) => probe.querySelector<T>(sel)!
+  // A cut-in's boxes: the same boxes, laid out as during a special character's cut-in.
+  if (item.box === 'cutinTop' || item.box === 'cutinBottom') {
+    const stage = q('.debate-stage')
+    stage.classList.add('debate-cutting-in')
+    try {
+      return measure(probe, { ...item, box: item.box === 'cutinTop' ? 'top' : 'bottom' })
+    } finally {
+      stage.classList.remove('debate-cutting-in')
+    }
+  }
   if (item.box === 'top') {
     q('[data-debate-top]').textContent = item.text
     const box = q('[data-debate-box="top"]')
@@ -87,7 +97,8 @@ export async function runFitCheck(): Promise<void> {
   }
   report.innerHTML =
     '<table class="lab-table"><thead><tr><th>Font</th><th>Top box</th><th>Bottom box</th>' +
-    '<th>Grid labels</th><th>Status names</th><th>Phase labels</th><th></th></tr></thead><tbody>' +
+    '<th>Grid labels</th><th>Status names</th><th>Phase labels</th><th>Cut-in top</th>' +
+    '<th>Cut-in bottom</th><th></th></tr></thead><tbody>' +
     rows.join('') +
     '</tbody></table>' +
     details.join('')

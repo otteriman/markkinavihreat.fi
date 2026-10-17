@@ -78,8 +78,18 @@ class Checker {
     this.problems.push({ file, message })
   }
 
-  /** A text in all three languages. `kind` "label" or "line" adds the length limit. */
-  text(file: string, where: string, value: unknown, kind?: 'label' | 'line') {
+  /**
+   * A text in all three languages. `kind` adds the length limit for where it
+   * shows: "label" (the option grid, the status boxes), "line" (a three-line
+   * box), "bottomLine" (the four-line bottom box), "specialLine" (the enemy's
+   * box grown to four lines during a cut-in).
+   */
+  text(
+    file: string,
+    where: string,
+    value: unknown,
+    kind?: 'label' | 'line' | 'bottomLine' | 'specialLine',
+  ) {
     if (!isObj(value)) {
       this.add(file, `${where} is missing (needs "fi", "sv" and "en")`)
       return
@@ -87,12 +97,17 @@ class Checker {
     const missing = LOCALES.filter((l) => typeof value[l] !== 'string' || !String(value[l]).trim())
     if (missing.length > 0) this.add(file, `${where} is missing: ${missing.join(', ')}`)
     this.needsReview(file, where, value.needsReview)
+    const { rules } = this.config
     const max =
       kind === 'label'
-        ? this.config.rules.maxLabelLength
+        ? rules.maxLabelLength
         : kind === 'line'
-          ? this.config.rules.maxLineLength
-          : Infinity
+          ? rules.maxLineLength
+          : kind === 'bottomLine'
+            ? rules.maxBottomLineLength
+            : kind === 'specialLine'
+              ? rules.maxSpecialLineLength
+              : Infinity
     for (const l of LOCALES) {
       const s = value[l]
       if (typeof s === 'string' && s.length > max) {
@@ -130,7 +145,7 @@ class Checker {
         `${at}.by names "${String(value.by)}", which isn’t in specials/ (known: ${known})`,
       )
     }
-    this.text(file, `${at}.say`, value.say, 'line')
+    this.text(file, `${at}.say`, value.say, 'specialLine')
     const chance = value.chance
     if (chance !== undefined && (typeof chance !== 'number' || chance < 0 || chance > 1)) {
       this.add(file, `${at}.chance must be a number from 0 to 1 (is ${JSON.stringify(chance)})`)
@@ -164,9 +179,9 @@ class Checker {
     this.needsReview(file, 'file', (enemy as unknown as Obj).needsReview)
     this.text(file, 'status', enemy.status, 'label')
     this.text(file, 'subject', enemy.subject, 'label')
-    this.text(file, 'appear', enemy.appear, 'line')
+    this.text(file, 'appear', enemy.appear, 'bottomLine')
     this.text(file, 'opening', enemy.opening, 'line')
-    this.text(file, 'defeat', enemy.defeat, 'line')
+    this.text(file, 'defeat', enemy.defeat, 'bottomLine')
     if (typeof enemy.sprite !== 'string' || !enemy.sprite) this.add(file, 'sprite is missing')
     else if (!(enemy.sprite in SPRITES)) {
       this.add(file, `sprite "${enemy.sprite}" doesn’t exist in src/lib/debate/sprites.ts`)
@@ -193,7 +208,7 @@ class Checker {
         if (!isObj(reply)) return this.add(f, `${where} is not an object`)
         this.text(f, `${where}.label`, reply.label, 'label')
         this.quality(f, where, reply.quality)
-        this.text(f, `${where}.say`, reply.say, 'line')
+        this.text(f, `${where}.say`, reply.say, 'bottomLine')
         this.text(f, `${where}.reaction`, reply.reaction, 'line')
         this.critical(f, where, reply.critical)
       })
@@ -213,7 +228,7 @@ class Checker {
         this.add(f, 'order must be a number')
       }
       this.text(f, 'label', attack.label, 'label')
-      this.text(f, 'say', attack.say, 'line')
+      this.text(f, 'say', attack.say, 'bottomLine')
       if (!Array.isArray(attack.defenses)) {
         this.add(f, 'defenses is missing (a list of the enemy’s comebacks)')
         continue

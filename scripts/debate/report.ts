@@ -40,20 +40,24 @@ for (const enemy of enemies) {
   }
 }
 
-// Longest label and longest line per language, to check against the text box.
+// Longest label and longest line per language and box, to check against the limits.
 const labels: Localized[] = []
-const lines: Localized[] = []
+const lines: Localized[] = [] // the enemy's box (three lines)
+const bottomLines: Localized[] = [] // the bottom box (four lines)
 for (const e of enemies) {
   labels.push(e.status)
-  lines.push(e.appear, e.opening)
+  lines.push(e.opening)
+  bottomLines.push(e.appear, e.defeat)
   for (const a of e.attacks) {
     lines.push(a.line)
     labels.push(...a.replies.map((r) => r.label))
-    lines.push(...a.replies.flatMap((r) => [r.say, r.reaction]))
+    lines.push(...a.replies.map((r) => r.reaction))
+    bottomLines.push(...a.replies.map((r) => r.say))
   }
   for (const a of e.playerAttacks) {
     labels.push(a.label)
-    lines.push(a.say, ...a.defenses.map((d) => d.say))
+    bottomLines.push(a.say)
+    lines.push(...a.defenses.map((d) => d.say))
   }
 }
 const longest = (texts: Localized[], l: (typeof LOCALES)[number]) =>
@@ -62,11 +66,15 @@ console.log('\nLongest texts')
 for (const l of LOCALES) {
   const label = longest(labels, l)
   const line = longest(lines, l)
+  const bottom = longest(bottomLines, l)
   console.log(
     `  ${l} label ${String(label.length).padStart(3)} / ${config.rules.maxLabelLength}  "${label}"`,
   )
   console.log(
     `  ${l} line  ${String(line.length).padStart(3)} / ${config.rules.maxLineLength}  "${line}"`,
+  )
+  console.log(
+    `  ${l} bottom ${String(bottom.length).padStart(2)} / ${config.rules.maxBottomLineLength}  "${bottom}"`,
   )
 }
 

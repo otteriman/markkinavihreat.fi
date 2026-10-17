@@ -10,8 +10,12 @@ import {
   type UiStrings,
 } from './types'
 
-/** Where a text appears on the stage, which decides how much room it has. */
-export type StageBox = 'top' | 'bottom' | 'label' | 'status' | 'tag'
+/**
+ * Where a text appears on the stage, which decides how much room it has.
+ * "cutinTop" and "cutinBottom" are the two boxes as a special character's
+ * cut-in rearranges them (the top one grown, the bottom one shrunk).
+ */
+export type StageBox = 'top' | 'bottom' | 'label' | 'status' | 'tag' | 'cutinTop' | 'cutinBottom'
 
 export interface StageText {
   box: StageBox
@@ -50,14 +54,14 @@ export function stageTexts(
     add('bottom', t('effect.critical'), 'ui.json effect.critical')
     for (const s of Object.values(specials)) {
       add('tag', localize(s.name, locale), `${s.source} name`)
-      add('bottom', localize(s.appear, locale), `${s.source} appear`)
+      add('cutinBottom', localize(s.appear, locale), `${s.source} appear`)
     }
     /** Special characters' lines (top box), from a reply's or defense's triggers. */
     const critical = (critical: Critical | undefined, source: string) => {
       const triggers = criticalTriggers({ critical })
       triggers.forEach((t, i) => {
         const at = Array.isArray(critical) ? `critical[${i}]` : 'critical'
-        add('top', localize(t.say, locale), `${source}.${at}.say`)
+        add('cutinTop', localize(t.say, locale), `${source}.${at}.say`)
       })
     }
 
@@ -105,7 +109,15 @@ export function stageTexts(
 
 /** The longest text per box in `locale`, for previews of the worst case. */
 export function longestTexts(texts: StageText[], locale: Locale): Record<StageBox, string> {
-  const best = { top: '', bottom: '', label: '', status: '', tag: '' }
+  const best = {
+    top: '',
+    bottom: '',
+    label: '',
+    status: '',
+    tag: '',
+    cutinTop: '',
+    cutinBottom: '',
+  }
   for (const t of texts) {
     if (t.locale === locale && t.text.length > best[t.box].length) best[t.box] = t.text
   }

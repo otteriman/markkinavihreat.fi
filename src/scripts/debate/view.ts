@@ -119,7 +119,7 @@ export class StageView {
     this.setTags({ kind: 'tags', top: null, bottom: null })
     const cutin = this.root.querySelector<HTMLElement>('[data-debate-cutin]')
     if (cutin) cutin.hidden = true
-    this.stage.classList.remove('debate-shake')
+    this.stage.classList.remove('debate-shake', 'debate-cutting-in')
     this.beforeCutIn = null
     // Off stage until the battle's entrance (enter()).
     hideSprites(this.root)
@@ -318,6 +318,8 @@ export class StageView {
     }
     this.clear('top')
     this.setTags({ kind: 'tags', top: null, bottom: null })
+    // The stage's cut-in layout: his box four lines tall, the bottom box three.
+    this.stage.classList.add('debate-cutting-in')
     cutin.querySelectorAll<HTMLElement>('[data-debate-special]').forEach((s) => {
       s.hidden = s.dataset.debateSpecial !== special
     })
@@ -349,6 +351,7 @@ export class StageView {
       }
     }
     cutin.hidden = true
+    this.stage.classList.remove('debate-cutting-in')
     const before = this.beforeCutIn
     this.beforeCutIn = null
     if (!before) return

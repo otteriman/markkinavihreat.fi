@@ -115,6 +115,8 @@ export function testConfig(overrides: Partial<DebateConfig> = {}): DebateConfig 
       playerAttackSlots: 6,
       maxLabelLength: 17,
       maxLineLength: 120,
+      maxBottomLineLength: 160,
+      maxSpecialLineLength: 200,
     },
     tiers: { vahva: 0.5, hyva: 0.25 },
     typing: { msPerChar: 30 },

@@ -182,7 +182,12 @@ export interface ContentRules {
   /** Size of the player's attack grid (2×3). */
   playerAttackSlots: number
   maxLabelLength: number
+  /** Lines in a three-line box: the enemy's, and the narrow bottom box during a cut-in. */
   maxLineLength: number
+  /** Lines in the four-line bottom box: the player's lines and the enemy's appear/defeat narration. */
+  maxBottomLineLength: number
+  /** A special character's lines, in the enemy's box grown to four lines during his cut-in. */
+  maxSpecialLineLength: number
 }
 
 export type StrategyName =

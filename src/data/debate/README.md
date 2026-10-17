@@ -46,7 +46,7 @@ A critical hit can happen on any reply (in `enemy-attacks/`) or enemy comeback (
 ```
 
 - `by`: the special character's file name in `specials/`, without `.json`.
-- `say`: what he says. It's a line, so at most 120 characters (his line goes in the enemy's box, which holds three lines).
+- `say`: what he says, at most 200 characters. While he is on stage the enemy's box grows to four lines for it, and the bottom box shrinks to three.
 - `chance`: optional, the odds that he steps in, from 0 to 1. Leave it out to use the difficulty's `critical.chance`.
 
 An answer can also have several triggers, as a list: `"critical": [{ "by": …, "say": … }, { "by": …, "say": … }]`. Then one of them, picked at random, steps in; each can be a different character, or the same one with different lines.
@@ -57,7 +57,16 @@ The extra damage goes to whoever that hit was going to hurt. On a weak or medium
 
 Quality means how good the _defender's_ answer is: `strong` blocks the hit completely, `medium` blocks half of it and `weak` lets the whole hit through (with the shipped numbers, 0, 15 or 30 points).
 
-Labels can be at most 17 characters, and lines at most 120. The limits are set in `config.json` under `rules` and will be fine-tuned once the font is chosen.
+Length limits, set in `config.json` under `rules`, follow the boxes:
+
+| Text                                      | Limit                        | Where it shows                       |
+| ----------------------------------------- | ---------------------------- | ------------------------------------ |
+| Labels (replies, attacks, names)          | 22 (`maxLabelLength`)        | the option grid and the status boxes |
+| The enemy's lines                         | 120 (`maxLineLength`)        | his box, three lines                 |
+| The player's lines, `appear` and `defeat` | 160 (`maxBottomLineLength`)  | the bottom box, four lines           |
+| A special character's lines               | 200 (`maxSpecialLineLength`) | his box during a cut-in, four lines  |
+
+Characters are only a rough guide, since letters differ in width. The debate lab (`/debate-lab/`) measures every text in its real box, in all three languages, and lists any that don't fit.
 
 ## Difficulty
 
