@@ -140,16 +140,12 @@
    up 2px at the bottom so three lines still fit in it. */
 .debate-box-top {
   top: 8px;
-  /* The enemy's HP area hangs from this corner. */
-  border-bottom-left-radius: 0;
   height: 48px;
   padding: 6px 6px 2px;
 }
 
 .debate-box-bottom {
   top: 160px;
-  /* The player's HP area rises from this corner. */
-  border-top-right-radius: 0;
   height: 52px;
   padding-top: 6px;
 }
@@ -186,67 +182,25 @@
   top: 156px;
 }
 
-/* HP areas: name, KANNATUS and its bar, each joined to its side's speech box
-   so it's clear whose it is: the enemy's hangs from the bottom of his box at
-   the left, the player's rises from the top of the bottom box at the right,
-   flush with its right edge. Each has borders on three sides, open towards
-   its box. It covers the stretch of the box's border it sits on, and a 1px
-   strip (::before) covers the box's light inner line there, so the inner
-   line runs on round the area's own borders and box and area read as one
-   outline. 80px wide: the widest name is 66px. */
+/* Status boxes: name, KANNATUS and its bar. */
 .debate-status {
   position: absolute;
-  width: 80px;
+  width: 108px;
   box-sizing: border-box;
-  border: 2px solid var(--gb-3);
-  background: var(--gb-0);
-  /* Over the boxes, whose borders they cover. The phase labels share the
-     layer but come later in the markup, so the bottom one stays on top. */
-  z-index: 1;
-}
-
-.debate-status::before {
-  content: '';
-  position: absolute;
-  left: 1px;
-  width: calc(100% - 2px);
-  height: 1px;
-  background: var(--gb-0);
-}
-
-/* Over the top box's bottom border (y 54) and down. */
-.debate-status-enemy {
-  left: 4px;
-  top: 54px;
   padding: 2px 4px 3px;
-  border-top: 0;
-  border-radius: 0 0 3px 3px;
-  box-shadow:
-    inset 1px 0 0 var(--gb-1),
-    inset -1px 0 0 var(--gb-1),
-    inset 0 -1px 0 var(--gb-1);
+  border-left: 2px solid var(--gb-3);
+  border-bottom: 2px solid var(--gb-3);
+  border-bottom-left-radius: 3px;
 }
 
-.debate-status-enemy::before {
-  top: -1px;
+.debate-status-enemy {
+  left: 6px;
+  top: 62px;
 }
 
-/* Down over the bottom box's top border, ending at y 162. */
 .debate-status-player {
-  right: 4px;
-  top: 124px;
-  height: 38px;
-  padding: 4px 4px 2px;
-  border-bottom: 0;
-  border-radius: 3px 3px 0 0;
-  box-shadow:
-    inset 1px 0 0 var(--gb-1),
-    inset -1px 0 0 var(--gb-1),
-    inset 0 1px 0 var(--gb-1);
-}
-
-.debate-status-player::before {
-  bottom: -1px;
+  right: 6px;
+  top: 112px;
 }
 
 .debate-status-name {
@@ -285,8 +239,8 @@
   position: absolute;
 }
 
-/* Enemy 48 × 50 (bottom at y 108, clear of the player's HP area at 124);
-   player 56 × 50 (under the enemy's HP area, above the bottom label at 156). */
+/* Enemy 48 × 50 (bottom at y 108, clear of the player's status at 112);
+   player 56 × 50 (between the enemy's status and the bottom label at 156). */
 .debate-sprite-enemy {
   right: 12px;
   top: 58px;

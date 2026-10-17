@@ -33,7 +33,7 @@ export type Step =
       /** The line as screen readers hear it, with the speaker for spoken lines. */
       announce: string
     }
-  /** Empties a box (it stays on screen, empty). */
+  /** Empties a box; the enemy's is also hidden until he speaks again. */
   | { kind: 'clear'; box: 'top' | 'bottom' }
   | { kind: 'wait'; until: 'advance' | 'pause' }
   | {

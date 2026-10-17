@@ -59,6 +59,7 @@ const sleep = (ms: number, signal: AbortSignal) =>
 
 export class StageView {
   private stage: HTMLElement
+  private boxes: Record<Box, HTMLElement>
   private texts: Record<Box, HTMLElement>
   private more: Record<Box, HTMLElement>
   private tags: Record<Box, HTMLElement>
@@ -78,6 +79,7 @@ export class StageView {
       return el
     }
     this.stage = q('.debate-stage')
+    this.boxes = { top: q('[data-debate-box="top"]'), bottom: q('[data-debate-box="bottom"]') }
     this.texts = { top: q('[data-debate-top]'), bottom: q('[data-debate-bottom]') }
     this.more = { top: q('[data-debate-more="top"]'), bottom: q('[data-debate-more="bottom"]') }
     this.tags = { top: q('[data-debate-tag="top"]'), bottom: q('[data-debate-tag="bottom"]') }
@@ -95,6 +97,7 @@ export class StageView {
     this.max = { player: difficulty.player.kannatus, enemy: difficulty.enemy.kannatus }
     this.setKannatus('player', this.max.player)
     this.setKannatus('enemy', this.max.enemy)
+    this.boxes.top.hidden = true
     this.texts.top.textContent = ''
     this.texts.bottom.textContent = ''
     this.texts.bottom.hidden = false
@@ -172,8 +175,9 @@ export class StageView {
     if (step.announce) this.announce(step.announce)
   }
 
-  /** Empties a box. Boxes stay on screen empty: the HP areas hang from them. */
+  /** Empties a box; the enemy's (top) is also hidden until he speaks again. */
   clear(box: Box): void {
+    if (box === 'top') this.boxes.top.hidden = true
     this.texts[box].textContent = ''
     this.more[box].hidden = true
   }
@@ -182,6 +186,7 @@ export class StageView {
   type(step: Extract<Step, { kind: 'type' }>): Promise<void> {
     const { signal, reduce, msPerChar } = this.opts
     const { box, text } = step
+    if (box === 'top') this.boxes.top.hidden = false
     if (box === 'bottom') {
       this.options.hidden = true
       this.texts.bottom.hidden = false
