@@ -1,0 +1,48 @@
+{
+  "needsReview": ["fi"],
+  "order": 7,
+  "label": {
+    "fi": "Eläkkeet",
+    "sv": "TODO",
+    "en": "TODO"
+  },
+  "say": {
+    "fi": "Jos eläkkeisiin ei saa koskea, leikkaukset osuvat kouluihin ja nuoriin. Reilu Suomi jakaa taakan sukupolvien kesken.",
+    "sv": "TODO",
+    "en": "TODO"
+  },
+  "defenses": [
+    {
+      "quality": "strong",
+      "say": {
+        "fi": "Nämä ihmiset rakensivat tämän maan. Teidän pitäisi hävetä!",
+        "sv": "TODO",
+        "en": "TODO"
+      }
+    },
+    {
+      "quality": "weak",
+      "say": {
+        "fi": "Eläkkeet on ansaittu, niihin ei kosketa. Leikataan sitten vaikka kehitysavusta!",
+        "sv": "TODO",
+        "en": "TODO"
+      }
+    },
+    {
+      "quality": "medium",
+      "say": {
+        "fi": "Nuorten pitää vain tehdä enemmän töitä, niin kuin me aikanaan.",
+        "sv": "TODO",
+        "en": "TODO"
+      }
+    },
+    {
+      "quality": "weak",
+      "say": {
+        "fi": "Eläkerahastoissa on rahaa vaikka muille jakaa, eli mitään ongelmaa ei ole.",
+        "sv": "TODO",
+        "en": "TODO"
+      }
+    }
+  ]
+}

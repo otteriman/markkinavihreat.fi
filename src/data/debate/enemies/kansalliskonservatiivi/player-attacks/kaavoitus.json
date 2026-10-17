@@ -1,0 +1,48 @@
+{
+  "needsReview": ["fi"],
+  "order": 9,
+  "label": {
+    "fi": "Kaavoitus",
+    "sv": "TODO",
+    "en": "TODO"
+  },
+  "say": {
+    "fi": "Puretaan turhaa kaavoitusbyrokratiaa ja rakennetaan lisää asuntoja, niin asumisen hinta laskee.",
+    "sv": "TODO",
+    "en": "TODO"
+  },
+  "defenses": [
+    {
+      "quality": "strong",
+      "say": {
+        "fi": "Ja asuntojen arvo romahtaa niiltä, jotka ovat jo ottaneet asuntolainan.",
+        "sv": "TODO",
+        "en": "TODO"
+      }
+    },
+    {
+      "quality": "medium",
+      "say": {
+        "fi": "Kaupungit täyttyvät betonista, ja maaseutu tyhjenee.",
+        "sv": "TODO",
+        "en": "TODO"
+      }
+    },
+    {
+      "quality": "weak",
+      "say": {
+        "fi": "Kerrostalokolmiossa ei kasva suomalainen perhe. Omakotitalo kuuluu jokaiselle!",
+        "sv": "TODO",
+        "en": "TODO"
+      }
+    },
+    {
+      "quality": "weak",
+      "say": {
+        "fi": "Ei tänne tarvita lisää asuntoja. Väkiluku kasvaa vain maahanmuutolla.",
+        "sv": "TODO",
+        "en": "TODO"
+      }
+    }
+  ]
+}

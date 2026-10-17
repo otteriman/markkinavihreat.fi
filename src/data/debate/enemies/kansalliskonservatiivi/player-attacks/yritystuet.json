@@ -1,0 +1,48 @@
+{
+  "needsReview": ["fi"],
+  "order": 8,
+  "label": {
+    "fi": "Yritystuet",
+    "sv": "TODO",
+    "en": "TODO"
+  },
+  "say": {
+    "fi": "Valtio jakaa miljardeja yritystukia, joista iso osa tukee fossiilisia. Karsitaan ne ennen kuin leikataan palveluista.",
+    "sv": "TODO",
+    "en": "TODO"
+  },
+  "defenses": [
+    {
+      "quality": "strong",
+      "say": {
+        "fi": "Ilman tukia teollisuus lähtee ulkomaille, ja työpaikat sen mukana.",
+        "sv": "TODO",
+        "en": "TODO"
+      }
+    },
+    {
+      "quality": "weak",
+      "say": {
+        "fi": "No, turpeen verotuki on eri asia, se on kotimaista energiaa!",
+        "sv": "TODO",
+        "en": "TODO"
+      }
+    },
+    {
+      "quality": "weak",
+      "say": {
+        "fi": "Te haluatte vain kurittaa yrittäjiä ja maaseutua.",
+        "sv": "TODO",
+        "en": "TODO"
+      }
+    },
+    {
+      "quality": "medium",
+      "say": {
+        "fi": "Tukia voi toki karsia, kunhan ei kotimaisilta yrityksiltä.",
+        "sv": "TODO",
+        "en": "TODO"
+      }
+    }
+  ]
+}
