@@ -77,8 +77,8 @@
       },
       "reaction": {
         "fi": "Tilastojen mukaan tietyt kansalaisuudet ovat yliedustettuina kaikenlaisissa ikävissä asioissa.",
-        "sv": "",
-        "en": "",
+        "sv": "Enligt statistiken är vissa nationaliteter överrepresenterade i alla möjliga otrevliga saker.",
+        "en": "According to the statistics, certain nationalities are overrepresented in all sorts of nasty things.",
         "needsReview": ["sv", "en"]
       }
     },
