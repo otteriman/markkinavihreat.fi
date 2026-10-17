@@ -78,7 +78,7 @@ test('a whole battle by keyboard, with Play again', async ({ page }) => {
       if (attacking && attackGrids === 1) {
         // Attacking empties the enemy's box, label and all, until he answers.
         await expect(page.locator('[data-debate-tag="bottom"]')).toHaveText(/^Hyökkäys: /)
-        await expect(page.locator('[data-debate-box="top"]')).toBeHidden()
+        await expect(page.locator('[data-debate-top]')).toHaveText('')
         await expect(page.locator('[data-debate-tag="top"]')).toBeHidden()
         await page.keyboard.press('Enter')
         await expect(page.locator('[data-debate-tag="top"]')).toHaveText('Puolustus')

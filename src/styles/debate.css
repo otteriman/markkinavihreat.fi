@@ -182,25 +182,45 @@
   top: 156px;
 }
 
-/* Status boxes: name, KANNATUS and its bar. */
+/* HP areas: name, KANNATUS and its bar, each joined to its side's speech box
+   so it's clear whose it is. The enemy's hangs from the bottom of his box at
+   the left (borders left and bottom), the player's rises from the top of the
+   bottom box at the right (borders top and left). Each covers the stretch of
+   its box's border it sits on, light inner line included, and carries that
+   line on along its own borders, so box and area read as one outline. The
+   side away from the box is left open. 80px wide: the widest name is 66px. */
 .debate-status {
   position: absolute;
-  width: 108px;
+  width: 80px;
   box-sizing: border-box;
-  padding: 2px 4px 3px;
-  border-left: 2px solid var(--gb-3);
-  border-bottom: 2px solid var(--gb-3);
-  border-bottom-left-radius: 3px;
+  border: 0 solid var(--gb-3);
+  background: var(--gb-0);
+  /* Over the boxes, whose borders they cover. The phase labels share the
+     layer but come later in the markup, so the bottom one stays on top. */
+  z-index: 1;
 }
 
+/* From the top box's inner line (y 53) down. */
 .debate-status-enemy {
-  left: 6px;
-  top: 62px;
+  left: 4px;
+  top: 53px;
+  padding: 3px 4px 4px;
+  border-left-width: 2px;
+  border-bottom-width: 2px;
+  border-bottom-left-radius: 3px;
+  box-shadow: inset 1px -1px 0 var(--gb-1);
 }
 
+/* Down to the bottom box's inner line (y 162), so it ends at 163. */
 .debate-status-player {
-  right: 6px;
-  top: 112px;
+  right: 4px;
+  top: 124px;
+  height: 39px;
+  padding: 4px 4px 3px;
+  border-top-width: 2px;
+  border-left-width: 2px;
+  border-top-left-radius: 3px;
+  box-shadow: inset 1px 1px 0 var(--gb-1);
 }
 
 .debate-status-name {
@@ -239,8 +259,8 @@
   position: absolute;
 }
 
-/* Enemy 48 × 50 (bottom at y 108, clear of the player's status at 112);
-   player 56 × 50 (between the enemy's status and the bottom label at 156). */
+/* Enemy 48 × 50 (bottom at y 108, clear of the player's HP area at 124);
+   player 56 × 50 (under the enemy's HP area, above the bottom label at 156). */
 .debate-sprite-enemy {
   right: 12px;
   top: 58px;
