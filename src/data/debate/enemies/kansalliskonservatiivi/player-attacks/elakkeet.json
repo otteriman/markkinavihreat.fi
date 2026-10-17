@@ -7,7 +7,7 @@
     "en": "TODO"
   },
   "say": {
-    "fi": "Jos eläkkeisiin ei saa koskea, leikkaukset osuvat kouluihin ja nuoriin. Reilu Suomi jakaa taakan sukupolvien kesken.",
+    "fi": "Meidän on pakko sopeuttaa lähes 10mrd. Ei olisi nuorille reilua, jos eläkkeet jätetään sen ulkopuolelle.",
     "sv": "TODO",
     "en": "TODO"
   },
@@ -15,7 +15,7 @@
     {
       "quality": "strong",
       "say": {
-        "fi": "Nämä ihmiset rakensivat tämän maan. Teidän pitäisi hävetä!",
+        "fi": "Nykyiset eläkeläiset rakensivat tämän maan.",
         "sv": "TODO",
         "en": "TODO"
       }
@@ -23,7 +23,7 @@
     {
       "quality": "weak",
       "say": {
-        "fi": "Eläkkeet on ansaittu, niihin ei kosketa. Leikataan sitten vaikka kehitysavusta!",
+        "fi": "Eläkkeet on ansaittu, niihin ei tule koskea. Leikataan ennemmin vaikka kehitysavusta!",
         "sv": "TODO",
         "en": "TODO"
       }
@@ -31,7 +31,7 @@
     {
       "quality": "medium",
       "say": {
-        "fi": "Nuorten pitää vain tehdä enemmän töitä, niin kuin me aikanaan.",
+        "fi": "Nuorten pitää vain tehdä enemmän töitä, niin kuin meidänkin sukupolvi aikanaan.",
         "sv": "TODO",
         "en": "TODO"
       }
@@ -39,7 +39,7 @@
     {
       "quality": "weak",
       "say": {
-        "fi": "Eläkerahastoissa on rahaa vaikka muille jakaa, eli mitään ongelmaa ei ole.",
+        "fi": "Maahanmuutto, tai siis taitettu indeksi, eikun ööh...",
         "sv": "TODO",
         "en": "TODO"
       }
