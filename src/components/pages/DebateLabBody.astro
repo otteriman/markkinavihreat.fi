@@ -11,7 +11,7 @@
 import '../../styles/debate-lab.css'
 import BaseLayout from '../../layouts/BaseLayout.astro'
 import DebateGame from '../debate/DebateGame.astro'
-import { LOCALES } from '../../lib/content'
+import { LOCALES, localePath } from '../../lib/content'
 import { config, enemies, specials, ui } from '../../lib/debate/data'
 import { defenseTriggerCount, replyTriggers } from '../../lib/debate/scenes'
 import { SPRITES, spriteSvg } from '../../lib/debate/sprites'
@@ -46,7 +46,6 @@ const attackGrid = (locale: (typeof LOCALES)[number]) =>
     used: i === 1 || i === 4,
     current: i === 2,
   }))
-const GAME_PATHS = { fi: '/debaattipeli/', sv: '/sv/debaattipeli/', en: '/en/debaattipeli/' }
 const specialScenes = Object.values(specials).map((special) => ({
   special,
   replies: replyTriggers(enemies, special.id),
@@ -315,7 +314,7 @@ const replyGrid = (locale: (typeof LOCALES)[number]) =>
                     {LOCALES.map((locale) => (
                       <a
                         class="underline"
-                        href={`${GAME_PATHS[locale]}?special=${special.id}`}
+                        href={`${localePath(locale, '/debaattipeli/')}?special=${special.id}`}
                         data-special-scene={special.id}
                       >
                         Start scene ({locale})
