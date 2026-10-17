@@ -96,6 +96,17 @@ describe('validateDebate', () => {
     )
   })
 
+  it('takes an empty sv or en as open work, like TODO, but not an empty fi', () => {
+    expect(
+      problemsFor((e) => (e.attacks[0].replies[0].reaction = { fi: 'Höh.', sv: '', en: ' ' })),
+    ).toEqual([])
+    expect(
+      problemsFor((e) => (e.attacks[0].replies[0].reaction = { fi: '', sv: 'Äh.', en: 'Meh.' })),
+    ).toEqual([
+      'src/data/debate/enemies/test/enemy-attacks/a1.json: replies[0].reaction is missing: fi',
+    ])
+  })
+
   it('needs a full grid of player attacks and at least one enemy attack', () => {
     expect(problemsFor((e) => e.attacks.pop())).toEqual([])
     const problems = problemsFor((e) => {
@@ -257,8 +268,9 @@ describe('translationStatus', () => {
     const status = translationStatus({
       'a.json': { needsReview: ['sv'], x: txt('x'), list: [{ y: txt('y') }] },
       'b.json': { z: { fi: 'z', sv: 'TODO', en: 'z', needsReview: ['en'] } },
+      'c.json': { w: { fi: 'w', sv: 'w', en: '  ' } },
     })
-    expect(status.todo).toEqual(['b.json'])
+    expect(status.todo).toEqual(['b.json', 'c.json'])
     expect(status.review).toEqual({ fi: 0, sv: 2, en: 1 })
   })
 })

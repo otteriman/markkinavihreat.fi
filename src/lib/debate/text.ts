@@ -5,10 +5,15 @@ import type { Localized, UiStrings } from './types'
 export type Message =
   { key: string; vars?: Record<string, Localized | number> } | { text: Localized }
 
-/** The text in `locale`, falling back to Finnish while a translation is still "TODO". */
+/** A translation still to be written: "TODO", or left empty. */
+export function isUntranslated(value: string | undefined): boolean {
+  return !value?.trim() || value.startsWith('TODO')
+}
+
+/** The text in `locale`, falling back to Finnish while a translation is still "TODO" or empty. */
 export function localize(text: Localized, locale: Locale): string {
   const value = text[locale]
-  return !value || value.startsWith('TODO') ? text.fi : value
+  return isUntranslated(value) ? text.fi : value
 }
 
 /** Resolves a message: fills `{name}` placeholders, localizing any text values. */

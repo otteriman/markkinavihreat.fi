@@ -21,7 +21,7 @@ enemies/<enemy>/
 specials/<id>.json                a special character who can step in for a critical hit
 ```
 
-Every text is written in all three languages: `{ "fi": "…", "sv": "…", "en": "…" }`. Finnish is the source. A text still marked `"TODO"` shows the Finnish text instead. `"needsReview": ["sv", "en"]`, either at the top of a file or on a single text, marks drafts that a person still has to check.
+Every text is written in all three languages: `{ "fi": "…", "sv": "…", "en": "…" }`. Finnish is the source. A text still marked `"TODO"`, or left empty (`""`), shows the Finnish text instead; both count as open work in `npm run debate:report`. Finnish itself can’t be empty. `"needsReview": ["sv", "en"]`, either at the top of a file or on a single text, marks drafts that a person still has to check.
 
 ## Common edits
 

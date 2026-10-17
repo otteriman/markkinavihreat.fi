@@ -81,7 +81,9 @@ for (const l of LOCALES) {
 const status = translationStatus(files)
 console.log('\nTranslations')
 console.log(`  needsReview: ${LOCALES.map((l) => `${l} ${status.review[l]}`).join(', ')} texts`)
-console.log(`  TODO: ${status.todo.length ? [...new Set(status.todo)].join(', ') : 'none'}`)
+console.log(
+  `  TODO or empty: ${status.todo.length ? [...new Set(status.todo)].join(', ') : 'none'}`,
+)
 
 const problems = validateDebate(config, enemies, ui, loadProblems, specials)
 console.log(`\nContent check: ${problems.length ? `${problems.length} problem(s)` : 'OK'}`)

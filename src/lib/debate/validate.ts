@@ -2,6 +2,7 @@ import { LOCALES, type Locale } from '../content'
 import { DifficultyError, resolveDifficulty } from './difficulty'
 import type { Problem } from './loader'
 import { SPRITES } from './sprites'
+import { isUntranslated } from './text'
 import {
   QUALITIES,
   type DebateConfig,
@@ -96,7 +97,11 @@ class Checker {
       this.add(file, `${where} is missing (needs "fi", "sv" and "en")`)
       return
     }
-    const missing = LOCALES.filter((l) => typeof value[l] !== 'string' || !String(value[l]).trim())
+    // An empty sv or en is open work, like "TODO" (it shows the Finnish); an
+    // empty fi has nothing to fall back to.
+    const missing = LOCALES.filter(
+      (l) => typeof value[l] !== 'string' || (l === 'fi' && !String(value[l]).trim()),
+    )
     if (missing.length > 0) this.add(file, `${where} is missing: ${missing.join(', ')}`)
     this.needsReview(file, where, value.needsReview)
     const { rules } = this.config
@@ -341,7 +346,7 @@ export function validateDebate(
 export const formatProblem = (p: Problem) => `src/data/debate/${p.file}: ${p.message}`
 
 /**
- * Open translation work: texts still "TODO" and texts flagged `needsReview`,
+ * Open translation work: texts still "TODO" or empty, and texts flagged `needsReview`,
  * per language. A file-level `needsReview` covers every text in that file.
  */
 export function translationStatus(files: Record<string, unknown>) {
@@ -351,7 +356,7 @@ export function translationStatus(files: Record<string, unknown>) {
     if (Array.isArray(value)) return value.forEach((v) => walk(v, file, inherited))
     if (!isObj(value)) return
     if (LOCALES.every((l) => typeof value[l] === 'string')) {
-      if (LOCALES.some((l) => String(value[l]).startsWith('TODO'))) todo.push(file)
+      if (LOCALES.some((l) => isUntranslated(value[l] as string))) todo.push(file)
       const flagged = new Set([...inherited, ...((value.needsReview as Locale[]) ?? [])])
       for (const l of flagged) review[l]++
       return

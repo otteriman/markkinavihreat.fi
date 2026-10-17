@@ -58,7 +58,7 @@ for (const collection of readdirSync(CONTENT_ROOT)) {
 }
 
 // Debate game (src/data/debate/): fi + sv + en for every text, plus its
-// content rules. TODO and needsReview are reported, not failures.
+// content rules. TODO (or empty sv/en) and needsReview are reported, not failures.
 const debate = loadDebate()
 for (const problem of validateDebate(
   debate.config,
@@ -74,7 +74,7 @@ const debateStatus = translationStatus(debate.files)
 const debateReview = Object.entries(debateStatus.review).filter(([, n]) => n > 0)
 if (debateStatus.todo.length > 0 || debateReview.length > 0) {
   console.log(
-    `[debate] open: ${debateStatus.todo.length} TODO text(s); needsReview ` +
+    `[debate] open: ${debateStatus.todo.length} TODO or empty text(s); needsReview ` +
       (debateReview.map(([l, n]) => `${l} ${n}`).join(', ') || 'none') +
       ' (see npm run debate:report)',
   )
