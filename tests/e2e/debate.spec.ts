@@ -8,21 +8,21 @@ const pages = [
   {
     path: '/debaattipeli/',
     lang: 'fi',
-    title: 'Vihreä väittely',
+    title: 'Poliittinen väittelypeli',
     card: 'Poliittinen debaattipeli',
     intro: 'Villi kansalliskonservatiivi ilmestyi!',
   },
   {
     path: '/sv/debaattipeli/',
     lang: 'sv',
-    title: 'Grön debatt',
+    title: 'Politiskt debattspel',
     card: 'Politiskt debattspel',
     intro: 'En vild nationalkonservativ dök upp!',
   },
   {
     path: '/en/debaattipeli/',
     lang: 'en',
-    title: 'Green debate',
+    title: 'Political debate game',
     card: 'Political debate game',
     intro: 'A wild national conservative appeared!',
   },
@@ -37,7 +37,7 @@ const grid = (page: Page) => page.locator('[data-debate-options]')
 const endScreen = (page: Page) => page.locator('[data-debate-end]')
 const introScreen = (page: Page) => page.locator('[data-debate-intro]')
 
-/** Presses "Aloita" on the intro screen and waits for its transition to finish. */
+/** Presses "Pelaa" on the intro screen and waits for its transition to finish. */
 async function startGame(page: Page) {
   await page.locator('[data-debate-start]').click()
   await expect(introScreen(page)).toBeHidden({ timeout: 10_000 })
@@ -52,7 +52,7 @@ for (const { path, lang, title, card, intro } of pages) {
       'noindex, nofollow',
     )
     await expect(page.getByRole('group', { name: title })).toBeVisible()
-    // The intro screen waits; after "Aloita" it wipes away and the battle begins.
+    // The intro screen waits; after "Pelaa" it wipes away and the battle begins.
     await expect(introScreen(page)).toContainText(card)
     await page.waitForTimeout(500)
     await expect(page.locator('[data-debate-bottom]')).toHaveText('')
@@ -230,7 +230,7 @@ test('sound is off until the toggle is clicked', async ({ page }) => {
   await expect(page.getByRole('button', { name: 'Äänet päälle' })).toBeVisible()
 })
 
-test('"Aloita" flashes the screen, then a clock wipe uncovers the stage', async ({ page }) => {
+test('"Pelaa" flashes the screen, then a clock wipe uncovers the stage', async ({ page }) => {
   await page.goto('/debaattipeli/')
   await page.locator('[data-debate-start]').click()
   await expect(introScreen(page)).toHaveClass(/debate-intro-flashing/)

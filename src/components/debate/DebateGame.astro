@@ -5,7 +5,7 @@
  * narration or the option grid. Self-contained (styles scoped under .debate),
  * so it can sit on its own page or, later, inside another page.
  *
- * With `play`, the stage is playable: an intro screen ("Aloita") covers it
+ * With `play`, the stage is playable: an intro screen ("Pelaa") covers it
  * until the player starts (src/scripts/debate/init.ts drives it). Without,
  * it's a still picture of the opening or of the `preview` the lab page
  * passes in.
@@ -180,7 +180,7 @@ const promptId = `debate-prompt-${locale}`
     {play && <div class="debate-iris" data-debate-iris aria-hidden="true" hidden />}
 
     {
-      /* The intro screen: the battle begins when "Aloita" is pressed (init.ts, intro.ts). */
+      /* The intro screen: the battle begins when "Pelaa" is pressed (init.ts, intro.ts). */
       play && (
         <div class="debate-intro" data-debate-intro>
           <p class="debate-intro-title">{t('intro.title')}</p>

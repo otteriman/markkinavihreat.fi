@@ -374,7 +374,7 @@
   padding-right: 4px;
 }
 
-/* The intro screen (intro.ts): the game's name and "Aloita", in a framed
+/* The intro screen (intro.ts): the game's name and "Pelaa", in a framed
    title card over the whole stage. */
 .debate-intro {
   position: absolute;
@@ -411,7 +411,7 @@
   text-shadow: 2px 2px 0 var(--gb-1);
 }
 
-/* "Aloita" is bigger than the grid's options: an easy tap before the game
+/* "Pelaa" is bigger than the grid's options: an easy tap before the game
    fills the screen. */
 .debate-intro .debate-option {
   --debate-line: 18px;
@@ -427,7 +427,7 @@
   height: 10px;
 }
 
-/* Pressing "Aloita": the screen pulses darker three times, two a second. */
+/* Pressing "Pelaa": the screen pulses darker three times, two a second. */
 .debate-intro.debate-intro-flashing::after {
   content: '';
   position: absolute;

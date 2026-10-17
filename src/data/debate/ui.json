@@ -150,9 +150,9 @@
     "needsReview": ["sv", "en"]
   },
   "intro.start": {
-    "fi": "Aloita",
-    "sv": "Börja",
-    "en": "Start",
+    "fi": "Pelaa",
+    "sv": "Spela",
+    "en": "Play",
     "needsReview": ["sv", "en"]
   },
   "end.playAgain": {
@@ -192,10 +192,10 @@
     "needsReview": ["fi", "sv", "en"]
   },
   "page.title": {
-    "fi": "Vihreä väittely",
-    "sv": "Grön debatt",
-    "en": "Green debate",
-    "needsReview": ["fi", "sv", "en"]
+    "fi": "Poliittinen väittelypeli",
+    "sv": "Politiskt debattspel",
+    "en": "Political debate game",
+    "needsReview": ["sv", "en"]
   },
   "page.description": {
     "fi": "Selainpeli: väittele kansalliskonservatiivin kanssa neljä kierrosta ja etsi argumentit, jotka purevat.",
@@ -204,10 +204,10 @@
     "needsReview": ["fi", "sv", "en"]
   },
   "page.lead": {
-    "fi": "Neljä kierrosta, noin viisi minuuttia. Etsi argumentit, jotka purevat.",
-    "sv": "Fyra rundor, ungefär fem minuter. Hitta argumenten som biter.",
-    "en": "Four rounds, about five minutes. Find the arguments that land.",
-    "needsReview": ["fi", "sv", "en"]
+    "fi": "Etsi argumentit, jotka purevat. Pelin kesto n. 5 minuuttia.",
+    "sv": "Hitta argumenten som biter. Spelet tar ca 5 minuter.",
+    "en": "Find the arguments that land. The game takes about 5 minutes.",
+    "needsReview": ["sv", "en"]
   },
   "page.noscript": {
     "fi": "Peli tarvitsee toimiakseen JavaScriptin.",

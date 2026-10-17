@@ -1,5 +1,5 @@
 /**
- * The intro screen's exit, as the player presses "Aloita": the screen
+ * The intro screen's exit, as the player presses "Pelaa": the screen
  * pulses darker three times (slowly, two a second: well within WCAG's three
  * flashes a second), then an unseen clock hand sweeps clockwise from three
  * o'clock and uncovers the stage behind it, like the battle transitions of

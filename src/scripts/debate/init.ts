@@ -10,7 +10,7 @@ import { playDebate } from './play'
 import { hideSprites } from './view'
 
 /**
- * The standalone game page: the intro screen waits for "Aloita", then
+ * The standalone game page: the intro screen waits for "Pelaa", then
  * flashes and wipes away to reveal the stage (intro.ts) and the battle
  * begins; the end screen's "Play again" starts the next one straight away.
  * On phones each battle fills the screen (fullscreen.ts) until it ends.
