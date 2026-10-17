@@ -49,8 +49,8 @@ describe('sprites', () => {
 
 describe('stageScale', () => {
   it('uses whole numbers from 2× up', () => {
-    expect(stageScale(1280, 900)).toBe(4)
-    expect(stageScale(1000, 700)).toBe(3)
+    expect(stageScale(1280, 1100)).toBe(4)
+    expect(stageScale(1000, 820)).toBe(3)
     expect(stageScale(700, 2000)).toBe(2)
   })
 

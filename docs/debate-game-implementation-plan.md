@@ -171,7 +171,7 @@ The engine emits **events** (`say-bottom`, `say-top`, `effect`, `drain-bar`, `sh
 
 ### 3.3 UI (`src/components/` + `src/scripts/debate/`)
 
-- `components/DebateGame.astro`: the self-contained game (the 240×216 stage, boxes, status boxes, sprites, mute toggle). It takes a `locale` prop and puts its locale-specific data into a `<script type="application/json">`, the way `BonusGame.astro` does, so the script ships no copy.
+- `components/DebateGame.astro`: the self-contained game (the 240×256 stage, boxes, status boxes, sprites, mute toggle). It takes a `locale` prop and puts its locale-specific data into a `<script type="application/json">`, the way `BonusGame.astro` does, so the script ships no copy.
 - `components/pages/DebateBody.astro`: the standalone page: `BaseLayout`, title, short intro, `<DebateGame>`, noscript fallback.
 - `scripts/debate/play.ts`: `playDebate(root, options)`: wires engine to DOM and resolves with the result (section 5.2).
 - `scripts/debate/typewriter.ts`: letter-by-letter text; a tap or key completes the line first, then advances. Instant under reduced motion.
@@ -181,7 +181,7 @@ The engine emits **events** (`say-bottom`, `say-top`, `effect`, `drain-bar`, `sh
 
 ### 3.4 Rendering
 
-Fixed **240×216 logical pixel** stage, DOM + CSS, not `<canvas>`, so buttons, focus and screen readers work. Scaled with CSS `zoom` by **whole numbers** from 2× up (`floor(min(width/240, height/216))`); below 2× (portrait phones) by the largest eighth that fits, because a whole number would leave a phone at an unreadable 1× (`src/scripts/debate/scale.ts`). Text and sprites are vector, so fractional zoom stays sharp. Pixelated rendering with `image-rendering: pixelated` and `shape-rendering="crispEdges"`. Palette as CSS custom properties: `#0F380F #306230 #8BAC0F #9BBC0F`; all game UI uses only these four. Game CSS is scoped under a `.debate` root so it can't leak into a host page.
+Fixed **240×256 logical pixel** stage (taller than the Game Boy’s 10:9, so the two sides sit apart and the option rows are far enough apart to tap), DOM + CSS, not `<canvas>`, so buttons, focus and screen readers work. Scaled with CSS `zoom` by **whole numbers** from 2× up (`floor(min(width/240, height/256))`); below 2× (portrait phones) by the largest eighth that fits, because a whole number would leave a phone at an unreadable 1× (`src/scripts/debate/scale.ts`). Text and sprites are vector, so fractional zoom stays sharp. Pixelated rendering with `image-rendering: pixelated` and `shape-rendering="crispEdges"`. Palette as CSS custom properties: `#0F380F #306230 #8BAC0F #9BBC0F`; all game UI uses only these four. Game CSS is scoped under a `.debate` root so it can't leak into a host page.
 
 ### 3.5 Difficulty: one place, easy to turn
 
@@ -289,7 +289,7 @@ Each phase ends with `npm run format:check && npm run lint && npm run check && n
 
 0. **Branch, CI, plan** (done): plan doc and the preview workflow.
 1. **Data, validator and engine** (done): `config.json` with the `spec`, `easy`, `normal` and `hard` presets and guardrails, the per-file enemy data with all spec copy in Finnish (with the fixed "Rasismi" reply), sv/en drafts marked `needsReview`, `ui.json`; `src/lib/debate/*` (loader, validator, battle, rng); unit and balance tests; `debate:report` and `debate:balance`; extend `validate-translations.ts`. No UI yet.
-2. **Shell, font and lab** (done): `DebateGame.astro`, `DebateBody.astro`, the 240×216 stage, palette, self-hosted font chosen in the lab, boxes, status boxes, placeholder sprites, `/debate-lab/` (including the live difficulty panel), routes for fi/sv/en, noindex and sitemap exclusion.
+2. **Shell, font and lab** (done): `DebateGame.astro`, `DebateBody.astro`, the 240×216 stage (now 240×256), palette, self-hosted font chosen in the lab, boxes, status boxes, placeholder sprites, `/debate-lab/` (including the live difficulty panel), routes for fi/sv/en, noindex and sitemap exclusion.
 3. **Battle UI** (done): `playDebate` (with the dev/preview `?difficulty=` switch) wiring engine to DOM: typewriter, 2×2 and 2×3 menus, keyboard and touch, KANNATUS bars, effect texts, endings, end screen, restart. Decisions made while building it:
    - The pacing rules (which box, when to wait for a tap) are a pure module, `src/lib/debate/playback.ts`, unit tested; the DOM layer (`scripts/debate/view.ts`) only performs its steps.
    - The battle starts by itself once the stage is at least half on screen (a start button, "Aloita väittely", was dropped on request), so its first lines aren't typed out below the fold. The enemy's speech box stays hidden until he first speaks; it empties (with its label) at each new round and when the player attacks, until he answers.

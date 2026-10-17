@@ -1,11 +1,11 @@
 /**
- * Zooms each debate stage (240×216 logical pixels) to fit its frame and the
+ * Zooms each debate stage (240×256 logical pixels) to fit its frame and the
  * viewport. From 2× up the zoom is a whole number, as the spec asks, so pixels
  * stay even. Below 2× (portrait phones) a whole number would leave the game at
  * 1×, too small to read, so it uses the largest eighth that fits instead.
  */
 export const STAGE_WIDTH = 240
-export const STAGE_HEIGHT = 216
+export const STAGE_HEIGHT = 256
 
 /** Room kept free around the stage when fitting it to the viewport height. */
 const VERTICAL_MARGIN = 24

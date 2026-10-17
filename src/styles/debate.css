@@ -3,7 +3,9 @@
  * so it only loads on pages that show the game. Everything is scoped under
  * .debate so the game can also sit inside another page (e.g. the quiz) later.
  *
- * The stage is a fixed 240×216 logical-pixel screen; scale.ts zooms it to fit.
+ * The stage is a fixed 240×256 logical-pixel screen; scale.ts zooms it to fit.
+ * Taller than the Game Boy's 10:9 so the two sides sit apart (whose status
+ * box is whose) and the option rows are far enough apart to tap.
  * All measurements below are logical pixels.
  */
 
@@ -69,7 +71,7 @@
 .debate-stage {
   position: relative;
   width: 240px;
-  height: 216px;
+  height: 256px;
   overflow: hidden;
   zoom: var(--debate-scale, 1);
   background: var(--gb-0);
@@ -144,9 +146,10 @@
   padding: 6px 6px 2px;
 }
 
+/* Tall enough for three 18px option rows (2×3 attacks). */
 .debate-box-bottom {
-  top: 160px;
-  height: 52px;
+  top: 180px;
+  height: 72px;
   padding-top: 6px;
 }
 
@@ -179,7 +182,7 @@
 }
 
 .debate-tag-bottom {
-  top: 156px;
+  top: 176px;
 }
 
 /* Status boxes: name, KANNATUS and its bar. */
@@ -200,7 +203,7 @@
 
 .debate-status-player {
   right: 6px;
-  top: 112px;
+  top: 130px;
 }
 
 .debate-status-name {
@@ -239,8 +242,9 @@
   position: absolute;
 }
 
-/* Enemy 48 × 50 (bottom at y 108, clear of the player's status at 112);
-   player 56 × 50 (between the enemy's status and the bottom label at 156). */
+/* Enemy 48 × 50 (bottom at y 108, 22px above the player's status at 130,
+   so the status reads as the player's, not his); player 56 × 50 (between the
+   enemy's status and the bottom label at 176). */
 .debate-sprite-enemy {
   right: 12px;
   top: 58px;
@@ -248,7 +252,7 @@
 
 .debate-sprite-player {
   left: 10px;
-  top: 102px;
+  top: 122px;
 }
 
 /* The option grid in the bottom box: 2×2 replies, 2×3 attacks. */
@@ -265,7 +269,8 @@
   display: block;
   width: 100%;
   margin: 0;
-  padding: 0 0 0 9px;
+  /* 3px above and below make each row 18px: easier to hit on a phone. */
+  padding: 3px 0 3px 9px;
   border: 0;
   background: none;
   color: inherit;
@@ -289,7 +294,7 @@
   content: '';
   position: absolute;
   left: 1px;
-  top: calc((var(--debate-line) - 7px) / 2);
+  top: calc(3px + (var(--debate-line) - 7px) / 2);
   width: 4px;
   height: 7px;
   background: currentColor;
@@ -415,8 +420,8 @@
 
 /* Losing: the screen goes dark in a circle closing from the edges to the
    middle (view.ts IRIS_MS). A clear circle with a huge dark shadow around it
-   shrinks to nothing; the stage clips the shadow. It starts 340px wide, just
-   more than the stage's diagonal, so nothing is dark at first. */
+   shrinks to nothing; the stage clips the shadow. It starts 360px wide, just
+   more than the stage's diagonal (351px), so nothing is dark at first. */
 .debate-iris {
   position: absolute;
   z-index: 1;
@@ -436,8 +441,8 @@
 
 @keyframes debate-iris {
   from {
-    width: 340px;
-    height: 340px;
+    width: 360px;
+    height: 360px;
   }
   to {
     width: 0;
