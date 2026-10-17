@@ -7,7 +7,7 @@
     "en": "TODO"
   },
   "say": {
-    "fi": "Puretaan turhaa kaavoitusbyrokratiaa ja rakennetaan lisää asuntoja, niin asumisen hinta laskee.",
+    "fi": "Meidän on joudutettava kaavoitusta ja purettava kaupunkirakentamisen esteitä.",
     "sv": "TODO",
     "en": "TODO"
   },
@@ -15,7 +15,7 @@
     {
       "quality": "strong",
       "say": {
-        "fi": "Ja asuntojen arvo romahtaa niiltä, jotka ovat jo ottaneet asuntolainan.",
+        "fi": "Rakennusbuumi romahduttaa asuntojen arvon heiltä, jotka jo ottaneet asuntolainan.",
         "sv": "TODO",
         "en": "TODO"
       }
@@ -23,7 +23,7 @@
     {
       "quality": "medium",
       "say": {
-        "fi": "Kaupungit täyttyvät betonista, ja maaseutu tyhjenee.",
+        "fi": "Helsinki-juttuja taas, muu maa on puolillaan tyhjiä asuntoja.",
         "sv": "TODO",
         "en": "TODO"
       }
@@ -39,7 +39,7 @@
     {
       "quality": "weak",
       "say": {
-        "fi": "Ei tänne tarvita lisää asuntoja. Väkiluku kasvaa vain maahanmuutolla.",
+        "fi": "Ei tänne edes tarvita lisää asuntoja. Väkiluku kasvaa vain maahanmuutolla.",
         "sv": "TODO",
         "en": "TODO"
       }
