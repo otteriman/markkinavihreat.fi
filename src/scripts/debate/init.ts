@@ -4,6 +4,7 @@ import { DifficultyError, resolveDifficulty } from '../../lib/debate/difficulty'
 import { replyTriggers } from '../../lib/debate/scenes'
 import type { Difficulty } from '../../lib/debate/types'
 import { Chiptune } from './audio'
+import { GameMode } from './fullscreen'
 import { leaveIntro } from './intro'
 import { playDebate } from './play'
 import { hideSprites } from './view'
@@ -12,6 +13,7 @@ import { hideSprites } from './view'
  * The standalone game page: the intro screen waits for "Aloita", then
  * flashes and wipes away to reveal the stage (intro.ts) and the battle
  * begins; the end screen's "Play again" starts the next one straight away.
+ * On phones each battle fills the screen (fullscreen.ts) until it ends.
  */
 export function startDebateGames(root: ParentNode): void {
   for (const frame of root.querySelectorAll<HTMLElement>('[data-debate-play]')) {
@@ -21,6 +23,7 @@ export function startDebateGames(root: ParentNode): void {
     hideSprites(frame)
     const sounds = new Chiptune()
     setUpSoundToggle(frame, sounds)
+    const gameMode = new GameMode(frame)
     const run = async () => {
       for (;;) {
         await playDebate(frame, {
@@ -29,7 +32,10 @@ export function startDebateGames(root: ParentNode): void {
           difficulty,
           sounds,
           scene,
+          onEnd: () => gameMode.exit(),
         })
+        // "Play again" was just tapped: full screen again for the next battle.
+        gameMode.enter()
       }
     }
     const intro = frame.querySelector<HTMLElement>('[data-debate-intro]')
@@ -42,6 +48,7 @@ export function startDebateGames(root: ParentNode): void {
       'click',
       async () => {
         start.disabled = true
+        gameMode.enter()
         sounds.select()
         await leaveIntro(intro, matchMedia('(prefers-reduced-motion: reduce)').matches)
         void run()

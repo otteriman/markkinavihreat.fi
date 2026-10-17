@@ -43,6 +43,18 @@
   align-items: center;
 }
 
+/* Game mode on phones (fullscreen.ts): the frame covers the whole screen,
+   in full screen where the browser allows it, as an overlay otherwise. */
+.debate-frame.debate-fullscreen {
+  position: fixed;
+  z-index: 1000;
+  inset: 0;
+  justify-content: center;
+  padding: 8px 0;
+  background: var(--gb-3);
+  overflow: auto;
+}
+
 /* The sound toggle under the stage: page-sized, so it's easy to hit. */
 .debate-sound {
   margin-top: 10px;
@@ -399,9 +411,20 @@
   text-shadow: 2px 2px 0 var(--gb-1);
 }
 
+/* "Aloita" is bigger than the grid's options: an easy tap before the game
+   fills the screen. */
 .debate-intro .debate-option {
+  --debate-line: 18px;
   width: auto;
-  padding-right: 6px;
+  padding: 6px 12px 6px 20px;
+  font-size: 18px;
+}
+
+.debate-intro .debate-option::before {
+  left: 7px;
+  top: calc(6px + (var(--debate-line) - 10px) / 2);
+  width: 6px;
+  height: 10px;
 }
 
 /* Pressing "Aloita": the screen pulses darker three times, two a second. */

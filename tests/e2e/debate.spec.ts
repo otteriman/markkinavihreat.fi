@@ -126,6 +126,8 @@ test('a whole battle by tapping on a phone, with typing and bars', async ({ brow
   const page = await context.newPage()
   await page.goto('/en/debaattipeli/')
   await page.locator('[data-debate-start]').tap()
+  // On a phone the battle fills the screen.
+  await expect(page.locator('[data-debate]')).toHaveClass(/debate-fullscreen/)
   await expect(introScreen(page)).toBeHidden({ timeout: 10_000 })
 
   // The first line types out; a tap shows it all at once.
@@ -146,10 +148,39 @@ test('a whole battle by tapping on a phone, with typing and bars', async ({ brow
     }
   }
   await expect(endScreen(page)).toContainText(/Perfect replies: \d\/\d/)
+  // The end screen leaves full screen, and the history entry it added.
+  await expect(page.locator('[data-debate]')).not.toHaveClass(/debate-fullscreen/)
+  expect(new URL(page.url()).pathname).toBe('/en/debaattipeli/')
   // Someone lost support along the way.
   const scores = await page.locator('[data-debate-kannatus]').allInnerTexts()
   expect(scores.some((s) => Number(s) < 100)).toBe(true)
   await context.close()
+})
+
+test('on a phone, back leaves full screen and stays on the game', async ({ browser }) => {
+  const context = await browser.newContext({
+    viewport: { width: 390, height: 844 },
+    hasTouch: true,
+    isMobile: true,
+  })
+  const page = await context.newPage()
+  await page.goto('/debaattipeli/')
+  const frame = page.locator('[data-debate]')
+  await page.locator('[data-debate-start]').tap()
+  await expect(frame).toHaveClass(/debate-fullscreen/)
+  await expect(introScreen(page)).toBeHidden({ timeout: 10_000 })
+  await page.goBack()
+  await expect(frame).not.toHaveClass(/debate-fullscreen/)
+  expect(new URL(page.url()).pathname).toBe('/debaattipeli/')
+  // The battle carries on in the page.
+  await expect(page.locator('[data-debate-bottom]')).not.toHaveText('')
+  await context.close()
+})
+
+test('a desktop battle doesn’t go full screen', async ({ page }) => {
+  await page.goto('/debaattipeli/')
+  await startGame(page)
+  await expect(page.locator('[data-debate]')).not.toHaveClass(/debate-fullscreen/)
 })
 
 test('both characters slide in when the battle starts', async ({ page }) => {

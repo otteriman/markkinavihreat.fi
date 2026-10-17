@@ -35,6 +35,8 @@ export interface PlayOptions {
    * him in, and the reply grid's cursor starts on that reply.
    */
   scene?: { special: string }
+  /** Called as the battle ends, before the end screen. */
+  onEnd?: (result: BattleResult) => void
 }
 
 /**
@@ -116,6 +118,7 @@ export async function playDebate(root: HTMLElement, options: PlayOptions): Promi
   for (;;) {
     const stop = await perform(planSteps(events, options.locale, ui, enemy, config.presentation))
     if (stop.kind === 'end') {
+      options.onEnd?.(stop.result)
       if (stop.result.kind === 'koLose' || stop.result.kind === 'pointsLose') {
         ;(options.sounds ?? silent).lose()
       }

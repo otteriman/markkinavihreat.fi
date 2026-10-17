@@ -9,6 +9,8 @@ export const STAGE_HEIGHT = 256
 
 /** Room kept free around the stage when fitting it to the viewport height. */
 const VERTICAL_MARGIN = 24
+/** In game mode, the sound toggle's height under the stage. */
+const FULLSCREEN_TOGGLE_ROOM = 44
 
 export function stageScale(width: number, height: number): number {
   const fit = Math.min(width / STAGE_WIDTH, (height - VERTICAL_MARGIN) / STAGE_HEIGHT)
@@ -36,8 +38,13 @@ export function fitStages(root: ParentNode): void {
   )
   if (frames.length === 0) return
   const update = () => {
-    const height = window.innerHeight - stickyTop()
+    const page = window.innerHeight - stickyTop()
     for (const frame of frames) {
+      // In game mode (fullscreen.ts) the frame covers the page, nav and all;
+      // leave room for the sound toggle under the stage.
+      const height = frame.classList.contains('debate-fullscreen')
+        ? window.innerHeight - FULLSCREEN_TOGGLE_ROOM
+        : page
       const stage = frame.querySelector<HTMLElement>('.debate-stage')
       stage?.style.setProperty('--debate-scale', String(stageScale(frame.clientWidth, height)))
     }
