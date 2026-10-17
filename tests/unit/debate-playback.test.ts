@@ -191,15 +191,15 @@ describe('planSteps', () => {
       'hit:player',
       'wait:advance',
       'tags:top,bottom', // the ending clears both labels
-      'type:bottom', // Kannatuksesi romahti...
+      'type:bottom', // Silmissäsi pimenee...
       'wait:advance',
       'irisOut', // the screen closes to dark
-      'end',
+      'end', // Kannatuksesi romahti. Heräät puoluetoimistolta.
     ])
-    const end = steps.at(-1)
-    expect(end).toMatchObject({
+    expect(steps.at(-4)).toMatchObject({ kind: 'type', text: 'Silmissäsi pimenee...' })
+    expect(steps.at(-1)).toMatchObject({
       kind: 'end',
-      text: 'Kannatuksesi romahti... Heräät puoluetoimistolta.',
+      text: 'Kannatuksesi romahti. Heräät puoluetoimistolta.',
       result: { kind: 'koLose' },
     })
   })

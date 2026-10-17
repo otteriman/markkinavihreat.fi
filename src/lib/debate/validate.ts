@@ -29,6 +29,7 @@ export const REQUIRED_UI_KEYS = [
   'effect.attack.backfire',
   'effect.defend.backfire',
   'end.koLose',
+  'end.koLoseResult',
   'end.pointsWin',
   'end.pointsLose',
   'end.tie',

@@ -102,9 +102,15 @@
     "needsReview": ["sv", "en"]
   },
   "end.koLose": {
-    "fi": "Kannatuksesi romahti... Heräät puoluetoimistolta.",
-    "sv": "Ditt stöd rasade... Du vaknar upp på partikansliet.",
-    "en": "Your support collapsed... You wake up at party HQ.",
+    "fi": "Silmissäsi pimenee...",
+    "sv": "Det svartnar för ögonen...",
+    "en": "Everything goes dark...",
+    "needsReview": ["fi", "sv", "en"]
+  },
+  "end.koLoseResult": {
+    "fi": "Kannatuksesi romahti. Heräät puoluetoimistolta.",
+    "sv": "Ditt stöd rasade. Du vaknar upp på partikansliet.",
+    "en": "Your support collapsed. You wake up at party HQ.",
     "needsReview": ["sv", "en"]
   },
   "end.pointsWin": {

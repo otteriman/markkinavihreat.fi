@@ -82,7 +82,8 @@ export function planSteps(
   const steps: Step[] = []
   const you = format({ key: 'a11y.you' }, locale, ui)
   const foe = localize(enemy.subject, locale)
-  let lastNarration = ''
+  /** What the end screen says: the ending's narration, or its own "…Result" text. */
+  let endText = ''
   /** Without the attack's narration, screen readers hear his label before his line. */
   let attackLabel = ''
 
@@ -102,7 +103,13 @@ export function planSteps(
         // The ending's narration clears both labels.
         if (next?.type === 'end') steps.push({ kind: 'tags', top: null, bottom: null })
         steps.push({ kind: 'type', box: 'bottom', text, announce: text })
-        lastNarration = text
+        // An ending can have a separate text for the end screen, e.g. end.koLose
+        // ("Silmissäsi pimenee...") is followed by end.koLoseResult.
+        const resultKey = `${key}Result`
+        endText =
+          'key' in event.message && resultKey in ui
+            ? format({ ...event.message, key: resultKey }, locale, ui)
+            : text
         // A hit right after an effect text plays before the wait (the spec's order).
         if (next?.type !== 'hit') steps.push({ kind: 'wait', until: 'advance' })
         break
@@ -170,7 +177,7 @@ export function planSteps(
         if (event.result.kind === 'koLose' || event.result.kind === 'pointsLose') {
           steps.push({ kind: 'irisOut' })
         }
-        steps.push({ kind: 'end', result: event.result, text: lastNarration })
+        steps.push({ kind: 'end', result: event.result, text: endText })
         break
     }
   })
