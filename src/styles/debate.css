@@ -408,7 +408,6 @@
   max-width: 180px;
   font-size: 24px;
   line-height: 22px;
-  text-shadow: 2px 2px 0 var(--gb-1);
 }
 
 /* "Pelaa" is bigger than the grid's options: an easy tap before the game
