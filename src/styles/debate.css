@@ -25,6 +25,9 @@
   --gb-1: #8bac0f;
   --gb-2: #306230;
   --gb-3: #0f380f;
+  /* The intro screen's paler card, the one colour outside the four: it sets
+     the title apart from the stage, so the clock wipe shows. */
+  --gb-intro: #d3e5a3;
 
   --debate-font: 'Debate Jersey', monospace;
   --debate-size: 12px;
@@ -371,7 +374,7 @@
   justify-content: center;
   gap: 28px;
   padding: 16px;
-  background: var(--gb-0);
+  background: var(--gb-intro);
   text-align: center;
 }
 
@@ -383,7 +386,7 @@
   border: 2px solid var(--gb-3);
   border-radius: 3px;
   box-shadow:
-    inset 0 0 0 2px var(--gb-0),
+    inset 0 0 0 2px var(--gb-intro),
     inset 0 0 0 3px var(--gb-2);
   pointer-events: none;
 }
