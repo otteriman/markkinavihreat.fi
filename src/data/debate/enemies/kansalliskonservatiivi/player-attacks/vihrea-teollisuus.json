@@ -8,40 +8,40 @@
   },
   "say": {
     "fi": "Uusiutuva energiantuotanto, akkutehtaat ja muu energiasiirtymä tuo kymmeniä tuhansia työpaikkoja maakuntiin.",
-    "sv": "",
-    "en": ""
+    "sv": "TODO",
+    "en": "TODO"
   },
   "defenses": [
     {
       "quality": "strong",
       "say": {
         "fi": "Ja samalla tuhoaa perinteisiä työpaikkoja. Ja akkutehtaissa ja tuulihumpassa ulkomaiset yhtiöt käärivät voitot.",
-        "sv": "",
-        "en": ""
+        "sv": "TODO",
+        "en": "TODO"
       }
     },
     {
       "quality": "medium",
       "say": {
         "fi": "Ja jokaisen takapihalle pitää pystyttää tuulimylly. Koko kansallismaisemamme menee pilalle.",
-        "sv": "",
-        "en": ""
+        "sv": "TODO",
+        "en": "TODO"
       }
     },
     {
       "quality": "strong",
       "say": {
         "fi": "Ja sähkön hinta nousee, ja tavalliset suomalaiset maksavat laskun.",
-        "sv": "",
-        "en": ""
+        "sv": "TODO",
+        "en": "TODO"
       }
     },
     {
       "quality": "weak",
       "say": {
         "fi": "Mutta tämä viherhumputus ajaa alas paperitehtaat, ja aiheuttaa joukkotyöttömyyttä.",
-        "sv": "",
-        "en": ""
+        "sv": "TODO",
+        "en": "TODO"
       }
     }
   ]

@@ -12,8 +12,8 @@
   },
   "line": {
     "fi": "Suomi on EU:n nettomaksaja, ja Bryssel päättää kaikesta kurkun käyryydestä lähtien! Missä EU, sielä ongelma!",
-    "sv": "",
-    "en": ""
+    "sv": "TODO",
+    "en": "TODO"
   },
   "replies": [
     {
@@ -25,8 +25,8 @@
       "quality": "strong",
       "say": {
         "fi": "Ilman eurooppalaista yhteistyötä jokainen maa on yksin, ja Venäjälle ja suurvalloille helppo saalis.",
-        "sv": "",
-        "en": ""
+        "sv": "TODO",
+        "en": "TODO"
       },
       "reaction": {
         "fi": "...",
@@ -43,13 +43,13 @@
       "quality": "medium",
       "say": {
         "fi": "Yli puolet viennistämme menee EU-maihin. EU on elintärkeä taloudellemme.",
-        "sv": "",
-        "en": ""
+        "sv": "TODO",
+        "en": "TODO"
       },
       "reaction": {
         "fi": "Hyvin toimi Suomen talous ennen EU:takin.",
-        "sv": "",
-        "en": ""
+        "sv": "TODO",
+        "en": "TODO"
       }
     },
     {
@@ -61,13 +61,13 @@
       "quality": "weak",
       "say": {
         "fi": "Meidän on syytä yhdentyä muun euroopan kanssa, ja pyrkiä kohti liittovaltiota!",
-        "sv": "",
-        "en": ""
+        "sv": "TODO",
+        "en": "TODO"
       },
       "reaction": {
         "fi": "Minä ainakin olen ylpeä suomalainen. Ja ilman EU:ta tämä maa on rakennettu. Piste.",
-        "sv": "",
-        "en": ""
+        "sv": "TODO",
+        "en": "TODO"
       }
     },
     {
@@ -79,13 +79,13 @@
       "quality": "weak",
       "say": {
         "fi": "Tarvitsemme EU:ta vihreän siirtymän toteuttamiseen.",
-        "sv": "",
-        "en": ""
+        "sv": "TODO",
+        "en": "TODO"
       },
       "reaction": {
         "fi": "Tätä juuri tarkoitan. Kohta Brysselissä kielletään puunpolttokin!",
-        "sv": "",
-        "en": ""
+        "sv": "TODO",
+        "en": "TODO"
       }
     }
   ]

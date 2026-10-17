@@ -12,8 +12,8 @@
   },
   "line": {
     "fi": "Ääliöliberaalit tekevät länsimaissa väestönvaihtoa! Se pitää pysäyttää ennenkuin on liian myöhäistä.",
-    "sv": "",
-    "en": ""
+    "sv": "TODO",
+    "en": "TODO"
   },
   "replies": [
     {
@@ -66,8 +66,8 @@
       },
       "reaction": {
         "fi": "Tilastojen mukaan tietyt kansalaisuudet ovat yliedustettuina väkivalta- ja raikaustilastoissa.",
-        "sv": "",
-        "en": ""
+        "sv": "TODO",
+        "en": "TODO"
       }
     },
     {
@@ -79,14 +79,14 @@
       "quality": "weak",
       "say": {
         "fi": "Tuo on täysin rasistista puhetta ja vastoin yhdenvertaisia ihmisoikeuksia!",
-        "sv": "",
-        "en": "",
+        "sv": "TODO",
+        "en": "TODO",
         "needsReview": ["fi", "sv", "en"]
       },
       "reaction": {
         "fi": "Niin justiinsa, jokainen joka puhuu maahanmuuton ongelmista on teidän mielestä heti rasisti.",
-        "sv": "",
-        "en": "",
+        "sv": "TODO",
+        "en": "TODO",
         "needsReview": ["fi", "sv", "en"]
       }
     }

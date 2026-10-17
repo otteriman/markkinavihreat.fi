@@ -8,16 +8,16 @@
   },
   "say": {
     "fi": "Jokainen litra tuontiöljyä tekee meistä riippuvaisia epäluotettavista diktatuurista. Oma energia on omavaraisuutta!",
-    "sv": "",
-    "en": ""
+    "sv": "TODO",
+    "en": "TODO"
   },
   "defenses": [
     {
       "quality": "medium",
       "say": {
         "fi": "Lisätään ydinvoimaa, ja turvetta...",
-        "sv": "",
-        "en": ""
+        "sv": "TODO",
+        "en": "TODO"
       }
     },
     {
@@ -40,8 +40,8 @@
       "quality": "weak",
       "say": {
         "fi": "Turve, ja öö norjalainen öljy, tai siis oikeastaan...",
-        "sv": "",
-        "en": ""
+        "sv": "TODO",
+        "en": "TODO"
       }
     }
   ]

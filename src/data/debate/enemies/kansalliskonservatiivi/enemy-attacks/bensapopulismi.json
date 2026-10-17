@@ -12,8 +12,8 @@
   },
   "line": {
     "fi": "Bensa ilman veroja maksaisi euron! Jakeluvelvoite pitää poistaa!",
-    "sv": "",
-    "en": ""
+    "sv": "TODO",
+    "en": "TODO"
   },
   "replies": [
     {
@@ -25,8 +25,8 @@
       "quality": "strong",
       "say": {
         "fi": "Öljyriippuvuus täyttää öykkärivaltioiden kassaa ja rahat valuvat ulkomaille. Tarvitaan energiasiirtymä kotimaisempaan energiaan.",
-        "sv": "",
-        "en": ""
+        "sv": "TODO",
+        "en": "TODO"
       },
       "reaction": {
         "fi": "...",
@@ -43,13 +43,13 @@
       "quality": "medium",
       "say": {
         "fi": "Meidän pitää kannustaa sähköautoiluun. Sen \"tankkaa\" muutamalla eurolla..",
-        "sv": "",
-        "en": ""
+        "sv": "TODO",
+        "en": "TODO"
       },
       "reaction": {
         "fi": "Ja itse auto maksaa 50 000€! Köyhiä työssäkäyviä pihtiputaan mummoja taas kuritetaan!",
-        "sv": "",
-        "en": ""
+        "sv": "TODO",
+        "en": "TODO"
       }
     },
     {
@@ -61,13 +61,13 @@
       "quality": "weak",
       "say": {
         "fi": "Lisätään panostuksia joukkoliikenteeseen, yksityisautoilu on kestämätön liikkumismuoto.",
-        "sv": "",
-        "en": ""
+        "sv": "TODO",
+        "en": "TODO"
       },
       "reaction": {
         "fi": "No helppo sieltä Helsingistä on huudella, ei täällä muualla bussi kulje kuin kerran viikossa.",
-        "sv": "",
-        "en": ""
+        "sv": "TODO",
+        "en": "TODO"
       }
     },
     {
@@ -84,8 +84,8 @@
       },
       "reaction": {
         "fi": "Huoh, taas tätä ilmastohysteriaa. Se vain traumatisoi lapset ja kurittaa työssäkäyviä.",
-        "sv": "",
-        "en": ""
+        "sv": "TODO",
+        "en": "TODO"
       }
     }
   ]

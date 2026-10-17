@@ -3,45 +3,45 @@
   "order": 2,
   "label": {
     "fi": "Kotimainen kasvisruoka",
-    "sv": "",
-    "en": ""
+    "sv": "TODO",
+    "en": "TODO"
   },
   "say": {
     "fi": "Suomessa olisi järkevintä lisätä kasvisruuan tuotantoa, saisimme lisää ja halvempaa kotimaista ruokaa.",
-    "sv": "",
-    "en": ""
+    "sv": "TODO",
+    "en": "TODO"
   },
   "defenses": [
     {
       "quality": "medium",
       "say": {
         "fi": "Haluatte vain ideologisesti kieltää lihansyönnin ja tuputtaa elämäntapaanne muille.",
-        "sv": "",
-        "en": ""
+        "sv": "TODO",
+        "en": "TODO"
       }
     },
     {
       "quality": "weak",
       "say": {
         "fi": "Juurikin ne teidän mangosmoothiet ja muut hömppäkasvikset nimenomaan rahdataan toiselta puolen maapalloa.",
-        "sv": "",
-        "en": ""
+        "sv": "TODO",
+        "en": "TODO"
       }
     },
     {
       "quality": "weak",
       "say": {
         "fi": "Ihminen on sekasyöjä, eli kyllä lihaakin pitää syödä. Ideologista sekoilua teidän jutut taas.",
-        "sv": "",
-        "en": ""
+        "sv": "TODO",
+        "en": "TODO"
       }
     },
     {
       "quality": "strong",
       "say": {
         "fi": "Ensin lihavero, nyt tämä? Te ajatte suomalaiset karjatilat konkursseihin!",
-        "sv": "",
-        "en": ""
+        "sv": "TODO",
+        "en": "TODO"
       }
     }
   ]

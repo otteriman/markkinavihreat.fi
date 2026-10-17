@@ -12,8 +12,8 @@
   },
   "line": {
     "fi": "Rahaa ei ole! Teidän velkaralli jää lapsiemme maksettavaksi!",
-    "sv": "",
-    "en": ""
+    "sv": "TODO",
+    "en": "TODO"
   },
   "replies": [
     {
@@ -25,8 +25,8 @@
       "quality": "strong",
       "say": {
         "fi": "Rahaa on, se vain valuu suuryhtiöiden mukana veroparatiiseihin. Puututaan verokikkailuun, ja hankitaan verot Suomeen!",
-        "sv": "",
-        "en": ""
+        "sv": "TODO",
+        "en": "TODO"
       },
       "reaction": {
         "fi": "...",
@@ -43,8 +43,8 @@
       "quality": "medium",
       "say": {
         "fi": "Suomen menestys perustuu hyvinvointivaltioon: Koulu, terveyskeskus ja vanhustenhoito ovat elintärkeitä.",
-        "sv": "",
-        "en": ""
+        "sv": "TODO",
+        "en": "TODO"
       },
       "reaction": {
         "fi": "Kaunista puhetta. Mutta mistä rahat?",
@@ -55,9 +55,10 @@
         "by": "paakirjoitustoimittaja",
         "say": {
           "fi": "Suomi on elänyt yli varojensa. Vasemmisto on ajatellut että raha on ilmaista. Oikeisto syytänyt rahaa omille lempilapsilleen. Hyvinvointivaltion palvelulupaus täytyy nyt miettiä uudestaan.",
-          "sv": "",
-          "en": ""
+          "sv": "TODO",
+          "en": "TODO"
         }
+      }
     },
     {
       "label": {
@@ -68,13 +69,13 @@
       "quality": "weak",
       "say": {
         "fi": "Suomessa veroaste on laskenut 2000-luvulla merkittävästi. Nostetaan siis veroja.",
-        "sv": "",
-        "en": ""
+        "sv": "TODO",
+        "en": "TODO"
       },
       "reaction": {
         "fi": "Eli tehdään Suomesta verohelvetti? Kiitos, että sanoit sen ääneen.",
-        "sv": "",
-        "en": ""
+        "sv": "TODO",
+        "en": "TODO"
       },
       "critical": {
         "by": "paakirjoitustoimittaja",
