@@ -9,18 +9,21 @@ const pages = [
     path: '/debaattipeli/',
     lang: 'fi',
     title: 'Vihreä väittely',
+    card: 'Poliittinen debaattipeli',
     intro: 'Villi kansalliskonservatiivi ilmestyi!',
   },
   {
     path: '/sv/debaattipeli/',
     lang: 'sv',
     title: 'Grön debatt',
+    card: 'Politiskt debattspel',
     intro: 'En vild nationalkonservativ dök upp!',
   },
   {
     path: '/en/debaattipeli/',
     lang: 'en',
     title: 'Green debate',
+    card: 'Political debate game',
     intro: 'A wild national conservative appeared!',
   },
 ]
@@ -32,9 +35,16 @@ const END_GRACE = 850
 const stage = (page: Page) => page.locator('.debate-stage')
 const grid = (page: Page) => page.locator('[data-debate-options]')
 const endScreen = (page: Page) => page.locator('[data-debate-end]')
+const introScreen = (page: Page) => page.locator('[data-debate-intro]')
 
-for (const { path, lang, title, intro } of pages) {
-  test(`debate page starts the battle by itself (${lang})`, async ({ page }) => {
+/** Presses "Aloita" on the intro screen and waits for its transition to finish. */
+async function startGame(page: Page) {
+  await page.locator('[data-debate-start]').click()
+  await expect(introScreen(page)).toBeHidden({ timeout: 10_000 })
+}
+
+for (const { path, lang, title, card, intro } of pages) {
+  test(`debate page starts the battle from the intro screen (${lang})`, async ({ page }) => {
     await page.goto(path)
     await expect(page.locator('h1')).toHaveText(title)
     await expect(page.locator('meta[name="robots"]')).toHaveAttribute(
@@ -42,7 +52,11 @@ for (const { path, lang, title, intro } of pages) {
       'noindex, nofollow',
     )
     await expect(page.getByRole('group', { name: title })).toBeVisible()
-    // No start button: the opening line types out by itself, with focus in the game.
+    // The intro screen waits; after "Aloita" it wipes away and the battle begins.
+    await expect(introScreen(page)).toContainText(card)
+    await page.waitForTimeout(500)
+    await expect(page.locator('[data-debate-bottom]')).toHaveText('')
+    await startGame(page)
     await expect(page.locator('[data-debate-bottom]')).toHaveText(intro)
     await expect(stage(page)).toBeFocused()
     await expect(stage(page).locator('.debate-sprite svg')).toHaveCount(2)
@@ -53,6 +67,7 @@ test('a whole battle by keyboard, with Play again', async ({ page }) => {
   test.setTimeout(90_000)
   await page.emulateMedia({ reducedMotion: 'reduce' })
   await page.goto('/debaattipeli/')
+  await startGame(page)
   await expect(page.locator('[data-debate-bottom]')).not.toHaveText('')
 
   let attackGrids = 0
@@ -110,6 +125,8 @@ test('a whole battle by tapping on a phone, with typing and bars', async ({ brow
   })
   const page = await context.newPage()
   await page.goto('/en/debaattipeli/')
+  await page.locator('[data-debate-start]').tap()
+  await expect(introScreen(page)).toBeHidden({ timeout: 10_000 })
 
   // The first line types out; a tap shows it all at once.
   await expect(page.locator('[data-debate-bottom]')).not.toHaveText('')
@@ -137,6 +154,7 @@ test('a whole battle by tapping on a phone, with typing and bars', async ({ brow
 
 test('both characters slide in when the battle starts', async ({ page }) => {
   await page.goto('/debaattipeli/')
+  await startGame(page)
   await expect(page.locator('[data-debate-bottom]')).not.toHaveText('')
   await expect(page.locator('.debate-sprite-enemy')).toBeVisible()
   await expect(page.locator('.debate-sprite-player')).toBeVisible()
@@ -146,6 +164,7 @@ test('both characters slide in when the battle starts', async ({ page }) => {
 test('with reduced motion the characters are simply there', async ({ page }) => {
   await page.emulateMedia({ reducedMotion: 'reduce' })
   await page.goto('/debaattipeli/')
+  await startGame(page)
   await expect(page.locator('[data-debate-bottom]')).not.toHaveText('')
   await expect(page.locator('.debate-sprite-enemy')).toBeVisible()
   await expect(page.locator('.debate-enter')).toHaveCount(0)
@@ -164,6 +183,7 @@ test('sound is off until the toggle is clicked', async ({ page }) => {
     }
   })
   await page.goto('/debaattipeli/')
+  await startGame(page)
   const toggle = page.getByRole('button', { name: 'Äänet päälle' })
   await expect(toggle).toBeVisible()
   await expect(page.locator('[data-debate-bottom]')).not.toHaveText('')
@@ -179,12 +199,12 @@ test('sound is off until the toggle is clicked', async ({ page }) => {
   await expect(page.getByRole('button', { name: 'Äänet päälle' })).toBeVisible()
 })
 
-test('the battle waits until the stage is on screen', async ({ page }) => {
-  await page.setViewportSize({ width: 1280, height: 300 })
+test('"Aloita" flashes the screen, then a clock wipe uncovers the stage', async ({ page }) => {
   await page.goto('/debaattipeli/')
-  await page.waitForTimeout(500)
-  await expect(page.locator('[data-debate-bottom]')).toHaveText('')
-  await stage(page).scrollIntoViewIfNeeded()
+  await page.locator('[data-debate-start]').click()
+  await expect(introScreen(page)).toHaveClass(/debate-intro-flashing/)
+  await expect(introScreen(page)).toHaveClass(/debate-intro-wiping/, { timeout: 3_000 })
+  await expect(introScreen(page)).toBeHidden({ timeout: 5_000 })
   await expect(page.locator('[data-debate-bottom]')).not.toHaveText('')
 })
 
@@ -254,6 +274,7 @@ test('a critical hit: the editorial writer steps in, the hit lands harder', asyn
     Math.random = () => 0
   })
   await page.goto('/debaattipeli/')
+  await startGame(page)
   const cutin = page.locator('[data-debate-cutin]')
   const deadline = Date.now() + 60_000
   while (!(await cutin.isVisible())) {

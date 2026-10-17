@@ -359,6 +359,72 @@
   padding-right: 4px;
 }
 
+/* The intro screen (intro.ts): the game's name and "Aloita", in a framed
+   title card over the whole stage. */
+.debate-intro {
+  position: absolute;
+  z-index: 3;
+  inset: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 28px;
+  padding: 16px;
+  background: var(--gb-0);
+  text-align: center;
+}
+
+/* A double frame, the box style of the speech boxes, inset from the edge. */
+.debate-intro::before {
+  content: '';
+  position: absolute;
+  inset: 8px;
+  border: 2px solid var(--gb-3);
+  border-radius: 3px;
+  box-shadow:
+    inset 0 0 0 2px var(--gb-0),
+    inset 0 0 0 3px var(--gb-2);
+  pointer-events: none;
+}
+
+.debate-intro-title {
+  margin: 0;
+  max-width: 180px;
+  font-size: 24px;
+  line-height: 22px;
+  text-shadow: 2px 2px 0 var(--gb-1);
+}
+
+.debate-intro .debate-option {
+  width: auto;
+  padding-right: 6px;
+}
+
+/* Pressing "Aloita": the screen pulses darker three times, two a second. */
+.debate-intro.debate-intro-flashing::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: var(--gb-3);
+  opacity: 0;
+  animation: debate-intro-flash 500ms ease-in-out 3;
+  pointer-events: none;
+}
+
+@keyframes debate-intro-flash {
+  50% {
+    opacity: 0.45;
+  }
+}
+
+/* Then the clock wipe: everything the hand has swept past, clockwise from
+   three o'clock (--sweep, set step by step by intro.ts), shows the stage. */
+.debate-intro.debate-intro-wiping {
+  -webkit-mask-image: conic-gradient(from 90deg, transparent 0 var(--sweep, 0deg), #000 0);
+  mask-image: conic-gradient(from 90deg, transparent 0 var(--sweep, 0deg), #000 0);
+}
+
 /* Hit: the avatar flashes, fully transparent then fully opaque, three times
    in a second (view.ts FLASH_MS). Three a second is the WCAG 2.3.1 limit. */
 .debate-flash {

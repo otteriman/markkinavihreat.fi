@@ -4,16 +4,14 @@ import { DifficultyError, resolveDifficulty } from '../../lib/debate/difficulty'
 import { replyTriggers } from '../../lib/debate/scenes'
 import type { Difficulty } from '../../lib/debate/types'
 import { Chiptune } from './audio'
+import { leaveIntro } from './intro'
 import { playDebate } from './play'
 import { hideSprites } from './view'
 
-/** How much of the stage must be on screen before the battle starts by itself. */
-const VISIBLE_TO_START = 0.5
-
 /**
- * The standalone game page: the battle starts by itself as soon as the stage
- * is (mostly) on screen, so its first lines aren't typed out below the fold,
- * and the end screen's "Play again" starts the next one straight away.
+ * The standalone game page: the intro screen waits for "Aloita", then
+ * flashes and wipes away to reveal the stage (intro.ts) and the battle
+ * begins; the end screen's "Play again" starts the next one straight away.
  */
 export function startDebateGames(root: ParentNode): void {
   for (const frame of root.querySelectorAll<HTMLElement>('[data-debate-play]')) {
@@ -34,16 +32,22 @@ export function startDebateGames(root: ParentNode): void {
         })
       }
     }
-    const stage = frame.querySelector('.debate-stage') ?? frame
-    const observer = new IntersectionObserver(
-      (entries) => {
-        if (!entries.some((e) => e.isIntersecting)) return
-        observer.disconnect()
+    const intro = frame.querySelector<HTMLElement>('[data-debate-intro]')
+    const start = intro?.querySelector<HTMLButtonElement>('[data-debate-start]')
+    if (!intro || !start) {
+      void run()
+      continue
+    }
+    start.addEventListener(
+      'click',
+      async () => {
+        start.disabled = true
+        sounds.select()
+        await leaveIntro(intro, matchMedia('(prefers-reduced-motion: reduce)').matches)
         void run()
       },
-      { threshold: VISIBLE_TO_START },
+      { once: true },
     )
-    observer.observe(stage)
   }
 }
 

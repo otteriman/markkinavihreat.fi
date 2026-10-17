@@ -143,6 +143,18 @@
     "en": "Perfect replies: {count}/{total}",
     "needsReview": ["sv", "en"]
   },
+  "intro.title": {
+    "fi": "Poliittinen debaattipeli",
+    "sv": "Politiskt debattspel",
+    "en": "Political debate game",
+    "needsReview": ["sv", "en"]
+  },
+  "intro.start": {
+    "fi": "Aloita",
+    "sv": "Börja",
+    "en": "Start",
+    "needsReview": ["sv", "en"]
+  },
   "end.playAgain": {
     "fi": "Pelaa uudelleen",
     "sv": "Spela igen",

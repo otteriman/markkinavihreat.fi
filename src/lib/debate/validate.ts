@@ -43,6 +43,8 @@ export const REQUIRED_UI_KEYS = [
   'end.tie',
   'end.strongReplies',
   'end.playAgain',
+  'intro.title',
+  'intro.start',
   'sound.on',
   'sound.off',
   'a11y.you',
