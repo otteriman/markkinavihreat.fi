@@ -24,14 +24,23 @@
       },
       "quality": "strong",
       "say": {
-        "fi": "Suomi tarvitsee maahanmuuttoa, näin sanoo myös elinkeinoelämä.",
-        "sv": "Finland behöver invandring, det säger också näringslivet.",
-        "en": "Finland needs immigration, and business leaders say so too."
+        "fi": "Suomi tarvitsee maahanmuuttoa, Suomen huoltosuhde olisi muuten kestämätön.",
+        "sv": "TODO",
+        "en": "TODO"
       },
       "reaction": {
         "fi": "...",
         "sv": "...",
         "en": "..."
+      },
+      "critical": {
+        "by": "ekonomisti",
+        "say": {
+          "fi": "Suomen elinkeinoelämä tarvitsee kipeästi ulkomaista työvoimaa. Ilman sitä talouskasvu tyrehtyy ja hoiva-alalta loppuvat tekijät.",
+          "sv": "TODO",
+          "en": "TODO",
+          "needsReview": ["fi"]
+        }
       }
     },
     {
