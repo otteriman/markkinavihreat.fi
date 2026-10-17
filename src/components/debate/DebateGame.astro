@@ -160,6 +160,8 @@ const promptId = `debate-prompt-${locale}`
       {preview?.tags?.bottom}
     </p>
 
+    {play && <div class="debate-iris" data-debate-iris aria-hidden="true" hidden />}
+
     <div class="debate-end" data-debate-end hidden>
       <p class="debate-end-result" data-debate-end-result></p>
       <p data-debate-end-strong></p>

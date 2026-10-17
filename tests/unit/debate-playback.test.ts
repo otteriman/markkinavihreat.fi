@@ -187,12 +187,13 @@ describe('planSteps', () => {
     const start = startBattle({ enemy, difficulty, attackSlots: 6, rng })
     const weak = start.state.enemyAttacks[0].replies.findIndex((r) => r.quality === 'weak')
     const steps = plan(chooseReply(start.state, weak).events)
-    expect(shape(steps).slice(-6)).toEqual([
+    expect(shape(steps).slice(-7)).toEqual([
       'hit:player',
       'wait:advance',
       'tags:top,bottom', // the ending clears both labels
       'type:bottom', // Kannatuksesi romahti...
       'wait:advance',
+      'irisOut', // the screen closes to dark
       'end',
     ])
     const end = steps.at(-1)

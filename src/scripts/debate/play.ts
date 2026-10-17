@@ -69,6 +69,9 @@ export async function playDebate(root: HTMLElement, options: PlayOptions): Promi
         case 'hit':
           await view.hit(step)
           break
+        case 'irisOut':
+          await view.irisOut()
+          break
         case 'prompt':
         case 'end':
           return step

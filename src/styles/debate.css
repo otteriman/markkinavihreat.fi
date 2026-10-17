@@ -413,6 +413,38 @@
   }
 }
 
+/* Losing: the screen goes dark in a circle closing from the edges to the
+   middle (view.ts IRIS_MS). A clear circle with a huge dark shadow around it
+   shrinks to nothing; the stage clips the shadow. It starts 340px wide, just
+   more than the stage's diagonal, so nothing is dark at first. */
+.debate-iris {
+  position: absolute;
+  z-index: 1;
+  left: 50%;
+  top: 50%;
+  width: 0;
+  height: 0;
+  border-radius: 50%;
+  box-shadow: 0 0 0 400px var(--gb-3);
+  transform: translate(-50%, -50%);
+  pointer-events: none;
+}
+
+.debate-iris.debate-closing {
+  animation: debate-iris 1200ms steps(12) forwards;
+}
+
+@keyframes debate-iris {
+  from {
+    width: 340px;
+    height: 340px;
+  }
+  to {
+    width: 0;
+    height: 0;
+  }
+}
+
 @media (prefers-reduced-motion: reduce) {
   .debate-exit {
     animation: none !important;

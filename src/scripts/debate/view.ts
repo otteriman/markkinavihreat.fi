@@ -36,6 +36,9 @@ const FLASH_MS = 1000
 /** Match the .debate-exit and .debate-enter animations. */
 const EXIT_MS = 900
 const ENTER_MS = 800
+/** Matches the .debate-iris animation, then a moment of darkness. */
+const IRIS_MS = 1200
+const IRIS_HOLD_MS = 400
 
 /** Hides both sprites (off stage) until a battle's entrance. */
 export function hideSprites(root: ParentNode): void {
@@ -101,6 +104,11 @@ export class StageView {
     this.options.hidden = true
     this.options.replaceChildren()
     this.end.hidden = true
+    const iris = this.root.querySelector<HTMLElement>('[data-debate-iris]')
+    if (iris) {
+      iris.hidden = true
+      iris.classList.remove('debate-closing')
+    }
     this.more.top.hidden = true
     this.more.bottom.hidden = true
     this.setTags({ kind: 'tags', top: null, bottom: null })
@@ -265,6 +273,20 @@ export class StageView {
     } finally {
       sprites.forEach((s) => s.classList.remove('debate-enter'))
     }
+  }
+
+  /**
+   * Losing: the screen goes dark in a circle closing from the edges to the
+   * middle, holds a moment, and the end screen follows. Skipped with reduced
+   * motion.
+   */
+  async irisOut(): Promise<void> {
+    const iris = this.root.querySelector<HTMLElement>('[data-debate-iris]')
+    if (!iris || this.opts.reduce) return
+    this.more.bottom.hidden = true
+    iris.hidden = false
+    iris.classList.add('debate-closing')
+    await sleep(IRIS_MS + IRIS_HOLD_MS, this.opts.signal)
   }
 
   /** `who` slides off the stage (instantly gone with reduced motion). */

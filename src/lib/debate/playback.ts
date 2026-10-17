@@ -20,7 +20,8 @@ import type { Enemy, PresentationOptions, UiStrings } from './types'
  *   the player attacks, so it never shows a line he has finished with.
  * - A new round and the ending clear both labels. Rounds aren't announced.
  * - Both sides slide in as the battle starts; a knocked-out enemy slides off
- *   the stage before his defeat line.
+ *   the stage before his defeat line; when the player loses, the screen
+ *   closes to dark in a circle before the end screen.
  * - A backfire (a perfect defense hurting the attacker) is a hit like any
  *   other; its effect text says whose support dropped.
  */
@@ -58,6 +59,8 @@ export type Step =
   /** `who` slides off the stage. */
   | { kind: 'exit'; who: Side }
   | { kind: 'prompt'; prompt: PromptEvent }
+  /** The screen goes dark in a closing circle (the player lost). */
+  | { kind: 'irisOut' }
   | { kind: 'end'; result: BattleResult; text: string }
 
 export type PromptEvent = Extract<BattleEvent, { type: 'prompt' }>
@@ -163,6 +166,10 @@ export function planSteps(
         steps.push({ kind: 'prompt', prompt: event })
         break
       case 'end':
+        // Losing: the screen closes to dark before the end screen.
+        if (event.result.kind === 'koLose' || event.result.kind === 'pointsLose') {
+          steps.push({ kind: 'irisOut' })
+        }
         steps.push({ kind: 'end', result: event.result, text: lastNarration })
         break
     }
