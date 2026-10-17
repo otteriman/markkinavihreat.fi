@@ -7,41 +7,41 @@
     "en": "Supply security"
   },
   "say": {
-    "fi": "Jokainen litra tuontiöljyä tekee meistä riippuvaisia muista. Oma energia on maanpuolustusta!",
-    "sv": "Varje liter importerad olja gör oss beroende av andra. Egen energi är landets försvar!",
-    "en": "Every litre of imported oil makes us dependent on others. Home-grown energy is national defence!"
+    "fi": "Jokainen litra tuontiöljyä tekee meistä riippuvaisia epäluotettavista diktatuurista. Oma energia on omavaraisuutta!",
+    "sv": "",
+    "en": ""
   },
   "defenses": [
     {
       "quality": "medium",
       "say": {
-        "fi": "Ydinvoimaa sitten! Ei tuulimyllyjä!",
-        "sv": "Kärnkraft då! Inga väderkvarnar!",
-        "en": "Nuclear, then! Not windmills!"
+        "fi": "Lisätään ydinvoimaa, ja turvetta...",
+        "sv": "",
+        "en": ""
       }
     },
     {
       "quality": "weak",
       "say": {
-        "fi": "Turve on kotimaista!",
-        "sv": "Torv är inhemskt!",
-        "en": "Peat is home-grown!"
+        "fi": "Mutta turve on kotimaista...",
+        "sv": "Torv är inhemskt...",
+        "en": "Peat is domestic..."
       }
     },
     {
       "quality": "strong",
       "say": {
-        "fi": "Ja ne tuulimyllyt tehdään Kiinassa!",
-        "sv": "Och de där väderkvarnarna tillverkas i Kina!",
-        "en": "And those windmills are made in China!"
+        "fi": "Ja ne tuulimyllyt ja akut sitten tehdään Kiinassa.",
+        "sv": "Och de där väderkvarnarna tillverkas i Kina.",
+        "en": "And those windmills and batteries are made in China."
       }
     },
     {
       "quality": "weak",
       "say": {
-        "fi": "Öö... Kuka teitä vihreitä armeijaan päästää?",
-        "sv": "Öh... Vem släpper in er gröna i armén?",
-        "en": "Uh... Who lets you greens into the army?"
+        "fi": "Turve, ja öö norjalainen öljy, tai siis oikeastaan...",
+        "sv": "",
+        "en": ""
       }
     }
   ]
