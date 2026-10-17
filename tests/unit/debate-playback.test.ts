@@ -231,17 +231,13 @@ describe('planSteps', () => {
       'wait:advance',
       'type:top', // the enemy's reaction
       'wait:advance',
-      'clear:top', // his box and both labels go…
-      'tags:top,bottom',
-      'cutIn', // …and the cut-in opens
+      'cutIn', // the stage puts his box and the labels aside
       'type:bottom', // Pääkirjoitustoimittaja astuu esiin!
       'wait:advance',
       'tags:top', // his name
       'type:top', // his line
       'wait:advance',
-      'cutOut',
-      'clear:top',
-      'tags:top',
+      'cutOut', // …and brings them back
       'type:bottom', // Puolustuksesi ei tehonnut lainkaan!
       'wait:advance',
       'type:bottom', // Kriittinen osuma!
@@ -250,13 +246,13 @@ describe('planSteps', () => {
       'tags:bottom',
       'prompt:attack',
     ])
-    expect(steps[7]).toEqual({ kind: 'cutIn', special: 'editor' })
-    expect(steps[10]).toEqual({ kind: 'tags', top: 'editor name fi' })
-    expect(steps[11]).toMatchObject({
+    expect(steps[5]).toEqual({ kind: 'cutIn', special: 'editor' })
+    expect(steps[8]).toEqual({ kind: 'tags', top: 'editor name fi' })
+    expect(steps[9]).toMatchObject({
       text: 'editor line fi',
       announce: 'editor name fi: editor line fi',
     })
-    expect(steps[18]).toMatchObject({ text: 'Kriittinen osuma!' })
-    expect(steps[19]).toMatchObject({ kind: 'hit', damage: 35, critical: true })
+    expect(steps[14]).toMatchObject({ text: 'Kriittinen osuma!' })
+    expect(steps[15]).toMatchObject({ kind: 'hit', damage: 35, critical: true })
   })
 })

@@ -70,6 +70,8 @@ export class StageView {
   private live: HTMLElement
   private end: HTMLElement
   private max: Record<Side, number> = { player: 100, enemy: 100 }
+  /** The enemy's box and the labels as they were when a cut-in opened. */
+  private beforeCutIn: { text: string; boxHidden: boolean; tags: Record<Box, string> } | null = null
   private lastBox: Box = 'bottom'
 
   constructor(
@@ -118,6 +120,7 @@ export class StageView {
     const cutin = this.root.querySelector<HTMLElement>('[data-debate-cutin]')
     if (cutin) cutin.hidden = true
     this.stage.classList.remove('debate-shake')
+    this.beforeCutIn = null
     // Off stage until the battle's entrance (enter()).
     hideSprites(this.root)
     this.stage.tabIndex = 0
@@ -301,12 +304,20 @@ export class StageView {
   }
 
   /**
-   * A special character's cut-in: a band opens over the middle of the stage
-   * and he slides in, twice his usual size. Instant with reduced motion.
+   * A special character's cut-in: the enemy's box and both labels are put
+   * aside (cutOut brings them back), then a band opens over the middle of the
+   * stage and he slides in, twice his usual size. Instant with reduced motion.
    */
   async cutIn(special: string): Promise<void> {
     const cutin = this.root.querySelector<HTMLElement>('[data-debate-cutin]')
     if (!cutin) return
+    this.beforeCutIn = {
+      text: this.texts.top.textContent ?? '',
+      boxHidden: this.boxes.top.hidden,
+      tags: { top: this.tags.top.textContent ?? '', bottom: this.tags.bottom.textContent ?? '' },
+    }
+    this.clear('top')
+    this.setTags({ kind: 'tags', top: null, bottom: null })
     cutin.querySelectorAll<HTMLElement>('[data-debate-special]').forEach((s) => {
       s.hidden = s.dataset.debateSpecial !== special
     })
@@ -322,7 +333,10 @@ export class StageView {
     }
   }
 
-  /** He slides off and the band closes. */
+  /**
+   * He slides off and the band closes; the enemy's box and the labels show
+   * again what they showed before he came.
+   */
   async cutOut(): Promise<void> {
     const cutin = this.root.querySelector<HTMLElement>('[data-debate-cutin]')
     if (!cutin) return
@@ -335,6 +349,13 @@ export class StageView {
       }
     }
     cutin.hidden = true
+    const before = this.beforeCutIn
+    this.beforeCutIn = null
+    if (!before) return
+    this.texts.top.textContent = before.text
+    this.boxes.top.hidden = before.boxHidden
+    this.more.top.hidden = true
+    this.setTags({ kind: 'tags', top: before.tags.top || null, bottom: before.tags.bottom || null })
   }
 
   /** `who` slides off the stage (instantly gone with reduced motion). */

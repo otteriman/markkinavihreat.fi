@@ -24,10 +24,11 @@ import type { Enemy, PresentationOptions, UiStrings } from './types'
  *   closes to dark in a circle before the end screen.
  * - A backfire (a perfect defense hurting the attacker) is a hit like any
  *   other; its effect text says whose support dropped.
- * - A special character steps in with a cut-in: the labels and the enemy's
- *   box clear, the cut-in opens over the middle of the stage, the narration
- *   says who it is, his line goes in the top box under his name, and the
- *   cut-in closes. Then the effect text, "Kriittinen osuma!" and the hit.
+ * - A special character steps in with a cut-in: the cut-in opens over the
+ *   middle of the stage (the stage puts the enemy's box and both labels
+ *   aside), the narration says who it is, his line goes in the top box under
+ *   his name, and the cut-in closes (the enemy's box and labels come back as
+ *   they were). Then the effect text, "Kriittinen osuma!" and the hit.
  */
 export type Step =
   | {
@@ -60,9 +61,12 @@ export type Step =
       /** A critical hit (a special character stepped in). */
       critical: boolean
     }
-  /** A special character's cut-in opens over the middle of the stage. */
+  /**
+   * A special character's cut-in opens over the middle of the stage. The
+   * stage puts the enemy's box and both labels aside until the cut-in closes.
+   */
   | { kind: 'cutIn'; special: string }
-  /** The cut-in closes. */
+  /** The cut-in closes; the enemy's box and the labels show what they did before. */
   | { kind: 'cutOut' }
   /** Both sides slide onto the stage. */
   | { kind: 'enter' }
@@ -176,11 +180,7 @@ export function planSteps(
         steps.push({ kind: 'enter' })
         break
       case 'specialEnter':
-        steps.push(
-          { kind: 'clear', box: 'top' },
-          { kind: 'tags', top: null, bottom: null },
-          { kind: 'cutIn', special: event.special.id },
-        )
+        steps.push({ kind: 'cutIn', special: event.special.id })
         break
       case 'specialSay': {
         const name = localize(event.special.name, locale)
@@ -193,7 +193,7 @@ export function planSteps(
         break
       }
       case 'specialExit':
-        steps.push({ kind: 'cutOut' }, { kind: 'clear', box: 'top' }, { kind: 'tags', top: null })
+        steps.push({ kind: 'cutOut' })
         break
       case 'exit':
         // He has left: his box and the labels go before he slides out.

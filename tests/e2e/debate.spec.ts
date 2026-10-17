@@ -239,6 +239,12 @@ test('a critical hit: the editorial writer steps in, the hit lands harder', asyn
   await page.keyboard.press('Enter')
   await page.keyboard.press('Enter')
   await expect(cutin).toBeHidden()
+  // His box and both labels are back as they were before the cut-in.
+  await expect(page.locator('[data-debate-top]')).toHaveText(
+    'Verohelvetti! Kiitos, että sanoit sen ääneen.',
+  )
+  await expect(page.locator('[data-debate-tag="top"]')).toHaveText('Hyökkäys: Velkapaniikki')
+  await expect(page.locator('[data-debate-tag="bottom"]')).toHaveText('Vastaus: Veronkorotus')
   await expect(page.locator('[data-debate-bottom]')).toHaveText(
     'Puolustuksesi ei tehonnut lainkaan!',
   )
