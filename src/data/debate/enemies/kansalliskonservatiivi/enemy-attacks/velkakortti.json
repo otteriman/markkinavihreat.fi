@@ -50,7 +50,14 @@
         "fi": "Kaunista puhetta. Mutta mistä rahat?",
         "sv": "Vackert talat. Men med vilka pengar?",
         "en": "Nice words. But with what money?"
-      }
+      },
+      "critical": {
+        "by": "paakirjoitustoimittaja",
+        "say": {
+          "fi": "Suomi on elänyt yli varojensa. Vasemmisto on ajatellut että raha on ilmaista. Oikeisto syytänyt rahaa omille lempilapsilleen. Hyvinvointivaltion palvelulupaus täytyy nyt miettiä uudestaan.",
+          "sv": "",
+          "en": ""
+        }
     },
     {
       "label": {
