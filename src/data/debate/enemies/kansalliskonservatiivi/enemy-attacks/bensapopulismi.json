@@ -11,9 +11,9 @@
     "en": "FUEL POPULISM"
   },
   "line": {
-    "fi": "Euron pensa! Jakeluvelvoite kurittaa maaseudun ihmistä!",
-    "sv": "Bensin för en euro! Distributionsskyldigheten straffar folk på landsbygden!",
-    "en": "Fuel for a euro! The biofuel mandate punishes people in the countryside!"
+    "fi": "Bensa ilman veroja maksaisi euron! Jakeluvelvoite pitää poistaa!",
+    "sv": "",
+    "en": ""
   },
   "replies": [
     {
@@ -24,9 +24,9 @@
       },
       "quality": "strong",
       "say": {
-        "fi": "Joka tankillinen on rahaa ulkomaiselle öljylle. Kotimainen biokaasu ja sähkö pitävät eurot Suomessa.",
-        "sv": "Varje full tank är pengar till utländsk olja. Inhemsk biogas och el håller eurona i Finland.",
-        "en": "Every tankful is money for foreign oil. Domestic biogas and electricity keep the euros in Finland."
+        "fi": "Öljyriippuvuus täyttää öykkärivaltioiden kassaa ja rahat valuvat ulkomaille. Tarvitaan energiasiirtymä kotimaisempaan energiaan.",
+        "sv": "",
+        "en": ""
       },
       "reaction": {
         "fi": "...",
@@ -42,14 +42,14 @@
       },
       "quality": "medium",
       "say": {
-        "fi": "Sähköautolla ajat satasen muutamalla eurolla.",
-        "sv": "Med elbil kör du tio mil för några euro.",
-        "en": "An electric car does a hundred kilometres for a few euros."
+        "fi": "Meidän pitää kannustaa sähköautoiluun. Sen \"tankkaa\" muutamalla eurolla..",
+        "sv": "",
+        "en": ""
       },
       "reaction": {
-        "fi": "Ja itse auto maksaa 50 000!",
-        "sv": "Och själva bilen kostar 50 000!",
-        "en": "And the car itself costs 50,000!"
+        "fi": "Ja itse auto maksaa 50 000€! Köyhiä työssäkäyviä pihtiputaan mummoja taas kuritetaan!",
+        "sv": "",
+        "en": ""
       }
     },
     {
@@ -60,14 +60,14 @@
       },
       "quality": "weak",
       "say": {
-        "fi": "Panostetaan joukkoliikenteeseen!",
-        "sv": "Vi satsar på kollektivtrafiken!",
-        "en": "Let’s invest in public transport!"
+        "fi": "Lisätään panostuksia joukkoliikenteeseen, yksityisautoilu on kestämätön liikkumismuoto.",
+        "sv": "",
+        "en": ""
       },
       "reaction": {
-        "fi": "Meidän kylään bussi kulkee kerran viikossa. Torstaisin.",
-        "sv": "Till vår by går bussen en gång i veckan. På torsdagar.",
-        "en": "The bus comes to our village once a week. On Thursdays."
+        "fi": "No helppo sieltä Helsingistä on huudella, ei täällä muualla bussi kulje kuin kerran viikossa.",
+        "sv": "",
+        "en": ""
       }
     },
     {
@@ -83,9 +83,9 @@
         "en": "According to the latest IPCC report..."
       },
       "reaction": {
-        "fi": "Taas niitä raportteja. Tankki ei täyty raporteilla.",
-        "sv": "Rapporter igen. Tanken fylls inte med rapporter.",
-        "en": "Reports again. You can’t fill a tank with reports."
+        "fi": "Huoh, taas tätä ilmastohysteriaa. Se vain traumatisoi lapset ja kurittaa työssäkäyviä.",
+        "sv": "",
+        "en": ""
       }
     }
   ]
