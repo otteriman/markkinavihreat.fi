@@ -9,7 +9,7 @@ const pages = [
     path: '/debaattipeli/',
     lang: 'fi',
     title: 'Poliittinen väittelypeli',
-    card: 'Poliittinen debaattipeli',
+    card: 'Poliittinen väittelypeli',
     intro: 'Villi kansalliskonservatiivi ilmestyi!',
   },
   {

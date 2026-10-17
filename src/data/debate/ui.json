@@ -144,7 +144,7 @@
     "needsReview": ["sv", "en"]
   },
   "intro.title": {
-    "fi": "Poliittinen debaattipeli",
+    "fi": "Poliittinen väittelypeli",
     "sv": "Politiskt debattspel",
     "en": "Political debate game",
     "needsReview": ["sv", "en"]
@@ -198,9 +198,9 @@
     "needsReview": ["sv", "en"]
   },
   "page.description": {
-    "fi": "Selainpeli: väittele kansalliskonservatiivin kanssa neljä kierrosta ja etsi argumentit, jotka purevat.",
-    "sv": "Ett webbläsarspel: debattera i fyra rundor mot en nationalkonservativ och hitta argumenten som biter.",
-    "en": "A browser game: debate a national conservative for four rounds and find the arguments that land.",
+    "fi": "Poliittinen väittelypeli selaimessa: haasta kansalliskonservatiivi talouden, ilmaston ja ihmisoikeuksien kysymyksissä ja etsi argumentit, jotka purevat.",
+    "sv": "Ett politiskt debattspel i webbläsaren: utmana en nationalkonservativ i frågor om ekonomi, klimat och mänskliga rättigheter och hitta argumenten som biter.",
+    "en": "A political debate game in your browser: take on a national conservative over the economy, climate and human rights, and find the arguments that land.",
     "needsReview": ["fi", "sv", "en"]
   },
   "page.lead": {
