@@ -3,45 +3,51 @@
   "order": 3,
   "label": {
     "fi": "Ihmisoikeudet",
-    "sv": "TODO",
-    "en": "TODO"
+    "sv": "Mänskliga rättigheter",
+    "en": "Human rights",
+    "needsReview": ["sv", "en"]
   },
   "say": {
     "fi": "Ihmisoikeudet ja liberaali demokratia ovat Suomen vahvuus. Ne kuuluvat jokaiselle, eivät vain enemmistölle.",
-    "sv": "TODO",
-    "en": "TODO"
+    "sv": "Mänskliga rättigheter och liberal demokrati är Finlands styrka. De tillhör alla, inte bara majoriteten.",
+    "en": "Human rights and liberal democracy are Finland’s strength. They belong to everyone, not just the majority.",
+    "needsReview": ["sv", "en"]
   },
   "defenses": [
     {
       "quality": "strong",
       "say": {
         "fi": "Suomalaisten oikeudet ensin! Teille kaikki muut tuntuvat olevan tärkeämpiä kuin oma kansa.",
-        "sv": "TODO",
-        "en": "TODO"
+        "sv": "Finländarnas rättigheter först! För er verkar alla andra vara viktigare än det egna folket.",
+        "en": "Finns’ rights first! To you, everyone else seems to matter more than our own people.",
+        "needsReview": ["sv", "en"]
       }
     },
     {
       "quality": "strong",
       "say": {
         "fi": "Kansa on puhunut, ja demokratiassa enemmistö päättää. Turha meitä on moralisoida.",
-        "sv": "TODO",
-        "en": "TODO"
+        "sv": "Folket har talat, och i en demokrati bestämmer majoriteten. Ingen idé att moralisera över oss.",
+        "en": "The people have spoken, and in a democracy the majority decides. Spare us the moralising.",
+        "needsReview": ["sv", "en"]
       }
     },
     {
       "quality": "strong",
       "say": {
         "fi": "Ihmisoikeuksilla perustellaan nykyään mitä tahansa, mutta tavallinen kansalainen ei saa sanoa mitään.",
-        "sv": "TODO",
-        "en": "TODO"
+        "sv": "Nuförtiden motiveras allt med mänskliga rättigheter, men en vanlig medborgare får inte säga något.",
+        "en": "These days anything goes in the name of human rights, but an ordinary citizen can’t say a thing.",
+        "needsReview": ["sv", "en"]
       }
     },
     {
       "quality": "medium",
       "say": {
         "fi": "Totta kai demokratia on tärkeä. Mutta te ette sitä kunnioita, kun vaalitulos ei miellytä.",
-        "sv": "TODO",
-        "en": "TODO"
+        "sv": "Självklart är demokratin viktig. Men ni respekterar den inte när valresultatet inte passar er.",
+        "en": "Of course democracy matters. But you don’t respect it when you don’t like the election result.",
+        "needsReview": ["sv", "en"]
       }
     }
   ]

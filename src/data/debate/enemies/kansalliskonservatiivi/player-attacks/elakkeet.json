@@ -3,45 +3,51 @@
   "order": 7,
   "label": {
     "fi": "Eläkkeet",
-    "sv": "TODO",
-    "en": "TODO"
+    "sv": "Pensioner",
+    "en": "Pensions",
+    "needsReview": ["sv", "en"]
   },
   "say": {
     "fi": "Meidän on pakko sopeuttaa lähes 10mrd. Ei olisi nuorille reilua, jos eläkkeet jätetään sen ulkopuolelle.",
-    "sv": "TODO",
-    "en": "TODO"
+    "sv": "Vi måste spara nästan 10 miljarder. Det vore inte rättvist mot de unga att lämna pensionerna utanför.",
+    "en": "We have to find nearly 10 billion in savings. It wouldn’t be fair to the young to leave pensions out of it.",
+    "needsReview": ["sv", "en"]
   },
   "defenses": [
     {
       "quality": "strong",
       "say": {
         "fi": "Nykyiset eläkeläiset rakensivat tämän maan.",
-        "sv": "TODO",
-        "en": "TODO"
+        "sv": "Dagens pensionärer byggde det här landet.",
+        "en": "Today’s pensioners built this country.",
+        "needsReview": ["sv", "en"]
       }
     },
     {
       "quality": "weak",
       "say": {
         "fi": "Eläkkeet on ansaittu, niihin ei tule koskea. Leikataan ennemmin vaikka kehitysavusta!",
-        "sv": "TODO",
-        "en": "TODO"
+        "sv": "Pensionerna är förtjänade, dem ska man inte röra. Skär hellre i biståndet!",
+        "en": "Pensions are earned, hands off. Cut foreign aid instead!",
+        "needsReview": ["sv", "en"]
       }
     },
     {
       "quality": "medium",
       "say": {
         "fi": "Nuorten pitää vain tehdä enemmän töitä, niin kuin meidänkin sukupolvi aikanaan.",
-        "sv": "TODO",
-        "en": "TODO"
+        "sv": "De unga får helt enkelt jobba mer, som vår generation gjorde på sin tid.",
+        "en": "The young just need to work harder, like our generation did in our day.",
+        "needsReview": ["sv", "en"]
       }
     },
     {
       "quality": "weak",
       "say": {
         "fi": "Maahanmuutto, tai siis taitettu indeksi, eikun ööh...",
-        "sv": "TODO",
-        "en": "TODO"
+        "sv": "Invandringen, eller alltså det brutna indexet, nej öh...",
+        "en": "Immigration, or I mean the pension index, no, er...",
+        "needsReview": ["sv", "en"]
       }
     }
   ]

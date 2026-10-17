@@ -8,16 +8,18 @@
   },
   "say": {
     "fi": "Jokainen litra tuontiöljyä tekee meistä riippuvaisia epäluotettavista diktatuurista. Oma energia on omavaraisuutta!",
-    "sv": "TODO",
-    "en": "TODO"
+    "sv": "Varje liter importerad olja gör oss beroende av opålitliga diktaturer. Egen energi är självförsörjning!",
+    "en": "Every litre of imported oil makes us dependent on unreliable dictatorships. Our own energy means self-reliance!",
+    "needsReview": ["sv", "en"]
   },
   "defenses": [
     {
       "quality": "medium",
       "say": {
         "fi": "Lisätään ydinvoimaa, ja turvetta...",
-        "sv": "TODO",
-        "en": "TODO"
+        "sv": "Mer kärnkraft, och torv...",
+        "en": "More nuclear power, and peat...",
+        "needsReview": ["sv", "en"]
       }
     },
     {
@@ -40,8 +42,9 @@
       "quality": "weak",
       "say": {
         "fi": "Turve, ja öö norjalainen öljy, tai siis oikeastaan...",
-        "sv": "TODO",
-        "en": "TODO"
+        "sv": "Torv, och öh norsk olja, eller faktiskt...",
+        "en": "Peat, and er Norwegian oil, or actually...",
+        "needsReview": ["sv", "en"]
       }
     }
   ]

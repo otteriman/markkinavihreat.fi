@@ -3,45 +3,51 @@
   "order": 8,
   "label": {
     "fi": "Yritystuet",
-    "sv": "TODO",
-    "en": "TODO"
+    "sv": "Företagsstöd",
+    "en": "Business subsidies",
+    "needsReview": ["sv", "en"]
   },
   "say": {
     "fi": "Valtio jakaa miljardeja yritystukia, joista iso osa tukee fossiilisia. Karsitaan ne ennen kuin leikataan palveluista.",
-    "sv": "TODO",
-    "en": "TODO"
+    "sv": "Staten delar ut miljarder i företagsstöd, och en stor del gynnar fossilt. Skär i dem innan vi skär i servicen.",
+    "en": "The state hands out billions in business subsidies, many of them for fossil fuels. Cut those before we cut services.",
+    "needsReview": ["sv", "en"]
   },
   "defenses": [
     {
       "quality": "strong",
       "say": {
         "fi": "Ilman tukia teollisuus lähtee ulkomaille, ja työpaikat sen mukana.",
-        "sv": "TODO",
-        "en": "TODO"
+        "sv": "Utan stöden flyttar industrin utomlands, och jobben med den.",
+        "en": "Without subsidies industry moves abroad, and the jobs go with it.",
+        "needsReview": ["sv", "en"]
       }
     },
     {
       "quality": "weak",
       "say": {
         "fi": "No, turpeen verotuki on eri asia, se on kotimaista energiaa!",
-        "sv": "TODO",
-        "en": "TODO"
+        "sv": "Nja, torvens skattestöd är en annan sak, det är inhemsk energi!",
+        "en": "Well, the peat tax break is different, that’s domestic energy!",
+        "needsReview": ["sv", "en"]
       }
     },
     {
       "quality": "weak",
       "say": {
         "fi": "Haluatte kuitenkin vain kurittaa yrittäjiä ja maaseutua.",
-        "sv": "TODO",
-        "en": "TODO"
+        "sv": "Ni vill ändå bara straffa företagare och landsbygden.",
+        "en": "You just want to punish entrepreneurs and the countryside anyway.",
+        "needsReview": ["sv", "en"]
       }
     },
     {
       "quality": "medium",
       "say": {
         "fi": "Tukia voi toki karsia, kunhan ei kotimaisilta yrityksiltä.",
-        "sv": "TODO",
-        "en": "TODO"
+        "sv": "Stöd kan man förstås skära i, bara inte för inhemska företag.",
+        "en": "Sure, subsidies can be cut, just not for Finnish companies.",
+        "needsReview": ["sv", "en"]
       }
     }
   ]

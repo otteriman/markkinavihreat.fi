@@ -12,8 +12,9 @@
   },
   "line": {
     "fi": "Ääliöliberaalit tekevät länsimaissa väestönvaihtoa! Se pitää pysäyttää ennenkuin on liian myöhäistä.",
-    "sv": "TODO",
-    "en": "TODO"
+    "sv": "Idiotliberalerna genomför ett folkutbyte i västvärlden! Det måste stoppas innan det är för sent.",
+    "en": "The idiot liberals are carrying out a population swap in the West! It must be stopped before it’s too late.",
+    "needsReview": ["sv", "en"]
   },
   "replies": [
     {
@@ -25,8 +26,9 @@
       "quality": "strong",
       "say": {
         "fi": "Suomi tarvitsee maahanmuuttoa, Suomen huoltosuhde olisi muuten kestämätön.",
-        "sv": "TODO",
-        "en": "TODO"
+        "sv": "Finland behöver invandring, annars blir försörjningskvoten ohållbar.",
+        "en": "Finland needs immigration, or its dependency ratio would be unsustainable.",
+        "needsReview": ["sv", "en"]
       },
       "reaction": {
         "fi": "...",
@@ -37,9 +39,9 @@
         "by": "ekonomisti",
         "say": {
           "fi": "Suomen elinkeinoelämä tarvitsee kipeästi ulkomaista työvoimaa. Ilman sitä talouskasvu tyrehtyy ja hoiva-alalta loppuvat tekijät.",
-          "sv": "TODO",
-          "en": "TODO",
-          "needsReview": ["fi"]
+          "sv": "Finländskt näringsliv behöver desperat utländsk arbetskraft. Utan den avstannar tillväxten och vården får slut på folk.",
+          "en": "Finnish business badly needs foreign workers. Without them, growth stalls and care work runs out of hands.",
+          "needsReview": ["fi", "sv", "en"]
         }
       }
     },
@@ -75,8 +77,9 @@
       },
       "reaction": {
         "fi": "Tilastojen mukaan tietyt kansalaisuudet ovat yliedustettuina väkivalta- ja raikaustilastoissa.",
-        "sv": "TODO",
-        "en": "TODO"
+        "sv": "Enligt statistiken är vissa nationaliteter överrepresenterade i statistiken över våld och våldtäkter.",
+        "en": "According to the statistics, certain nationalities are overrepresented in violence and rape figures.",
+        "needsReview": ["sv", "en"]
       }
     },
     {
@@ -88,14 +91,14 @@
       "quality": "weak",
       "say": {
         "fi": "Tuo on täysin rasistista puhetta ja vastoin yhdenvertaisia ihmisoikeuksia!",
-        "sv": "TODO",
-        "en": "TODO",
+        "sv": "Det där är rent rasistiskt prat och strider mot lika mänskliga rättigheter!",
+        "en": "That’s outright racist talk and goes against equal human rights!",
         "needsReview": ["fi", "sv", "en"]
       },
       "reaction": {
         "fi": "Niin justiinsa, jokainen joka puhuu maahanmuuton ongelmista on teidän mielestä heti rasisti.",
-        "sv": "TODO",
-        "en": "TODO",
+        "sv": "Just det, alla som pratar om invandringens problem är genast rasister enligt er.",
+        "en": "Right, to you anyone who mentions the problems with immigration is instantly a racist.",
         "needsReview": ["fi", "sv", "en"]
       }
     }

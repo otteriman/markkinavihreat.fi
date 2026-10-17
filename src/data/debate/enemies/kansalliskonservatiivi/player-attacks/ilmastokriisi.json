@@ -32,16 +32,18 @@
       "quality": "strong",
       "say": {
         "fi": "Ilmastohysteriaa ja pelottelua, ongelma on muiden maiden liikakansoitus.",
-        "sv": "TODO",
-        "en": "TODO"
+        "sv": "Klimathysteri och skrämselpropaganda, problemet är överbefolkningen i andra länder.",
+        "en": "Climate hysteria and scaremongering, the problem is overpopulation in other countries.",
+        "needsReview": ["sv", "en"]
       }
     },
     {
       "quality": "medium",
       "say": {
         "fi": "Ulkona on -20c, ihme höpinää taas. Ilmasto on aina vaihdellut.",
-        "sv": "TODO",
-        "en": "TODO"
+        "sv": "Det är −20 grader ute, vilket trams. Klimatet har alltid varierat.",
+        "en": "It’s −20°C outside, what nonsense. The climate has always changed.",
+        "needsReview": ["sv", "en"]
       }
     }
   ]

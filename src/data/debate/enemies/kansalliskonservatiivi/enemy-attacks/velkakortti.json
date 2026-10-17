@@ -12,8 +12,9 @@
   },
   "line": {
     "fi": "Rahaa ei ole! Teidän velkaralli jää lapsiemme maksettavaksi!",
-    "sv": "TODO",
-    "en": "TODO"
+    "sv": "Pengarna är slut! Ert skuldrally får våra barn betala!",
+    "en": "There’s no money! Our children will pay for your debt spree!",
+    "needsReview": ["sv", "en"]
   },
   "replies": [
     {
@@ -25,8 +26,9 @@
       "quality": "strong",
       "say": {
         "fi": "Rahaa on, se vain valuu suuryhtiöiden mukana veroparatiiseihin. Puututaan verokikkailuun, ja hankitaan verot Suomeen!",
-        "sv": "TODO",
-        "en": "TODO"
+        "sv": "Pengar finns, de rinner bara iväg till skatteparadis med storbolagen. Vi sätter stopp för skattefifflet och tar hem skatterna till Finland!",
+        "en": "There is money, it just flows to tax havens with the big corporations. Let’s tackle tax dodging and bring the taxes home to Finland!",
+        "needsReview": ["sv", "en"]
       },
       "reaction": {
         "fi": "...",
@@ -43,8 +45,9 @@
       "quality": "medium",
       "say": {
         "fi": "Suomen menestys perustuu hyvinvointivaltioon: Koulu, terveyskeskus ja vanhustenhoito ovat elintärkeitä.",
-        "sv": "TODO",
-        "en": "TODO"
+        "sv": "Finlands framgång bygger på välfärdsstaten: skolan, hälsocentralen och äldreomsorgen är livsviktiga.",
+        "en": "Finland’s success rests on the welfare state: schools, health centres and elderly care are vital.",
+        "needsReview": ["sv", "en"]
       },
       "reaction": {
         "fi": "Kaunista puhetta. Mutta mistä rahat?",
@@ -55,8 +58,9 @@
         "by": "paakirjoitustoimittaja",
         "say": {
           "fi": "Suomi on elänyt yli varojensa. Vasemmisto on ajatellut että raha on ilmaista. Oikeisto syytänyt rahaa omille lempilapsilleen. Hyvinvointivaltion palvelulupaus täytyy nyt miettiä uudestaan.",
-          "sv": "TODO",
-          "en": "TODO"
+          "sv": "Finland har levt över sina tillgångar. Vänstern har trott att pengar är gratis. Högern har öst pengar över sina favoriter. Välfärdsstatens servicelöfte måste nu tänkas om.",
+          "en": "Finland has lived beyond its means. The left thought money was free. The right showered money on its pet causes. The welfare state’s promise of services must now be rethought.",
+          "needsReview": ["sv", "en"]
         }
       }
     },
@@ -69,13 +73,15 @@
       "quality": "weak",
       "say": {
         "fi": "Suomessa veroaste on laskenut 2000-luvulla merkittävästi. Nostetaan siis veroja.",
-        "sv": "TODO",
-        "en": "TODO"
+        "sv": "Skattetrycket i Finland har sjunkit betydligt under 2000-talet. Så låt oss höja skatterna.",
+        "en": "Finland’s tax rate has fallen markedly since 2000. So let’s raise taxes.",
+        "needsReview": ["sv", "en"]
       },
       "reaction": {
         "fi": "Eli tehdään Suomesta verohelvetti? Kiitos, että sanoit sen ääneen.",
-        "sv": "TODO",
-        "en": "TODO"
+        "sv": "Så vi gör Finland till ett skattehelvete? Tack för att du sa det högt.",
+        "en": "So we turn Finland into a tax hell? Thanks for saying it out loud.",
+        "needsReview": ["sv", "en"]
       },
       "critical": {
         "by": "paakirjoitustoimittaja",
@@ -107,8 +113,9 @@
         "by": "ekonomisti",
         "say": {
           "fi": "Varallisuusvero haittaisi investointeja Suomeen ja kilpailukykyämme. Tähän Suomella ei ole varaa.",
-          "sv": "TODO",
-          "en": "TODO"
+          "sv": "En förmögenhetsskatt skulle skada investeringarna i Finland och vår konkurrenskraft. Det har Finland inte råd med.",
+          "en": "A wealth tax would hurt investment in Finland and our competitiveness. Finland can’t afford that.",
+          "needsReview": ["sv", "en"]
         }
       }
     }

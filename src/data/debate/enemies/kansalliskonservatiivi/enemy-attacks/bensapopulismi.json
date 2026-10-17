@@ -12,8 +12,9 @@
   },
   "line": {
     "fi": "Bensa ilman veroja maksaisi euron! Jakeluvelvoite pitää poistaa!",
-    "sv": "TODO",
-    "en": "TODO"
+    "sv": "Utan skatter skulle bensinen kosta en euro! Distributionsplikten måste bort!",
+    "en": "Without taxes, petrol would cost a euro! Scrap the biofuel mandate!",
+    "needsReview": ["sv", "en"]
   },
   "replies": [
     {
@@ -25,8 +26,9 @@
       "quality": "strong",
       "say": {
         "fi": "Öljyriippuvuus täyttää öykkärivaltioiden kassaa ja rahat valuvat ulkomaille. Tarvitaan energiasiirtymä kotimaisempaan energiaan.",
-        "sv": "TODO",
-        "en": "TODO"
+        "sv": "Oljeberoendet fyller översittarstaternas kassor och pengarna rinner ut ur landet. Vi behöver en omställning till mer inhemsk energi.",
+        "en": "Oil dependence fills the coffers of bully states and the money flows abroad. We need a transition to more domestic energy.",
+        "needsReview": ["sv", "en"]
       },
       "reaction": {
         "fi": "...",
@@ -43,13 +45,15 @@
       "quality": "medium",
       "say": {
         "fi": "Meidän pitää kannustaa sähköautoiluun. Sen \"tankkaa\" muutamalla eurolla..",
-        "sv": "TODO",
-        "en": "TODO"
+        "sv": "Vi ska uppmuntra elbilar. De ”tankas” för några euro.",
+        "en": "We should encourage electric cars. You can “fill up” for a few euros.",
+        "needsReview": ["sv", "en"]
       },
       "reaction": {
         "fi": "Ja itse auto maksaa 50 000€! Köyhiä työssäkäyviä pihtiputaan mummoja taas kuritetaan!",
-        "sv": "TODO",
-        "en": "TODO"
+        "sv": "Och själva bilen kostar 50 000 €! Återigen straffas fattigt arbetande folk ute på landet!",
+        "en": "And the car itself costs €50,000! Once again the working poor out in the sticks get punished!",
+        "needsReview": ["sv", "en"]
       }
     },
     {
@@ -61,13 +65,15 @@
       "quality": "weak",
       "say": {
         "fi": "Lisätään panostuksia joukkoliikenteeseen, yksityisautoilu on kestämätön liikkumismuoto.",
-        "sv": "TODO",
-        "en": "TODO"
+        "sv": "Vi satsar mer på kollektivtrafiken, privatbilismen är ett ohållbart sätt att ta sig fram.",
+        "en": "Let’s invest more in public transport, private cars are an unsustainable way to get around.",
+        "needsReview": ["sv", "en"]
       },
       "reaction": {
         "fi": "No helppo sieltä Helsingistä on huudella, ei täällä muualla bussi kulje kuin kerran viikossa.",
-        "sv": "TODO",
-        "en": "TODO"
+        "sv": "Lätt att säga där i Helsingfors, här ute går bussen en gång i veckan.",
+        "en": "Easy to say from Helsinki, out here the bus runs once a week.",
+        "needsReview": ["sv", "en"]
       }
     },
     {
@@ -84,8 +90,9 @@
       },
       "reaction": {
         "fi": "Huoh, taas tätä ilmastohysteriaa. Se vain traumatisoi lapset ja kurittaa työssäkäyviä.",
-        "sv": "TODO",
-        "en": "TODO"
+        "sv": "Suck, klimathysteri igen. Den traumatiserar bara barnen och straffar dem som jobbar.",
+        "en": "Sigh, more climate hysteria. It just traumatises children and punishes working people.",
+        "needsReview": ["sv", "en"]
       }
     }
   ]

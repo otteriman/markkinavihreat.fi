@@ -8,48 +8,53 @@
   },
   "say": {
     "fi": "Uusiutuva energiantuotanto, akkutehtaat ja muu energiasiirtymä tuo kymmeniä tuhansia työpaikkoja maakuntiin.",
-    "sv": "TODO",
-    "en": "TODO"
+    "sv": "Förnybar energi, batterifabriker och resten av energiomställningen ger tiotusentals jobb ute i regionerna.",
+    "en": "Renewable energy, battery plants and the rest of the energy transition bring tens of thousands of jobs to the regions.",
+    "needsReview": ["sv", "en"]
   },
   "defenses": [
     {
       "quality": "strong",
       "say": {
         "fi": "Ja samalla tuhoaa perinteisiä työpaikkoja. Ja akkutehtaissa ja tuulihumpassa ulkomaiset yhtiöt käärivät voitot.",
-        "sv": "TODO",
-        "en": "TODO"
+        "sv": "Och förstör samtidigt traditionella jobb. Och i batterifabrikerna och vindkraftsyran håvar utländska bolag in vinsten.",
+        "en": "And kills traditional jobs. And foreign firms pocket the profits from the battery plants and the wind craze.",
+        "needsReview": ["sv", "en"]
       }
     },
     {
       "quality": "medium",
       "say": {
         "fi": "Ja jokaisen takapihalle pitää pystyttää tuulimylly. Koko kansallismaisemamme menee pilalle.",
-        "sv": "TODO",
-        "en": "TODO"
+        "sv": "Och en vindsnurra på varje bakgård. Hela vårt nationallandskap förstörs.",
+        "en": "And a wind turbine in every back yard. Our whole national landscape ruined.",
+        "needsReview": ["sv", "en"]
       }
     },
     {
       "quality": "strong",
       "say": {
         "fi": "Ja sähkön hinta nousee, ja tavalliset suomalaiset maksavat laskun.",
-        "sv": "TODO",
-        "en": "TODO"
+        "sv": "Och elpriset stiger, och vanliga finländare får betala notan.",
+        "en": "And the price of electricity goes up, and ordinary Finns pay the bill.",
+        "needsReview": ["sv", "en"]
       }
     },
     {
       "quality": "weak",
       "say": {
         "fi": "Mutta tämä viherhumputus ajaa alas paperitehtaat, ja aiheuttaa joukkotyöttömyyttä.",
-        "sv": "TODO",
-        "en": "TODO"
+        "sv": "Men det här gröna flummet lägger ner pappersbruken och orsakar massarbetslöshet.",
+        "en": "But this green nonsense shuts down the paper mills and causes mass unemployment.",
+        "needsReview": ["sv", "en"]
       },
       "critical": {
         "by": "paakirjoitustoimittaja",
         "say": {
           "fi": "Vihreä siirtymä on tuonut Suomeen kymmenien miljardien investoinnit. Sitä ei kannata vähätellä.",
-          "sv": "TODO",
-          "en": "TODO",
-          "needsReview": ["fi"]
+          "sv": "Den gröna omställningen har gett Finland investeringar för tiotals miljarder. Det ska man inte förringa.",
+          "en": "The green transition has brought tens of billions in investment to Finland. That’s nothing to sneer at.",
+          "needsReview": ["fi", "sv", "en"]
         }
       }
     }

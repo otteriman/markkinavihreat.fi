@@ -12,8 +12,9 @@
   },
   "line": {
     "fi": "Suomi on EU:n nettomaksaja, ja Bryssel päättää kaikesta kurkun käyryydestä lähtien! Missä EU, sielä ongelma!",
-    "sv": "TODO",
-    "en": "TODO"
+    "sv": "Finland är nettobetalare i EU, och Bryssel bestämmer allt ner till gurkornas krökning! Där EU finns, finns problem!",
+    "en": "Finland is an EU net payer, and Brussels decides everything down to bent cucumbers! Where the EU goes, trouble follows!",
+    "needsReview": ["sv", "en"]
   },
   "replies": [
     {
@@ -25,8 +26,9 @@
       "quality": "strong",
       "say": {
         "fi": "Ilman eurooppalaista yhteistyötä jokainen maa on yksin, ja Venäjälle ja suurvalloille helppo saalis.",
-        "sv": "TODO",
-        "en": "TODO"
+        "sv": "Utan europeiskt samarbete står varje land ensamt och blir ett lätt byte för Ryssland och stormakterna.",
+        "en": "Without European cooperation every country stands alone, easy prey for Russia and the great powers.",
+        "needsReview": ["sv", "en"]
       },
       "reaction": {
         "fi": "...",
@@ -37,9 +39,9 @@
         "by": "paakirjoitustoimittaja",
         "say": {
           "fi": "Suomen turvallisuus ja vauraus nojaavat Euroopan unioniin. Eristäytyminen olisi historiallinen virhe.",
-          "sv": "TODO",
-          "en": "TODO",
-          "needsReview": ["fi"]
+          "sv": "Finlands säkerhet och välstånd vilar på Europeiska unionen. Att isolera sig vore ett historiskt misstag.",
+          "en": "Finland’s security and prosperity rest on the European Union. Isolation would be a historic mistake.",
+          "needsReview": ["fi", "sv", "en"]
         }
       }
     },
@@ -52,13 +54,15 @@
       "quality": "medium",
       "say": {
         "fi": "Yli puolet viennistämme menee EU-maihin. EU on elintärkeä taloudellemme.",
-        "sv": "TODO",
-        "en": "TODO"
+        "sv": "Över hälften av vår export går till EU-länder. EU är livsviktigt för vår ekonomi.",
+        "en": "Over half of our exports go to EU countries. The EU is vital to our economy.",
+        "needsReview": ["sv", "en"]
       },
       "reaction": {
         "fi": "Hyvin toimi Suomen talous ennen EU:takin.",
-        "sv": "TODO",
-        "en": "TODO"
+        "sv": "Finlands ekonomi klarade sig bra före EU också.",
+        "en": "Finland’s economy did just fine before the EU, too.",
+        "needsReview": ["sv", "en"]
       }
     },
     {
@@ -70,13 +74,15 @@
       "quality": "weak",
       "say": {
         "fi": "Meidän on syytä yhdentyä muun euroopan kanssa, ja pyrkiä kohti liittovaltiota!",
-        "sv": "TODO",
-        "en": "TODO"
+        "sv": "Vi bör integreras med resten av Europa och sträva mot en federation!",
+        "en": "We should integrate with the rest of Europe and work towards a federation!",
+        "needsReview": ["sv", "en"]
       },
       "reaction": {
         "fi": "Minä ainakin olen ylpeä suomalainen. Ja ilman EU:ta tämä maa on rakennettu. Piste.",
-        "sv": "TODO",
-        "en": "TODO"
+        "sv": "Jag är i alla fall en stolt finländare. Och det här landet byggdes utan EU. Punkt.",
+        "en": "I, for one, am a proud Finn. And this country was built without the EU. Full stop.",
+        "needsReview": ["sv", "en"]
       }
     },
     {
@@ -88,13 +94,15 @@
       "quality": "weak",
       "say": {
         "fi": "Tarvitsemme EU:ta vihreän siirtymän toteuttamiseen.",
-        "sv": "TODO",
-        "en": "TODO"
+        "sv": "Vi behöver EU för att genomföra den gröna omställningen.",
+        "en": "We need the EU to make the green transition happen.",
+        "needsReview": ["sv", "en"]
       },
       "reaction": {
         "fi": "Tätä juuri tarkoitan. Kohta Brysselissä kielletään puunpolttokin!",
-        "sv": "TODO",
-        "en": "TODO"
+        "sv": "Det är precis det jag menar. Snart förbjuder Bryssel vedeldning också!",
+        "en": "That’s exactly what I mean. Next, Brussels will ban burning firewood!",
+        "needsReview": ["sv", "en"]
       }
     }
   ]

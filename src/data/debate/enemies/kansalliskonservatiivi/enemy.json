@@ -17,8 +17,9 @@
   },
   "opening": {
     "fi": "Ääliöliberaalihan se siellä! Valmistaudu servaukseen!",
-    "sv": "TODO",
-    "en": "TODO"
+    "sv": "Jaså, en idiotliberal! Gör dig redo att bli serverad!",
+    "en": "Well, if it isn’t an idiot liberal! Get ready to be served!",
+    "needsReview": ["sv", "en"]
   },
   "defeat": {
     "fi": "Konservatiivi hävisi väittelyn, ja pakeni Twitteriin!",

@@ -3,45 +3,51 @@
   "order": 9,
   "label": {
     "fi": "Kaavoitus",
-    "sv": "TODO",
-    "en": "TODO"
+    "sv": "Planläggning",
+    "en": "Zoning",
+    "needsReview": ["sv", "en"]
   },
   "say": {
     "fi": "Meidän on joudutettava kaavoitusta ja purettava kaupunkirakentamisen esteitä.",
-    "sv": "TODO",
-    "en": "TODO"
+    "sv": "Vi måste påskynda planläggningen och riva hindren för stadsbyggandet.",
+    "en": "We must speed up zoning and clear the obstacles to building in our cities.",
+    "needsReview": ["sv", "en"]
   },
   "defenses": [
     {
       "quality": "strong",
       "say": {
         "fi": "Rakennusbuumi romahduttaa asuntojen arvon heiltä, jotka jo ottaneet asuntolainan.",
-        "sv": "TODO",
-        "en": "TODO"
+        "sv": "En byggboom raserar bostadsvärdet för dem som redan har tagit bolån.",
+        "en": "A building boom would crash home values for everyone who already has a mortgage.",
+        "needsReview": ["sv", "en"]
       }
     },
     {
       "quality": "medium",
       "say": {
         "fi": "Helsinki-juttuja taas, muu maa on puolillaan tyhjiä asuntoja.",
-        "sv": "TODO",
-        "en": "TODO"
+        "sv": "Helsingforsprat igen, resten av landet är fullt av tomma bostäder.",
+        "en": "Helsinki talk again, the rest of the country is full of empty homes.",
+        "needsReview": ["sv", "en"]
       }
     },
     {
       "quality": "weak",
       "say": {
         "fi": "Kerrostalokolmiossa ei kasva suomalainen perhe. Omakotitalo kuuluu jokaiselle!",
-        "sv": "TODO",
-        "en": "TODO"
+        "sv": "En finländsk familj växer inte upp i en höghustrea. Ett eget hus åt alla!",
+        "en": "A Finnish family can’t grow up in a flat. Everyone deserves a house of their own!",
+        "needsReview": ["sv", "en"]
       }
     },
     {
       "quality": "weak",
       "say": {
         "fi": "Ei tänne edes tarvita lisää asuntoja. Väkiluku kasvaa vain maahanmuutolla.",
-        "sv": "TODO",
-        "en": "TODO"
+        "sv": "Vi behöver inte ens fler bostäder här. Befolkningen växer bara genom invandring.",
+        "en": "We don’t even need more homes here. The population only grows through immigration.",
+        "needsReview": ["sv", "en"]
       }
     }
   ]

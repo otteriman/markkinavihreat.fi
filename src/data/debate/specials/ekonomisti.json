@@ -2,13 +2,15 @@
   "needsReview": ["fi"],
   "name": {
     "fi": "Ekonomisti",
-    "sv": "TODO",
-    "en": "TODO"
+    "sv": "Ekonomen",
+    "en": "Economist",
+    "needsReview": ["sv", "en"]
   },
   "appear": {
     "fi": "Ekonomisti astuu esiin!",
-    "sv": "TODO",
-    "en": "TODO"
+    "sv": "Ekonomen kliver fram!",
+    "en": "The economist steps forward!",
+    "needsReview": ["sv", "en"]
   },
   "sprite": "ekonomisti"
 }

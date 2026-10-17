@@ -3,45 +3,51 @@
   "order": 6,
   "label": {
     "fi": "Luonnonsuojelu",
-    "sv": "TODO",
-    "en": "TODO"
+    "sv": "Naturskydd",
+    "en": "Conservation",
+    "needsReview": ["sv", "en"]
   },
   "say": {
     "fi": "Metsät, järvet ja suot ovat Suomen kansallisaarre. Suojellaan luontoa, jotta se säilyy myös lapsillemme.",
-    "sv": "TODO",
-    "en": "TODO"
+    "sv": "Skogarna, sjöarna och myrarna är Finlands nationalskatt. Vi skyddar naturen så att den finns kvar för våra barn.",
+    "en": "Forests, lakes and bogs are Finland’s national treasure. Let’s protect nature so it’s still there for our children.",
+    "needsReview": ["sv", "en"]
   },
   "defenses": [
     {
       "quality": "strong",
       "say": {
         "fi": "Metsänomistaja tietää itse, miten metsää hoidetaan. Ei tarvita Helsingin herroja neuvomaan!",
-        "sv": "TODO",
-        "en": "TODO"
+        "sv": "Skogsägaren vet själv hur skogen ska skötas. Vi behöver inga Helsingforsherrar som lägger sig i!",
+        "en": "Forest owners know how to look after a forest. We don’t need Helsinki bigwigs telling us how!",
+        "needsReview": ["sv", "en"]
       }
     },
     {
       "quality": "strong",
       "say": {
         "fi": "Suojelu tarkoittaa, että maaseudulta viedään taas työpaikat ja elinkeinot.",
-        "sv": "TODO",
-        "en": "TODO"
+        "sv": "Skydd betyder att landsbygden återigen blir av med jobb och näringar.",
+        "en": "Protection means the countryside loses its jobs and livelihoods yet again.",
+        "needsReview": ["sv", "en"]
       }
     },
     {
       "quality": "strong",
       "say": {
         "fi": "Suomen metsät kasvavat enemmän kuin niitä hakataan. Ongelma on keksitty.",
-        "sv": "TODO",
-        "en": "TODO"
+        "sv": "Finlands skogar växer mer än de avverkas. Problemet är påhittat.",
+        "en": "Finland’s forests grow faster than they’re felled. The problem is made up.",
+        "needsReview": ["sv", "en"]
       }
     },
     {
       "quality": "medium",
       "say": {
         "fi": "No, luontoa pitää toki kunnioittaa. Mutta EU ei sitä meidän puolestamme päätä!",
-        "sv": "TODO",
-        "en": "TODO"
+        "sv": "Jo, naturen ska förstås respekteras. Men EU bestämmer inte det åt oss!",
+        "en": "Well, nature should be respected, sure. But the EU doesn’t get to decide that for us!",
+        "needsReview": ["sv", "en"]
       }
     }
   ]

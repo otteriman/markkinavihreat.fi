@@ -3,45 +3,51 @@
   "order": 2,
   "label": {
     "fi": "Kotimainen kasvisruoka",
-    "sv": "TODO",
-    "en": "TODO"
+    "sv": "Inhemsk växtkost",
+    "en": "Home-grown veg",
+    "needsReview": ["sv", "en"]
   },
   "say": {
     "fi": "Suomessa olisi järkevintä lisätä kasvisruuan tuotantoa, saisimme lisää ja halvempaa kotimaista ruokaa.",
-    "sv": "TODO",
-    "en": "TODO"
+    "sv": "Det smartaste vore att odla mer vegetabilisk mat i Finland, då får vi mer och billigare inhemsk mat.",
+    "en": "The smart move is to grow more plant food in Finland: we’d get more domestic food, and cheaper.",
+    "needsReview": ["sv", "en"]
   },
   "defenses": [
     {
       "quality": "medium",
       "say": {
         "fi": "Haluatte vain ideologisesti kieltää lihansyönnin ja tuputtaa elämäntapaanne muille.",
-        "sv": "TODO",
-        "en": "TODO"
+        "sv": "Ni vill bara av ideologiska skäl förbjuda kött och tvinga på andra er livsstil.",
+        "en": "You just want to ban meat on ideological grounds and push your lifestyle on everyone else.",
+        "needsReview": ["sv", "en"]
       }
     },
     {
       "quality": "weak",
       "say": {
         "fi": "Juurikin ne teidän mangosmoothiet ja muut hömppäkasvikset nimenomaan rahdataan toiselta puolen maapalloa.",
-        "sv": "TODO",
-        "en": "TODO"
+        "sv": "Just era mangosmoothies och andra flummiga grönsaker fraktas ju från andra sidan jordklotet.",
+        "en": "Those mango smoothies and fancy veg of yours are exactly what gets shipped from the other side of the world.",
+        "needsReview": ["sv", "en"]
       }
     },
     {
       "quality": "weak",
       "say": {
         "fi": "Ihminen on sekasyöjä, eli kyllä lihaakin pitää syödä. Ideologista sekoilua teidän jutut taas.",
-        "sv": "TODO",
-        "en": "TODO"
+        "sv": "Människan är allätare, så kött ska man äta. Ideologiskt trams igen från er.",
+        "en": "Humans are omnivores, so yes, we eat meat. More ideological nonsense from you.",
+        "needsReview": ["sv", "en"]
       }
     },
     {
       "quality": "strong",
       "say": {
         "fi": "Ensin lihavero, nyt tämä? Te ajatte suomalaiset karjatilat konkursseihin!",
-        "sv": "TODO",
-        "en": "TODO"
+        "sv": "Först köttskatt, nu det här? Ni driver finländska boskapsgårdar i konkurs!",
+        "en": "First a meat tax, now this? You’re driving Finnish cattle farms into bankruptcy!",
+        "needsReview": ["sv", "en"]
       }
     }
   ]
