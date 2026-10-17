@@ -1,0 +1,48 @@
+{
+  "needsReview": ["fi"],
+  "order": 6,
+  "label": {
+    "fi": "Luonnonsuojelu",
+    "sv": "TODO",
+    "en": "TODO"
+  },
+  "say": {
+    "fi": "Metsät, järvet ja suot ovat Suomen kansallisaarre. Suojellaan luontoa, jotta se säilyy myös lapsillemme.",
+    "sv": "TODO",
+    "en": "TODO"
+  },
+  "defenses": [
+    {
+      "quality": "strong",
+      "say": {
+        "fi": "Metsänomistaja tietää itse, miten metsää hoidetaan. Ei tarvita Helsingin herroja neuvomaan!",
+        "sv": "TODO",
+        "en": "TODO"
+      }
+    },
+    {
+      "quality": "strong",
+      "say": {
+        "fi": "Suojelu tarkoittaa, että maaseudulta viedään taas työpaikat ja elinkeinot.",
+        "sv": "TODO",
+        "en": "TODO"
+      }
+    },
+    {
+      "quality": "strong",
+      "say": {
+        "fi": "Suomen metsät kasvavat enemmän kuin niitä hakataan. Ongelma on keksitty.",
+        "sv": "TODO",
+        "en": "TODO"
+      }
+    },
+    {
+      "quality": "medium",
+      "say": {
+        "fi": "No, luontoa pitää toki kunnioittaa. Mutta EU ei sitä meidän puolestamme päätä!",
+        "sv": "TODO",
+        "en": "TODO"
+      }
+    }
+  ]
+}

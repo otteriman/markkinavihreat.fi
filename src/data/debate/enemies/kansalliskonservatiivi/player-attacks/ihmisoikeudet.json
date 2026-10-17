@@ -1,0 +1,48 @@
+{
+  "needsReview": ["fi"],
+  "order": 3,
+  "label": {
+    "fi": "Ihmisoikeudet",
+    "sv": "TODO",
+    "en": "TODO"
+  },
+  "say": {
+    "fi": "Ihmisoikeudet ja liberaali demokratia ovat Suomen vahvuus. Ne kuuluvat jokaiselle, eivät vain enemmistölle.",
+    "sv": "TODO",
+    "en": "TODO"
+  },
+  "defenses": [
+    {
+      "quality": "strong",
+      "say": {
+        "fi": "Suomalaisten oikeudet ensin! Teille kaikki muut tuntuvat olevan tärkeämpiä kuin oma kansa.",
+        "sv": "TODO",
+        "en": "TODO"
+      }
+    },
+    {
+      "quality": "strong",
+      "say": {
+        "fi": "Kansa on puhunut, ja demokratiassa enemmistö päättää. Turha meitä on moralisoida.",
+        "sv": "TODO",
+        "en": "TODO"
+      }
+    },
+    {
+      "quality": "strong",
+      "say": {
+        "fi": "Ihmisoikeuksilla perustellaan nykyään mitä tahansa, mutta tavallinen kansalainen ei saa sanoa mitään.",
+        "sv": "TODO",
+        "en": "TODO"
+      }
+    },
+    {
+      "quality": "medium",
+      "say": {
+        "fi": "Totta kai demokratia on tärkeä. Mutta te ette sitä kunnioita, kun vaalitulos ei miellytä.",
+        "sv": "TODO",
+        "en": "TODO"
+      }
+    }
+  ]
+}

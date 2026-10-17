@@ -71,10 +71,10 @@ src/data/debate/
       player-attacks/              the player's attacks and the enemy's possible comebacks
         huoltovarmuus.json         one file per player attack
         kotimainen-ruoka.json
-        ratahankkeet.json
+        ihmisoikeudet.json
         vihrea-teollisuus.json
         ilmastokriisi.json
-        lihavero.json
+        luonnonsuojelu.json
 ```
 
 Adding an attack is dropping a new JSON file in `enemy-attacks/` or `player-attacks/`; removing it is deleting the file; reordering is not needed because order is random (the player's grid is ordered by an optional `order` number, else by filename). The loader reads the folders with Vite's `import.meta.glob`, so no index file needs updating and no new dependency is needed. A new enemy is a new folder under `enemies/`.
