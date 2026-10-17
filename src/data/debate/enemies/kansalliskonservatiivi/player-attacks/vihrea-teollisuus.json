@@ -42,6 +42,15 @@
         "fi": "Mutta tämä viherhumputus ajaa alas paperitehtaat, ja aiheuttaa joukkotyöttömyyttä.",
         "sv": "TODO",
         "en": "TODO"
+      },
+      "critical": {
+        "by": "paakirjoitustoimittaja",
+        "say": {
+          "fi": "Vihreä siirtymä on tuonut Suomeen kymmenien miljardien investoinnit. Sitä ei kannata vähätellä.",
+          "sv": "TODO",
+          "en": "TODO",
+          "needsReview": ["fi"]
+        }
       }
     }
   ]

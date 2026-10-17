@@ -32,6 +32,15 @@
         "fi": "...",
         "sv": "...",
         "en": "..."
+      },
+      "critical": {
+        "by": "paakirjoitustoimittaja",
+        "say": {
+          "fi": "Suomen turvallisuus ja vauraus nojaavat Euroopan unioniin. Eristäytyminen olisi historiallinen virhe.",
+          "sv": "TODO",
+          "en": "TODO",
+          "needsReview": ["fi"]
+        }
       }
     },
     {
