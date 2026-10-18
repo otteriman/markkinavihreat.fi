@@ -132,7 +132,7 @@
       "weak": 2
     },
     "defensesPerAttack": 4,
-    "minStrongDefenses": 1,
+    "minStrongDefenses": 0,
     "playerAttackSlots": 6,
     "maxLabelLength": 22,
     "maxLineLength": 120,
