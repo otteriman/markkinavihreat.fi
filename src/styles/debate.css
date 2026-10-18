@@ -20,14 +20,15 @@
 }
 
 .debate {
-  /* The four Game Boy greens, lightest to darkest. */
-  --gb-0: #9bbc0f;
-  --gb-1: #8bac0f;
-  --gb-2: #306230;
+  /* Four greens, lightest to darkest: the Game Boy's, with the light and
+     middle tones paled so the stage reads lighter (the darkest stays). */
+  --gb-0: #c4d98b;
+  --gb-1: #9fbf5a;
+  --gb-2: #3e6f35;
   --gb-3: #0f380f;
   /* The intro screen's paler card, the one colour outside the four: it sets
      the title apart from the stage, so the clock wipe shows. */
-  --gb-intro: #d3e5a3;
+  --gb-intro: #e6f0c9;
 
   --debate-font: 'Debate Jersey', monospace;
   --debate-size: 12px;
