@@ -1,0 +1,54 @@
+{
+  "needsReview": ["fi"],
+  "order": 10,
+  "label": {
+    "fi": "Varallisuustili",
+    "sv": "Förmögenhetskonto",
+    "en": "Wealth account",
+    "needsReview": ["sv", "en"]
+  },
+  "say": {
+    "fi": "Palkalla pitää voida vaurastua! Varallisuustilillä palkan voisi sijoittaa ennen veroja, ja veron maksaisi vasta, kun rahat nostaa käyttöön.",
+    "sv": "Med lön ska man kunna bli förmögen! Med ett förmögenhetskonto kunde man investera lönen före skatt och betala skatten först när pengarna tas ut.",
+    "en": "Your paycheck should let you build wealth! A wealth account lets you invest your pay before tax, and you pay the tax only when you take the money out.",
+    "needsReview": ["sv", "en"]
+  },
+  "defenses": [
+    {
+      "quality": "strong",
+      "say": {
+        "fi": "Ja verotulot pienenevät heti. Millä te sen aukon paikkaatte, kun valtio velkaantuu jo valmiiksi?",
+        "sv": "Och skatteintäkterna minskar direkt. Hur täpper ni till det hålet när staten redan skuldsätter sig?",
+        "en": "And tax revenue drops right away. How will you plug that hole when the state is already borrowing?",
+        "needsReview": ["sv", "en"]
+      }
+    },
+    {
+      "quality": "medium",
+      "say": {
+        "fi": "Hienoa teoriaa, mutta tavalliselta duunarilta ei jää palkasta mitään säästettävää.",
+        "sv": "Fin teori, men en vanlig knegare har inget kvar av lönen att spara.",
+        "en": "Nice theory, but an ordinary worker has nothing left over from his pay to save.",
+        "needsReview": ["sv", "en"]
+      }
+    },
+    {
+      "quality": "weak",
+      "say": {
+        "fi": "Sijoittaminen on uhkapeliä! Kunnon suomalainen pitää rahansa pankkitilillä.",
+        "sv": "Att investera är hasardspel! En hederlig finländare har pengarna på banken.",
+        "en": "Investing is gambling! A decent Finn keeps his money in the bank.",
+        "needsReview": ["sv", "en"]
+      }
+    },
+    {
+      "quality": "weak",
+      "say": {
+        "fi": "Varallisuustili? Kuulostaa ihan joltain Brysselin keksinnöltä.",
+        "sv": "Förmögenhetskonto? Låter som något Bryssel har hittat på.",
+        "en": "A wealth account? Sounds like something Brussels dreamed up.",
+        "needsReview": ["sv", "en"]
+      }
+    }
+  ]
+}
