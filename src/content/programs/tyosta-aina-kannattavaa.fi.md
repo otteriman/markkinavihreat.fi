@@ -84,7 +84,7 @@ Sama toistuu, vaikka tunteja tulisi paljon enemmän.
 
 [kuvaaja: tunnit-ja-raha]
 
-Esimerkkimme yksinhuoltaja voi tehdä töitä 86 tuntia kuussa, eli yli puolet kokoaikatyöstä, eikä hänelle jää euroakaan enemmän kuin jos hän ei tekisi töitä ollenkaan. Täysi työkuukausi tuo noin 430 euroa enemmän kuin kotona oleminen. Se on alle kolme euroa tunnilta.
+Esimerkkimme yksinhuoltaja voi tehdä töitä 86 tuntia kuussa, eli yli puolet kokoaikatyöstä, ja hänelle jää siitä käteen 0 euroa. Täydestä työkuukaudesta jää noin 430 euroa. Se on alle kolme euroa tunnilta.
 
 Keikat, osa-aikatyö ja yksittäiset vuorot ovat monelle se tapa, jolla työelämään palataan. Juuri ne ovat nyt rahallisesti arvottomia. Moni tekee niitä silti, koska työ antaa muutakin kuin rahaa. Mutta kun joku kysyy, miksi ihmiset eivät ota pieniä töitä vastaan, vastaus on tässä kuvassa.
 
