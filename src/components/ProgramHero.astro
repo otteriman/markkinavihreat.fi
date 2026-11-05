@@ -1,15 +1,20 @@
 ---
 import { renderInlineMarkdown } from '../lib/markdown'
 import type { ProgramParagraph } from '../lib/programSections'
+import { heroSegments } from '../lib/heroLines'
 
 interface Props {
   kicker: string
-  /** Display lines of the hero heading; the last line gets the accent color. */
+  /**
+   * Display lines of the hero heading. `*word*` marks words for the accent
+   * color; with no markers, the last line gets it (see lib/heroLines.ts).
+   */
   lines: string[]
   leadParagraphs: ProgramParagraph[]
 }
 
 const { kicker, lines, leadParagraphs } = Astro.props
+const segmentLines = heroSegments(lines)
 ---
 
 <section
@@ -18,8 +23,12 @@ const { kicker, lines, leadParagraphs } = Astro.props
   <p class="text-eyebrow text-vihreat-brand mb-6">{kicker}</p>
   <h1 class="text-display-lg mx-auto mb-6 max-w-[16ch] uppercase">
     {
-      lines.map((line, i) => (
-        <span class:list={['block', i === lines.length - 1 && 'text-vihreat-brand']}>{line}</span>
+      segmentLines.map((segments) => (
+        <span class="block">
+          {segments.map((segment) =>
+            segment.accent ? <span class="text-vihreat-brand">{segment.text}</span> : segment.text,
+          )}
+        </span>
       ))
     }
   </h1>

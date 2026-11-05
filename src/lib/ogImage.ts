@@ -6,6 +6,7 @@ import satori from 'satori'
 import { LOCALES, parseLocalizedId, type Locale } from './content'
 import { dateSlug } from './date'
 import { about, blogPage, contact, home, programsPage } from '../i18n/pages'
+import { hasAccentMarkers, lineSegments } from './heroLines'
 
 // Brand tokens, kept in sync with src/styles/global.css. Accent is the Vihreät
 // brand green, matching the logo fill so text and mark read as one.
@@ -20,6 +21,7 @@ const HEIGHT = 600
  * One page's OG image content. The green accent follows vaihdavihreisiin's look:
  * - 'lastLine' — the whole last line green (program heroLines already split this way)
  * - 'lastWord' — only the last word of the (single) title line green
+ * - 'markers'  — only the `*marked*` words green (see lib/heroLines.ts)
  * - 'none'     — all ink
  */
 export interface OgPage {
@@ -27,7 +29,7 @@ export interface OgPage {
   path: string
   eyebrow: string
   lines: string[]
-  accent: 'lastLine' | 'lastWord' | 'none'
+  accent: 'lastLine' | 'lastWord' | 'markers' | 'none'
 }
 
 // Read fonts and the logo once, at module load (build time only — this module
@@ -55,6 +57,21 @@ const lineStyle = {
 // whole line ('lastLine') or just its final word ('lastWord', as inline spans
 // so a wrapped title keeps the green word attached wherever it lands).
 function titleLine(line: string, isLast: boolean, accent: OgPage['accent']): Node {
+  if (accent === 'markers') {
+    return el('div', {
+      style: {
+        ...lineStyle,
+        color: INK,
+        display: 'flex',
+        flexWrap: 'wrap',
+        justifyContent: 'center',
+        whiteSpace: 'pre-wrap',
+      },
+      children: lineSegments(line).map((segment) =>
+        el('span', { style: segment.accent ? { color: ACCENT } : {}, children: segment.text }),
+      ),
+    })
+  }
   if (isLast && accent === 'lastLine') {
     return el('div', { style: { ...lineStyle, color: ACCENT }, children: line })
   }
@@ -175,7 +192,7 @@ export async function ogPages(): Promise<OgPage[]> {
       path: `/ehdotukset/${slug}/`,
       eyebrow: program.data.heroKicker,
       lines: program.data.heroLines,
-      accent: 'lastLine',
+      accent: hasAccentMarkers(program.data.heroLines) ? 'markers' : 'lastLine',
     })
   }
 
