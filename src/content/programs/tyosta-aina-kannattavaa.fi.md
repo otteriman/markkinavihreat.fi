@@ -98,13 +98,13 @@ Asumistuessa 300 euroa kuukauden palkasta jätettiin huomiotta. Työttömyysturv
 
 Muutokset olivat osa hallituksen sosiaaliturvaleikkauksia. Jokainen niistä teki pienistä töistä vähemmän kannattavia.
 
-## Me olemme näiden ihmisten puolella
+## Tähän tarvitaan muutos!
 
 Me markkinavihreät uskomme, että työ on paras tie parempaan elämään. Jokaisella pitää olla mahdollisuus parantaa asemaansa omalla työllään, jos hän niin haluaa. Siksi jokaisen tehdyn tunnin pitää näkyä omalla tilillä.
 
 Tämä on myös markkinatalouden perusasia. Kun työ kannattaa, ihmiset tekevät sitä ilman pakkoa, valvontaa ja karenssiuhkia. Nyt järjestelmä pyytää ihmisiä ottamaan töitä vastaan ja vie sitten koko palkan.
 
-Yksinhuoltaja, joka tekee lauantaivuoron käytännössä ilmaiseksi, yrittää. Järjestelmä rankaisee häntä siitä.
+Yksinhuoltaja, joka tekee lauantaivuoron käytännössä ilmaiseksi, on ahkera ja hän ansaitsisi vaivannäöstään myös palkkion.
 
 ## Ratkaisu - Perustulo
 
