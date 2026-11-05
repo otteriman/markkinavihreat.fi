@@ -151,8 +151,9 @@ Yksinhuoltaja     ◌ ○ ○ ○ ○  ○ ○ ○ ○ ○        0 € sinulle
 - Kumpikin tienaa **saman 10 euroa lisää**, joten ero johtuu vain säännöistä, ei palkkatasosta.
 - Kolikot ovat konkreettisempia kuin palkki: ne näyttävät rahalta ja ne voi laskea.
 - Iso luku kummankin kohdalla: **"5 € sinulle"** ja **"0 € sinulle"**.
-- Kevyt animaatio, kun kuva tulee näkyviin: kolikot liukuvat joko "sinulle"-puolelle tai pois.
-  Ilman JavaScriptiä ja `prefers-reduced-motion`-asetuksella näytetään valmis tilanne.
+- Ei animaatiota: se hämmensi enemmän kuin auttoi (päätetty luonnoksen jälkeen). Kuvassa on vain
+  kaksi kolikkotyyppiä (sinulle / ei sinulle) ja kokonaiset eurot; tarkat luvut ovat "Miten luvut on
+  laskettu?" -laatikossa.
 - Kuvan alle kummankin omalla palkalla: yksinhuoltajan **4 tunnin vuoro** kaupan TES-palkalla → 0 €
   käteen; IT-asiantuntijan **yksi lisätunti** 6 000 €/kk palkalla (~37 €/h) → noin 18 € käteen.
   _IT-asiantuntijalle jää yhdestä tunnista enemmän kuin yksinhuoltajalle koko lauantaivuorosta._

@@ -9,9 +9,7 @@ import type { Locale } from '../../lib/content'
 // benefit cut) and the exact cents live in the "Miten luvut on laskettu?"
 // disclosure in the program text, not here.
 //
-// With motion allowed and JavaScript on, every coin starts out green and the
-// ones that aren't yours empty out one by one; without either, the final
-// state shows.
+// Static on purpose: an animation here confused more than it helped.
 //
 // TODO(i18n): the copy is Finnish only while the program is a draft; it
 // moves to src/i18n/ui.ts with sv/en translations once the draft is approved.
@@ -36,7 +34,7 @@ function coins(split: ExtraPaySplit): boolean[] {
 }
 ---
 
-<figure class="my-10" data-coins>
+<figure class="my-10">
   <figcaption class="mb-8 text-2xl leading-tight font-extrabold sm:text-3xl">
     Kun tienaat kympin lisää, paljonko siitä jää sinulle?
   </figcaption>
@@ -50,8 +48,8 @@ function coins(split: ExtraPaySplit): boolean[] {
             <p class="text-4xl font-extrabold tabular-nums">{formatEuro(row.split.kept, locale)}</p>
           </div>
           <ol class="flex gap-1.5 sm:gap-2" aria-hidden="true">
-            {coins(row.split).map((yours, i) => (
-              <li class="coin" data-yours={yours ? '' : undefined} style={`--i: ${i}`}>
+            {coins(row.split).map((yours) => (
+              <li class="coin" data-yours={yours ? '' : undefined}>
                 <span>€</span>
               </li>
             ))}
@@ -81,50 +79,17 @@ function coins(split: ExtraPaySplit): boolean[] {
     background-color: transparent;
     border: 2px dashed currentColor;
     opacity: 0.45;
-    transition:
-      background-color 450ms ease,
-      border-color 450ms ease,
-      opacity 450ms ease;
-    transition-delay: calc(var(--i) * 90ms);
   }
   .coin span {
     visibility: hidden;
   }
-  .coin[data-yours],
-  [data-coins].is-armed:not(.is-in) .coin {
+  .coin[data-yours] {
     background-color: var(--color-vihrea);
     border-color: transparent;
     color: var(--color-metsa);
     opacity: 1;
   }
-  .coin[data-yours] span,
-  [data-coins].is-armed:not(.is-in) .coin span {
+  .coin[data-yours] span {
     visibility: visible;
   }
-  /* Before the figure scrolls into view, every coin is still "yours". */
-  [data-coins].is-armed:not(.is-in) .coin {
-    transition-delay: 0ms;
-  }
 </style>
-
-<script>
-  // Arms the coin animation only when motion is welcome; without this script
-  // the coins simply show their final state.
-  const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches
-  if (!reduceMotion && 'IntersectionObserver' in window) {
-    document.querySelectorAll<HTMLElement>('[data-coins]').forEach((figure) => {
-      figure.classList.add('is-armed')
-      const observer = new IntersectionObserver(
-        (entries) => {
-          if (entries.some((entry) => entry.isIntersecting)) {
-            // A short pause lets the reader see the all-green rows first.
-            window.setTimeout(() => figure.classList.add('is-in'), 700)
-            observer.disconnect()
-          }
-        },
-        { threshold: 0.35 },
-      )
-      observer.observe(figure)
-    })
-  }
-</script>
