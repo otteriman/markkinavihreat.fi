@@ -391,6 +391,11 @@ laskettua viivaa.
 6. **Somekarusellin kuvat** ja OG-kuva.
 7. **PR ja ihmisen tekemä katselmointi**, sen jälkeen `unlisted` pois.
 
+**Tilanne:** luonnossivu on tehty nykyisillä oletuksilla (`unlisted`, vain suomeksi), jotta voidaan
+arvioida, onko avauksessa potentiaalia. Sivun alussa on keltainen luonnosbanneri, jossa on
+tarkistuslista. Jos luonnos todetaan hyväksi, tehdään kohdan 6.3 tarkistukset ja lisätään yleistuki
+laskelmaan ennen vaiheita 4–7.
+
 ## 8. Päätökset ja avoimet kysymykset
 
 Päätetty:
