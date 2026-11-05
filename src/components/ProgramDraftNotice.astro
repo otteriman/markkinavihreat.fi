@@ -1,0 +1,47 @@
+---
+import { renderInlineMarkdown } from '../lib/markdown'
+import ProgramDisclosure from './ProgramDisclosure.astro'
+
+// A draft program's warning banner (the `draftNotice` frontmatter field):
+// a loud, unmissable band right under the hero saying the page and its
+// numbers aren't final, with the open checks as accordion items. Meant to
+// be deleted from the frontmatter before the page is published.
+
+interface Props {
+  /** The eyebrow, "Luonnos" in the page's language. */
+  label: string
+  title: string
+  body: string
+  checks: Array<{ question: string; answer: string }>
+}
+
+const { label, title, body, checks } = Astro.props
+---
+
+<aside
+  class="bg-aurinko text-musta px-4 py-10 sm:px-6"
+  role="note"
+  aria-labelledby="draft-notice-title"
+>
+  <div class="content-max mx-auto">
+    <p class="text-eyebrow mb-3 flex items-center gap-2">
+      <i class="fa-solid fa-triangle-exclamation" aria-hidden="true"></i>
+      {label}
+    </p>
+    <h2 id="draft-notice-title" class="mb-4 text-2xl font-extrabold sm:text-3xl">{title}</h2>
+    <p class="prose-body mb-6 max-w-[60ch] text-lg" set:html={renderInlineMarkdown(body)} />
+    {
+      checks.length > 0 && (
+        <div>
+          {checks.map((check) => (
+            <ProgramDisclosure
+              question={check.question}
+              answer={check.answer}
+              proseClass="prose-body"
+            />
+          ))}
+        </div>
+      )
+    }
+  </div>
+</aside>

@@ -112,6 +112,16 @@ const programs = defineCollection({
     // program speaks for these people rather than for the whole network;
     // shown under the hero so readers see up front whose proposal it is.
     creators: z.array(z.string()).default([]),
+    // A draft's warning banner, shown right under the hero: says the page
+    // isn't finished and lists, as accordion items, what still has to be
+    // checked and where. Remove it from the frontmatter once the page is done.
+    draftNotice: z
+      .object({
+        title: z.string(),
+        body: z.string(),
+        checks: z.array(z.object({ question: z.string(), answer: z.string() })).default([]),
+      })
+      .optional(),
     // The program's social-media carousel, offered for download and sharing
     // at the bottom of the page. Paths are public/ URLs (same-origin, so the
     // download attribute and the share sheet's file fetch both work).

@@ -3,6 +3,7 @@ import { getEntry, type CollectionEntry } from 'astro:content'
 import BaseLayout from '../../layouts/BaseLayout.astro'
 import ProgramFaq from '../ProgramFaq.astro'
 import ProgramHero from '../ProgramHero.astro'
+import ProgramDraftNotice from '../ProgramDraftNotice.astro'
 import ProgramSection from '../ProgramSection.astro'
 import ProgramCreators from '../ProgramCreators.astro'
 import ProgramSlides from '../ProgramSlides.astro'
@@ -159,6 +160,17 @@ if (faq) jsonLd.push(faq)
     lines={program.data.heroLines}
     leadParagraphs={leadParagraphs}
   />
+
+  {
+    program.data.draftNotice && (
+      <ProgramDraftNotice
+        label={t(locale, 'programs.draftLabel')}
+        title={program.data.draftNotice.title}
+        body={program.data.draftNotice.body}
+        checks={program.data.draftNotice.checks}
+      />
+    )
+  }
 
   {
     creators.length > 0 && (
