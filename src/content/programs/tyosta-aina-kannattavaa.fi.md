@@ -44,6 +44,13 @@ draftNotice:
       answer: |-
         Kelan yleistuki (työttömyysturva) puuttuu. Moni toimeentulotuen saaja saa myös sitä. Silloinkin palkasta jää käteen 0 € niin kauan kuin toimeentulotukea maksetaan, mutta tasainen osuus lyhenee, ja tuelta pois päästyä käteen jää vähemmän kuin nyt näytetään.
         Myös vihreiden kannat (sosiaaliturvaohjelma 2022, suojaosat) pitää tarkistaa puolueen omista ohjelmista.
+    - question: Poliittiset väitteet
+      answer: |-
+        Grahn-Laasosen lainaus on tiedotusvälineiden mukainen. Tarkka sanamuoto tarkistetaan täysistunnon pöytäkirjasta PTK 36/2026 vp (15.4.2026, [eduskunta.fi](https://www.eduskunta.fi/)).
+        Ylimmän marginaaliveroasteen lasku 52 prosenttiin: tarkistetaan voimaantulovuosi (lähteissä 2026, yhdessä 2027) ja se, sisältääkö luku työntekijän maksut.
+        Väite, että kokoomus vastustaa perustuloa: lähdettä ei vielä löytynyt. Tarkistetaan puolueen ohjelmista ja kannanotoista, tai muotoillaan uudelleen.
+        Väite, että työstä kieltäytyminen leikkaa toimeentulotukea (perusosan alentaminen): tarkistetaan Kelan ohjeista.
+        Suojaosien ja ansiotulovähennysten poistot olivat Orpon hallituksen päätöksiä: tarkistetaan hallituksen esityksistä.
     - question: Teksti ja käännökset
       answer: |-
         Teksti on luonnos. Ihmisen pitää editoida se ja lukea se ääneen ennen julkaisua (suunnitelman kohta "Ihmisen ääni, ei tekoälyn").
@@ -78,6 +85,16 @@ Yksinhuoltaja maksaa siis kympistään vähemmän veroja ja maksuja kuin IT-asia
 Omalla palkallaan IT-asiantuntijalle jää yhdestä lisätunnista (37,50 euroa) 18,36 euroa. Yksinhuoltajalle ei jää neljän tunnin vuorosta (52,53 euroa) mitään.
 Kaikki oletukset ovat alempana kohdassa "Kuinka luvut on laskettu". Tässä luonnoksessa luvut ovat viitteellisiä.
 
+## Suomen suurimmat veroprosentit ovat vähätuloisilla
+
+Kokoomuksen johtama hallitus laski suurituloisten ylimmän veroprosentin 52 prosenttiin, jotta työnteko kannattaisi. Samaan aikaan lauantaivuoroa tekevän yksinhuoltajan palkasta lähtee 100 prosenttia.
+
+Suomen suurimmat veroprosentit eivät ole johtajilla eivätkä miljonääreillä. Ne ovat vähätuloisilla.
+
+[laskelma: Onko tuen pieneneminen oikeasti veroa?]
+Juridisesti ei. Taloustieteessä puhutaan efektiivisestä marginaaliveroasteesta. Se kertoo, kuinka suuri osa lisätuloista menee veroihin, maksuihin ja pienenevinä tukina.
+Lompakon kannalta on yhdentekevää, lähteekö euro veroina vai tuen pienenemisenä. Esimerkkimme yksinhuoltajan efektiivinen marginaaliveroaste on 100 prosenttia. IT-asiantuntijalla se on noin 51 prosenttia ja suurituloisimmilla enintään noin 52 prosenttia.
+
 ## Miksi tämä on iso ongelma
 
 Sama toistuu, vaikka tunteja tulisi paljon enemmän.
@@ -88,7 +105,9 @@ Esimerkkimme yksinhuoltaja voi tehdä töitä 86 tuntia kuussa, eli yli puolet k
 
 Keikat, osa-aikatyö ja yksittäiset vuorot ovat monelle se tapa, jolla työelämään palataan. Juuri ne ovat nyt rahallisesti arvottomia. Moni tekee niitä silti, koska työ antaa muutakin kuin rahaa. Mutta kun joku kysyy, miksi ihmiset eivät ota pieniä töitä vastaan, vastaus on tässä kuvassa.
 
-## Tilanne on pahentunut
+## Kokoomus puhuu työstä, mutta vie palkan
+
+Kokoomus toistaa, että hyvinvointi syntyy työstä ja että työn pitää aina kannattaa. Olemme samaa mieltä. Siksi on vaikea ymmärtää, miksi kokoomuksen johtama hallitus on vienyt pienistä töistä viimeisetkin eurot.
 
 Vielä vähän aikaa sitten pienistä töistä sai jäädä jotain käteen.
 
@@ -96,7 +115,13 @@ Toimeentulotuessa 20 prosenttia palkasta, enintään 150 euroa kuussa, jätettii
 
 Asumistuessa 300 euroa kuukauden palkasta jätettiin huomiotta. Työttömyysturvassa sai tienata 300 euroa kuussa ilman, että tuki pieneni. Molemmat poistettiin 1.4.2024.
 
-Muutokset olivat osa hallituksen sosiaaliturvaleikkauksia. Jokainen niistä teki pienistä töistä vähemmän kannattavia.
+Kaikki kolme olivat Orpon hallituksen päätöksiä. Jokainen niistä teki pienistä töistä vähemmän kannattavia.
+
+Kokoomuksen sosiaaliturvaministeri Sanni Grahn-Laasonen [sanoi eduskunnassa huhtikuussa 2026](https://www.uusisuomi.fi/uutiset/a/00ca99cf-d465-403a-8335-e0bf254c1a27):
+
+> Järjestelmän pitää olla reilu myös niille, jotka aamulla heräävät pienipalkkaiseen työhön, kun naapuri jää nukkumaan.
+
+Kysymme ministeriltä: onko reilua, että yksinhuoltaja herää lauantaiaamuna pienipalkkaiseen työhön ja hänelle jää siitä käteen 0 euroa? Toimeentulotuen saaja ei voi kieltäytyä työstä ilman, että hänen tukeaan leikataan. Häntä siis pakotetaan töihin, joista ei jää mitään. Juuri tätä politiikkaa kokoomus ajaa, kun se poisti suojaosat ja vastustaa perustuloa.
 
 ## Tähän tarvitaan muutos!
 
