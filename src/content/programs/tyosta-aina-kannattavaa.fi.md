@@ -111,7 +111,7 @@ Kokoomus toistaa, että hyvinvointi syntyy työstä ja että työn pitää aina 
 
 Vielä vähän aikaa sitten pienistä töistä sai jäädä jotain käteen.
 
-Toimeentulotuessa 20 prosenttia palkasta, enintään 150 euroa kuussa, jätettiin huomiotta. Samasta lauantaivuorosta olisi jäänyt käteen vajaat kymmenen euroa. Tämä poistettiin 1.3.2026.
+Toimeentulotuessa viidesosa palkasta sai jäädä käteen, kuitenkin enintään 150 euroa kuussa. Samasta lauantaivuorosta olisi jäänyt käteen vajaat kymmenen euroa. Tämä poistettiin 1.3.2026.
 
 Asumistuessa 300 euroa kuukauden palkasta jätettiin huomiotta. Työttömyysturvassa sai tienata 300 euroa kuussa ilman, että tuki pieneni. Molemmat poistettiin 1.4.2024.
 
