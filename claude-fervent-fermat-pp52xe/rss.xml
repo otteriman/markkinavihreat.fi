@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Markkinavihreät</title>
+    <link>https://markkinavihreat.fi/</link>
+    <description>Markkinavihreiden ehdotukset ja kirjoitukset — markkinaliberaali verkosto Vihreissä.</description>
+    <language>fi</language>
+    <atom:link href="https://markkinavihreat.fi/rss.xml" rel="self" type="application/rss+xml"/>
+    <item>
+      <title>Muutetaan ruoan alv perustuloksi</title>
+      <link>https://markkinavihreat.fi/ehdotukset/ruuan-alv-perustuloksi/</link>
+      <guid isPermaLink="true">https://markkinavihreat.fi/ehdotukset/ruuan-alv-perustuloksi/</guid>
+      <description>Haluamme ottaa käyttöön pienen perustulon kustannusneutraalisti, poistamalla ruoan alennetun arvonlisäverokannan ja maksamalla saadun tuoton takaisin ihmisille kuukausittaisena tulona.</description>
+      <pubDate>Wed, 04 Nov 2026 00:00:00 GMT</pubDate>
+    </item>
+    <item>
+      <title>Palkalla pitää voida vaurastua!</title>
+      <link>https://markkinavihreat.fi/ehdotukset/palkalla-pitaa-voida-vaurastua/</link>
+      <guid isPermaLink="true">https://markkinavihreat.fi/ehdotukset/palkalla-pitaa-voida-vaurastua/</guid>
+      <description>Varallisuustili mahdollistaisi palkkatulojen sijoittamisen ennen verotusta – neljä syytä, miksi tämä rakentaisi reilumman ja dynaamisemman markkinatalouden.</description>
+      <pubDate>Mon, 12 Oct 2026 00:00:00 GMT</pubDate>
+    </item>
+    <item>
+      <title>Vakaa ympäristö tuo investointeja, poukkoilu vie niitä</title>
+      <link>https://markkinavihreat.fi/blogi/2026-09-10/vakaa-ymparisto-tuo-investointeja/</link>
+      <guid isPermaLink="true">https://markkinavihreat.fi/blogi/2026-09-10/vakaa-ymparisto-tuo-investointeja/</guid>
+      <description>Googlen 13 miljardin investointi syntyi toimivalle sähkömarkkinalle. Hintakatto veisi hintasignaalin juuri silloin, kun sitä eniten tarvitaan.</description>
+      <pubDate>Thu, 10 Sep 2026 00:00:00 GMT</pubDate>
+    </item>
+    <item>
+      <title>Kolme keinoa yrittämisen helpottamiseen</title>
+      <link>https://markkinavihreat.fi/ehdotukset/kolme-keinoa-yrittamiseen/</link>
+      <guid isPermaLink="true">https://markkinavihreat.fi/ehdotukset/kolme-keinoa-yrittamiseen/</guid>
+      <description>Yrittäjän päivän avaus – kolme konkreettista keinoa purkaa yrittämisen esteitä markkinamekanismilla: YEL, konkurssin jälkeinen paluu ja ensimmäisen työntekijän palkkaaminen.</description>
+      <pubDate>Fri, 04 Sep 2026 00:00:00 GMT</pubDate>
+    </item>
+    <item>
+      <title>Lisää markkinoita!</title>
+      <link>https://markkinavihreat.fi/ehdotukset/lisaa-markkinoita/</link>
+      <guid isPermaLink="true">https://markkinavihreat.fi/ehdotukset/lisaa-markkinoita/</guid>
+      <description>Viisi ehdotusta, joilla markkinamekanismi valjastetaan ratkaisemaan liikenteen, kaupunkitilan, julkisten hankintojen ja maankäytön ongelmia.</description>
+      <pubDate>Sat, 22 Aug 2026 00:00:00 GMT</pubDate>
+    </item>
+  </channel>
+</rss>
