@@ -64,9 +64,9 @@ Jos saat toimeentulotukea ja teet muutaman tunnin töitä, sinulle ei jää niis
 
 Olet yksinhuoltaja ja saat toimeentulotukea. Perjantaina lähikaupasta soitetaan ja kysytään, pääsisitkö huomenna aamuvuoroon kassalle. Pyydät naapuria katsomaan lasta ja menet.
 
-Neljästä tunnista kertyy palkkaa 52,53 euroa. Eläke- ja työttömyysvakuutusmaksujen jälkeen tilille tulee 48 euroa.
+Kuun lopussa Kela laskee tukesi uudelleen. Koska tienasit, tukesi pienenee täsmälleen saman verran. Tililläsi on yhtä paljon rahaa kuin jos olisit jäänyt kotiin.
 
-Kuun lopussa Kela laskee tukesi uudelleen. Koska tienasit 48 euroa, tukesi pienenee 48 eurolla. Tililläsi on yhtä paljon rahaa kuin jos olisit jäänyt kotiin.
+[kuvaaja: tilinauha]
 
 Kela ei laskenut väärin. Toimeentulotuessa palkka vähennetään tuesta euro eurosta, ja niin on tehty maaliskuusta 2026 lähtien.
 
@@ -83,17 +83,10 @@ IT-asiantuntija tienaa 6 000 euroa kuussa. Kympin lisäpalkasta menee veroihin j
 Yksinhuoltaja saa toimeentulotukea eikä tee muita töitä. Kympistä menee eläke- ja työttömyysvakuutusmaksuihin 0,82 euroa. Loput 9,18 euroa Kela vähentää toimeentulotuesta, joten hänelle jää 0 euroa.
 Yksinhuoltaja maksaa siis kympistään vähemmän veroja ja maksuja kuin IT-asiantuntija. Ero syntyy siitä, että tuki pienenee yhtä paljon kuin nettopalkka kasvaa.
 Omalla palkallaan IT-asiantuntijalle jää yhdestä lisätunnista (37,50 euroa) 18,36 euroa. Yksinhuoltajalle ei jää neljän tunnin vuorosta (52,53 euroa) mitään.
-Kaikki oletukset ovat alempana kohdassa "Kuinka luvut on laskettu". Tässä luonnoksessa luvut ovat viitteellisiä.
-
-## Suomen suurimmat veroprosentit ovat vähätuloisilla
-
-Kokoomuksen johtama hallitus laski suurituloisten ylimmän veroprosentin 52 prosenttiin, jotta työnteko kannattaisi. Samaan aikaan lauantaivuoroa tekevän yksinhuoltajan palkasta lähtee 100 prosenttia.
-
-Suomen suurimmat veroprosentit eivät ole johtajilla eivätkä miljonääreillä. Ne ovat vähätuloisilla.
-
-[laskelma: Onko tuen pieneneminen oikeasti veroa?]
-Juridisesti ei. Taloustieteessä puhutaan efektiivisestä marginaaliveroasteesta. Se kertoo, kuinka suuri osa lisätuloista menee veroihin, maksuihin ja pienenevinä tukina.
-Lompakon kannalta on yhdentekevää, lähteekö euro veroina vai tuen pienenemisenä. Esimerkkimme yksinhuoltajan efektiivinen marginaaliveroaste on 100 prosenttia. IT-asiantuntijalla se on noin 51 prosenttia ja suurituloisimmilla enintään noin 52 prosenttia.
+Oletukset: yksinhuoltaja asuu Tampereella kaksiossa, jonka vuokra on 800 euroa kuussa. Hänellä on yksi alle 10-vuotias lapsi. Lapsen toinen vanhempi ei maksa elatusapua, joten Kela maksaa elatustukea 197,71 euroa kuussa. Lapsilisä yksinhuoltajakorotuksineen on 168,18 euroa.
+Toimeentulotuen perusosat ovat 665,19 euroa (yksinhuoltaja) ja 375,98 euroa (lapsi). Tuesta vähennetään kaikki muut tulot: nettopalkka kokonaan, asumistuki, lapsilisä ja elatustuki. Asumistuki on 70 prosenttia hyväksytyistä asumismenoista (enintään 652 euroa) vähennettynä perusomavastuulla, joka on puolet 1 057 euroa ylittävästä palkasta.
+Palkka on kaupan alan työehtosopimuksen mukainen, 2 101 euroa kuussa eli 13,13 euroa tunnilta. IT-asiantuntijalla ei ole lapsia eikä kirkollisveroa. Verot on laskettu vuoden 2026 veroasteikoilla ja keskimääräisellä kunnallisveroprosentilla 7,57.
+Laskelmassa ei ole mukana Kelan yleistukea. Luvut ovat tässä luonnoksessa viitteellisiä.
 
 ## Miksi tämä on iso ongelma
 
@@ -105,17 +98,21 @@ Esimerkkimme yksinhuoltaja voi tehdä töitä 86 tuntia kuussa, eli yli puolet k
 
 Keikat, osa-aikatyö ja yksittäiset vuorot ovat monelle se tapa, jolla työelämään palataan. Juuri ne ovat nyt rahallisesti arvottomia. Moni tekee niitä silti, koska työ antaa muutakin kuin rahaa. Mutta kun joku kysyy, miksi ihmiset eivät ota pieniä töitä vastaan, vastaus on tässä kuvassa.
 
-## Kokoomus puhuu työstä, mutta vie palkan
+## Suomen suurimmat veroprosentit ovat vähätuloisilla
+
+Kokoomuksen johtama hallitus laski suurituloisten ylimmän veroprosentin 52 prosenttiin, jotta työnteko kannattaisi. Samaan aikaan lauantaivuoroa tekevän yksinhuoltajan palkasta lähtee 100 prosenttia.
+
+Suomen suurimmat veroprosentit eivät ole johtajilla eivätkä miljonääreillä. Ne ovat vähätuloisilla.
+
+[laskelma: Onko tuen pieneneminen oikeasti veroa?]
+Juridisesti ei. Taloustieteessä puhutaan efektiivisestä marginaaliveroasteesta. Se kertoo, kuinka suuri osa lisätuloista menee veroihin, maksuihin ja pienenevinä tukina.
+Lompakon kannalta on yhdentekevää, lähteekö euro veroina vai tuen pienenemisenä. Esimerkkimme yksinhuoltajan efektiivinen marginaaliveroaste on 100 prosenttia. IT-asiantuntijalla se on noin 51 prosenttia ja suurituloisimmilla enintään noin 52 prosenttia.
 
 Kokoomus toistaa, että hyvinvointi syntyy työstä ja että työn pitää aina kannattaa. Olemme samaa mieltä. Siksi on vaikea ymmärtää, miksi kokoomuksen johtama hallitus on vienyt pienistä töistä viimeisetkin eurot.
 
-Vielä vähän aikaa sitten pienistä töistä sai jäädä jotain käteen.
+Vielä vähän aikaa sitten pienistä töistä sai jäädä jotain käteen. Toimeentulotuessa viidesosa palkasta sai jäädä käteen, kuitenkin enintään 150 euroa kuussa, joten samasta lauantaivuorosta olisi jäänyt vajaat kymmenen euroa. Asumistuessa 300 euroa kuukauden palkasta jätettiin huomiotta, ja työttömyysturvassa sai tienata 300 euroa kuussa ilman, että tuki pieneni.
 
-Toimeentulotuessa viidesosa palkasta sai jäädä käteen, kuitenkin enintään 150 euroa kuussa. Samasta lauantaivuorosta olisi jäänyt käteen vajaat kymmenen euroa. Tämä poistettiin 1.3.2026.
-
-Asumistuessa 300 euroa kuukauden palkasta jätettiin huomiotta. Työttömyysturvassa sai tienata 300 euroa kuussa ilman, että tuki pieneni. Molemmat poistettiin 1.4.2024.
-
-Kaikki kolme olivat Orpon hallituksen päätöksiä. Jokainen niistä teki pienistä töistä vähemmän kannattavia.
+Orpon hallitus poisti kaikki kolme: asumistuen ja työttömyysturvan suojaosat 1.4.2024 ja toimeentulotuen ansiotulovähennyksen 1.3.2026.
 
 Kokoomuksen sosiaaliturvaministeri Sanni Grahn-Laasonen [sanoi eduskunnassa huhtikuussa 2026](https://www.uusisuomi.fi/uutiset/a/00ca99cf-d465-403a-8335-e0bf254c1a27):
 
@@ -141,20 +138,6 @@ Siihen asti, kunnes perustulo on käytössä, ansiotulojen suojaosat pitää pal
 
 Markkinavihreiden ehdotus [ruoan alvin muuttamisesta perustuloksi](/ehdotukset/ruuan-alv-perustuloksi/) olisi ensimmäinen askel samaan suuntaan.
 
-## Kuinka luvut on laskettu
-
-Tältä yksinhuoltajan lauantaivuoro näyttää rivi riviltä.
-
-[kuvaaja: tilinauha]
-
-[laskelma: Mihin oletuksiin luvut perustuvat?]
-Yksinhuoltaja asuu Tampereella kaksiossa, jonka vuokra on 800 euroa kuussa. Hänellä on yksi alle 10-vuotias lapsi. Lapsen toinen vanhempi ei maksa elatusapua, joten Kela maksaa elatustukea 197,71 euroa kuussa. Lapsilisä yksinhuoltajakorotuksineen on 168,18 euroa.
-Toimeentulotuen perusosat ovat 665,19 euroa (yksinhuoltaja) ja 375,98 euroa (lapsi). Tuesta vähennetään kaikki muut tulot: nettopalkka kokonaan, asumistuki, lapsilisä ja elatustuki.
-Asumistuki on 70 prosenttia hyväksytyistä asumismenoista (enintään 652 euroa) vähennettynä perusomavastuulla, joka on puolet 1 057 euroa ylittävästä palkasta.
-Palkka on kaupan alan työehtosopimuksen mukainen, 2 101 euroa kuussa eli 13,13 euroa tunnilta.
-IT-asiantuntija tienaa 6 000 euroa kuussa, eikä hänellä ole lapsia tai kirkollisveroa. Verot on laskettu vuoden 2026 veroasteikoilla ja keskimääräisellä kunnallisveroprosentilla 7,57.
-Laskelmassa ei ole mukana Kelan yleistukea. Luvut ovat tässä luonnoksessa viitteellisiä.
-
 ## Työn pitää aina kannattaa
 
 Pienestä työstä ei tarvitse saada paljon. Siitä pitää saada jotain. Jokaisesta tehdystä tunnista pitää jäädä osa käteen, myös silloin, kun saat tukea.
@@ -176,4 +159,4 @@ Laskelma on yksinkertaistettu. Moni toimeentulotuen saaja saa myös Kelan yleist
 Ajantasaista, laskettua perustulomallia ei vielä ole. Siksi kuvan vertailuviiva näyttää, mitä yksinhuoltajalle jäisi, jos jokaisesta eurosta jäisi saman verran kuin IT-asiantuntijalle.
 
 **Mistä luvut ovat?**
-Kelan, Verohallinnon ja kaupan alan työehtosopimuksen vuoden 2026 luvuista. Oletukset löytyvät kohdasta "Kuinka luvut on laskettu". Tässä luonnoksessa luvut ovat viitteellisiä.
+Kelan, Verohallinnon ja kaupan alan työehtosopimuksen vuoden 2026 luvuista. Oletukset löytyvät kolikkokuvan alta kohdasta "Miten luvut on laskettu?". Tässä luonnoksessa luvut ovat viitteellisiä.

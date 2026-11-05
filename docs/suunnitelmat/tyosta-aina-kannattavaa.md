@@ -215,6 +215,11 @@ vasta, kun teksti ja luvut on lyöty lukkoon.
 
 ## 4. Sivun rakenne (luonnos)
 
+> **Päivitetty luonnoksen jälkeen (vaihtoehto A):** tarina ja tilinauha → kolikot (oletukset avattavassa
+> laatikossa) → viivakaavio → "Suomen suurimmat veroprosentit ovat vähätuloisilla" (kaikki kokoomus-aines
+> yhdessä osiossa) → arvot → ratkaisu → kehotus → UKK. Ajantasainen järjestys on sisältötiedostossa
+> `src/content/programs/tyosta-aina-kannattavaa.fi.md`; alla oleva taulukko on alkuperäinen luonnos.
+
 Toteutetaan ehdotuksena `src/content/programs/tyosta-aina-kannattavaa.{fi,sv,en}.md`, aluksi
 `unlisted: true`, kunnes teksti on hyväksytty.
 
