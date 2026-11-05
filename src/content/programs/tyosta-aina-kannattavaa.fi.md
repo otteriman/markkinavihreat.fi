@@ -65,15 +65,18 @@ Kela ei laskenut väärin. Toimeentulotuessa palkka vähennetään tuesta euro e
 
 ## Sama kymppi, eri lopputulos
 
-Verrataan yksinhuoltajaa IT-asiantuntijaan, joka tienaa 6 000 euroa kuussa. Kumpikin tienaa kympin lisää.
+Verrataan yksinhuoltajaa IT-asiantuntijaan, joka tienaa 6 000 euroa kuussa.
 
 [kuvaaja: kymmenen-kolikkoa]
 
-IT-asiantuntija maksaa kympistään enemmän veroja kuin yksinhuoltaja, ja hänelle jää silti melkein viisi euroa. Yksinhuoltajalta menee veroihin ja maksuihin vain noin 80 senttiä. Loput yhdeksän euroa katoavat, koska tuki pienenee.
+IT-asiantuntijalle jää kympistä noin puolet. Yksinhuoltajalle ei jää mitään, koska Kela pienentää hänen tukeaan jokaisella eurolla, jonka hän tienaa.
 
-Ero ei siis johdu verotuksesta. Se johtuu siitä, miten tuki pienenee.
-
-Omalla palkallaan IT-asiantuntijalle jää yhdestä lisätunnista 18 euroa. Yksinhuoltajalle ei jää koko lauantaivuorosta mitään.
+[laskelma: Miten luvut on laskettu?]
+IT-asiantuntija tienaa 6 000 euroa kuussa. Kympin lisäpalkasta menee veroihin ja maksuihin 5,11 euroa, ja hänelle jää 4,89 euroa.
+Yksinhuoltaja saa toimeentulotukea eikä tee muita töitä. Kympistä menee eläke- ja työttömyysvakuutusmaksuihin 0,82 euroa. Loput 9,18 euroa Kela vähentää toimeentulotuesta, joten hänelle jää 0 euroa.
+Yksinhuoltaja maksaa siis kympistään vähemmän veroja ja maksuja kuin IT-asiantuntija. Ero syntyy siitä, että tuki pienenee yhtä paljon kuin nettopalkka kasvaa.
+Omalla palkallaan IT-asiantuntijalle jää yhdestä lisätunnista (37,50 euroa) 18,36 euroa. Yksinhuoltajalle ei jää neljän tunnin vuorosta (52,53 euroa) mitään.
+Kaikki oletukset ovat alempana kohdassa "Kuinka luvut on laskettu". Tässä luonnoksessa luvut ovat viitteellisiä.
 
 ## Miksi tämä on iso ongelma
 

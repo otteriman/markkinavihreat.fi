@@ -1,19 +1,17 @@
 ---
-import {
-  IT_SPECIALIST_HOURLY_WAGE,
-  RETAIL_HOURLY_WAGE,
-  SHIFT_HOURS,
-  shiftSplits,
-  tenEuroSplits,
-  type ExtraPaySplit,
-} from '../../lib/charts/tyonKannattavuus'
-import { formatEuroCents } from '../../lib/format'
+import { tenEuroSplits, type ExtraPaySplit } from '../../lib/charts/tyonKannattavuus'
+import { formatEuro } from '../../lib/format'
 import type { Locale } from '../../lib/content'
 
-// Kuva 1 of the tyosta-aina-kannattavaa draft: ten one-euro coins per person,
-// coloured by where each euro of 10 € extra pay ends up. With motion allowed
-// and JavaScript on, every coin starts out as "yours" and then turns into
-// what it really becomes, coin by coin; without either, the final state shows.
+// Kuva 1 of the tyosta-aina-kannattavaa draft, kept deliberately simple: ten
+// one-euro coins per person, either "yours" (green) or gone (an empty
+// outline), and one whole-euro figure. Where the gone euros go (taxes vs. the
+// benefit cut) and the exact cents live in the "Miten luvut on laskettu?"
+// disclosure in the program text, not here.
+//
+// With motion allowed and JavaScript on, every coin starts out green and the
+// ones that aren't yours empty out one by one; without either, the final
+// state shows.
 //
 // TODO(i18n): the copy is Finnish only while the program is a draft; it
 // moves to src/i18n/ui.ts with sv/en translations once the draft is approved.
@@ -23,106 +21,47 @@ interface Props {
 }
 
 const { locale } = Astro.props
-const euro = (amount: number) => formatEuroCents(amount, locale)
-
-type CoinKind = 'kept' | 'tax' | 'cut'
-
-/** Ten coins: whole euros rounded per share, the benefit cut taking the rest. */
-function coins(split: ExtraPaySplit): CoinKind[] {
-  const kept = Math.round(split.kept)
-  const tax = Math.round(split.taxesAndContributions)
-  const cut = 10 - kept - tax
-  return [
-    ...Array<CoinKind>(kept).fill('kept'),
-    ...Array<CoinKind>(tax).fill('tax'),
-    ...Array<CoinKind>(cut).fill('cut'),
-  ]
-}
 
 const splits = tenEuroSplits()
-const shifts = shiftSplits()
 
 const rows = [
-  {
-    name: 'IT-asiantuntija',
-    detail: '6 000 €/kk',
-    split: splits.itSpecialist,
-  },
-  {
-    name: 'Yksinhuoltaja',
-    detail: 'toimeentulotuella',
-    split: splits.singleParent,
-  },
+  { name: 'IT-asiantuntija', split: splits.itSpecialist },
+  { name: 'Yksinhuoltaja toimeentulotuella', split: splits.singleParent },
 ]
 
-function description(split: ExtraPaySplit): string {
-  return `Sinulle jää ${euro(split.kept)}, verot ja maksut ${euro(split.taxesAndContributions)}, tuki pienenee ${euro(split.benefitCut)}.`
+/** Ten coins, the first `kept` (rounded to whole euros) of them yours. */
+function coins(split: ExtraPaySplit): boolean[] {
+  const kept = Math.round(split.kept)
+  return Array.from({ length: 10 }, (_, i) => i < kept)
 }
 ---
 
 <figure class="my-10" data-coins>
   <figcaption class="mb-8 text-2xl leading-tight font-extrabold sm:text-3xl">
-    Kun tienaat 10 € lisää, paljonko siitä jää sinulle?
+    Kun tienaat kympin lisää, paljonko siitä jää sinulle?
   </figcaption>
 
   <div class="space-y-8">
     {
       rows.map((row) => (
         <div>
-          <div class="mb-3 flex flex-wrap items-baseline justify-between gap-x-4 gap-y-1">
-            <p class="text-lg font-bold">
-              {row.name} <span class="font-normal opacity-70">· {row.detail}</span>
-            </p>
-            <p class="text-3xl font-extrabold tabular-nums">
-              {euro(row.split.kept)} <span class="text-base font-semibold opacity-80">sinulle</span>
-            </p>
+          <div class="mb-3 flex items-baseline justify-between gap-4">
+            <p class="text-lg font-bold">{row.name}</p>
+            <p class="text-4xl font-extrabold tabular-nums">{formatEuro(row.split.kept, locale)}</p>
           </div>
           <ol class="flex gap-1.5 sm:gap-2" aria-hidden="true">
-            {coins(row.split).map((kind, i) => (
-              <li class="coin" data-kind={kind} style={`--i: ${i}`}>
+            {coins(row.split).map((yours, i) => (
+              <li class="coin" data-yours={yours ? '' : undefined} style={`--i: ${i}`}>
                 <span>€</span>
               </li>
             ))}
           </ol>
           <p class="sr-only">
-            {row.name}: {description(row.split)}
+            {row.name}: kympistä jää {formatEuro(row.split.kept, locale)}.
           </p>
         </div>
       ))
     }
-  </div>
-
-  <ul class="mt-6 flex flex-wrap gap-x-6 gap-y-2 text-sm" aria-hidden="true">
-    <li class="flex items-center gap-2"><span class="swatch" data-kind="kept"></span>sinulle</li>
-    <li class="flex items-center gap-2">
-      <span class="swatch" data-kind="tax"></span>verot ja maksut
-    </li>
-    <li class="flex items-center gap-2">
-      <span class="swatch" data-kind="cut"></span>tuki pienenee
-    </li>
-  </ul>
-
-  <div class="mt-10 grid gap-4 sm:grid-cols-2">
-    <div class="rounded-lg border border-current/20 p-5">
-      <p class="mb-1 text-sm font-semibold opacity-80">
-        Yksinhuoltajan {SHIFT_HOURS} tunnin vuoro kaupan kassalla
-      </p>
-      <p class="mb-3 text-sm opacity-70">
-        {SHIFT_HOURS} h × {euro(RETAIL_HOURLY_WAGE)} = {euro(shifts.singleParentShift.extra)}
-      </p>
-      <p class="text-2xl font-extrabold tabular-nums">
-        {euro(shifts.singleParentShift.kept)}
-        <span class="text-base font-semibold">käteen</span>
-      </p>
-    </div>
-    <div class="rounded-lg border border-current/20 p-5">
-      <p class="mb-1 text-sm font-semibold opacity-80">IT-asiantuntijan yksi lisätunti</p>
-      <p class="mb-3 text-sm opacity-70">1 h × {euro(IT_SPECIALIST_HOURLY_WAGE)}</p>
-      <p class="text-2xl font-extrabold tabular-nums">
-        {euro(shifts.itSpecialistHour.kept)}
-        <span class="text-base font-semibold">käteen</span>
-      </p>
-    </div>
   </div>
 </figure>
 
@@ -137,54 +76,34 @@ function description(split: ExtraPaySplit): string {
     justify-content: center;
     font-weight: 800;
     font-size: clamp(0.75rem, 3vw, 1.1rem);
-    border: 2px solid transparent;
+    /* A euro that isn't yours: an empty, dashed outline where a coin was. The
+       outline takes the surrounding text colour, so it reads on any band. */
+    background-color: transparent;
+    border: 2px dashed currentColor;
+    opacity: 0.45;
     transition:
       background-color 450ms ease,
       border-color 450ms ease,
-      color 450ms ease,
-      opacity 450ms ease,
-      transform 450ms ease;
+      opacity 450ms ease;
     transition-delay: calc(var(--i) * 90ms);
   }
-  .coin[data-kind='kept'],
-  .swatch[data-kind='kept'] {
-    background-color: var(--color-vihrea);
-    color: var(--color-metsa);
-  }
-  .coin[data-kind='tax'],
-  .swatch[data-kind='tax'] {
-    background-color: var(--color-harmaa);
-    color: var(--color-kerma);
-  }
-  /* The euro that vanishes: an empty, dashed outline where a coin was. The
-     outline takes the surrounding text colour, so it reads on light and dark bands. */
-  .coin[data-kind='cut'],
-  .swatch[data-kind='cut'] {
-    background-color: transparent;
-    border: 2px dashed;
-    border-color: currentColor;
-    opacity: 0.6;
-  }
-  .coin[data-kind='cut'] span {
+  .coin span {
     visibility: hidden;
   }
-  .swatch {
-    display: inline-block;
-    width: 1rem;
-    height: 1rem;
-    border-radius: 9999px;
-  }
-
-  /* Before the figure scrolls into view, every coin is still "yours". */
+  .coin[data-yours],
   [data-coins].is-armed:not(.is-in) .coin {
     background-color: var(--color-vihrea);
     border-color: transparent;
     color: var(--color-metsa);
     opacity: 1;
-    transition-delay: 0ms;
   }
+  .coin[data-yours] span,
   [data-coins].is-armed:not(.is-in) .coin span {
     visibility: visible;
+  }
+  /* Before the figure scrolls into view, every coin is still "yours". */
+  [data-coins].is-armed:not(.is-in) .coin {
+    transition-delay: 0ms;
   }
 </style>
 
@@ -198,7 +117,7 @@ function description(split: ExtraPaySplit): string {
       const observer = new IntersectionObserver(
         (entries) => {
           if (entries.some((entry) => entry.isIntersecting)) {
-            // A short pause lets the reader see the all-green row first.
+            // A short pause lets the reader see the all-green rows first.
             window.setTimeout(() => figure.classList.add('is-in'), 700)
             observer.disconnect()
           }
