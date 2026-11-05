@@ -264,41 +264,121 @@ vihreat.fi-sivustoa auki tästä ympäristöstä, joten alla oleva perustuu haku
 
 Omaa tavoitetasoa ("jokaisesta eurosta jää aina vähintään X senttiä") ei aseteta tässä vaiheessa.
 
-## 6. Faktapohja (tarkistettava ennen julkaisua)
+## 6. Faktapohja ja laskelmat
 
-Hakujen perusteella koottu, lähteet alla. Kaikki luvut lasketaan ja tarkistetaan uudelleen
-toteutusvaiheessa, ja laskelma dokumentoidaan sivulle.
+Laskelmat ovat koodina tiedostoissa `src/lib/charts/ansiotuloverotus2026.ts` (verot ja maksut) ja
+`src/lib/charts/tyonKannattavuus.ts` (tuet ja esimerkit), testit kansiossa `tests/unit/`. Sivun
+kuvat ja tekstin luvut otetaan suoraan näistä, joten ne eivät voi erota toisistaan.
 
-- **Toimeentulotuen 150 euron ansiotulovähennys poistettiin** täysi-ikäisiltä
-  toimeentulotukiuudistuksessa, Kelan mukaan voimaan 1.3.2026. Ennen sitä osa palkasta (20 %, enintään
-  150 €/kk) jätettiin huomiotta tukea laskettaessa. Nyt **nettopalkka pienentää tukea euro eurosta
-  ensimmäisestä eurosta alkaen** → käteen jää 0 €. _Tarkistetaan päivämäärä (lähteissä mainitaan sekä
-  1.2. että 1.3.2026) ja laista tarkka sanamuoto._
+**Tärkeä rajoite:** kela.fi, vero.fi, veronmaksajat.fi ja valtioneuvosto.fi eivät auenneet siitä
+ympäristöstä, jossa laskelmat tehtiin. Parametrit on koottu hakutuloksista, joissa viitataan näihin
+lähteisiin. Koodissa jokainen epävarma luku on merkitty `TODO(tarkistettava)`. Ne on tarkistettava
+alkuperäisistä lähteistä ennen julkaisua (lista alla).
+
+### 6.1 Tulokset (alustavat)
+
+| Luku                                                         | Yksinhuoltaja       | IT-asiantuntija |
+| ------------------------------------------------------------ | ------------------- | --------------- |
+| **10 € lisää palkkaa: sinulle jää**                          | **0,00 €**          | **4,89 €**      |
+| – verot ja maksut                                            | 0,82 €              | 5,11 €          |
+| – tuki pienenee                                              | 9,18 €              | 0 €             |
+| **Oma esimerkki**                                            | 4 h vuoro = 52,53 € | 1 h = 37,50 €   |
+| – sinulle jää                                                | **0,00 €**          | **18,36 €**     |
+| – verot ja maksut                                            | 4,30 €              | 19,14 €         |
+| – tuki pienenee                                              | 48,22 €             | 0 €             |
+| Sama vuoro ennen 1.3.2026 (150 € ansiotulovähennys voimassa) | 9,64 € jäi käteen   |                 |
+
+Kuva 2 (yksinhuoltaja, kaupan TES-palkka 13,13 €/h):
+
+- **0–96 tuntia kuukaudessa: käteen jää täsmälleen sama summa** (1 841 €/kk ennen vuokraa). Se on
+  noin 60 % kokoaikatyöstä.
+- **Täysi kuukausi (160 h)** tuottaa vain noin **360 €/kk** enemmän kuin nolla tuntia, eli noin
+  **2,25 € tunnilta**.
+- Toimeentulotuelta pois päästyään (yli 96 h) yksinhuoltajalle jää noin 55 % lisäpalkasta, koska
+  asumistuki pienenee 35 senttiä jokaisesta bruttoeurosta.
+- Kohdassa noin 110 h/kk summa jopa laskee hieman (−5,58 €), koska sairausvakuutuksen
+  päivärahamaksu peritään koko vuoden palkasta heti, kun vuositulo ylittää 17 255 €. Tämä on lain
+  mukainen porras. Kuvassa se näkyy pienenä notkahduksena, ja se voidaan mainita laskelmaosiossa.
+
+Kehyksen kannalta tärkeä havainto: **yksinhuoltaja maksaa eurosta vähemmän veroja ja maksuja (8 %)
+kuin IT-asiantuntija (51 %), mutta menettää silti kaiken.** Ongelma on tuen leikkaus, ei vero.
+
+### 6.2 Oletukset
+
+- **Verot 2026:** valtion veroasteikko (12,64 % / 19 % / 30,25 % / 33,25 % / 37,5 %, rajat 22 000,
+  32 600, 40 100 ja 52 100 €), keskimääräinen kunnallisvero 7,57 %, ei kirkollisveroa,
+  sairaanhoitomaksu 1,10 %, työtulovähennys 18 % (enintään 3 430 €, lapsikorotus 105 € × 2
+  yksinhuoltajalle, pienenee 2 % puhtaan ansiotulon välillä 35 000–50 550 €), perusvähennys enintään
+  4 265 € (pienenee 18 %), tulonhankkimisvähennys 750 €, Yle-vero 2,5 % yli 15 150 €:n (enintään
+  163 €). Maksut: työeläkemaksu 7,30 %, työttömyysvakuutusmaksu 0,89 %, päivärahamaksu 0,88 %
+  (vuositulo vähintään 17 255 €). Verot lasketaan vuositasolla olettaen, että joka kuukausi tienataan
+  saman verran.
+- **IT-asiantuntija:** 6 000 €/kk, ei lapsia. Tuntiarvo 6 000 / 160 = 37,50 €. Kirkollisveron
+  jättäminen pois pienentää hänen veroaan, eli se on varovainen valinta meidän väitteemme kannalta.
+- **Yksinhuoltaja:** yksi alle 10-vuotias lapsi, Tampere, kaksion vuokra 800 €/kk (vesi sisältyy).
+  Ei muita työtuloja kuin laskelman tunnit. Elatusvelvollinen ei maksa elatusapua, joten Kela maksaa
+  elatustukea.
+  - Toimeentulotuki: yksinhuoltajan perusosa 665,19 €, lapsen perusosa 65 % × 578,43 € = 375,98 €,
+    vuokra hyväksytään kokonaan. Tuloina huomioidaan nettopalkka kokonaan (ei
+    ansiotulovähennystä 1.3.2026 alkaen), lapsilisä 94,88 € + yksinhuoltajakorotus 73,30 €,
+    elatustuki 197,71 € ja asumistuki.
+  - Asumistuki: 70 % × (hyväksytyt asumismenot enintään 652 € − perusomavastuu), perusomavastuu
+    50 % bruttotuloista, jotka ylittävät 667 + 94 + 296 = 1 057 €/kk. Elatustuki lasketaan tuloksi.
+  - Varhaiskasvatusmaksu: näillä tuloilla 0 € tai toimeentulotuessa huomioitava meno, joten se ei
+    muuta tulosta. _Tarkistetaan tulorajasta._
+- **Kaupan TES:** palkkaryhmä B, 2. palvelusvuosi, muu Suomi, 2 101 €/kk ÷ 160 = 13,13 €/h
+  (palkkataulukko 1.8.2026). 4 tunnin aamuvuoro, ei ilta- tai lauantailisiä.
+
+### 6.3 Tarkistettava ennen julkaisua
+
+Mikään näistä ei muuta pääviestiä (0 € käteen), mutta osa muuttaa Kuva 2:n tasaisen osuuden
+pituutta.
+
+1. Toimeentulotuen ansiotulovähennyksen poiston voimaantulo: Kelan tiedotteen mukaan 1.3.2026
+   (uudistus muuten 1.2.2026).
+2. Perusosat 1.3.2026 alkaen (yksinhuoltaja 665,19 €, yksin asuva 578,43 €) ja alle 10-vuotiaan
+   lapsen prosenttiosuus (65 %).
+3. Lapsilisän yksinhuoltajakorotus 2026 (useimmissa lähteissä 73,30 €, muutamassa muuta).
+4. Asumistuen enimmäisasumismenot Tampereella kahdelle hengelle (652 € vain yhdessä lähteessä) ja
+   se, lasketaanko elatustuki asumistuessa tuloksi.
+5. Kelan toimeentulotuessa hyväksymät kohtuulliset asumismenot Tampereella kahdelle hengelle
+   (800 €:n vuokran pitää mahtua niihin). Uudet kuntakohtaiset rajat tulevat voimaan 1.12.2026.
+6. Kaupan TES: vaativuusluokat korvasivat palkkaryhmät 1.10.2026. Valitaan luokka, johon
+   kassatyö kuuluu, ja sen tuntipalkka.
+7. Verot: työtulovähennyksen pienenemisen rajat (35 000–50 550 €, 2 %), sairaanhoitomaksu (1,10 %,
+   yksi lähde 1,20 %) ja Yle-veron enimmäismäärä (160 vai 163 €).
+8. Lopuksi: lasketaan molemmat esimerkit **Kelan omalla toimeentulotukilaskurilla** ja
+   **Verohallinnon veroprosenttilaskurilla** ja verrataan tuloksia koodin lukuihin.
+
+### 6.4 Muut faktat
+
 - **Yleisen asumistuen 300 euron ansiotulovähennys poistettiin 1.4.2024.** Kelan mukaan tuki pieneni
   useimmilla työtuloja saavilla noin 100 €/kk.
 - **Työttömyysturvan 300 euron suojaosa poistettiin 1.4.2024.** Siitä lähtien jokainen ansaittu euro
   pienentää soviteltua työttömyysetuutta.
-- **IT-asiantuntijan vertailu:** arviolta noin puolet lisätulosta menee veroihin ja maksuihin
-  6 000 €/kk tienaavalla. _Lasketaan tarkasti vuoden 2026 veroasteikoilla (valtion vero, keskimääräinen
-  kunnallisvero, työntekijän eläke-, työttömyysvakuutus- ja sairausvakuutusmaksut,
-  työtulovähennyksen pieneneminen) ja tarkistetaan Verohallinnon veroprosenttilaskurilla._
-- **Esimerkkivuoro:** 4 tunnin aamuvuoro kaupan kassalla kaupan alan TES:n mukaisella
-  tuntipalkalla (noin 14 €/h, eli vähän yli 50 € brutto). _Tarkistetaan voimassa olevan kaupan TES:n
-  palkkataulukosta oikea palkkaryhmä ja tuntipalkka. Aamuvuoro valitaan, jotta ilta- ja
-  lauantailisät eivät sotke esimerkkiä, tai lisät lasketaan mukaan TES:n mukaan._
-- **Yksinhuoltajan toimeentulotuki:** lasketaan yksinhuoltajan perusosalla, ja lapsilisä
-  yksinhuoltajakorotuksineen sekä mahdollinen elatustuki huomioidaan tuloina kuten Kela tekee.
-  Lopputulos (0 € käteen) ei riipu näistä niin kauan kuin tukea vielä maksetaan, mutta ne
-  vaikuttavat siihen, kuinka pitkä Kuva 2:n tasainen osuus on. _Tarkistetaan myös, vaikuttaako
-  varhaiskasvatusmaksu työtuntien lisääntyessä._
-- **Hallituksen yleistuki (HE 112/2025):** hallitus valmistelee etuuksien yhdistämistä yleistueksi.
-  Eduskunnan tietopalvelun muistion (11/2025) mukaan efektiiviset marginaaliveroasteet voivat olla yli
-  70–80 %. _Tarkistetaan uudistuksen tila ja aikataulu – jos se on hyväksytty, avauksen pitää
-  käsitellä myös sitä._
+- **Yleistuki (HE 112/2025)** hyväksyttiin joulukuussa 2025 ja tuli voimaan 1.5.2026. Se korvaa
+  Kelan työttömyysturvan (peruspäiväraha ja työmarkkinatuki), mutta ei toimeentulotukea eikä
+  asumistukea. Avauksen pääesimerkkiin se ei siis vaikuta. Eduskunnan tietopalvelun muistion
+  (11/2025) mukaan efektiiviset marginaaliveroasteet voivat yleistuen kanssa olla yli 70–80 %. Tämän
+  voi mainita, jos halutaan näyttää, että ongelma koskee muitakin kuin toimeentulotuen saajia.
 - **Rajaus:** toimeentulotuki on viimesijainen tuki, ja kun palkka kasvaa tarpeeksi suureksi,
   ihminen pääsee tuelta pois ja työ alkaa kannattaa. Avauksen kärki on siksi _pienissä töissä ja
-  ensimmäisissä tunneissa_ – juuri niissä, joilla töihin paluu yleensä alkaa. Tämä sanotaan sivulla
-  rehellisesti, jotta kriitikko ei voi kaataa viestiä yhdellä vastaesimerkillä.
+  ensimmäisissä tunneissa_, juuri niissä, joilla töihin paluu yleensä alkaa. Tämä sanotaan sivulla
+  rehellisesti, jotta kriitikko ei voi kaataa viestiä yhdellä vastaesimerkillä. Laskelma näyttää
+  kuitenkin, että "pienet työt" tarkoittavat tässä jopa 96 tuntia kuukaudessa.
+
+### 6.5 Perustulon vertailuviiva (avoin)
+
+Kuva 2:n vertailuviivaan tarvitaan vihreiden perustulomallin veroprosentti. Sosiaaliturvaohjelmasta
+(2022) löytyivät vain etuuksien summat (600 € perusosa, asumisosa 100–400 €, lapsikorotus), ei
+rahoittavaa veroastetta. Vaihtoehdot:
+
+- **A.** Selvitetään ohjelman tai sen taustalaskelmien veroaste ja lasketaan viiva sillä.
+- **B.** Vertailuviivana "jos sinulle jäisi samasta eurosta yhtä paljon kuin IT-asiantuntijalle"
+  (noin 49 senttiä eurosta). Viiva ei ole mikään malli vaan suora vertailu Kuva 1:een. Läpinäkyvä
+  ja helppo selittää, mutta ei näytä perustuloa.
+- **C.** Viivana ennen 1.3.2026 voimassa ollut sääntö (150 € ansiotulovähennys). Faktaa ja tukee
+  "tilanne on pahentunut" -osiota, mutta ero on pieni (enintään 150 €/kk).
 
 Lähteitä:
 
@@ -317,6 +397,7 @@ Lähteitä:
 
 1. **Tämä suunnitelma** → keskustellaan ja lyödään lukkoon viesti, esimerkkihenkilöt ja ratkaisut.
 2. **Laskelmat:** laskentamoduuli (`src/lib/charts/…`) yksikkötesteineen, lähteet kommentteihin.
+   _Ensimmäinen versio tehty, ks. kohta 6; tarkistukset kohdassa 6.3 vielä tekemättä._
 3. **Kuvat:** Kuva 1, sitten Kuva 2. Tarkistetaan puhelimen leveydellä ja tummassa teemassa.
 4. **Suomenkielinen teksti** `unlisted: true` -tilassa esikatseluun. Teksti käydään läpi
    kohdan 2 "Ihmisen ääni, ei tekoälyn" -listaa vasten ja luetaan ääneen, ja ihminen editoi sen.
@@ -342,4 +423,7 @@ Päätetty:
 - Kuvat: kolikot pääkuvana, animoitu viivakaavio tilin saldolla, tilinauha laskelmaosioon ja
   someen, "ilmaiseksi"-kehys vain tekstiin. Kehys "sinulle / verot ja maksut / tuki pienenee".
 
-Vielä auki: ei avoimia kysymyksiä tällä hetkellä. Seuraava vaihe on laskelmat (kohta 7, vaihe 2).
+Vielä auki:
+
+1. **Kuva 2:n vertailuviiva:** perustulomallin veroaste, IT-asiantuntijan vertailu vai vanha sääntö
+   (kohta 6.5)?
