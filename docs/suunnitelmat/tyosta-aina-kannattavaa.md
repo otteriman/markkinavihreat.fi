@@ -6,8 +6,12 @@
 ## 1. Mitä avauksella halutaan sanoa
 
 **Ydinviesti yhdellä lauseella:** Jos saat toimeentulotukea ja teet muutaman tunnin töitä, sinulle
-ei jää niistä tunneista mitään. Hyvätuloiselle samasta työstä jää käteen noin puolet. Se on väärin,
-ja me markkinavihreät haluamme korjata sen.
+ei jää niistä tunneista mitään. IT-asiantuntijalle jää jokaisesta lisää tienaamastaan eurosta noin
+puolet. Se on väärin, ja me markkinavihreät haluamme korjata sen.
+
+**Esimerkkihenkilöt** (päätetty): toimeentulotukea saava **yksinhuoltaja**, joka tekee vuoroja
+kaupan kassalla kaupan alan TES-palkalla, ja **IT-asiantuntija**, joka tienaa 6 000 €/kk. Heistä
+puhutaan roolin kautta, ei keksityillä nimillä.
 
 Kolme asiaa, jotka lukijan pitää muistaa sivulta:
 
@@ -33,49 +37,103 @@ Kolme asiaa, jotka lukijan pitää muistaa sivulta:
 - **Lyhyet virkkeet, yksi asia kappaleessa.** Tavoitteena selkokielen lähellä oleva yleiskieli –
   ymmärrettävä ilman taustatietoja, mutta ei lapsellinen.
 - **Lukija on se ihminen, josta puhutaan.** Teksti puhuttelee sinä-muodossa ja on näiden ihmisten
-  puolella: ei syyllistetä tuensaajia eikä hyvätuloisia. Hyvätuloinen on vertailukohta, ei vihollinen
-  ("Sinulle jää käteen vähemmän kuin johtajalle samasta työstä.").
+  puolella. Tuensaajia ei syyllistetä, eikä IT-asiantuntijasta tehdä vihollista: hän on
+  vertailukohta, jolle sama järjestelmä on reilumpi.
 - **Rehellisyys luvuissa.** Jokainen luku perustuu laskelmaan, jonka lähteet näytetään avattavassa
   "Kuinka tämä on laskettu?" -osiossa (sama `[laskelma: …]`-rakenne kuin ruoan alv -ehdotuksessa).
   Kärjistetään viestiä, ei lukuja.
 - **Me-muoto:** "Me markkinavihreät haluamme…", "Meidän mielestämme…".
 
-Esimerkkejä sävystä (luonnoksia, ei lopullista tekstiä):
+### Ihmisen ääni, ei tekoälyn
 
-> Kuvittele, että teet lauantaina neljän tunnin vuoron kaupan kassalla. Palkkaa kertyy 56 euroa.
-> Kun saat toimeentulotukea, Kela pienentää tukeasi täsmälleen saman verran kuin palkkasi kasvoi.
-> Lopputulos: tuntien jälkeen sinulla on tilillä yhtä paljon rahaa kuin jos olisit jäänyt kotiin.
+Teksti ei saa kuulostaa tekoälyn kirjoittamalta. Tekoälyltä kuulostava teksti tuntuu tehdyltä ja
+etäiseltä, ja se syö uskottavuuden juuri siltä viestiltä, jonka pitäisi tuntua aidolta: me olemme
+näiden ihmisten puolella. Lukijan pitää tuntea, että tekstin takana on ihmisiä, jotka ovat
+oikeasti suuttuneet asiasta.
 
-> Tämä ei ole sattumaa, eikä se ole kenenkään tuensaajan vika. Säännöt on kirjoitettu niin.
+**Vältetään nämä tyypilliset tekoälyn maneerit:**
+
+- **"Ei X vaan Y" -vastakkainasettelut** refleksinä ("Kyse ei ole laiskuudesta, vaan
+  järjestelmästä"). Yksi tällainen koko tekstissä riittää, jos sitäkään.
+- **Kolmen sarjat**: kolme adjektiivia, kolme rinnakkaista virkettä, kolme kohdan listat joka
+  väliin. Ihminen luettelee niin monta asiaa kuin on sanottavaa.
+- **Kysymys, johon vastataan heti itse** ("Mitä tämä tarkoittaa käytännössä? Se tarkoittaa…").
+- **Kaksoispistepaljastukset**: "Lopputulos:", "Totuus on tämä:", "Ja tärkein asia:".
+- **Kappaleen lopun yhteenvetolause tai mietelause**, joka toistaa juuri sanotun ("Tämä on
+  kestämätöntä.", "Sellainen on Suomi vuonna 2026."). Kappale saa loppua asiaan.
+- **Korulauseet ja kliseet**: "on aika toimia", "rohkea askel", "yhdessä voimme", "kestävä
+  tulevaisuus", "jokainen ansaitsee", "pohjimmiltaan", "on tärkeää huomata", "aikamme suuri haaste".
+- **Abstraktit ihmisryhmät** kuten "haavoittuvassa asemassa olevat". Puhutaan yksinhuoltajasta, joka
+  tekee lauantaivuoron.
+- **Englannista käännetyn kuuloiset rakenteet**: "X ei ole vain Y", "kun puhutaan X:stä", "matka",
+  "navigoida".
+- **Liika symmetria**: joka kappale saman mittainen ja saman kaavan mukainen, joka osio alkaa
+  samalla tavalla. Ihmisen tekstissä on lyhyitä ja pitkiä kappaleita.
+- **Ajatusviivojen ja lihavointien ylikäyttö.** Lihavoidaan korkeintaan yksi asia osiota kohden.
+- **Liiallinen varovaisuus ja jahkailu** ("voidaan mahdollisesti nähdä", "tietyissä tilanteissa").
+  Kun asia on varma, se sanotaan suoraan. Kun se ei ole, kerrotaan miksi.
+
+**Näin teksti saadaan inhimilliseksi ja samaistuttavaksi:**
+
+- **Yksi ihminen, yksi tilanne, arkiset yksityiskohdat:** perjantain puhelu lähikaupasta, naapuri
+  katsomassa lasta, kuun lopun tiliote. Lukija näkee tilanteen eikä tilastoa.
+- **Tunne saa näkyä.** Turhautuminen ("miksi edes yritän") ja oma suuttumuksemme sanotaan ääneen,
+  mutta ei paisutella.
+- **Rytmi vaihtelee.** Lyhyt virke iskee. Pidempi virke saa kantaa selityksen, jos selitys tarvitsee
+  tilaa.
+- **Sanotaan asia kerran.** Ei toisteta samaa viestiä kolmella eri tavalla.
+- **Puhutaan niin kuin puhuttaisiin ihmiselle kahvipöydässä**: yleiskieltä, mutta ei virastokieltä.
+- **Ihminen kirjoittaa tai editoi lopullisen version.** Luonnokset voi tehdä tekoäly, mutta
+  julkaistava teksti käy läpi ihmisen käsissä ja luetaan ääneen ennen julkaisua. Jos lause
+  kuulostaa ääneen luettuna joltain, mitä kukaan ei sanoisi, se kirjoitetaan uusiksi.
+- **Oikeat äänet:** tekijöiden lainaukset ovat heidän omia sanojaan, ei hiottuja iskulauseita. Jos
+  joku tekijöistä tai heidän tuttavistaan on kokenut tilanteen itse, hänen kertomuksensa (luvalla)
+  on parempi kuin mikään keksitty esimerkki. Mitään kokemusta ei keksitä.
+
+Tarkistuslista ennen julkaisua: käydään teksti läpi yllä olevaa listaa vasten ja luetaan se ääneen.
+
+### Esimerkkejä sävystä
+
+Luonnoksia, ei lopullista tekstiä:
+
+> Olet yksinhuoltaja ja saat toimeentulotukea. Perjantaina lähikaupasta soitetaan ja kysytään,
+> pääsisitkö huomenna aamuvuoroon kassalle. Pyydät naapuria katsomaan lasta ja menet. Neljästä
+> tunnista kertyy palkkaa vähän yli 50 euroa.
+>
+> Kuun lopussa Kela vähentää tuestasi saman summan, jonka vuorosta jäi käteen. Tililläsi on
+> yhtä paljon rahaa kuin jos olisit jäänyt kotiin.
+
+> IT-asiantuntijalle jää jokaisesta lisää tienaamastaan kympistä noin viisi euroa. Yksinhuoltajalle
+> ei jää mitään. Näin on, koska säännöt on kirjoitettu niin.
 
 ## 3. Miten ongelma visualisoidaan
 
 Pääperiaate: **lukijan pitää ymmärtää ongelma kuvasta ennen kuin hän lukee tekstiä.** Kaksi
 visualisointia, joista ensimmäinen on pakollinen ja toinen vahvistaa sitä.
 
-### Kuva 1: "Sama työ, sama palkka – eri lopputulos" (pääkuva, heti ingressin jälkeen)
+### Kuva 1: "Kun tienaat kympin lisää, paljonko siitä jää sinulle?" (pääkuva, heti ingressin jälkeen)
 
-Kaksi henkilöä rinnakkain. Molemmat tekevät **saman 4 tunnin vuoron samalla tuntipalkalla**, eli
-ansaitsevat saman summan. Kummallekin piirretään palkki, joka jakautuu kahteen osaan:
+Kaksi ihmistä rinnakkain: yksinhuoltaja ja IT-asiantuntija. Kumpikin tienaa **saman 10 euroa
+lisää**. Kummallekin piirretään palkki, joka jakautuu kahteen osaan:
 
 ```
-                     Palkka 56 €
-Hyvätuloinen     [██████████████|░░░░░░░░░░░░░░]   jää käteen ~28 €
-                  käteen          verot
+                       10 € lisää palkkaa
+IT-asiantuntija    [██████████████|░░░░░░░░░░░░░░]   sinulle jää ~5 €
+                    sinulle         verot ja maksut
 
-Toimeentulo-     [░░░░░░░░░░░░░░░░░░░░░░░░░░░░░]   jää käteen 0 €
-tuen saaja        verot + tuen pieneneminen
+Yksinhuoltaja,     [░░░░░░░░░░░░░░░░░░░░░░░░░░░░░]   sinulle jää 0 €
+toimeentulotuki     verot ja maksut + tuki pienenee
 ```
 
-- Iso numero kummankin kohdalla: **"Jää käteen: 28 €"** ja **"Jää käteen: 0 €"**.
-- Värit: "sinulle" vihreällä (sivuston korostusväri), "menee muualle" harmaalla. Pienituloisen
-  palkki on kokonaan harmaa – se on koko viesti.
-- Sama luku muotoiltuna lauseeksi kuvan alla: _"Samasta työstä hyvätuloiselle jää noin puolet,
-  toimeentulotuen saajalle ei mitään."_
-- Vertailu tehdään tarkoituksella samalla tuntipalkalla, jotta ero johtuu vain tukijärjestelmästä,
-  ei palkasta. Lisäksi voidaan näyttää hyvätuloisen oma, isompi tuntipalkka (esim. 40 €/h, josta jää
-  ~20 €), jolloin ero on vielä räikeämpi: _hänelle jää yhdestä tunnista enemmän kuin
-  toimeentulotuen saajalle koko päivästä._
+- Iso numero kummankin kohdalla: **"Sinulle jää: ~5 €"** ja **"Sinulle jää: 0 €"**.
+- Värit: "sinulle" sivuston korostusvärillä, "menee muualle" harmaalla. Yksinhuoltajan palkki on
+  kokonaan harmaa, ja siinä on koko viesti.
+- Kympin vertailu on reilu, koska ero johtuu vain säännöistä, ei palkkatasosta.
+- Toinen, konkreettisempi rivi samaan kuvaan tai heti sen alle, kummankin omalla palkalla:
+  yksinhuoltajan **4 tunnin vuoro** kaupan TES-palkalla → 0 € käteen; IT-asiantuntijan **yksi
+  lisätunti** 6 000 €/kk palkalla (~37 €/h) → noin 18 € käteen. _IT-asiantuntijalle jää yhdestä
+  tunnista enemmän kuin yksinhuoltajalle koko lauantaivuorosta._ (Luvut lasketaan tarkasti, ks.
+  kohta 6.)
 
 Toteutus: uusi `src/components/charts/…Chart.astro` + laskentamoduuli `src/lib/charts/…ts`, samaan
 tapaan kuin `RuokaostostukiAlvChart`. Upotetaan tekstiin `[kuvaaja: …]`-merkinnällä. Staattinen
@@ -84,7 +142,9 @@ SVG, toimii ilman JavaScriptiä, saavutettava (`<title>`/`<desc>`), kolmella kie
 ### Kuva 2: "Tee 0 tai 40 tuntia kuussa – käteen jää sama" (viivakaavio)
 
 - Vaaka-akselilla työtunnit kuukaudessa (0–160), pystyakselilla rahaa käytettävissä kuukaudessa.
-- Toimeentulotuen saajan viiva on **täysin vaakasuora** pitkän matkaa: tunteja tulee lisää, mutta
+- Lasketaan yksinhuoltajalle, jolla on yksi lapsi (lapsen ikä ja asuinkunta päätetään laskelmaa
+  tehdessä).
+- Yksinhuoltajan viiva on **täysin vaakasuora** pitkän matkaa: tunteja tulee lisää, mutta
   rahaa ei. Vasta kun palkka ylittää tuen tason, viiva alkaa nousta.
 - Vertailuksi viiva, jossa jokaisesta tunnista jää aina osa käteen (perustulomallin mukaan
   laskettuna) – se nousee heti ensimmäisestä tunnista.
@@ -106,16 +166,22 @@ Toteutetaan ehdotuksena `src/content/programs/tyosta-aina-kannattavaa.{fi,sv,en}
 
 | Osio                                   | Sisältö                                                                                                                                                                                                                                  |
 | -------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| **Hero**                               | Yläotsake esim. "Markkinavihreä avaus". Otsikko "Tehdään työstä / _aina_ kannattavaa" (ks. avoimet kysymykset: kursiivi vs. korostusväri).                                                                                               |
+| **Hero**                               | Yläotsake esim. "Markkinavihreä avaus". Otsikko "Tehdään työstä _aina_ kannattavaa", jossa sana **aina** sivuston korostusvärillä (ks. toteutushuomio alla).                                                                             |
 | **Ingressi**                           | 2–3 virkettä: Suomessa on ihmisiä, joille työ ei kannata lainkaan. Se on väärin. Me haluamme korjata sen.                                                                                                                                |
-| **Kuva 1**                             | Sama työ, sama palkka – eri lopputulos.                                                                                                                                                                                                  |
+| **Kuva 1**                             | Kun tienaat kympin lisää, paljonko siitä jää sinulle?                                                                                                                                                                                    |
 | **Mistä on kyse**                      | Selitys arkikielellä: toimeentulotuki pienenee joka eurolla, jonka ansaitset. Siksi muutaman tunnin työ ei näy lompakossa. Laskelma avattavana.                                                                                          |
 | **Miksi tämä on iso ongelma**          | Pienet työt ovat usein ensimmäinen askel työelämään: keikka, osa-aikatyö, kesätyö. Juuri ne ensimmäiset askeleet ovat nyt arvottomia. Kuva 2 tähän.                                                                                      |
 | **Tilanne on pahentunut**              | Ansiotulojen suojaosat ja vähennykset on viime vuosina poistettu (ks. faktat alla). Ennen pieni osa palkasta sai jäädä käteen; nyt ei jää mitään.                                                                                        |
 | **Me olemme näiden ihmisten puolella** | Arvopohja: työ on paras tie parempaan elämään. Jokaisella pitää olla mahdollisuus parantaa asemaansa omalla työllään, jos niin haluaa. Markkinaliberaali perustelu: kun työ kannattaa, ihmiset tekevät sitä – ilman pakkoa ja valvontaa. |
 | **Ratkaisu**                           | Perustulo + muut korjaukset (ks. kohta 5).                                                                                                                                                                                               |
 | **Usein kysytyt kysymykset**           | Esim. "Eikö tuen pitäisikin pienentyä, kun tienaa?" (Kyllä – mutta vähitellen, ei euro eurosta.) "Eikö tämä ole kallista?" "Mitä vihreät ovat aiemmin esittäneet?" "Miten tämä liittyy ruoan alv -ehdotukseen?"                          |
-| **Tekijät / lainaukset**               | Kuten muissa ehdotuksissa (`creators` tai `citations`).                                                                                                                                                                                  |
+| **Tekijät / lainaukset**               | Kuten muissa ehdotuksissa (`creators` tai `citations`). Nimet päätetään myöhemmin.                                                                                                                                                       |
+
+**Toteutushuomio otsikosta:** nykyinen hero värittää aina koko viimeisen rivin
+(`heroLines`-kentän viimeinen alkio), ja OG-kuva toimii samoin. Yksittäisen sanan korostus vaatii
+pienen muutoksen: `heroLines`-riveihin sallitaan merkintä `*aina*`, joka piirretään korostusvärillä
+sekä sivulla että OG-kuvassa. Muiden ehdotusten otsikot eivät muutu, koska ilman merkintää toimitaan
+kuten ennenkin.
 
 ## 5. Ratkaisut, joita vihreät ovat esittäneet
 
@@ -145,9 +211,7 @@ vihreat.fi-sivustoa auki tästä ympäristöstä, joten alla oleva perustuu haku
    kustannusneutraali ensiaskel kohti perustuloa. Mainitaan, mutta ei tehdä tästä avauksesta
    alv-avausta.
 
-Avoin kysymys: haluammeko esittää myös jotain omaa, markkinavihreää lisää (esim. tavoitetaso:
-"jokaisesta ansaitusta eurosta jää aina vähintään X senttiä käteen")? Selkeä numero olisi hyvä
-iskulause, mutta sen pitää perustua laskelmaan.
+Omaa tavoitetasoa ("jokaisesta eurosta jää aina vähintään X senttiä") ei aseteta tässä vaiheessa.
 
 ## 6. Faktapohja (tarkistettava ennen julkaisua)
 
@@ -163,12 +227,19 @@ toteutusvaiheessa, ja laskelma dokumentoidaan sivulle.
   useimmilla työtuloja saavilla noin 100 €/kk.
 - **Työttömyysturvan 300 euron suojaosa poistettiin 1.4.2024.** Siitä lähtien jokainen ansaittu euro
   pienentää soviteltua työttömyysetuutta.
-- **Hyvätuloisen vertailu:** arviolta noin puolet lisätulosta menee veroihin ja maksuihin esim.
+- **IT-asiantuntijan vertailu:** arviolta noin puolet lisätulosta menee veroihin ja maksuihin
   6 000 €/kk tienaavalla. _Lasketaan tarkasti vuoden 2026 veroasteikoilla (valtion vero, keskimääräinen
   kunnallisvero, työntekijän eläke-, työttömyysvakuutus- ja sairausvakuutusmaksut,
   työtulovähennyksen pieneneminen) ja tarkistetaan Verohallinnon veroprosenttilaskurilla._
-- **Esimerkkivuoro:** 4 h × 14 €/h = 56 € brutto. _Tuntipalkka valitaan todellisen
-  työehtosopimuksen alimman palkan mukaan (esim. kaupan ala), lähde mainitaan._
+- **Esimerkkivuoro:** 4 tunnin aamuvuoro kaupan kassalla kaupan alan TES:n mukaisella
+  tuntipalkalla (noin 14 €/h, eli vähän yli 50 € brutto). _Tarkistetaan voimassa olevan kaupan TES:n
+  palkkataulukosta oikea palkkaryhmä ja tuntipalkka. Aamuvuoro valitaan, jotta ilta- ja
+  lauantailisät eivät sotke esimerkkiä, tai lisät lasketaan mukaan TES:n mukaan._
+- **Yksinhuoltajan toimeentulotuki:** lasketaan yksinhuoltajan perusosalla, ja lapsilisä
+  yksinhuoltajakorotuksineen sekä mahdollinen elatustuki huomioidaan tuloina kuten Kela tekee.
+  Lopputulos (0 € käteen) ei riipu näistä niin kauan kuin tukea vielä maksetaan, mutta ne
+  vaikuttavat siihen, kuinka pitkä Kuva 2:n tasainen osuus on. _Tarkistetaan myös, vaikuttaako
+  varhaiskasvatusmaksu työtuntien lisääntyessä._
 - **Hallituksen yleistuki (HE 112/2025):** hallitus valmistelee etuuksien yhdistämistä yleistueksi.
   Eduskunnan tietopalvelun muistion (11/2025) mukaan efektiiviset marginaaliveroasteet voivat olla yli
   70–80 %. _Tarkistetaan uudistuksen tila ja aikataulu – jos se on hyväksytty, avauksen pitää
@@ -196,23 +267,28 @@ Lähteitä:
 1. **Tämä suunnitelma** → keskustellaan ja lyödään lukkoon viesti, esimerkkihenkilöt ja ratkaisut.
 2. **Laskelmat:** laskentamoduuli (`src/lib/charts/…`) yksikkötesteineen, lähteet kommentteihin.
 3. **Kuvat:** Kuva 1, sitten Kuva 2. Tarkistetaan puhelimen leveydellä ja tummassa teemassa.
-4. **Suomenkielinen teksti** `unlisted: true` -tilassa esikatseluun.
+4. **Suomenkielinen teksti** `unlisted: true` -tilassa esikatseluun. Teksti käydään läpi
+   kohdan 2 "Ihmisen ääni, ei tekoälyn" -listaa vasten ja luetaan ääneen, ja ihminen editoi sen.
 5. **Ruotsin- ja englanninkieliset versiot** (pakollisia jokaiselle sisällölle). Käännökset
    tarkistuttaa ihminen, joka osaa kielen.
 6. **Somekarusellin kuvat** ja OG-kuva.
 7. **PR ja ihmisen tekemä katselmointi**, sen jälkeen `unlisted` pois.
 
-## 8. Avoimet kysymykset sinulle
+## 8. Päätökset ja avoimet kysymykset
 
-1. **Esimerkkihenkilöt:** riittääkö "toimeentulotuen saaja" ja "hyvätuloinen", vai annetaanko
-   heille nimet ja ammatit (esim. "Sanna, kaupan kassa" ja "Mikko, IT-johtaja")? Nimet tekevät
-   tarinasta helpomman, mutta keksityt henkilöt pitää merkitä selvästi esimerkeiksi.
-2. **Hyvätuloisen tulotaso:** onko 6 000 €/kk hyvä "ylempi keskiluokka"?
-3. **Tuntipalkka:** käytetäänkö kaupan alan TES-palkkaa vai jotain muuta?
-4. **Otsikon korostus:** sana "aina" kursiivilla vai sivuston korostusvärillä (hero-otsikon viimeinen
-   rivi on jo korostusvärillä: "Tehdään työstä / **aina kannattavaa**")?
-5. **Yläotsake:** "Markkinavihreä avaus", "Markkinavihreät vaativat" vai jokin muu?
-6. **Tekijät:** keiden nimissä avaus julkaistaan, ja tuleeko siihen lainauksia?
-7. **Kuva 2:n liukusäädin:** tehdäänkö interaktiivinen versio vai riittääkö staattinen kuva?
-8. **Oma tavoitetaso:** asetetaanko konkreettinen lupaus ("jokaisesta eurosta jää aina vähintään X
-   senttiä")?
+Päätetty:
+
+- Esimerkkihenkilöt: toimeentulotukea saava yksinhuoltaja ja IT-asiantuntija.
+- IT-asiantuntijan tulotaso: 6 000 €/kk.
+- Tuntipalkka: kaupan alan TES.
+- Otsikon sana "aina" sivuston korostusvärillä.
+- Tekijöiden nimet päätetään myöhemmin.
+- Omaa tavoitetasoa ei aseteta vielä.
+- Teksti kirjoitetaan inhimilliseksi ja vältetään tekoälyn maneerit (kohta 2).
+
+Vielä auki:
+
+1. **Yläotsake:** "Markkinavihreä avaus", "Markkinavihreät vaativat" vai jokin muu?
+2. **Kuva 2:n liukusäädin:** tehdäänkö interaktiivinen versio vai riittääkö staattinen kuva?
+3. **Tekijöiden lainaukset:** tuleeko avaukseen lainauksia, ja löytyykö joku, joka voi kertoa
+   omasta kokemuksestaan?
