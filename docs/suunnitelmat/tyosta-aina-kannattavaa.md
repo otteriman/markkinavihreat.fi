@@ -149,9 +149,8 @@ SVG, toimii ilman JavaScriptiä, saavutettava (`<title>`/`<desc>`), kolmella kie
 - Vertailuksi viiva, jossa jokaisesta tunnista jää aina osa käteen (perustulomallin mukaan
   laskettuna) – se nousee heti ensimmäisestä tunnista.
 - Tasainen osuus nimetään kuvassa: **"Nämä tunnit tehdään ilmaiseksi"**.
-- Mahdollinen lisä: liukusäädin "Montako tuntia teet kuussa?", joka näyttää molempien mallien
-  luvut. Tämä vaatii JavaScriptiä, joten perusversio on staattinen ja säädin on lisäkerros. Päätetään
-  myöhemmin, tarvitaanko säädintä.
+- Ei liukusäädintä. Kaavio voi olla animoitu: viivat piirtyvät, kun kaavio tulee näkyviin. Ilman
+  JavaScriptiä ja `prefers-reduced-motion`-asetuksella näytetään valmis, staattinen kuva.
 
 ### Somekuvat
 
@@ -166,7 +165,7 @@ Toteutetaan ehdotuksena `src/content/programs/tyosta-aina-kannattavaa.{fi,sv,en}
 
 | Osio                                   | Sisältö                                                                                                                                                                                                                                  |
 | -------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| **Hero**                               | Yläotsake esim. "Markkinavihreä avaus". Otsikko "Tehdään työstä _aina_ kannattavaa", jossa sana **aina** sivuston korostusvärillä (ks. toteutushuomio alla).                                                                             |
+| **Hero**                               | Yläotsake "Markkinavihreä tavoite". Otsikko "Tehdään työstä _aina_ kannattavaa", jossa sana **aina** sivuston korostusvärillä (ks. toteutushuomio alla).                                                                                 |
 | **Ingressi**                           | 2–3 virkettä: Suomessa on ihmisiä, joille työ ei kannata lainkaan. Se on väärin. Me haluamme korjata sen.                                                                                                                                |
 | **Kuva 1**                             | Kun tienaat kympin lisää, paljonko siitä jää sinulle?                                                                                                                                                                                    |
 | **Mistä on kyse**                      | Selitys arkikielellä: toimeentulotuki pienenee joka eurolla, jonka ansaitset. Siksi muutaman tunnin työ ei näy lompakossa. Laskelma avattavana.                                                                                          |
@@ -175,7 +174,7 @@ Toteutetaan ehdotuksena `src/content/programs/tyosta-aina-kannattavaa.{fi,sv,en}
 | **Me olemme näiden ihmisten puolella** | Arvopohja: työ on paras tie parempaan elämään. Jokaisella pitää olla mahdollisuus parantaa asemaansa omalla työllään, jos niin haluaa. Markkinaliberaali perustelu: kun työ kannattaa, ihmiset tekevät sitä – ilman pakkoa ja valvontaa. |
 | **Ratkaisu**                           | Perustulo + muut korjaukset (ks. kohta 5).                                                                                                                                                                                               |
 | **Usein kysytyt kysymykset**           | Esim. "Eikö tuen pitäisikin pienentyä, kun tienaa?" (Kyllä – mutta vähitellen, ei euro eurosta.) "Eikö tämä ole kallista?" "Mitä vihreät ovat aiemmin esittäneet?" "Miten tämä liittyy ruoan alv -ehdotukseen?"                          |
-| **Tekijät / lainaukset**               | Kuten muissa ehdotuksissa (`creators` tai `citations`). Nimet päätetään myöhemmin.                                                                                                                                                       |
+| **Tekijät / lainaukset**               | Tekijät (`creators`) kuten muissa ehdotuksissa, nimet päätetään myöhemmin. Ei lainauksia toistaiseksi.                                                                                                                                   |
 
 **Toteutushuomio otsikosta:** nykyinen hero värittää aina koko viimeisen rivin
 (`heroLines`-kentän viimeinen alkio), ja OG-kuva toimii samoin. Yksittäisen sanan korostus vaatii
@@ -285,10 +284,11 @@ Päätetty:
 - Tekijöiden nimet päätetään myöhemmin.
 - Omaa tavoitetasoa ei aseteta vielä.
 - Teksti kirjoitetaan inhimilliseksi ja vältetään tekoälyn maneerit (kohta 2).
+- Yläotsake: "Markkinavihreä tavoite".
+- Kuva 2: ei liukusäädintä, animoitu kaavio sallittu.
+- Ei lainauksia toistaiseksi.
 
 Vielä auki:
 
-1. **Yläotsake:** "Markkinavihreä avaus", "Markkinavihreät vaativat" vai jokin muu?
-2. **Kuva 2:n liukusäädin:** tehdäänkö interaktiivinen versio vai riittääkö staattinen kuva?
-3. **Tekijöiden lainaukset:** tuleeko avaukseen lainauksia, ja löytyykö joku, joka voi kertoa
-   omasta kokemuksestaan?
+1. **Kuvien kehystys:** miten palkan jakautuminen näytetään (ks. keskustelu: "sinä vs. valtio",
+   kolikot, tunnit, tilinauha).
