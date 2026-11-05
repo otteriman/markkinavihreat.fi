@@ -167,7 +167,9 @@ Osioon "Miksi tämä on iso ongelma". Osoittaa, ettei kyse ole yhdestä vuorosta
   tehdessä).
 - Yksinhuoltajan viiva on **täysin vaakasuora** pitkän matkaa: tunteja tulee lisää, mutta rahaa ei.
   Vasta kun palkka ylittää tuen tason, viiva alkaa nousta.
-- Vertailuviiva perustulomallin mukaan: nousee heti ensimmäisestä tunnista.
+- Vertailuviiva: _"Jos sinulle jäisi samasta eurosta yhtä paljon kuin IT-asiantuntijalle"_ (noin 49
+  senttiä eurosta). Nousee heti ensimmäisestä tunnista. Ajantasaista, laskettua perustulomallia ei
+  ole, joten viiva on suora vertailu Kuva 1:een eikä mikään malli, ja se sanotaan kuvassa.
 - Animaatio: viivat piirtyvät vasemmalta oikealle, ja laskuri näyttää tunnit (10, 20, 30…) ja
   käteen jäävän summan, joka pysyy samana. Ei liukusäädintä.
 - **Lopputilanne tilin saldona:** kaksi tiliotetta rinnakkain, "Jäit kotiin: X €" ja "Teit neljä
@@ -367,31 +369,15 @@ pituutta.
   rehellisesti, jotta kriitikko ei voi kaataa viestiä yhdellä vastaesimerkillä. Laskelma näyttää
   kuitenkin, että "pienet työt" tarkoittavat tässä jopa 96 tuntia kuukaudessa.
 
-### 6.5 Perustulon vertailuviiva (avoin)
+### 6.5 Kuva 2:n vertailuviiva (päätetty)
 
-Kuva 2:n vertailuviivaan tarvitaan vihreiden perustulomallin veroprosentti. Sosiaaliturvaohjelmasta
-(2022) löytyivät vain etuuksien summat (600 € perusosa, asumisosa 100–400 €, lapsikorotus), ei
-rahoittavaa veroastetta. Vaihtoehdot:
+Ajantasaista perustulomallia laskelmineen ei ole, joten vertailuviivana käytetään vaihtoehtoa B:
+_"jos sinulle jäisi samasta eurosta yhtä paljon kuin IT-asiantuntijalle"_ (noin 49 senttiä eurosta,
+`sameShareAsItSpecialistCurve()`). 160 tunnin kuukaudesta yksinhuoltajalle jäisi silloin noin
+1 030 € enemmän kuin nollasta tunnista, kun nyt jää noin 360 €.
 
-- **A.** Selvitetään ohjelman tai sen taustalaskelmien veroaste ja lasketaan viiva sillä.
-- **B.** Vertailuviivana "jos sinulle jäisi samasta eurosta yhtä paljon kuin IT-asiantuntijalle"
-  (noin 49 senttiä eurosta). Viiva ei ole mikään malli vaan suora vertailu Kuva 1:een. Läpinäkyvä
-  ja helppo selittää, mutta ei näytä perustuloa.
-- **C.** Viivana ennen 1.3.2026 voimassa ollut sääntö (150 € ansiotulovähennys). Faktaa ja tukee
-  "tilanne on pahentunut" -osiota, mutta ero on pieni (enintään 150 €/kk).
-
-Lähteitä:
-
-- Kela: [Toimeentulotuki uudistuu 2026 (esitysmateriaali)](https://www.kela.fi/documents/d/guest/esitysmateriaali_toimeentulotuen-uudistus_kelafi)
-- Kela: [Apua asiakasohjaukseen, kun toimeentulotuki muuttuu 2026](https://www.kela.fi/ajankohtaista/apua-asiakasohjaukseen-kun-toimeentulotuki-muuttuu-2026)
-- STT/Kela: [Toimeentulotuen uudistus voimaan](https://www.sttinfo.fi/tiedote/71766190/toimeentulotuen-uudistus-voimaan-muutokset-nakyvat-asiakkaiden-elamassa-lahikuukausina?publisherId=69820426&lang=fi)
-- Valtioneuvosto: [Toimeentulotuen kokonaisuudistusta valmistelevan työryhmän muistio](https://valtioneuvosto.fi/-/1271139/toimeentulotuen-kokonaisuudistusta-valmistelevan-tyoryhman-muistio-julkaistu)
-- Kela: [Yleinen asumistuki pienenee vuonna 2024…](https://www.kela.fi/ajankohtaista/yleinen-asumistuki-pienenee-vuonna-2024-ja-sen-maksaminen-omistusasuntoihin-paattyy-vuonna-2025)
-- Kela: [Sosiaaliturvaan on tulossa monia muutoksia vuodelle 2024](https://www.kela.fi/ajankohtaista/sosiaaliturvaan-on-tulossa-monia-muutoksia-vuodelle-2024)
-- Eduskunnan tietopalvelu: [muistio 20250569A (20.11.2025)](https://www.sdp.fi/app/uploads/sites/2/2025/11/sdp_vb_tah20250569a.pdf)
-- Vihreät: [Kaikkien sosiaaliturva – vihreiden sosiaaliturvaohjelma (2022, PDF)](https://www.vihreat.fi/wp-content/uploads/2022/02/Sosiaaliturvaohjelma2022.pdf)
-- Vihreät: [Vihreä perustulomalli (2014)](https://www.vihreat.fi/ohjelmat/perustulomalli2014/)
-- Vihreät: [Vaihtoehtobudjetin laskelmat (2023, PDF)](https://www.vihreat.fi/wp-content/uploads/2023/11/VIHR_VB_20230662A.pdf)
+Perustulo esitetään tekstissä ratkaisuna vihreiden ohjelman pohjalta, mutta siitä ei piirretä
+laskettua viivaa.
 
 ## 7. Toteutusvaiheet
 
@@ -422,8 +408,7 @@ Päätetty:
 - Ei lainauksia toistaiseksi.
 - Kuvat: kolikot pääkuvana, animoitu viivakaavio tilin saldolla, tilinauha laskelmaosioon ja
   someen, "ilmaiseksi"-kehys vain tekstiin. Kehys "sinulle / verot ja maksut / tuki pienenee".
+- Kuva 2:n vertailuviiva: "jos sinulle jäisi samasta eurosta yhtä paljon kuin IT-asiantuntijalle"
+  (kohta 6.5).
 
-Vielä auki:
-
-1. **Kuva 2:n vertailuviiva:** perustulomallin veroaste, IT-asiantuntijan vertailu vai vanha sääntö
-   (kohta 6.5)?
+Vielä auki: ei avoimia kysymyksiä. Seuraavaksi kohdan 6.3 tarkistukset ja kuvat (kohta 7, vaihe 3).
