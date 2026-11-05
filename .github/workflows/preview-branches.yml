@@ -4,20 +4,21 @@ name: Branch previews (GitHub Pages)
 #
 #   https://<owner>.github.io/<repo>/<branch>/
 #
-# (slashes in the branch name become dashes, so `claude/foo` is served at
-# `.../claude-foo/`). Several branches stay live side by side, and the root
-# lists them. Production still deploys to Cloudflare; this is preview-only.
+# (characters other than letters, digits, ".", "_" and "-" become dashes, so
+# `claude/foo` is served at `.../claude-foo/`). Several branches stay live side
+# by side, and the root lists them. Production still deploys to Cloudflare;
+# this is preview-only.
 #
-# Opt-in per repository, because the upstream repo doesn't use it (its
-# github-pages environment only allows main, which is why the earlier
-# single-preview workflow was removed in 679f5d6). To turn it on:
-#   1. Settings → Secrets and variables → Actions → Variables:
-#      add PAGES_PREVIEW = true
-#   2. Push any branch once, so the gh-pages branch gets created.
-#   3. Settings → Pages → Source: "Deploy from a branch", gh-pages, / (root).
+# How: each branch's build is committed into its own directory on the
+# gh-pages branch, which only stores the previews; the whole gh-pages tree is
+# then deployed with actions/deploy-pages. Pages' source must be "GitHub
+# Actions", and every branch to preview must be allowed in the github-pages
+# environment's deployment branch rules (Settings → Environments →
+# github-pages), e.g. with the pattern `claude/*`.
 #
-# The workflow pushes built files to the gh-pages branch instead of using
-# actions/deploy-pages, so it needs no github-pages environment at all.
+# Runs only in otteriman's repository: the upstream repo's github-pages
+# environment allows main alone, which is why its earlier single-preview
+# workflow was removed in 679f5d6.
 on:
   push:
     branches-ignore: [main, gh-pages]
@@ -26,6 +27,8 @@ on:
 
 permissions:
   contents: write
+  pages: write
+  id-token: write
 
 # Every run commits to the same gh-pages branch, so runs queue up rather than
 # race; none is cancelled, or a branch's latest push could go unpublished.
@@ -34,27 +37,39 @@ concurrency:
   cancel-in-progress: false
 
 jobs:
-  publish:
-    if: vars.PAGES_PREVIEW == 'true' && github.event_name != 'delete'
+  update:
+    if: >-
+      github.repository_owner == 'otteriman' &&
+      (github.event_name != 'delete' || github.event.ref_type == 'branch')
     runs-on: ubuntu-latest
+    outputs:
+      slug: ${{ steps.slug.outputs.slug }}
     steps:
+      # On `delete`, GitHub runs this from the default branch, which is what
+      # gets checked out; only scripts/preview-index.sh is needed then.
       - uses: actions/checkout@v4
-      - uses: actions/setup-node@v4
+      - id: slug
+        env:
+          BRANCH: ${{ github.event_name == 'delete' && github.event.ref || github.ref_name }}
+        run: echo "slug=$(printf '%s' "$BRANCH" | tr -c 'A-Za-z0-9._-' '-')" >> "$GITHUB_OUTPUT"
+      - if: github.event_name != 'delete'
+        uses: actions/setup-node@v4
         with:
           node-version-file: '.nvmrc'
           cache: 'npm'
-      - run: npm ci
-      - id: slug
-        run: echo "slug=$(printf '%s' "$GITHUB_REF_NAME" | tr -c 'A-Za-z0-9._-' '-')" >> "$GITHUB_OUTPUT"
+      - if: github.event_name != 'delete'
+        run: npm ci
       # BASE_PATH (read in astro.config.mjs) makes every internal link and
       # asset URL resolve under this branch's subpath.
-      - run: npm run build
+      - if: github.event_name != 'delete'
+        run: npm run build
         env:
           BASE_PATH: /${{ github.event.repository.name }}/${{ steps.slug.outputs.slug }}
-      - name: Commit the build to gh-pages
+      - name: Update the branch's directory on gh-pages
         env:
           GH_TOKEN: ${{ github.token }}
           SLUG: ${{ steps.slug.outputs.slug }}
+          EVENT: ${{ github.event_name }}
         run: |
           set -euo pipefail
           url="https://x-access-token:${GH_TOKEN}@github.com/${GITHUB_REPOSITORY}.git"
@@ -66,48 +81,27 @@ jobs:
             git -C "$pages" remote add origin "$url"
           fi
           rm -rf "${pages:?}/$SLUG"
-          cp -R dist "$pages/$SLUG"
+          if [ "$EVENT" != delete ]; then cp -R dist "$pages/$SLUG"; fi
           cd "$pages"
           bash "$GITHUB_WORKSPACE/scripts/preview-index.sh" > index.html
           # Astro emits an _astro/ directory, which Jekyll would drop.
           touch .nojekyll
           git add -A
-          git -c user.name='github-actions[bot]' \
+          if git -c user.name='github-actions[bot]' \
               -c user.email='41898282+github-actions[bot]@users.noreply.github.com' \
-              commit -m "preview: ${GITHUB_REF_NAME} @ ${GITHUB_SHA::7}" || exit 0
-          git push origin gh-pages
-      - name: Report the preview URL
-        env:
-          SLUG: ${{ steps.slug.outputs.slug }}
-        run: |
-          echo "Preview: https://${GITHUB_REPOSITORY_OWNER}.github.io/${{ github.event.repository.name }}/${SLUG}/" >> "$GITHUB_STEP_SUMMARY"
-
-  # Removes a deleted branch's preview. GitHub runs `delete` workflows from the
-  # default branch, so this only takes effect once this file is on main.
-  remove:
-    if: vars.PAGES_PREVIEW == 'true' && github.event_name == 'delete' && github.event.ref_type == 'branch'
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v4
+              commit -m "preview: ${EVENT} ${SLUG} @ ${GITHUB_SHA::7}"; then
+            git push origin gh-pages
+          fi
+      - uses: actions/upload-pages-artifact@v3
         with:
-          sparse-checkout: scripts
-      - name: Remove the branch's directory from gh-pages
-        env:
-          GH_TOKEN: ${{ github.token }}
-          BRANCH: ${{ github.event.ref }}
-        run: |
-          set -euo pipefail
-          slug="$(printf '%s' "$BRANCH" | tr -c 'A-Za-z0-9._-' '-')"
-          url="https://x-access-token:${GH_TOKEN}@github.com/${GITHUB_REPOSITORY}.git"
-          git ls-remote --exit-code --heads "$url" gh-pages >/dev/null || exit 0
-          pages="$RUNNER_TEMP/pages"
-          git clone --depth 1 --branch gh-pages "$url" "$pages"
-          cd "$pages"
-          [ -d "$slug" ] || exit 0
-          git rm -rq "$slug"
-          bash "$GITHUB_WORKSPACE/scripts/preview-index.sh" > index.html
-          git add -A
-          git -c user.name='github-actions[bot]' \
-              -c user.email='41898282+github-actions[bot]@users.noreply.github.com' \
-              commit -m "preview: remove ${BRANCH}"
-          git push origin gh-pages
+          path: ${{ runner.temp }}/pages
+
+  deploy:
+    needs: update
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}${{ github.event_name != 'delete' && format('{0}/', needs.update.outputs.slug) || '' }}
+    steps:
+      - id: deployment
+        uses: actions/deploy-pages@v4
