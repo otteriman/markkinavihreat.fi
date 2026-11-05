@@ -18,3 +18,13 @@ export function formatEuro(amount: number, locale: Locale): string {
     maximumFractionDigits: 0,
   }).format(amount)
 }
+
+/** Formats with cents, e.g. "4,89 €" (fi) — for the small sums a payslip or a coin chart shows. */
+export function formatEuroCents(amount: number, locale: Locale): string {
+  return new Intl.NumberFormat(INTL_LOCALE[locale], {
+    style: 'currency',
+    currency: 'EUR',
+    minimumFractionDigits: 2,
+    maximumFractionDigits: 2,
+  }).format(amount)
+}

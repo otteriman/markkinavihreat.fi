@@ -1,0 +1,305 @@
+---
+import {
+  flatStretchEnd,
+  hoursCurve,
+  sameShareAsItSpecialistCurve,
+  SINGLE_PARENT_RENT,
+  type CurvePoint,
+} from '../../lib/charts/tyonKannattavuus'
+import { formatEuro } from '../../lib/format'
+import type { Locale } from '../../lib/content'
+
+// Kuva 2 of the tyosta-aina-kannattavaa draft: the single parent's money
+// after rent at every number of hours worked a month, against what it would
+// be if each euro left them the IT specialist's share. With motion allowed
+// and JavaScript on, the lines draw from left to right while a counter runs
+// through the hours; without either, the finished chart shows.
+//
+// The <title>/<desc> ids are static: the chart is embedded once per page.
+//
+// TODO(i18n): Finnish only while the program is a draft (see KymmenenKolikkoaChart).
+
+interface Props {
+  locale: Locale
+}
+
+const { locale } = Astro.props
+
+const MAX_HOURS = 160
+const afterRent = (points: CurvePoint[]) =>
+  points.map((p) => ({ hours: p.hours, total: p.total - SINGLE_PARENT_RENT }))
+const real = afterRent(hoursCurve(MAX_HOURS, 1))
+const comparison = afterRent(sameShareAsItSpecialistCurve(MAX_HOURS, 1))
+const flatEnd = flatStretchEnd()
+
+// The "stayed home" vs "worked" cards: 20 four-hour shifts, inside the flat stretch.
+const WORKED_HOURS = 80
+if (WORKED_HOURS > flatEnd) throw new Error('The worked-hours card must sit in the flat stretch')
+
+const VIEW_WIDTH = 600
+const VIEW_HEIGHT = 440
+const LEFT = 84
+const RIGHT = 32
+const TOP = 24
+const BOTTOM = 64
+// Text sizes in viewBox units: the 600-wide chart renders at roughly 60 % on a
+// phone, so these land at about 11–12 px there and full size on desktop.
+const TICK_FONT = 18
+const LABEL_FONT = 20
+const Y_MAX = Math.ceil(Math.max(...comparison.map((p) => p.total)) / 500) * 500
+
+const x = (hours: number) => LEFT + (hours / MAX_HOURS) * (VIEW_WIDTH - LEFT - RIGHT)
+const y = (euros: number) => VIEW_HEIGHT - BOTTOM - (euros / Y_MAX) * (VIEW_HEIGHT - TOP - BOTTOM)
+const path = (points: Array<{ hours: number; total: number }>) =>
+  points
+    .map((p, i) => `${i === 0 ? 'M' : 'L'}${x(p.hours).toFixed(1)},${y(p.total).toFixed(1)}`)
+    .join(' ')
+
+const yTicks = Array.from({ length: Y_MAX / 500 + 1 }, (_, i) => i * 500)
+const xTicks = [0, 40, 80, 120, 160]
+
+const euro = (amount: number) => formatEuro(amount, locale)
+const last = real[real.length - 1]
+const lastComparison = comparison[comparison.length - 1]
+const counterData = JSON.stringify(real.map((p) => Math.round(p.total)))
+---
+
+<figure class="my-10" data-hours-chart data-points={counterData}>
+  <figcaption class="mb-2 text-2xl leading-tight font-extrabold sm:text-3xl">
+    Tunnit kasvavat, raha ei
+  </figcaption>
+  <p class="mb-6 opacity-80">
+    Yksinhuoltajan rahat kuukaudessa vuokranmaksun jälkeen, kun hän tekee töitä 0–{MAX_HOURS} tuntia kuussa
+    kaupan kassalla.
+  </p>
+
+  <p class="mb-3 text-lg font-bold tabular-nums" aria-hidden="true">
+    <span data-counter-hours>{last.hours}</span> h kuussa →
+    <span data-counter-euros>{euro(last.total)}</span>
+  </p>
+
+  <svg
+    viewBox={`0 0 ${VIEW_WIDTH} ${VIEW_HEIGHT}`}
+    role="img"
+    aria-labelledby="tunnit-chart-title tunnit-chart-desc"
+    style="width: 100%; height: auto; overflow: visible;"
+  >
+    <title id="tunnit-chart-title">Tunnit kasvavat, raha ei</title>
+    <desc id="tunnit-chart-desc">
+      {
+        `Ilman töitä yksinhuoltajalle jää vuokran jälkeen ${euro(real[0].total)} kuussa. Hänen rahansa pysyvät täsmälleen samoina ${flatEnd} työtuntiin asti. ${MAX_HOURS} tunnin kuukaudesta jää ${euro(last.total)}. Jos jokaisesta eurosta jäisi saman verran kuin IT-asiantuntijalle, ${MAX_HOURS} tunnista jäisi ${euro(lastComparison.total)}.`
+      }
+    </desc>
+
+    <rect
+      x={x(0)}
+      y={TOP}
+      width={x(flatEnd) - x(0)}
+      height={VIEW_HEIGHT - TOP - BOTTOM}
+      fill="var(--color-terra)"
+      opacity="0.12"></rect>
+    <text
+      x={x(flatEnd / 2)}
+      y={TOP + 26}
+      text-anchor="middle"
+      font-size={LABEL_FONT}
+      font-weight="700"
+      fill="currentColor"
+    >
+      Nämä tunnit eivät näy
+    </text>
+    <text
+      x={x(flatEnd / 2)}
+      y={TOP + 50}
+      text-anchor="middle"
+      font-size={LABEL_FONT}
+      font-weight="700"
+      fill="currentColor"
+    >
+      tililläsi (0–{flatEnd} h)
+    </text>
+
+    {
+      yTicks.map((tick) => (
+        <g>
+          <line
+            x1={LEFT}
+            x2={VIEW_WIDTH - RIGHT}
+            y1={y(tick)}
+            y2={y(tick)}
+            stroke="currentColor"
+            stroke-opacity={tick === 0 ? 0.5 : 0.12}
+          />
+          <text
+            x={LEFT - 8}
+            y={y(tick) + 6}
+            text-anchor="end"
+            font-size={TICK_FONT}
+            fill="currentColor"
+            opacity="0.75"
+          >
+            {euro(tick)}
+          </text>
+        </g>
+      ))
+    }
+    {
+      xTicks.map((tick) => (
+        <text
+          x={x(tick)}
+          y={VIEW_HEIGHT - BOTTOM + 26}
+          text-anchor="middle"
+          font-size={TICK_FONT}
+          fill="currentColor"
+          opacity="0.75"
+        >
+          {tick} h
+        </text>
+      ))
+    }
+    <text
+      x={(LEFT + VIEW_WIDTH - RIGHT) / 2}
+      y={VIEW_HEIGHT - 6}
+      text-anchor="middle"
+      font-size={TICK_FONT}
+      fill="currentColor"
+      opacity="0.75"
+    >
+      työtunteja kuukaudessa
+    </text>
+
+    <path
+      class="line"
+      d={path(comparison)}
+      fill="none"
+      stroke="var(--color-vihrea)"
+      stroke-width="3"
+      stroke-dasharray="10 7"></path>
+    <path
+      class="line"
+      d={path(real)}
+      fill="none"
+      stroke="var(--color-terra)"
+      stroke-width="4"
+      stroke-linejoin="round"
+      pathLength="1000"></path>
+
+    <text
+      x={x(MAX_HOURS)}
+      y={y(lastComparison.total) - 36}
+      text-anchor="end"
+      font-size={LABEL_FONT}
+      font-weight="700"
+      fill="currentColor"
+    >
+      Jos sinulle jäisi kuin
+    </text>
+    <text
+      x={x(MAX_HOURS)}
+      y={y(lastComparison.total) - 12}
+      text-anchor="end"
+      font-size={LABEL_FONT}
+      font-weight="700"
+      fill="currentColor"
+    >
+      IT-asiantuntijalle
+    </text>
+    <text
+      x={x(MAX_HOURS) - 4}
+      y={y(last.total) - 14}
+      text-anchor="end"
+      font-size={LABEL_FONT}
+      font-weight="700"
+      fill="currentColor"
+    >
+      Nyt
+    </text>
+  </svg>
+
+  <div class="mt-8 grid grid-cols-2 gap-3 sm:gap-4">
+    <div class="text-musta rounded-lg bg-white p-4 shadow-sm sm:p-5">
+      <p class="mb-2 text-sm font-semibold opacity-70">Jäit kotiin</p>
+      <p class="text-2xl font-extrabold tabular-nums sm:text-3xl">{euro(real[0].total)}</p>
+      <p class="mt-1 text-xs opacity-60">tilillä vuokran jälkeen</p>
+    </div>
+    <div class="text-musta rounded-lg bg-white p-4 shadow-sm sm:p-5">
+      <p class="mb-2 text-sm font-semibold opacity-70">Teit {WORKED_HOURS} tuntia töitä</p>
+      <p class="text-2xl font-extrabold tabular-nums sm:text-3xl">
+        {euro(real[WORKED_HOURS].total)}
+      </p>
+      <p class="mt-1 text-xs opacity-60">tilillä vuokran jälkeen</p>
+    </div>
+  </div>
+</figure>
+
+<style>
+  /* Drawn in from the left once armed (see the script); pathLength="1000" makes the dash maths length-independent. */
+  [data-hours-chart].is-armed .line {
+    stroke-dashoffset: 1000;
+  }
+  [data-hours-chart].is-armed path.line:not([stroke-dasharray]) {
+    stroke-dasharray: 1000;
+  }
+  /* The dashed comparison line keeps its own dashes and fades in instead (see the script). */
+  [data-hours-chart].is-armed path.line[stroke-dasharray] {
+    stroke-dashoffset: 0;
+  }
+  [data-hours-chart].is-armed.is-in .line {
+    stroke-dashoffset: 0;
+    transition: stroke-dashoffset 3200ms linear;
+  }
+</style>
+
+<script>
+  // Draws the lines and runs the hour counter once the chart is in view.
+  // The dashed comparison line can't use the dash-offset trick (its dashes
+  // are the line's look), so it fades in instead.
+  const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches
+  if (!reduceMotion && 'IntersectionObserver' in window) {
+    document.querySelectorAll<HTMLElement>('[data-hours-chart]').forEach((figure) => {
+      const points: number[] = JSON.parse(figure.dataset.points ?? '[]')
+      const hoursEl = figure.querySelector<HTMLElement>('[data-counter-hours]')
+      const eurosEl = figure.querySelector<HTMLElement>('[data-counter-euros]')
+      const dashed = figure.querySelector<SVGPathElement>('path[stroke-dasharray]')
+      const format = new Intl.NumberFormat('fi-FI', {
+        style: 'currency',
+        currency: 'EUR',
+        maximumFractionDigits: 0,
+      })
+      const DURATION = 3200
+
+      figure.classList.add('is-armed')
+      if (dashed) {
+        dashed.style.opacity = '0'
+        dashed.style.transition = `opacity 800ms ease ${DURATION}ms`
+      }
+      if (hoursEl) hoursEl.textContent = '0'
+      if (eurosEl) eurosEl.textContent = format.format(points[0] ?? 0)
+
+      const observer = new IntersectionObserver(
+        (entries) => {
+          if (!entries.some((entry) => entry.isIntersecting)) return
+          observer.disconnect()
+          // Two frames so the armed state paints before the transition starts.
+          requestAnimationFrame(() =>
+            requestAnimationFrame(() => {
+              figure.classList.add('is-in')
+              if (dashed) dashed.style.opacity = '1'
+              const start = performance.now()
+              const tick = (now: number) => {
+                const progress = Math.min(1, (now - start) / DURATION)
+                const hours = Math.round(progress * (points.length - 1))
+                if (hoursEl) hoursEl.textContent = String(hours)
+                if (eurosEl) eurosEl.textContent = format.format(points[hours])
+                if (progress < 1) requestAnimationFrame(tick)
+              }
+              requestAnimationFrame(tick)
+            }),
+          )
+        },
+        { threshold: 0.4 },
+      )
+      observer.observe(figure)
+    })
+  }
+</script>

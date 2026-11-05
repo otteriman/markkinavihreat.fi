@@ -1,0 +1,70 @@
+---
+import {
+  RETAIL_HOURLY_WAGE,
+  SHIFT_HOURS,
+  singleParentBudget,
+} from '../../lib/charts/tyonKannattavuus'
+import { formatEuroCents } from '../../lib/format'
+import type { Locale } from '../../lib/content'
+
+// The tyosta-aina-kannattavaa draft's payslip: the single parent's 4-hour
+// shift, line by line, from gross pay to what's left after Kela's tuki
+// shrinks. Styled as a paper slip so it reads as a document, not a chart.
+//
+// TODO(i18n): Finnish only while the program is a draft (see KymmenenKolikkoaChart).
+
+interface Props {
+  locale: Locale
+}
+
+const { locale } = Astro.props
+// Rounded to cents first, so a zero line never shows as "−0,00 €".
+const euro = (amount: number) => formatEuroCents(Math.round(amount * 100) / 100 || 0, locale)
+
+const shiftPay = SHIFT_HOURS * RETAIL_HOURLY_WAGE
+const before = singleParentBudget(0)
+const after = singleParentBudget(shiftPay)
+
+const rows: Array<{ label: string; amount: number; strong?: boolean }> = [
+  { label: `Palkka, ${SHIFT_HOURS} h × ${euro(RETAIL_HOURLY_WAGE)}`, amount: shiftPay },
+  { label: 'Työeläke- ja työttömyysvakuutusmaksu', amount: -after.contributions },
+  { label: 'Ennakonpidätys', amount: -after.incomeTax },
+  { label: 'Tilille', amount: after.netWage, strong: true },
+  {
+    label: 'Asumistuki pienenee',
+    amount: -(before.housingAllowance - after.housingAllowance),
+  },
+  {
+    label: 'Toimeentulotuki pienenee',
+    amount: -(before.socialAssistance - after.socialAssistance),
+  },
+]
+const kept = after.total - before.total
+---
+
+<figure class="my-10">
+  <div
+    class="border-musta/30 text-musta mx-auto max-w-md rounded-sm border border-dashed bg-white p-6 font-mono text-sm shadow-md sm:p-8"
+  >
+    <p class="mb-1 text-center font-bold tracking-widest uppercase">Lauantain aamuvuoro</p>
+    <p class="mb-6 text-center text-xs opacity-60">Yksinhuoltaja, toimeentulotuella</p>
+    <table class="w-full">
+      <tbody>
+        {
+          rows.map((row) => (
+            <tr class:list={[row.strong && 'border-musta/30 border-t font-bold']}>
+              <td class="py-1.5 pr-4">{row.label}</td>
+              <td class="py-1.5 text-right whitespace-nowrap tabular-nums">{euro(row.amount)}</td>
+            </tr>
+          ))
+        }
+      </tbody>
+      <tfoot>
+        <tr class="border-musta border-t-2 border-double text-base font-extrabold">
+          <td class="pt-3 pr-4">SINULLE JÄÄ</td>
+          <td class="pt-3 text-right whitespace-nowrap tabular-nums">{euro(kept)}</td>
+        </tr>
+      </tfoot>
+    </table>
+  </div>
+</figure>
