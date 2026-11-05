@@ -59,11 +59,12 @@ export interface BenefitParams {
     rate: number
     /** Enimmäisasumismenot for this household in this municipality group. */
     maxHousingCosts: number
-    /** Perusomavastuu: `omavastuuRate` of gross income above this. */
+    /**
+     * Perusomavastuu: `omavastuuRate` of gross income above this. Lapsilisä
+     * and elatustuki aren't income for asumistuki, so here only wages count.
+     */
     incomeThreshold: number
     omavastuuRate: number
-    /** Whether elatustuki counts as income for asumistuki. */
-    countsChildSupport: boolean
   }
 }
 
@@ -85,9 +86,6 @@ export const SINGLE_PARENT_TAMPERE_2026: BenefitParams = {
     maxHousingCosts: 652,
     incomeThreshold: 667 + 94 * 1 + 296 * 1,
     omavastuuRate: 0.5,
-    // TODO(tarkistettava): whether elatustuki is income for asumistuki. Only
-    // moves where the single parent leaves toimeentulotuki, not the 0 €.
-    countsChildSupport: true,
   },
 }
 
@@ -137,8 +135,7 @@ const SINGLE_PARENT_HOUSEHOLD: Household = { children: 1, singleParent: true }
 
 export function housingAllowance(grossWage: number, b: BenefitParams, rent: number): number {
   const h = b.housingAllowance
-  const income = grossWage + (h.countsChildSupport ? b.childSupport : 0)
-  const omavastuu = Math.max(0, income - h.incomeThreshold) * h.omavastuuRate
+  const omavastuu = Math.max(0, grossWage - h.incomeThreshold) * h.omavastuuRate
   return Math.max(0, h.rate * (Math.min(rent, h.maxHousingCosts) - omavastuu))
 }
 

@@ -292,11 +292,11 @@ alkuperäisistä lähteistä ennen julkaisua (lista alla).
 
 Kuva 2 (yksinhuoltaja, kaupan TES-palkka 13,13 €/h):
 
-- **0–96 tuntia kuukaudessa: käteen jää täsmälleen sama summa** (1 841 €/kk ennen vuokraa). Se on
-  noin 60 % kokoaikatyöstä.
-- **Täysi kuukausi (160 h)** tuottaa vain noin **360 €/kk** enemmän kuin nolla tuntia, eli noin
-  **2,25 € tunnilta**.
-- Toimeentulotuelta pois päästyään (yli 96 h) yksinhuoltajalle jää noin 55 % lisäpalkasta, koska
+- **0–86 tuntia kuukaudessa: käteen jää täsmälleen sama summa** (1 841 €/kk ennen vuokraa). Se on
+  yli puolet kokoaikatyöstä.
+- **Täysi kuukausi (160 h)** tuottaa vain noin **430 €/kk** enemmän kuin nolla tuntia, eli noin
+  **2,68 € tunnilta**.
+- Toimeentulotuelta pois päästyään (yli 86 h) yksinhuoltajalle jää noin 55 % lisäpalkasta, koska
   asumistuki pienenee 35 senttiä jokaisesta bruttoeurosta.
 - Kohdassa noin 110 h/kk summa jopa laskee hieman (−5,58 €), koska sairausvakuutuksen
   päivärahamaksu peritään koko vuoden palkasta heti, kun vuositulo ylittää 17 255 €. Tämä on lain
@@ -325,7 +325,7 @@ kuin IT-asiantuntija (51 %), mutta menettää silti kaiken.** Ongelma on tuen le
     ansiotulovähennystä 1.3.2026 alkaen), lapsilisä 94,88 € + yksinhuoltajakorotus 73,30 €,
     elatustuki 197,71 € ja asumistuki.
   - Asumistuki: 70 % × (hyväksytyt asumismenot enintään 652 € − perusomavastuu), perusomavastuu
-    50 % bruttotuloista, jotka ylittävät 667 + 94 + 296 = 1 057 €/kk. Elatustuki lasketaan tuloksi.
+    50 % bruttotuloista, jotka ylittävät 667 + 94 + 296 = 1 057 €/kk. Lapsilisä ja elatustuki eivät ole asumistuessa tuloa (vahvistettu).
   - Varhaiskasvatusmaksu: näillä tuloilla 0 € tai toimeentulotuessa huomioitava meno, joten se ei
     muuta tulosta. _Tarkistetaan tulorajasta._
 - **Kaupan TES:** palkkaryhmä B, 2. palvelusvuosi, muu Suomi, 2 101 €/kk ÷ 160 = 13,13 €/h
@@ -341,8 +341,7 @@ pituutta.
 2. Perusosat 1.3.2026 alkaen (yksinhuoltaja 665,19 €, yksin asuva 578,43 €) ja alle 10-vuotiaan
    lapsen prosenttiosuus (65 %).
 3. Lapsilisän yksinhuoltajakorotus 2026 (useimmissa lähteissä 73,30 €, muutamassa muuta).
-4. Asumistuen enimmäisasumismenot Tampereella kahdelle hengelle (652 € vain yhdessä lähteessä) ja
-   se, lasketaanko elatustuki asumistuessa tuloksi.
+4. Asumistuen enimmäisasumismenot Tampereella kahdelle hengelle (652 € vain yhdessä lähteessä).
 5. Kelan toimeentulotuessa hyväksymät kohtuulliset asumismenot Tampereella kahdelle hengelle
    (800 €:n vuokran pitää mahtua niihin). Uudet kuntakohtaiset rajat tulevat voimaan 1.12.2026.
 6. Kaupan TES: vaativuusluokat korvasivat palkkaryhmät 1.10.2026. Valitaan luokka, johon
@@ -367,14 +366,14 @@ pituutta.
   ihminen pääsee tuelta pois ja työ alkaa kannattaa. Avauksen kärki on siksi _pienissä töissä ja
   ensimmäisissä tunneissa_, juuri niissä, joilla töihin paluu yleensä alkaa. Tämä sanotaan sivulla
   rehellisesti, jotta kriitikko ei voi kaataa viestiä yhdellä vastaesimerkillä. Laskelma näyttää
-  kuitenkin, että "pienet työt" tarkoittavat tässä jopa 96 tuntia kuukaudessa.
+  kuitenkin, että "pienet työt" tarkoittavat tässä jopa 86 tuntia kuukaudessa.
 
 ### 6.5 Kuva 2:n vertailuviiva (päätetty)
 
 Ajantasaista perustulomallia laskelmineen ei ole, joten vertailuviivana käytetään vaihtoehtoa B:
 _"jos sinulle jäisi samasta eurosta yhtä paljon kuin IT-asiantuntijalle"_ (noin 49 senttiä eurosta,
 `sameShareAsItSpecialistCurve()`). 160 tunnin kuukaudesta yksinhuoltajalle jäisi silloin noin
-1 030 € enemmän kuin nollasta tunnista, kun nyt jää noin 360 €.
+1 030 € enemmän kuin nollasta tunnista, kun nyt jää noin 430 €.
 
 Perustulo esitetään tekstissä ratkaisuna vihreiden ohjelman pohjalta, mutta siitä ei piirretä
 laskettua viivaa.

@@ -35,8 +35,8 @@ describe('singleParentBudget', () => {
     const b = SINGLE_PARENT_TAMPERE_2026
     const full = b.housingAllowance.rate * b.housingAllowance.maxHousingCosts
     expect(housingAllowance(0, b, SINGLE_PARENT_RENT)).toBeCloseTo(full, 6)
-    // Elatustuki counts as income, so the threshold for wages is lower by it.
-    const wageThreshold = b.housingAllowance.incomeThreshold - b.childSupport
+    // Lapsilisä and elatustuki aren't income for asumistuki; only wages count.
+    const wageThreshold = b.housingAllowance.incomeThreshold
     expect(housingAllowance(wageThreshold, b, SINGLE_PARENT_RENT)).toBeCloseTo(full, 6)
     expect(housingAllowance(wageThreshold + 100, b, SINGLE_PARENT_RENT)).toBeCloseTo(
       full - b.housingAllowance.rate * b.housingAllowance.omavastuuRate * 100,
