@@ -4,6 +4,7 @@ import {
   hoursCurve,
   housingAllowance,
   RETAIL_HOURLY_WAGE,
+  sameShareAsItSpecialistCurve,
   SHIFT_HOURS,
   shiftSplits,
   SINGLE_PARENT_RENT,
@@ -99,5 +100,25 @@ describe('hoursCurve', () => {
 
   it('has no flat stretch under the pre-1.3.2026 rule', () => {
     expect(flatStretchEnd(SINGLE_PARENT_TAMPERE_BEFORE_MARCH_2026)).toBe(0)
+  })
+})
+
+describe('sameShareAsItSpecialistCurve', () => {
+  it('starts where the real curve does and rises by the IT specialist’s share of each hour', () => {
+    const real = hoursCurve(160, 1)
+    const comparison = sameShareAsItSpecialistCurve(160, 1)
+    const share = tenEuroSplits().itSpecialist.kept / 10
+    expect(comparison[0].total).toBeCloseTo(real[0].total, 6)
+    expect(comparison[10].total - comparison[0].total).toBeCloseTo(
+      10 * RETAIL_HOURLY_WAGE * share,
+      6,
+    )
+  })
+
+  it('stays above the real curve at every positive number of hours', () => {
+    const real = hoursCurve(160, 1)
+    sameShareAsItSpecialistCurve(160, 1)
+      .slice(1)
+      .forEach((point, i) => expect(point.total).toBeGreaterThan(real[i + 1].total))
   })
 })

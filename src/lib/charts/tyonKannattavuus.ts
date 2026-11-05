@@ -278,3 +278,19 @@ export function flatStretchEnd(b: BenefitParams = SINGLE_PARENT_TAMPERE_2026): n
   if (!firstRise) throw new Error('The curve never rises within 320 hours a month')
   return firstRise.hours - 1
 }
+
+/**
+ * Kuva 2's comparison line: the single parent's money if every euro of pay
+ * left them the same share as it leaves the IT specialist (Kuva 1). Not a
+ * policy model — there's no up-to-date, costed basic income model to draw
+ * instead — but a like-for-like comparison the reader has just seen.
+ */
+export function sameShareAsItSpecialistCurve(maxHours = 160, step = 1): CurvePoint[] {
+  const share = tenEuroSplits().itSpecialist.kept / 10
+  const base = singleParentBudget(0).total
+  const points: CurvePoint[] = []
+  for (let hours = 0; hours <= maxHours; hours += step) {
+    points.push({ hours, total: base + hours * RETAIL_HOURLY_WAGE * share })
+  }
+  return points
+}
