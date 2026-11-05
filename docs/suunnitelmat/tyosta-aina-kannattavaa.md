@@ -108,54 +108,106 @@ Luonnoksia, ei lopullista tekstiä:
 
 ## 3. Miten ongelma visualisoidaan
 
-Pääperiaate: **lukijan pitää ymmärtää ongelma kuvasta ennen kuin hän lukee tekstiä.** Kaksi
-visualisointia, joista ensimmäinen on pakollinen ja toinen vahvistaa sitä.
+Pääperiaate: **lukijan pitää ymmärtää ongelma kuvasta ennen kuin hän lukee tekstiä.**
 
-### Kuva 1: "Kun tienaat kympin lisää, paljonko siitä jää sinulle?" (pääkuva, heti ingressin jälkeen)
+### Kehys: "sinulle jää", ei "valtio vie"
 
-Kaksi ihmistä rinnakkain: yksinhuoltaja ja IT-asiantuntija. Kumpikin tienaa **saman 10 euroa
-lisää**. Kummallekin piirretään palkki, joka jakautuu kahteen osaan:
+Kuvissa keskiössä on se, mitä **sinulle jää**. Loppu ei ole "valtion osuus", vaan se nimetään sen
+mukaan, mitä tapahtuu:
+
+- **sinulle** – sivuston korostusväri
+- **verot ja maksut** – harmaa
+- **tuki pienenee** – tummempi harmaa (tai viivoitus, jotta ero näkyy myös ilman värejä)
+
+Miksi näin eikä "sinä vs. valtio":
+
+- **Ongelma ei ole vero, vaan tuen leikkaaminen euro eurosta.** Yksinhuoltaja maksaa vuoron
+  palkasta luultavasti vain noin kymmenyksen veroja ja maksuja, loput häviävät tuen pienenemiseen.
+  IT-asiantuntija maksaa euroa kohden enemmän veroa, mutta hänelle jää silti puolet. Kun kuva
+  näyttää tämän eron, se näyttää myös ratkaisun: perustulo poistaa euro eurosta -leikkauksen, ei
+  veroja.
+- **"Valtio vie" kääntyisi meitä vastaan.** Myös IT-asiantuntijan palkasta puolet menee
+  julkiselle sektorille, joten kehys kuulostaisi veronvastustukselta.
+- **Tarkkuus.** Tuen pieneneminen on menon säästöä, ei valtion tuloa, ja osa maksuista
+  (työeläkemaksu) kerryttää ihmisen omaa eläkettä. Tämä kerrotaan laskelmaosiossa.
+
+Pikaisesti silmäilevä näkee silti kaksijaon "korostusväriä vs. ei mitään". Tarkempi lukija näkee
+syyn. Sanaa "valtio" käytetään tekstissä vain siellä, missä se pitää paikkansa ("Kela pienentää
+tukeasi").
+
+### Kuva 1 (pääkuva): kymmenen kolikkoa
+
+Heti ingressin jälkeen. Otsikko esim. _"Kun tienaat kympin lisää, paljonko siitä jää sinulle?"_
 
 ```
-                       10 € lisää palkkaa
-IT-asiantuntija    [██████████████|░░░░░░░░░░░░░░]   sinulle jää ~5 €
-                    sinulle         verot ja maksut
+IT-asiantuntija   ● ● ● ● ●  ○ ○ ○ ○ ○        5 € sinulle
+Yksinhuoltaja     ◌ ○ ○ ○ ○  ○ ○ ○ ○ ○        0 € sinulle
 
-Yksinhuoltaja,     [░░░░░░░░░░░░░░░░░░░░░░░░░░░░░]   sinulle jää 0 €
-toimeentulotuki     verot ja maksut + tuki pienenee
+                  ● sinulle   ◌ verot ja maksut   ○ tuki pienenee
 ```
 
-- Iso numero kummankin kohdalla: **"Sinulle jää: ~5 €"** ja **"Sinulle jää: 0 €"**.
-- Värit: "sinulle" sivuston korostusvärillä, "menee muualle" harmaalla. Yksinhuoltajan palkki on
-  kokonaan harmaa, ja siinä on koko viesti.
-- Kympin vertailu on reilu, koska ero johtuu vain säännöistä, ei palkkatasosta.
-- Toinen, konkreettisempi rivi samaan kuvaan tai heti sen alle, kummankin omalla palkalla:
-  yksinhuoltajan **4 tunnin vuoro** kaupan TES-palkalla → 0 € käteen; IT-asiantuntijan **yksi
-  lisätunti** 6 000 €/kk palkalla (~37 €/h) → noin 18 € käteen. _IT-asiantuntijalle jää yhdestä
-  tunnista enemmän kuin yksinhuoltajalle koko lauantaivuorosta._ (Luvut lasketaan tarkasti, ks.
-  kohta 6.)
+(Kolikoiden jako lasketaan; yllä havainnollistus.)
 
-Toteutus: uusi `src/components/charts/…Chart.astro` + laskentamoduuli `src/lib/charts/…ts`, samaan
-tapaan kuin `RuokaostostukiAlvChart`. Upotetaan tekstiin `[kuvaaja: …]`-merkinnällä. Staattinen
-SVG, toimii ilman JavaScriptiä, saavutettava (`<title>`/`<desc>`), kolmella kielellä.
+- Kumpikin tienaa **saman 10 euroa lisää**, joten ero johtuu vain säännöistä, ei palkkatasosta.
+- Kolikot ovat konkreettisempia kuin palkki: ne näyttävät rahalta ja ne voi laskea.
+- Iso luku kummankin kohdalla: **"5 € sinulle"** ja **"0 € sinulle"**.
+- Kevyt animaatio, kun kuva tulee näkyviin: kolikot liukuvat joko "sinulle"-puolelle tai pois.
+  Ilman JavaScriptiä ja `prefers-reduced-motion`-asetuksella näytetään valmis tilanne.
+- Kuvan alle kummankin omalla palkalla: yksinhuoltajan **4 tunnin vuoro** kaupan TES-palkalla → 0 €
+  käteen; IT-asiantuntijan **yksi lisätunti** 6 000 €/kk palkalla (~37 €/h) → noin 18 € käteen.
+  _IT-asiantuntijalle jää yhdestä tunnista enemmän kuin yksinhuoltajalle koko lauantaivuorosta._
+  (Luvut lasketaan tarkasti, ks. kohta 6.)
 
-### Kuva 2: "Tee 0 tai 40 tuntia kuussa – käteen jää sama" (viivakaavio)
+### Kuva 2: animoitu viivakaavio – tunnit kasvavat, raha ei
+
+Osioon "Miksi tämä on iso ongelma". Osoittaa, ettei kyse ole yhdestä vuorosta vaan koko kuukaudesta.
 
 - Vaaka-akselilla työtunnit kuukaudessa (0–160), pystyakselilla rahaa käytettävissä kuukaudessa.
 - Lasketaan yksinhuoltajalle, jolla on yksi lapsi (lapsen ikä ja asuinkunta päätetään laskelmaa
   tehdessä).
-- Yksinhuoltajan viiva on **täysin vaakasuora** pitkän matkaa: tunteja tulee lisää, mutta
-  rahaa ei. Vasta kun palkka ylittää tuen tason, viiva alkaa nousta.
-- Vertailuksi viiva, jossa jokaisesta tunnista jää aina osa käteen (perustulomallin mukaan
-  laskettuna) – se nousee heti ensimmäisestä tunnista.
-- Tasainen osuus nimetään kuvassa: **"Nämä tunnit tehdään ilmaiseksi"**.
-- Ei liukusäädintä. Kaavio voi olla animoitu: viivat piirtyvät, kun kaavio tulee näkyviin. Ilman
-  JavaScriptiä ja `prefers-reduced-motion`-asetuksella näytetään valmis, staattinen kuva.
+- Yksinhuoltajan viiva on **täysin vaakasuora** pitkän matkaa: tunteja tulee lisää, mutta rahaa ei.
+  Vasta kun palkka ylittää tuen tason, viiva alkaa nousta.
+- Vertailuviiva perustulomallin mukaan: nousee heti ensimmäisestä tunnista.
+- Animaatio: viivat piirtyvät vasemmalta oikealle, ja laskuri näyttää tunnit (10, 20, 30…) ja
+  käteen jäävän summan, joka pysyy samana. Ei liukusäädintä.
+- **Lopputilanne tilin saldona:** kaksi tiliotetta rinnakkain, "Jäit kotiin: X €" ja "Teit neljä
+  vuoroa: X €" – sama summa.
+- Tasainen osuus nimetään kuvassa: **"Nämä tunnit eivät näy tililläsi"** tai vastaava. (Ei
+  "ilmaiseksi", ks. alla.)
+- Ilman JavaScriptiä ja `prefers-reduced-motion`-asetuksella näytetään valmis, staattinen kuva.
+
+### Tilinauha: laskelmaosioon ja someen
+
+"Kuinka tämä on laskettu?" -osioon tuttu palkkalaskelman näköinen erittely:
+
+```
+Lauantain vuoro, 4 h                   xx,xx €
+Ennakonpidätys ja maksut              − x,xx €
+Toimeentulotuki pienenee              − xx,xx €
+───────────────────────────────────────────────
+SINULLE JÄÄ                             0,00 €
+```
+
+Uskottava ja tarkistettava. Sama kuva toimii yhtenä somekarusellin kuvana.
+
+### "Teit vuoron ilmaiseksi" tekstissä, ei kuvassa
+
+Tunteisiin vetoava kehys ("teit lauantain ilmaiseksi") käytetään tekstissä ja somelauseena, mutta
+ei pääkuvana. Kirjaimellisesti ihminen saa palkan ja tuki pienenee, joten kuvana kehys olisi
+kriitikolle helppo kaataa harhaanjohtavana. Tekstissä se voidaan sanoa niin, että mekanismi on
+selitetty viereen.
+
+### Toteutus
+
+Uudet `src/components/charts/…Chart.astro` -komponentit ja laskentamoduuli `src/lib/charts/…ts`,
+samaan tapaan kuin `RuokaostostukiAlvChart`. Upotetaan tekstiin `[kuvaaja: …]`-merkinnällä. SVG,
+toimii ilman JavaScriptiä (animaatio on lisäkerros), saavutettava (`<title>`/`<desc>`), kolmella
+kielellä, tarkistetaan puhelimen leveydellä ja tummassa teemassa.
 
 ### Somekuvat
 
-Samasta laskelmasta tehdään karuselli (kuten varallisuustili-ehdotuksessa): kansi → kaksi ihmistä
-rinnakkain → "0 €" isolla → miksi näin käy → ratkaisu → "Lue lisää: markkinavihreat.fi". Tehdään
+Samasta laskelmasta tehdään karuselli (kuten varallisuustili-ehdotuksessa): kansi → kolikot →
+"0 €" isolla → tilinauha → miksi näin käy → ratkaisu → "Lue lisää: markkinavihreat.fi". Tehdään
 vasta, kun teksti ja luvut on lyöty lukkoon.
 
 ## 4. Sivun rakenne (luonnos)
@@ -167,7 +219,7 @@ Toteutetaan ehdotuksena `src/content/programs/tyosta-aina-kannattavaa.{fi,sv,en}
 | -------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
 | **Hero**                               | Yläotsake "Markkinavihreä tavoite". Otsikko "Tehdään työstä _aina_ kannattavaa", jossa sana **aina** sivuston korostusvärillä (ks. toteutushuomio alla).                                                                                 |
 | **Ingressi**                           | 2–3 virkettä: Suomessa on ihmisiä, joille työ ei kannata lainkaan. Se on väärin. Me haluamme korjata sen.                                                                                                                                |
-| **Kuva 1**                             | Kun tienaat kympin lisää, paljonko siitä jää sinulle?                                                                                                                                                                                    |
+| **Kuva 1**                             | Kymmenen kolikkoa: kun tienaat kympin lisää, paljonko siitä jää sinulle?                                                                                                                                                                 |
 | **Mistä on kyse**                      | Selitys arkikielellä: toimeentulotuki pienenee joka eurolla, jonka ansaitset. Siksi muutaman tunnin työ ei näy lompakossa. Laskelma avattavana.                                                                                          |
 | **Miksi tämä on iso ongelma**          | Pienet työt ovat usein ensimmäinen askel työelämään: keikka, osa-aikatyö, kesätyö. Juuri ne ensimmäiset askeleet ovat nyt arvottomia. Kuva 2 tähän.                                                                                      |
 | **Tilanne on pahentunut**              | Ansiotulojen suojaosat ja vähennykset on viime vuosina poistettu (ks. faktat alla). Ennen pieni osa palkasta sai jäädä käteen; nyt ei jää mitään.                                                                                        |
@@ -287,8 +339,7 @@ Päätetty:
 - Yläotsake: "Markkinavihreä tavoite".
 - Kuva 2: ei liukusäädintä, animoitu kaavio sallittu.
 - Ei lainauksia toistaiseksi.
+- Kuvat: kolikot pääkuvana, animoitu viivakaavio tilin saldolla, tilinauha laskelmaosioon ja
+  someen, "ilmaiseksi"-kehys vain tekstiin. Kehys "sinulle / verot ja maksut / tuki pienenee".
 
-Vielä auki:
-
-1. **Kuvien kehystys:** miten palkan jakautuminen näytetään (ks. keskustelu: "sinä vs. valtio",
-   kolikot, tunnit, tilinauha).
+Vielä auki: ei avoimia kysymyksiä tällä hetkellä. Seuraava vaihe on laskelmat (kohta 7, vaihe 2).
