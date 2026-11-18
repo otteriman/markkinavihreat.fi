@@ -13,7 +13,11 @@ So I thought I would look at how the two governments have performed in the light
 
 [kuvaaja: tyottomyys]
 
-The Orpo government has beyond any doubt failed to deliver on [its promise of 100,000 new jobs](https://www.instagram.com/reel/DGArqn-tA_B/). Instead, Finland has risen to the top of the EU in unemployment: during Orpo’s term, the unemployment rate has risen from 7.2 to 10.5 per cent. And what about employment?
+The Orpo government has beyond any doubt failed to deliver on [its promise of 100,000 new jobs](https://www.instagram.com/reel/DGArqn-tA_B/). Instead, Finland has risen to the top of the EU in unemployment: during Orpo’s term, the unemployment rate has risen from 7.2 to 10.5 per cent. For young people, things look even bleaker.
+
+[kuvaaja: nuorisotyottomyys]
+
+Among 15–24-year-olds, the unemployment rate has risen during Orpo’s term from 16.4 to 23.5 per cent, the highest in the whole series, which begins in 2010. And what about employment?
 
 [kuvaaja: tyollisyys]
 

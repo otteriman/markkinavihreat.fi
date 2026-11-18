@@ -21,6 +21,7 @@
 export type DatasetId =
   | 'tyollisyys'
   | 'tyottomyys'
+  | 'nuorisotyottomyys'
   | 'lapsikoyhyys'
   | 'asunnottomuus'
   | 'julkinen-velka'
@@ -219,6 +220,41 @@ export const DATASETS: Record<DatasetId, Dataset> = {
       ],
     ),
   },
+  // Tilastokeskus, työvoimatutkimus: 15–24-vuotiaiden työttömyysasteen trendi.
+  nuorisotyottomyys: {
+    id: 'nuorisotyottomyys',
+    kind: 'line',
+    frequency: 'month',
+    format: 'percent',
+    decimals: 1,
+    invert: true,
+    yMin: 10,
+    yMax: 25,
+    yStep: 5,
+    sourceUrl:
+      'https://pxdata.stat.fi/PxWeb/pxweb/fi/StatFin/StatFin__tyti/statfin_tyti_pxt_135z.px/',
+    observations: monthly(
+      '2019-06',
+      [
+        // 2019
+        17.2, 17.4, 17.7, 17.8, 17.8, 17.8, 18.0,
+        // 2020
+        18.2, 18.4, 18.6, 18.7, 18.7, 18.7, 18.7, 18.8, 18.8, 19.0, 19.2, 19.3,
+        // 2021
+        19.2, 19.0, 18.7, 18.4, 17.8, 17.1, 16.4, 15.8, 15.3, 15.0, 14.6, 14.3,
+        // 2022
+        13.9, 13.4, 13.1, 13.0, 13.3, 13.8, 14.2, 14.6, 14.8, 14.8, 15.0, 15.1,
+        // 2023
+        15.0, 14.9, 15.2, 15.6, 16.0, 16.4, 16.8, 17.0, 17.2, 17.4, 17.4, 17.5,
+        // 2024
+        17.6, 17.9, 18.2, 18.3, 18.2, 18.2, 18.4, 18.6, 18.9, 19.1, 19.4, 19.7,
+        // 2025
+        20.0, 20.3, 20.5, 20.6, 20.8, 21.3, 21.7, 21.9, 22.2, 22.5, 22.6, 22.6,
+        // 2026
+        22.5, 22.5, 22.4, 22.6, 22.8, 22.9, 23.0, 23.3, 23.5,
+      ],
+    ),
+  },
   // Tilastokeskus, tulonjakotilasto (13dp): pienituloisten lasten lukumäärä
   // asuntoväestössä, pienituloisuusraja 60 % mediaanitulosta.
   lapsikoyhyys: {
@@ -390,5 +426,12 @@ export const CHILD_LOW_INCOME_RATE = {
   2023: 12.2,
   2024: 13.8,
 } as const
+
+/**
+ * The highest youth unemployment rate (trend, 15–24) in Tilastokeskus 135z
+ * before the charted range, i.e. 2010M01–2019M05 (it was 23.0 % in 2010M01).
+ * The post calls 2026's 23.5 % the highest in the series that begins in 2010.
+ */
+export const YOUTH_UNEMPLOYMENT_MAX_2010_2019 = 23.0
 
 export const DATASET_IDS = Object.keys(DATASETS) as DatasetId[]

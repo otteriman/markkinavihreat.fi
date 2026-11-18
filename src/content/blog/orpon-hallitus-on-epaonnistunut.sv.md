@@ -13,7 +13,11 @@ Därför tänkte jag granska hur de två regeringarna har klarat sig i ljuset av
 
 [kuvaaja: tyottomyys]
 
-Regeringen Orpo har helt obestridligt misslyckats med [sitt löfte om 100 000 nya jobb](https://www.instagram.com/reel/DGArqn-tA_B/). I stället har vi blivit etta i EU när det gäller arbetslöshet: arbetslöshetsgraden har under Orpos period stigit från 7,2 till 10,5 procent. Och sysselsättningen?
+Regeringen Orpo har helt obestridligt misslyckats med [sitt löfte om 100 000 nya jobb](https://www.instagram.com/reel/DGArqn-tA_B/). I stället har vi blivit etta i EU när det gäller arbetslöshet: arbetslöshetsgraden har under Orpos period stigit från 7,2 till 10,5 procent. För de unga är läget ännu dystrare.
+
+[kuvaaja: nuorisotyottomyys]
+
+Arbetslöshetsgraden bland 15–24-åringar har under Orpos period stigit från 16,4 till 23,5 procent, den högsta i hela statistiken som börjar 2010. Och sysselsättningen?
 
 [kuvaaja: tyollisyys]
 

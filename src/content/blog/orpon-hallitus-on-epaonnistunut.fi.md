@@ -13,7 +13,11 @@ Joten ajattelin tarkastella näiden kahden hallituksen suoriutumista tilastojen 
 
 [kuvaaja: tyottomyys]
 
-Orpon hallitus on täysin kiistatta epäonnistunut toteuttamaan [lupaustaan 100 000 uudesta työpaikasta](https://www.instagram.com/reel/DGArqn-tA_B/). Sen sijaan olemme nousseet työttömyydessä EU-alueen ykköseksi: työttömyysaste on noussut Orpon kaudella 7,2 prosentista 10,5 prosenttiin. Entä työllisyys?
+Orpon hallitus on täysin kiistatta epäonnistunut toteuttamaan [lupaustaan 100 000 uudesta työpaikasta](https://www.instagram.com/reel/DGArqn-tA_B/). Sen sijaan olemme nousseet työttömyydessä EU-alueen ykköseksi: työttömyysaste on noussut Orpon kaudella 7,2 prosentista 10,5 prosenttiin. Nuorten tilanne on vielä synkempi.
+
+[kuvaaja: nuorisotyottomyys]
+
+15–24-vuotiaiden työttömyysaste on noussut Orpon kaudella 16,4 prosentista 23,5 prosenttiin, mikä on korkein lukema koko vuodesta 2010 alkavassa tilastossa. Entä työllisyys?
 
 [kuvaaja: tyollisyys]
 

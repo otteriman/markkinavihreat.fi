@@ -4,6 +4,7 @@ import {
   DATASET_IDS,
   EMPLOYED_THOUSANDS,
   CHILD_LOW_INCOME_RATE,
+  YOUTH_UNEMPLOYMENT_MAX_2010_2019,
   ORPO_START,
   governmentAt,
   periodDate,
@@ -43,6 +44,14 @@ describe('figures quoted in "Orpon hallitus on epäonnistunut"', () => {
     const obs = DATASETS.tyottomyys.observations
     expect(valueAt(obs, '2023M06')).toBe(7.2)
     expect(valueAt(obs, '2026M09')).toBe(10.5)
+  })
+
+  it('youth unemployment: 16.4 % → 23.5 % under Orpo, the highest since the series began in 2010', () => {
+    const obs = DATASETS.nuorisotyottomyys.observations
+    expect(valueAt(obs, '2023M06')).toBe(16.4)
+    expect(valueAt(obs, '2026M09')).toBe(23.5)
+    expect(Math.max(...obs.map((o) => o.value))).toBe(23.5)
+    expect(23.5).toBeGreaterThan(YOUTH_UNEMPLOYMENT_MAX_2010_2019)
   })
 
   it('debt ratio: 74.8 % → 90.3 % under Orpo, about twice the previous term (+7.6 pp)', () => {
@@ -172,6 +181,7 @@ describe('layoutChart', () => {
       'julkinen-velka': '2023Q2',
       konkurssit: '2023M06',
       tyottomyys: '2023M06',
+      nuorisotyottomyys: '2023M06',
       tyollisyys: '2023M06',
       lapsikoyhyys: '2023',
     }
