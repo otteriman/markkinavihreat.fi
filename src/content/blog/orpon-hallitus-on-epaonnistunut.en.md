@@ -1,42 +1,42 @@
 ---
 locale: en
 title: The Orpo government has failed
-description: 'Homelessness, public debt and bankruptcies have all risen, and consumer confidence has not recovered. Four statistics on the Orpo government’s term compared with its predecessors.'
+description: 'The National Coalition promised to halt the growth of public debt and create 100,000 jobs. The statistics show employment falling and unemployment and debt rising.'
 date: 2026-11-18
 # TODO: author slug(s) (src/content/team), e.g. - lauri-lavanti
 authors: []
 ---
 
-Petteri Orpo’s government took office on 20 June 2023. The next parliamentary election is in April 2027, so the government’s record already shows in the statistics. We looked at four measures that every government wants to improve: homelessness, public debt, bankruptcies and consumer confidence. The point of comparison is the 2019–2023 term of Antti Rinne’s and Sanna Marin’s governments.
+Orpo’s National Coalition Party came to power promising to halt the growth of public debt and to create 100,000 jobs. At the same time, it fiercely attacked the previous government over exactly these issues.
 
-Not everything is in a government’s hands. The previous term was overshadowed by the coronavirus pandemic and Russia’s war of aggression, and interest rates and the world economy affect every government. That is why we look at the direction rather than at individual months. On three of the measures, the direction has turned for the worse during Orpo’s term, and on the fourth the recovery has stalled halfway.
+So I thought I would look at how the two governments have performed in the light of the statistics. In every chart, down means worse. Let’s start with the promised jobs, beginning with employment.
 
-The background colour of the charts changes on the day the Orpo government took office. In every chart, down means worse: the scales for homelessness, debt and bankruptcies are inverted, so an increase shows as a fall. Below each chart you will find its source and the exact figures.
+[kuvaaja: tyollisyys]
 
-[kuvaaja: asunnottomuus]
+The opposition and the media grilled Marin’s government relentlessly over a lack of “employment measures”, even though during Marin’s term employment rose to its highest level in [over 30 years](https://stat.fi/til/tyti/2018/16/tyti_2018_16_2019-12-03_tie_001_fi.html). By the end of the previous government’s term there were about 110,000 more people in work than at its start.
 
-The number of single homeless people fell during Rinne’s and Marin’s term from 4,600 to 3,429, or by about a quarter. Then the direction turned: in 2025 there were 4,579 homeless people, about a third more than in 2023 and almost as many as in 2019. The fall achieved in the previous term has been almost entirely undone in two years.
+The Orpo government, on the other hand, has beyond any doubt failed to deliver on [its promise of 100,000 new jobs](https://www.instagram.com/reel/DGArqn-tA_B/): there are now about 47,000 fewer people in work than when it took office. Instead, Finland has risen to the top of the EU in unemployment. So let’s look at unemployment.
+
+[kuvaaja: tyottomyys]
+
+During Orpo’s term, the unemployment rate has risen from 7.2 to 10.5 per cent. And what about halting the growth of debt?
 
 [kuvaaja: julkinen-velka]
 
-General government debt was 67.2 per cent of gross domestic product at the end of June 2019 and 74.8 per cent at the end of June 2023. In the previous term, borrowing was concentrated in the pandemic year of 2020, and after early 2021 the debt ratio turned downwards.
+During Orpo’s term, the debt ratio has risen from 74.8 to 90.3 per cent. That is about twice as much as over the whole previous term, even though it was hit by the pandemic.
 
-During Orpo’s term, the debt ratio has risen every year, and at the end of June 2026 it stood at 90.3 per cent. In three years it has risen by 15.5 percentage points. That is about twice as much as over the whole previous four-year term, when the debt ratio rose by 7.6 percentage points, the pandemic included.
+Beyond the promises, it is worth looking at everyday life.
 
 [kuvaaja: konkurssit]
 
-During Rinne’s and Marin’s term, from June 2019 to May 2023, an average of about 212 bankruptcies were filed a month. During Orpo’s term, from July 2023 onwards, the average has risen to about 312, almost 50 per cent higher.
+Almost 50 per cent more bankruptcies are being filed than in the previous term: about 312 a month instead of about 212.
 
-The difference is not explained by the exceptionally low figures of the pandemic years. Even before the pandemic, from June to December 2019, there were on average about 214 bankruptcies a month. In 2025, 3,906 bankruptcies were filed, and in the first ten months of this year already 3,411.
+[kuvaaja: asunnottomuus]
+
+In the previous term, homelessness fell by about a quarter. During Orpo’s term it has returned almost to its 2019 level.
 
 [kuvaaja: kuluttajien-luottamus]
 
-Consumer confidence collapsed in 2022, when Russia invaded Ukraine and energy prices and inflation rose. Before the collapse, from June 2019 to December 2021, the confidence indicator averaged −2.7. During Orpo’s term it has averaged −8.6, and its six-month moving average still stands at −6.5.
+Confidence in the economy collapsed in 2022 with Russia’s war of aggression, and during Orpo’s term it has come nowhere near its earlier level.
 
-Confidence has improved from its 2022 lows, then, but in three years it has not come anywhere near its pre-crisis level. When consumers don’t trust the economy, they put off purchases, and businesses that live off the domestic market feel it.
-
-## The direction is wrong
-
-Four measures, one message: homelessness is rising, debt is growing faster than in the previous term, bankruptcies are up by almost half, and consumers still don’t trust the economy. The government is not responsible for the world economy, but it is responsible for its own choices, and they have not turned the direction around.
-
-Criticism alone is not enough. We in Markkinavihreät have put forward our own solutions: [more markets](/en/ehdotukset/lisaa-markkinoita/), [ways to make entrepreneurship easier](/en/ehdotukset/kolme-keinoa-yrittamiseen/), [a wealth account that lets your paycheck build wealth](/en/ehdotukset/palkalla-pitaa-voida-vaurastua/) and [turning the reduced VAT rate on food into a basic income](/en/ehdotukset/ruuan-alv-perustuloksi/).
+The Orpo government promised jobs and an end to the growth of debt. In the light of the statistics, it has failed on both. You can find Markkinavihreät’s alternatives among [our proposals](/en/ehdotukset/).

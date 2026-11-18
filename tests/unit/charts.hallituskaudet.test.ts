@@ -2,11 +2,11 @@ import { describe, expect, it } from 'vitest'
 import {
   DATASETS,
   DATASET_IDS,
+  EMPLOYED_THOUSANDS,
   ORPO_START,
   governmentAt,
   periodDate,
   periodMean,
-  plottedSeries,
   trailingAverage,
   valueAt,
 } from '../../src/lib/charts/hallituskaudet'
@@ -26,47 +26,42 @@ const pct = (from: number, to: number) => Math.round(((to - from) / from) * 100)
 // src/content/blog/orpon-hallitus-on-epaonnistunut.*.md. If the data changes,
 // these fail — update the post's text along with them.
 describe('figures quoted in "Orpon hallitus on epäonnistunut"', () => {
-  it('homelessness: down about a quarter, then up about a third', () => {
-    const obs = DATASETS.asunnottomuus.observations
-    expect(valueAt(obs, '2019')).toBe(4600)
-    expect(valueAt(obs, '2023')).toBe(3429)
-    expect(valueAt(obs, '2025')).toBe(4579)
-    expect(pct(4600, 3429)).toBe(-25)
-    expect(pct(3429, 4579)).toBe(34)
+  it('employed people: about +110 000 in the previous term, about −47 000 under Orpo', () => {
+    expect(EMPLOYED_THOUSANDS['2023M06'] - EMPLOYED_THOUSANDS['2019M06']).toBe(110)
+    expect(EMPLOYED_THOUSANDS['2026M09'] - EMPLOYED_THOUSANDS['2023M06']).toBe(-47)
   })
 
-  it('debt ratio: +7.6 pp in the previous term, +15.5 pp (about twice that) under Orpo', () => {
+  it('employment rate: back to where it was when the previous government started', () => {
+    const obs = DATASETS.tyollisyys.observations
+    expect(valueAt(obs, '2019M06')).toBe(75.8)
+    expect(Math.max(...obs.map((o) => o.value))).toBe(78.5)
+    expect(valueAt(obs, '2026M09')).toBe(75.8)
+  })
+
+  it('unemployment rate: 7.2 % → 10.5 % under Orpo', () => {
+    const obs = DATASETS.tyottomyys.observations
+    expect(valueAt(obs, '2023M06')).toBe(7.2)
+    expect(valueAt(obs, '2026M09')).toBe(10.5)
+  })
+
+  it('debt ratio: 74.8 % → 90.3 % under Orpo, about twice the previous term (+7.6 pp)', () => {
     const obs = DATASETS['julkinen-velka'].observations
     expect(valueAt(obs, '2019Q2')).toBe(67.2)
     expect(valueAt(obs, '2023Q2')).toBe(74.8)
     expect(valueAt(obs, '2026Q2')).toBe(90.3)
-    expect(74.8 - 67.2).toBeCloseTo(7.6, 5)
-    expect(90.3 - 74.8).toBeCloseTo(15.5, 5)
     expect((90.3 - 74.8) / (74.8 - 67.2)).toBeCloseTo(2, 0)
-    // "risen every year": each year-end above the previous one, from the handover on.
-    const ends = ['2023Q2', '2023Q4', '2024Q4', '2025Q4', '2026Q2'].map((p) => valueAt(obs, p))
-    ends.slice(1).forEach((v, i) => expect(v).toBeGreaterThan(ends[i]))
   })
 
   it('bankruptcies: about 212 a month before, about 312 under Orpo', () => {
     const data = DATASETS.konkurssit
     expect(Math.round(periodMean(data, '2019M06', '2023M05'))).toBe(212)
     expect(Math.round(periodMean(data, '2023M07'))).toBe(312)
-    expect(Math.round(periodMean(data, '2019M06', '2019M12'))).toBe(214)
-    const total = (year: string) =>
-      data.observations.filter((o) => o.period.startsWith(year)).reduce((s, o) => s + o.value, 0)
-    expect(total('2025')).toBe(3906)
-    expect(total('2026')).toBe(3411)
   })
 
-  it('consumer confidence: −2.7 before 2022, −8.6 under Orpo, latest average −6.5', () => {
-    const data = DATASETS['kuluttajien-luottamus']
-    expect(periodMean(data, '2019M06', '2021M12')).toBeCloseTo(-2.7, 1)
-    expect(periodMean(data, '2023M07')).toBeCloseTo(-8.6, 1)
-    // Shown as −6,5 in the chart's end label, so the text says −6,5 too.
-    expect(formatChartValue(valueAt(plottedSeries(data), '2026M10'), 'balance', 1, 'fi')).toBe(
-      '−6,5',
-    )
+  it('homelessness: down about a quarter, then back almost to 2019', () => {
+    const obs = DATASETS.asunnottomuus.observations
+    expect(pct(valueAt(obs, '2019'), valueAt(obs, '2023'))).toBe(-25)
+    expect(valueAt(obs, '2025') / valueAt(obs, '2019')).toBeGreaterThan(0.99)
   })
 })
 
@@ -165,7 +160,13 @@ describe('layoutChart', () => {
     // Homelessness, debt and bankruptcies rose under Orpo; consumer
     // confidence is already "higher is better". The latest point must sit
     // below the handover point in all four.
-    const handover = { asunnottomuus: '2023', 'julkinen-velka': '2023Q2', konkurssit: '2023M06' }
+    const handover = {
+      asunnottomuus: '2023',
+      'julkinen-velka': '2023Q2',
+      konkurssit: '2023M06',
+      tyottomyys: '2023M06',
+      tyollisyys: '2023M06',
+    }
     for (const [id, period] of Object.entries(handover)) {
       const layout = layoutChart(DATASETS[id as keyof typeof handover], WIDE, 'fi')
       const at = layout.points.find((p) => p.period === period)!

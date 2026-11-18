@@ -5,7 +5,7 @@ const POST_PATH = '/blogi/2026-11-18/orpon-hallitus-on-epaonnistunut/'
 test('blog post renders its charts in place of the markers', async ({ page }) => {
   await page.goto(POST_PATH)
   const charts = page.locator('figure[data-gov-chart]')
-  await expect(charts).toHaveCount(4)
+  await expect(charts).toHaveCount(6)
   // Exactly one of each chart's two layouts is displayed.
   for (const chart of await charts.all()) {
     await expect(chart.locator('svg[role="img"]:visible')).toHaveCount(1)
@@ -18,7 +18,9 @@ test('blog post chart figures are readable as a table without JavaScript', async
   const context = await browser.newContext({ javaScriptEnabled: false })
   const page = await context.newPage()
   await page.goto(POST_PATH)
-  const chart = page.locator('figure[data-gov-chart]').first()
+  const chart = page.locator('figure[data-gov-chart]', {
+    has: page.getByRole('heading', { name: 'Asunnottomuus on lisääntynyt' }),
+  })
   await chart.getByText('Näytä luvut taulukkona').click()
   const table = chart.getByRole('table')
   await expect(table.getByRole('row', { name: /2025/ })).toContainText('4 579')
@@ -27,7 +29,9 @@ test('blog post chart figures are readable as a table without JavaScript', async
 
 test('blog post chart shows a tooltip on hover', async ({ page }) => {
   await page.goto(POST_PATH)
-  const chart = page.locator('figure[data-gov-chart]').nth(1)
+  const chart = page.locator('figure[data-gov-chart]', {
+    has: page.getByRole('heading', { name: 'Velkaantuminen on kiihtynyt' }),
+  })
   const svg = chart.locator('svg:visible')
   await svg.scrollIntoViewIfNeeded()
   const box = (await svg.boundingBox())!

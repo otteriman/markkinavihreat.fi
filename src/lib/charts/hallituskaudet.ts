@@ -12,12 +12,19 @@
  * and only from the first period with a full window — the leading
  * observations exist to feed that first window, not to be plotted on their own.
  *
- * The three Tilastokeskus series were checked against its PxWeb tables
- * (kony/13fb, kbar/11cc, jyev/12sy) on 18 November 2026; the debt series
- * reflects the revision published on 25 September 2026.
+ * The Tilastokeskus series were checked against its PxWeb tables (tyti/135z,
+ * kony/13fb, kbar/11cc, jyev/12sy) on 18 November 2026. The debt series
+ * reflects the revision published on 25 September 2026; the labour force
+ * trends are revised every month, so expect small (±0.1) changes on update.
  */
 
-export type DatasetId = 'asunnottomuus' | 'julkinen-velka' | 'konkurssit' | 'kuluttajien-luottamus'
+export type DatasetId =
+  | 'tyollisyys'
+  | 'tyottomyys'
+  | 'asunnottomuus'
+  | 'julkinen-velka'
+  | 'konkurssit'
+  | 'kuluttajien-luottamus'
 
 export type Frequency = 'year' | 'quarter' | 'month'
 
@@ -141,6 +148,75 @@ const quarterly = (start: string, values: number[]): Observation[] => {
 }
 
 export const DATASETS: Record<DatasetId, Dataset> = {
+  // Tilastokeskus, työvoimatutkimus: työllisyysasteen trendi, 20–64-vuotiaat.
+  tyollisyys: {
+    id: 'tyollisyys',
+    kind: 'line',
+    frequency: 'month',
+    format: 'percent',
+    decimals: 1,
+    yMin: 74,
+    yMax: 80,
+    yStep: 1,
+    sourceUrl:
+      'https://pxdata.stat.fi/PxWeb/pxweb/fi/StatFin/StatFin__tyti/statfin_tyti_pxt_135z.px/',
+    observations: monthly(
+      '2019-06',
+      [
+        // 2019
+        75.8, 76.0, 76.0, 76.1, 76.1, 76.3, 76.5,
+        // 2020
+        76.7, 76.8, 74.7, 74.5, 74.3, 74.3, 74.4, 74.5, 74.6, 74.7, 74.8, 74.9,
+        // 2021
+        75.0, 75.2, 75.5, 75.9, 76.4, 76.8, 76.9, 76.9, 76.9, 77.0, 77.3, 77.7,
+        // 2022
+        77.9, 78.0, 78.0, 78.0, 78.0, 78.0, 78.0, 78.1, 78.3, 78.5, 78.5, 78.4,
+        // 2023
+        78.2, 78.3, 78.4, 78.4, 78.3, 78.0, 77.8, 77.8, 77.7, 77.6, 77.5, 77.4,
+        // 2024
+        77.4, 77.3, 77.1, 76.9, 76.8, 76.7, 76.6, 76.4, 76.3, 76.2, 76.2, 76.2,
+        // 2025
+        76.2, 76.2, 76.2, 76.2, 76.1, 75.9, 75.8, 75.8, 75.9, 75.9, 75.9, 75.8,
+        // 2026
+        75.7, 75.6, 75.5, 75.4, 75.4, 75.5, 75.7, 75.8, 75.8,
+      ],
+    ),
+  },
+  // Tilastokeskus, työvoimatutkimus: työttömyysasteen trendi, 15–74-vuotiaat.
+  tyottomyys: {
+    id: 'tyottomyys',
+    kind: 'line',
+    frequency: 'month',
+    format: 'percent',
+    decimals: 1,
+    invert: true,
+    yMin: 6,
+    yMax: 11,
+    yStep: 1,
+    sourceUrl:
+      'https://pxdata.stat.fi/PxWeb/pxweb/fi/StatFin/StatFin__tyti/statfin_tyti_pxt_135z.px/',
+    observations: monthly(
+      '2019-06',
+      [
+        // 2019
+        6.7, 6.7, 6.8, 6.8, 6.8, 6.8, 6.7,
+        // 2020
+        6.7, 6.7, 6.8, 6.8, 8.4, 8.3, 8.3, 8.3, 8.2, 8.1, 8.1, 8.1,
+        // 2021
+        8.1, 8.1, 8.1, 8.1, 8.1, 7.9, 7.7, 7.4, 7.3, 7.1, 7.0, 7.0,
+        // 2022
+        6.8, 6.6, 6.4, 6.3, 6.4, 6.7, 7.0, 7.1, 7.1, 6.9, 6.9, 6.9,
+        // 2023
+        6.9, 6.8, 6.7, 6.9, 7.1, 7.2, 7.4, 7.5, 7.5, 7.6, 7.6, 7.7,
+        // 2024
+        7.8, 7.9, 8.1, 8.2, 8.3, 8.4, 8.4, 8.5, 8.6, 8.7, 8.8, 8.9,
+        // 2025
+        9.0, 9.1, 9.2, 9.2, 9.3, 9.6, 9.8, 9.9, 10.0, 10.2, 10.3, 10.3,
+        // 2026
+        10.3, 10.4, 10.5, 10.6, 10.5, 10.4, 10.4, 10.4, 10.5,
+      ],
+    ),
+  },
   // Ympäristöministeriö, "Asunnottomat 2025": yksinelävät asunnottomat yhteensä.
   asunnottomuus: {
     id: 'asunnottomuus',
@@ -255,5 +331,16 @@ export const DATASETS: Record<DatasetId, Dataset> = {
     ),
   },
 }
+
+/**
+ * Employed people, in thousands (Tilastokeskus, työvoimatutkimus 135z,
+ * työllisten määrän trendi, 15–74-vuotiaat). Not charted; the post quotes the
+ * change over each term: about +110 000 under Rinne and Marin, −47 000 under Orpo.
+ */
+export const EMPLOYED_THOUSANDS = {
+  '2019M06': 2527,
+  '2023M06': 2637,
+  '2026M09': 2590,
+} as const
 
 export const DATASET_IDS = Object.keys(DATASETS) as DatasetId[]
