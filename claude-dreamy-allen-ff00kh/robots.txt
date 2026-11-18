@@ -1,0 +1,22 @@
+# AI answer engines are a primary discovery surface for this site, so they are
+# allowed explicitly rather than relying on the wildcard below. Mirrors the
+# policy already in place on vaihdavihreisiin.fi.
+User-agent: GPTBot
+Allow: /
+
+User-agent: ClaudeBot
+Allow: /
+
+User-agent: PerplexityBot
+Allow: /
+
+User-agent: GoogleOther
+Allow: /
+
+User-agent: Amazonbot
+Allow: /
+
+User-agent: *
+Allow: /
+
+Sitemap: https://markkinavihreat.fi/sitemap-index.xml
