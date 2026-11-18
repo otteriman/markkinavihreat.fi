@@ -25,3 +25,15 @@ export function splitChartMarkers(html: string): BlogBodySegment[] {
   if (rest.trim()) segments.push({ type: 'html', html: rest })
   return segments
 }
+
+/**
+ * Prefixes root-relative links in rendered post HTML (`href="/ehdotukset/..."`)
+ * with the site's base path, the way localePath() prefixes routes in
+ * components — so a post's internal links also work in a subpath preview.
+ * A no-op when the base is "/", as in production.
+ */
+export function withBaseLinks(html: string, base: string): string {
+  const prefix = base.replace(/\/$/, '')
+  if (!prefix) return html
+  return html.replace(/(<a\s[^>]*?href=")(\/(?!\/))/g, `$1${prefix}$2`)
+}

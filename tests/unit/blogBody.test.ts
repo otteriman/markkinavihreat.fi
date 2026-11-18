@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest'
-import { splitChartMarkers } from '../../src/lib/blogBody'
+import { splitChartMarkers, withBaseLinks } from '../../src/lib/blogBody'
 
 describe('splitChartMarkers', () => {
   it('splits rendered HTML around chart marker paragraphs', () => {
@@ -21,5 +21,20 @@ describe('splitChartMarkers', () => {
       { type: 'chart', id: 'a' },
       { type: 'chart', id: 'b' },
     ])
+  })
+})
+
+describe('withBaseLinks', () => {
+  const html =
+    '<p><a href="/ehdotukset/x/">a</a> <a href="https://stat.fi/">b</a> <a href="//cdn.example/">c</a></p>'
+
+  it('prefixes only root-relative links with the base path', () => {
+    expect(withBaseLinks(html, '/markkinavihreat.fi/claude-x/')).toBe(
+      '<p><a href="/markkinavihreat.fi/claude-x/ehdotukset/x/">a</a> <a href="https://stat.fi/">b</a> <a href="//cdn.example/">c</a></p>',
+    )
+  })
+
+  it('leaves the HTML alone when the base is "/"', () => {
+    expect(withBaseLinks(html, '/')).toBe(html)
   })
 })
