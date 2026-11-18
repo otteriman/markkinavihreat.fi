@@ -24,22 +24,26 @@ export interface ChartSize {
   /** Height of the band above the plot that holds the two government labels. */
   stripHeight: number
   fontSize: number
+  /** Size of the two-line government labels in the strip. */
+  labelFontSize: number
 }
 
 export const WIDE: ChartSize = {
   width: 720,
   height: 480,
   margin: { top: 4, right: 12, bottom: 30, left: 56 },
-  stripHeight: 30,
+  stripHeight: 66,
   fontSize: 13,
+  labelFontSize: 19,
 }
 
 export const COMPACT: ChartSize = {
   width: 400,
   height: 420,
   margin: { top: 4, right: 8, bottom: 28, left: 48 },
-  stripHeight: 28,
+  stripHeight: 58,
   fontSize: 12,
+  labelFontSize: 16,
 }
 
 /** Mark specs: bars at most 44 px wide with a 4 px rounded data-end; 5 px dot radius. */
@@ -364,7 +368,10 @@ export function layoutChart(dataset: Dataset, size: ChartSize, locale: Locale): 
     boundaryX,
     regions,
     regionTop,
-    regionLabelY: round(regionTop + size.stripHeight / 2 + size.fontSize / 3),
+    // Baseline of the label's first line; the second follows 1.1em below.
+    regionLabelY: round(
+      regionTop + (size.stripHeight - size.labelFontSize * 1.1) / 2 + size.labelFontSize * 0.8,
+    ),
     yTicks,
     xTicks,
     xLabels,

@@ -35,14 +35,17 @@ const subtitle = t(locale, `chart.${datasetId}.subtitle` as UiKey)
 const source = t(locale, `chart.${datasetId}.source` as UiKey)
 const invertedNote = dataset.invert ? t(locale, 'chart.gov.invertedNote') : ''
 const desc = [t(locale, 'chart.gov.desc'), invertedNote].filter(Boolean).join(' ')
-const regionLabels: Record<Government, string> = {
-  rinneMarin: t(locale, 'chart.gov.rinneMarinShort'),
-  orpo: t(locale, 'chart.gov.orpoShort'),
+// The government labels on top of the chart are the only key to the colours,
+// so they wear them: two lines each ("Orpon" / "hallitus"). Terra is darkened
+// a step for text — on its own 10% wash it would fall short of 4.5:1.
+const regionLabels: Record<Government, string[]> = {
+  rinneMarin: t(locale, 'chart.gov.rinneMarinLabel').split('\n'),
+  orpo: t(locale, 'chart.gov.orpoLabel').split('\n'),
 }
-const legend: Array<{ government: Government; label: string }> = [
-  { government: 'rinneMarin', label: t(locale, 'chart.gov.rinneMarin') },
-  { government: 'orpo', label: t(locale, 'chart.gov.orpo') },
-]
+const LABEL_COLORS: Record<Government, string> = {
+  rinneMarin: 'color-mix(in oklab, var(--color-terra) 78%, black)',
+  orpo: 'var(--color-meri)',
+}
 
 // Two renderings of the same chart: a wide one for tablets and up and a
 // compact one for phones (see lib/charts/hallituskausiLayout.ts). Only one is
@@ -78,24 +81,6 @@ const idBase = `gov-chart-${datasetId}`
         </p>
       )
     }
-    <ul class="mt-3 flex flex-wrap gap-x-5 gap-y-1 text-sm">
-      {
-        legend.map((item) => (
-          <li class="flex items-center gap-2">
-            {/* The legend key mirrors the mark: a block for bars, a stroke for lines. */}
-            <span
-              aria-hidden="true"
-              class:list={[
-                'inline-block shrink-0',
-                dataset.kind === 'bar' ? 'h-2.5 w-2.5 rounded-[2px]' : 'h-[3px] w-4 rounded-full',
-              ]}
-              style={`background: ${COLORS[item.government]}`}
-            />
-            {item.label}
-          </li>
-        ))
-      }
-    </ul>
   </figcaption>
 
   {
@@ -122,7 +107,7 @@ const idBase = `gov-chart-${datasetId}`
         >
           <desc id={`${idBase}-${key}-desc`}>{`${subtitle}. ${desc}`}</desc>
 
-          {/* Government bands: a ~10% wash of each period's colour, with the label strip on top. */}
+          {/* Government bands: a ~10% wash of each period's colour, labelled in a strip on top. */}
           {layout.regions.map((region) => (
             <g>
               <rect
@@ -136,11 +121,15 @@ const idBase = `gov-chart-${datasetId}`
               <text
                 x={region.labelX}
                 y={layout.regionLabelY}
-                fill="var(--color-musta)"
-                fill-opacity="0.8"
-                font-weight="700"
+                fill={LABEL_COLORS[region.government]}
+                font-size={size.labelFontSize}
+                font-weight="800"
               >
-                {regionLabels[region.government]}
+                {regionLabels[region.government].map((line, i) => (
+                  <tspan x={region.labelX} dy={i === 0 ? 0 : '1.1em'}>
+                    {line}
+                  </tspan>
+                ))}
               </text>
             </g>
           ))}
