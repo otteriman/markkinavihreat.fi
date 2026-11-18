@@ -217,6 +217,17 @@ const idBase = `gov-chart-${datasetId}`
             />
           ))}
 
+          {layout.dots.map((dot) => (
+            <circle
+              cx={dot.x}
+              cy={dot.y}
+              r={layout.dotRadius}
+              fill={COLORS[dot.government]}
+              stroke="var(--color-kerma)"
+              stroke-width="2"
+            />
+          ))}
+
           {/* Hover layer, driven by the script below; hidden until the pointer or focus arrives. */}
           {dataset.kind === 'line' && (
             <line

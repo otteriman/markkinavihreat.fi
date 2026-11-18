@@ -75,8 +75,9 @@ const PERIOD = /^(\d{4})(?:Q([1-4])|M(0[1-9]|1[0-2]))?$/
 /**
  * The instant a period's value is plotted at. Months sit mid-month (a flow over
  * the month). Quarters sit at the quarter's end, because the only quarterly
- * series here is a stock — debt on the last day of the quarter. Years start on
- * 1 January; the bar chart lays years out as bands and doesn't use this.
+ * series here is a stock — debt on the last day of the quarter. Years sit at
+ * mid-year (1 July), as an annual figure describes the whole year; bar charts
+ * lay years out as bands and don't use this.
  */
 export function periodDate(period: string): Date {
   const match = period.match(PERIOD)
@@ -85,7 +86,7 @@ export function periodDate(period: string): Date {
   const y = Number(year)
   if (quarter) return new Date(Date.UTC(y, Number(quarter) * 3, 0))
   if (month) return new Date(Date.UTC(y, Number(month) - 1, 15))
-  return new Date(Date.UTC(y, 0, 1))
+  return new Date(Date.UTC(y, 6, 1))
 }
 
 /** Share of `year` that had passed when `date` arrived (0 at 1 January, ~1 at 31 December). */
@@ -222,14 +223,14 @@ export const DATASETS: Record<DatasetId, Dataset> = {
   // asuntoväestössä, pienituloisuusraja 60 % mediaanitulosta.
   lapsikoyhyys: {
     id: 'lapsikoyhyys',
-    kind: 'bar',
+    kind: 'line',
     frequency: 'year',
     format: 'count',
     decimals: 0,
     invert: true,
-    yMin: 0,
-    yMax: 150000,
-    yStep: 50000,
+    yMin: 110000,
+    yMax: 140000,
+    yStep: 10000,
     sourceUrl:
       'https://pxdata.stat.fi/PxWeb/pxweb/fi/StatFin/StatFin__tjt/statfin_tjt_pxt_13dp.px/',
     observations: [

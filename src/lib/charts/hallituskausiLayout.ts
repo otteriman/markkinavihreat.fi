@@ -79,6 +79,8 @@ export interface ChartLayout {
   xTicks: number[]
   xLabels: Array<{ x: number; label: string }>
   lines: Array<{ government: Government; d: string }>
+  /** Markers on each point of a sparse (annual) line, so its few vertices read as data. */
+  dots: Array<{ x: number; y: number; government: Government }>
   bars: BarShape[]
   points: ChartPoint[]
   /** Radius of the dot that marks the hovered point. */
@@ -204,6 +206,7 @@ export function layoutChart(dataset: Dataset, size: ChartSize, locale: Locale): 
   let boundaryX: number
   let points: ChartPoint[]
   let lines: ChartLayout['lines'] = []
+  let dots: ChartLayout['dots'] = []
   let bars: BarShape[] = []
   let xTicks: number[] = []
   let xLabels: ChartLayout['xLabels'] = []
@@ -259,8 +262,12 @@ export function layoutChart(dataset: Dataset, size: ChartSize, locale: Locale): 
     }
   } else {
     const dates = series.map((o) => periodDate(o.period).getTime())
-    const t0 = dates[0]
-    const t1 = dates[dates.length - 1]
+    // An annual figure covers its whole year, so an annual line spans whole
+    // years (1 January to 31 December) with each point mid-year; that also
+    // keeps the first and last year labels clear of the plot's edges.
+    const annual = dataset.frequency === 'year'
+    const t0 = annual ? Date.UTC(Number(series[0].period), 0, 1) : dates[0]
+    const t1 = annual ? Date.UTC(Number(series.at(-1)!.period) + 1, 0, 1) : dates[dates.length - 1]
     const x = linear(t0, t1, plot.left, plot.right)
     boundaryX = round(x(ORPO_START.getTime()))
     points = series.map((obs, i) => ({
@@ -277,12 +284,23 @@ export function layoutChart(dataset: Dataset, size: ChartSize, locale: Locale): 
       { government: 'orpo' as const, d: toPath(after) },
     ].filter((line) => line.d !== '')
 
-    // Ticks on each 1 January; the year's label centred on the part of the
-    // year the plot shows, if that's at least 40 % of the year (so a stub of
-    // November–December at the start doesn't get a label of its own).
+    // Annual points carry their year right under them.
+    if (annual) {
+      xLabels = points.map((p) => ({ x: p.x, label: p.period }))
+      xTicks = points.map((p) => p.x)
+      dots = points.map((p) => ({
+        x: p.x,
+        y: p.y,
+        government: p.government === 'split' ? 'orpo' : p.government,
+      }))
+    }
+
+    // Otherwise ticks on each 1 January; the year's label centred on the part
+    // of the year the plot shows, if that's at least 40 % of the year (so a
+    // stub of November–December at the start doesn't get a label of its own).
     const firstYear = new Date(t0).getUTCFullYear()
     const lastYear = new Date(t1).getUTCFullYear()
-    for (let year = firstYear; year <= lastYear; year++) {
+    for (let year = firstYear; !annual && year <= lastYear; year++) {
       const start = Date.UTC(year, 0, 1)
       const end = Date.UTC(year + 1, 0, 1)
       if (start > t0) xTicks.push(round(x(start)))
@@ -325,6 +343,7 @@ export function layoutChart(dataset: Dataset, size: ChartSize, locale: Locale): 
     xTicks,
     xLabels,
     lines,
+    dots,
     bars,
     points,
     dotRadius: DOT_RADIUS,

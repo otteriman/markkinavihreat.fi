@@ -88,10 +88,10 @@ describe('trailingAverage', () => {
 })
 
 describe('periodDate / governmentAt', () => {
-  it('places months mid-month and quarters at quarter end', () => {
+  it('places months mid-month, quarters at quarter end and years mid-year', () => {
     expect(periodDate('2023M06').toISOString().slice(0, 10)).toBe('2023-06-15')
     expect(periodDate('2023Q2').toISOString().slice(0, 10)).toBe('2023-06-30')
-    expect(periodDate('2023').toISOString().slice(0, 10)).toBe('2023-01-01')
+    expect(periodDate('2023').toISOString().slice(0, 10)).toBe('2023-07-01')
   })
 
   it('switches government on 20 June 2023', () => {
