@@ -245,14 +245,14 @@ export const DATASETS: Record<DatasetId, Dataset> = {
   // Ympäristöministeriö, "Asunnottomat 2025": yksinelävät asunnottomat yhteensä.
   asunnottomuus: {
     id: 'asunnottomuus',
-    kind: 'bar',
+    kind: 'line',
     frequency: 'year',
     invert: true,
     format: 'count',
     decimals: 0,
-    yMin: 0,
+    yMin: 3000,
     yMax: 5000,
-    yStep: 1000,
+    yStep: 500,
     sourceUrl: 'https://julkaisut.valtioneuvosto.fi/items/3e1a9858-cde4-4996-b5a9-50df819fbd27',
     observations: [
       { period: '2019', value: 4600 },

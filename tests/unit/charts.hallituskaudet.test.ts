@@ -132,6 +132,16 @@ describe('layout helpers', () => {
   })
 })
 
+// No published chart uses bars any more; the bar layout stays supported,
+// exercised through this fixture.
+const BAR_FIXTURE = {
+  ...DATASETS.asunnottomuus,
+  kind: 'bar' as const,
+  yMin: 0,
+  yMax: 5000,
+  yStep: 1000,
+}
+
 describe('layoutChart', () => {
   for (const id of DATASET_IDS) {
     for (const [name, size] of [
@@ -174,13 +184,13 @@ describe('layoutChart', () => {
   })
 
   it('splits the 2023 bar between the two governments', () => {
-    const layout = layoutChart(DATASETS.asunnottomuus, WIDE, 'fi')
+    const layout = layoutChart(BAR_FIXTURE, WIDE, 'fi')
     const bar2023 = layout.bars.find((b) => b.period === '2023')!
     expect(bar2023.parts.map((p) => p.government)).toEqual(['rinneMarin', 'orpo'])
   })
 
   it('refuses a bar chart whose axis does not start at zero', () => {
-    expect(() => layoutChart({ ...DATASETS.asunnottomuus, yMin: 3000 }, WIDE, 'fi')).toThrow(/zero/)
+    expect(() => layoutChart({ ...BAR_FIXTURE, yMin: 3000 }, WIDE, 'fi')).toThrow(/zero/)
   })
 
   it('refuses an axis that would clip the data', () => {
