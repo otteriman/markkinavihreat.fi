@@ -47,6 +47,14 @@ const regionLabels: Record<Government, string[]> = {
   rinneMarin: t(locale, 'chart.gov.rinneMarinLabel').split('\n'),
   orpo: t(locale, 'chart.gov.orpoLabel').split('\n'),
 }
+// SVG text doesn't wrap, so a label in a narrow band (Orpo's 1½ bars on a
+// phone) steps its size down to fit: extra-bold glyphs here average about
+// 0.57 em wide (measured), plus 8 px of padding before and 4 px after.
+function labelFontSize(lines: string[], regionWidth: number, max: number): number {
+  const longest = Math.max(...lines.map((line) => line.length))
+  return Math.min(max, Math.floor((regionWidth - 12) / (longest * 0.57)))
+}
+
 const LABEL_COLORS: Record<Government, string> = {
   rinneMarin: 'color-mix(in srgb, var(--color-lehti) 70%, black)',
   orpo: 'var(--color-meri)',
@@ -126,7 +134,11 @@ const idBase = `gov-chart-${datasetId}`
                 x={region.labelX}
                 y={layout.regionLabelY}
                 fill={LABEL_COLORS[region.government]}
-                font-size={size.labelFontSize}
+                font-size={labelFontSize(
+                  regionLabels[region.government],
+                  region.width,
+                  size.labelFontSize,
+                )}
                 font-weight="800"
               >
                 {/* set:text keeps formatter whitespace out of the tspan, where it would shift the line. */}
@@ -219,34 +231,6 @@ const idBase = `gov-chart-${datasetId}`
             />
           )}
 
-          {layout.annotations.map((a) => (
-            <g>
-              {a.dot && (
-                <circle
-                  cx={a.x}
-                  cy={a.y}
-                  r={layout.dotRadius}
-                  fill={COLORS[a.government]}
-                  stroke="var(--color-kerma)"
-                  stroke-width="2"
-                />
-              )}
-              <text
-                x={a.labelX}
-                y={a.labelY}
-                text-anchor={a.anchor}
-                fill="var(--color-musta)"
-                font-weight="700"
-                stroke="var(--color-kerma)"
-                stroke-width="3"
-                stroke-linejoin="round"
-                paint-order="stroke"
-              >
-                {a.text}
-              </text>
-            </g>
-          ))}
-
           {dataset.kind === 'line' && (
             <circle
               data-hover-dot
@@ -320,8 +304,8 @@ const idBase = `gov-chart-${datasetId}`
 <script>
   // Progressive enhancement: a crosshair (lines) or a highlighted bar plus a
   // tooltip, on pointer and on keyboard focus (arrow keys step through the
-  // points). Without JS the chart is a static image with direct labels, and
-  // every value stays in the table — the tooltip never gates a number.
+  // points). Without JS the chart is a static image, and every value stays
+  // in the table — the tooltip never gates a number.
   type Point = [x: number, y: number, value: string, period: string, color: string]
 
   for (const svg of document.querySelectorAll<SVGSVGElement>('[data-gov-svg]')) {

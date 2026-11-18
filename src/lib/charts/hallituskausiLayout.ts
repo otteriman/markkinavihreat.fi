@@ -31,7 +31,7 @@ export interface ChartSize {
 export const WIDE: ChartSize = {
   width: 720,
   height: 480,
-  margin: { top: 4, right: 12, bottom: 30, left: 56 },
+  margin: { top: 4, right: 12, bottom: 30, left: 66 },
   stripHeight: 66,
   fontSize: 13,
   labelFontSize: 19,
@@ -40,7 +40,7 @@ export const WIDE: ChartSize = {
 export const COMPACT: ChartSize = {
   width: 400,
   height: 420,
-  margin: { top: 4, right: 8, bottom: 28, left: 48 },
+  margin: { top: 4, right: 8, bottom: 28, left: 58 },
   stripHeight: 58,
   fontSize: 12,
   labelFontSize: 16,
@@ -62,18 +62,6 @@ export interface ChartPoint {
   periodLabel: string
 }
 
-export interface Annotation {
-  x: number
-  y: number
-  labelX: number
-  labelY: number
-  anchor: 'start' | 'middle' | 'end'
-  text: string
-  government: Government
-  /** Bars carry their label on the cap and draw no dot. */
-  dot: boolean
-}
-
 export interface BarShape {
   period: string
   parts: Array<{ government: Government; d: string }>
@@ -93,7 +81,7 @@ export interface ChartLayout {
   lines: Array<{ government: Government; d: string }>
   bars: BarShape[]
   points: ChartPoint[]
-  annotations: Annotation[]
+  /** Radius of the dot that marks the hovered point. */
   dotRadius: number
 }
 
@@ -182,10 +170,6 @@ export function splitLine(
 
 const toPath = (points: Array<{ x: number; y: number }>) =>
   points.map((p, i) => `${i === 0 ? 'M' : 'L'}${round(p.x)},${round(p.y)}`).join(' ')
-
-function nearestIndex(xs: number[], x: number): number {
-  return xs.reduce((best, cur, i) => (Math.abs(cur - x) < Math.abs(xs[best] - x) ? i : best), 0)
-}
 
 export function layoutChart(dataset: Dataset, size: ChartSize, locale: Locale): ChartLayout {
   const series = plottedSeries(dataset)
@@ -310,41 +294,6 @@ export function layoutChart(dataset: Dataset, size: ChartSize, locale: Locale): 
     }
   }
 
-  // Selective direct labels: where the series starts, where it stood when the
-  // government changed, and where it is now. Everything else is in the
-  // tooltip and the table.
-  const xs = points.map((p) => p.x)
-  const annotated = [...new Set([0, nearestIndex(xs, boundaryX), points.length - 1])]
-  const lineHeight = size.fontSize + 4
-  const annotations: Annotation[] = annotated.map((i) => {
-    const point = points[i]
-    const isBar = dataset.kind === 'bar'
-    const gap = isBar ? 8 : DOT_RADIUS + 8
-    // A bar's label sits just past its data-end (below it on an inverted
-    // axis). A line's goes on the side of its dot the line doesn't run
-    // through — judged from the neighbouring points — and stays in the plot.
-    const neighbours = points
-      .slice(Math.max(0, i - 3), i + 4)
-      .filter((_, j, arr) => arr[j] !== point)
-    const lineAbove = neighbours.reduce((sum, p) => sum + p.y, 0) / neighbours.length < point.y
-    const fitsAbove = point.y - gap - lineHeight >= plot.top
-    const fitsBelow = point.y + gap + size.fontSize <= plot.bottom
-    const below = isBar ? Boolean(dataset.invert) : (lineAbove && fitsBelow) || !fitsAbove
-    const anchor = isBar ? 'middle' : i === 0 ? 'start' : i === points.length - 1 ? 'end' : 'middle'
-    const government: Government =
-      point.government === 'split' ? 'orpo' : (point.government as Government)
-    return {
-      x: point.x,
-      y: point.y,
-      labelX: point.x,
-      labelY: round(below ? point.y + gap + size.fontSize : point.y - gap),
-      anchor,
-      text: point.valueLabel,
-      government,
-      dot: !isBar,
-    }
-  })
-
   const regionTop = size.margin.top
   const regions: ChartLayout['regions'] = [
     {
@@ -378,7 +327,6 @@ export function layoutChart(dataset: Dataset, size: ChartSize, locale: Locale): 
     lines,
     bars,
     points,
-    annotations,
     dotRadius: DOT_RADIUS,
   }
 }

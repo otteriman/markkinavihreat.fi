@@ -31,6 +31,16 @@ Lupausten lisäksi kannattaa katsoa, miltä arki näyttää.
 
 Konkursseja pannaan vireille lähes puolet enemmän kuin edellisellä kaudella, noin 312 kuukaudessa noin 212:n sijaan.
 
+[kuvaaja: lapsikoyhyys]
+
+Pienituloisissa perheissä eläviä lapsia oli vuonna 2024 noin 137 000, noin 14 000 enemmän kuin vuotta aiemmin. Lasten pienituloisuusaste nousi 13,8 prosenttiin, mikä on korkein lukema koko vuodesta 2010 alkavassa tilastossa. Ja ennusteen mukaan lapsiperheköyhyys kasvaa vielä merkittävästi. [Yle kertoo](https://yle.fi/a/74-20184705):
+
+> Asiantuntijat ovat huolissaan siitä, miten hallituksen sosiaaliturvaleikkaukset vaikuttavat suomalaislapsiin ja heidän kehitykseensä.
+>
+> [Sosiaali- ja terveysministeriö myöntää uusissa vaikutusarvioissaan](https://yle.fi/a/74-20184493), että leikkaukset johtavat lapsiperheköyhyyteen aiemmin luultua enemmän.
+>
+> Uusien arvioiden mukaan lasten pienituloisuus kasvaa kolmella prosenttiyksiköllä: leikkaukset pudottavat 31 000 lasta köyhyysrajan alle.
+
 [kuvaaja: asunnottomuus]
 
 Edellisellä kaudella asunnottomuus väheni noin neljänneksellä. Orpon kaudella se on palannut lähes vuoden 2019 tasolle.

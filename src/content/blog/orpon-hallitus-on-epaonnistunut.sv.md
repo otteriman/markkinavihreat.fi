@@ -31,6 +31,16 @@ Förutom löftena lönar det sig att se hur vardagen ser ut.
 
 Det inleds nästan hälften fler konkurser än under förra perioden, omkring 312 i månaden i stället för omkring 212.
 
+[kuvaaja: lapsikoyhyys]
+
+År 2024 levde omkring 137 000 barn i låginkomstfamiljer, omkring 14 000 fler än året innan. Låginkomstgraden bland barn steg till 13,8 procent, den högsta i hela statistiken som börjar 2010. Och enligt prognoserna kommer barnfamiljsfattigdomen att öka ytterligare betydligt. [Yle rapporterar](https://yle.fi/a/74-20184705) (vår översättning):
+
+> Experterna är oroade över hur regeringens nedskärningar i den sociala tryggheten påverkar finländska barn och deras utveckling.
+>
+> [Social- och hälsovårdsministeriet medger i sina nya konsekvensbedömningar](https://yle.fi/a/74-20184493) att nedskärningarna leder till mer barnfamiljsfattigdom än man tidigare trott.
+>
+> Enligt de nya bedömningarna ökar låginkomstgraden bland barn med tre procentenheter: nedskärningarna sänker 31 000 barn under fattigdomsgränsen.
+
 [kuvaaja: asunnottomuus]
 
 Under förra perioden minskade bostadslösheten med ungefär en fjärdedel. Under Orpos period har den nästan återgått till 2019 års nivå.

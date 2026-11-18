@@ -3,6 +3,7 @@ import {
   DATASETS,
   DATASET_IDS,
   EMPLOYED_THOUSANDS,
+  CHILD_LOW_INCOME_RATE,
   ORPO_START,
   governmentAt,
   periodDate,
@@ -56,6 +57,16 @@ describe('figures quoted in "Orpon hallitus on epäonnistunut"', () => {
     const data = DATASETS.konkurssit
     expect(Math.round(periodMean(data, '2019M06', '2023M05'))).toBe(212)
     expect(Math.round(periodMean(data, '2023M07'))).toBe(312)
+  })
+
+  it('children in low-income families: about 137 000 in 2024, up about 14 000, rate at a series high', () => {
+    const obs = DATASETS.lapsikoyhyys.observations
+    expect(Math.round(valueAt(obs, '2024') / 1000)).toBe(137)
+    expect(Math.round((valueAt(obs, '2024') - valueAt(obs, '2023')) / 1000)).toBe(14)
+    const rates = Object.values(CHILD_LOW_INCOME_RATE)
+    expect(CHILD_LOW_INCOME_RATE[2024]).toBe(13.8)
+    expect(Math.max(...rates)).toBe(13.8)
+    expect(rates.filter((r) => r === 13.8)).toHaveLength(1)
   })
 
   it('homelessness: down about a quarter, then back almost to 2019', () => {
@@ -138,23 +149,9 @@ describe('layoutChart', () => {
           expect(p.y).toBeGreaterThanOrEqual(plot.top)
           expect(p.y).toBeLessThanOrEqual(plot.bottom)
         }
-        // Direct labels: start, handover and latest — never one per point.
-        expect(layout.annotations.length).toBeLessThanOrEqual(3)
-        for (const a of layout.annotations)
-          expect(a.labelY - size.fontSize).toBeGreaterThanOrEqual(plot.top - 1)
       })
     }
   }
-
-  it('keeps every bar value label past its bar end (below, on the inverted axis), never inside it', () => {
-    for (const size of [WIDE, COMPACT]) {
-      const layout = layoutChart(DATASETS.asunnottomuus, size, 'fi')
-      for (const a of layout.annotations) {
-        expect(a.labelY - size.fontSize).toBeGreaterThan(a.y)
-        expect(a.labelY).toBeLessThanOrEqual(layout.plot.bottom)
-      }
-    }
-  })
 
   it('draws "worse" as down in every chart', () => {
     // Homelessness, debt and bankruptcies rose under Orpo; consumer
@@ -166,6 +163,7 @@ describe('layoutChart', () => {
       konkurssit: '2023M06',
       tyottomyys: '2023M06',
       tyollisyys: '2023M06',
+      lapsikoyhyys: '2023',
     }
     for (const [id, period] of Object.entries(handover)) {
       const layout = layoutChart(DATASETS[id as keyof typeof handover], WIDE, 'fi')

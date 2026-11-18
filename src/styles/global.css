@@ -131,6 +131,10 @@
     @apply text-vihrea-tumma underline;
   }
 
+  .prose-body blockquote {
+    @apply border-vihrea-tumma space-y-3 border-l-4 pl-5;
+  }
+
   /* Same as .prose-body, for paragraphs on a dark (bg-metsa) section. */
   .prose-body-dark strong {
     @apply font-semibold;

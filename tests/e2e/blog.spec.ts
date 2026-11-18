@@ -5,7 +5,7 @@ const POST_PATH = '/blogi/2026-11-18/orpon-hallitus-on-epaonnistunut/'
 test('blog post renders its charts in place of the markers', async ({ page }) => {
   await page.goto(POST_PATH)
   const charts = page.locator('figure[data-gov-chart]')
-  await expect(charts).toHaveCount(6)
+  await expect(charts).toHaveCount(7)
   // Exactly one of each chart's two layouts is displayed.
   for (const chart of await charts.all()) {
     await expect(chart.locator('svg[role="img"]:visible')).toHaveCount(1)

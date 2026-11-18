@@ -12,7 +12,7 @@
  * and only from the first period with a full window — the leading
  * observations exist to feed that first window, not to be plotted on their own.
  *
- * The Tilastokeskus series were checked against its PxWeb tables (tyti/135z,
+ * The Tilastokeskus series were checked against its PxWeb tables (tyti/135z, tjt/13dp,
  * kony/13fb, kbar/11cc, jyev/12sy) on 18 November 2026. The debt series
  * reflects the revision published on 25 September 2026; the labour force
  * trends are revised every month, so expect small (±0.1) changes on update.
@@ -21,6 +21,7 @@
 export type DatasetId =
   | 'tyollisyys'
   | 'tyottomyys'
+  | 'lapsikoyhyys'
   | 'asunnottomuus'
   | 'julkinen-velka'
   | 'konkurssit'
@@ -217,6 +218,29 @@ export const DATASETS: Record<DatasetId, Dataset> = {
       ],
     ),
   },
+  // Tilastokeskus, tulonjakotilasto (13dp): pienituloisten lasten lukumäärä
+  // asuntoväestössä, pienituloisuusraja 60 % mediaanitulosta.
+  lapsikoyhyys: {
+    id: 'lapsikoyhyys',
+    kind: 'bar',
+    frequency: 'year',
+    format: 'count',
+    decimals: 0,
+    invert: true,
+    yMin: 0,
+    yMax: 150000,
+    yStep: 50000,
+    sourceUrl:
+      'https://pxdata.stat.fi/PxWeb/pxweb/fi/StatFin/StatFin__tjt/statfin_tjt_pxt_13dp.px/',
+    observations: [
+      { period: '2019', value: 128105 },
+      { period: '2020', value: 114263 },
+      { period: '2021', value: 121798 },
+      { period: '2022', value: 118880 },
+      { period: '2023', value: 123128 },
+      { period: '2024', value: 137448 },
+    ],
+  },
   // Ympäristöministeriö, "Asunnottomat 2025": yksinelävät asunnottomat yhteensä.
   asunnottomuus: {
     id: 'asunnottomuus',
@@ -341,6 +365,29 @@ export const EMPLOYED_THOUSANDS = {
   '2019M06': 2527,
   '2023M06': 2637,
   '2026M09': 2590,
+} as const
+
+/**
+ * Low-income rate of children, % (Tilastokeskus 13dp, asuntoväestöön kuuluvien
+ * lasten pienituloisuusaste), for the whole series from 2010. Not charted; the
+ * post quotes 2024 as the highest rate in the series.
+ */
+export const CHILD_LOW_INCOME_RATE = {
+  2010: 12.8,
+  2011: 13.0,
+  2012: 12.3,
+  2013: 12.1,
+  2014: 12.1,
+  2015: 11.8,
+  2016: 11.7,
+  2017: 11.8,
+  2018: 12.2,
+  2019: 12.4,
+  2020: 11.1,
+  2021: 11.9,
+  2022: 11.7,
+  2023: 12.2,
+  2024: 13.8,
 } as const
 
 export const DATASET_IDS = Object.keys(DATASETS) as DatasetId[]

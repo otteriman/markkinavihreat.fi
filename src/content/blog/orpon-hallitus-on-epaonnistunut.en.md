@@ -31,6 +31,16 @@ Beyond the promises, it is worth looking at everyday life.
 
 Almost 50 per cent more bankruptcies are being filed than in the previous term: about 312 a month instead of about 212.
 
+[kuvaaja: lapsikoyhyys]
+
+In 2024, about 137,000 children lived in low-income families, about 14,000 more than a year earlier. The low-income rate among children rose to 13.8 per cent, the highest in the whole series, which begins in 2010. And according to the forecasts, child poverty will grow significantly further. [Yle reports](https://yle.fi/a/74-20184705) (our translation):
+
+> Experts are worried about how the government’s social security cuts affect Finnish children and their development.
+>
+> [The Ministry of Social Affairs and Health admits in its new impact assessments](https://yle.fi/a/74-20184493) that the cuts lead to more child poverty than previously thought.
+>
+> According to the new assessments, the low-income rate among children will rise by three percentage points: the cuts will push 31,000 children below the poverty line.
+
 [kuvaaja: asunnottomuus]
 
 In the previous term, homelessness fell by about a quarter. During Orpo’s term it has returned almost to its 2019 level.
