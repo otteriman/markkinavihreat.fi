@@ -3,7 +3,9 @@ locale: en
 name: 'Essi Lindberg'
 order: 33
 photo: '../../assets/team/Essi-Lindberg.jpg'
+card: '../../assets/team/cards/Essi-Lindberg.jpg'
 candidateBadge: 'Parliamentary candidate in Southwest Finland'
+district: varsinais-suomi
 donationUrl: 'https://www.vihreat.fi/eduskuntavaaliehdokkaat-2027/?kieli=en&vaali=eduskuntavaalit-2027&alue=vp3&ehdokas=lindberg-essi-10221&valilehti=donate'
 links:
   - type: tiktok
@@ -14,6 +16,8 @@ links:
     url: 'https://bsky.app/profile/essilindberg.bsky.social'
   - type: facebook
     url: 'https://www.facebook.com/share/1DEGY581Gf/'
+  - type: instagram
+    url: 'https://www.instagram.com/essilindberg/'
 ---
 
 Essi Lindberg is a Turku-based Parliamentary candidate for the Greens of Varsinais-Suomi, a Turku city councillor, a councillor in the Varha wellbeing services county, and a member of the Greens' party council. Professionally, she leads communications at an economic research institute.

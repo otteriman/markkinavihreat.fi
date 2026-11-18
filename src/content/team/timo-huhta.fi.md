@@ -3,6 +3,7 @@ locale: fi
 name: 'Timo Huhta'
 order: 8
 photo: '../../assets/team/Timo-Huhta.jpg'
+card: '../../assets/team/cards/Timo-Huhta.jpg'
 links:
   - type: website
     url: 'https://www.timohuhta.fi'

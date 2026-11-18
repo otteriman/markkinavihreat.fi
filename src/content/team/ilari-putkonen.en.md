@@ -3,6 +3,7 @@ locale: en
 name: 'Ilari Putkonen'
 order: 23
 photo: '../../assets/team/Ilari-Putkonen.jpg'
+card: '../../assets/team/cards/Ilari-Putkonen.jpg'
 links:
   - type: website
     url: 'https://ilariputkonen.fi/'

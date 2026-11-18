@@ -3,6 +3,7 @@ locale: en
 name: 'Taavi Horila'
 order: 7
 photo: '../../assets/team/Taavi-Horila.jpg'
+card: '../../assets/team/cards/Taavi-Horila.jpg'
 links:
   - type: bluesky
     url: 'https://bsky.app/profile/taavihorila.bsky.social'

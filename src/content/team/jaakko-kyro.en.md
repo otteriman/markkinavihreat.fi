@@ -3,6 +3,7 @@ locale: en
 name: 'Jaakko Kyrö'
 order: 13
 photo: '../../assets/team/Jaakko-Kyrö.jpg'
+card: '../../assets/team/cards/Jaakko-Kyrö.jpg'
 links:
   - type: website
     url: 'https://www.jaakkokyro.fi'

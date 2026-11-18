@@ -3,7 +3,9 @@ locale: en
 name: 'Susanna Sielo'
 order: 26
 photo: '../../assets/team/Susanna-Sielo.jpg'
+card: '../../assets/team/cards/Susanna-Sielo.jpg'
 candidateBadge: 'Parliamentary candidate in Uusimaa'
+district: uusimaa
 donationUrl: 'https://www.vihreat.fi/eduskuntavaaliehdokkaat-2027/?kieli=en&vaali=eduskuntavaalit-2027&alue=vp2&ehdokas=sielo-susanna-10157&valilehti=donate'
 links:
   - type: website

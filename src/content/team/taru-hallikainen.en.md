@@ -3,8 +3,10 @@ locale: en
 name: 'Taru Hallikainen'
 order: 32
 photo: '../../assets/team/Taru-Hallikainen.jpg'
+card: '../../assets/team/cards/Taru-Hallikainen.jpg'
 avatar: '../../assets/team/avatars/Taru-Hallikainen.jpg'
-candidateBadge: 'Parliamentary candidate in Oulu'
+candidateBadge: 'Parliamentary candidate in the Oulu constituency'
+district: oulu
 links:
   - type: website
     url: 'https://taruhallikainen.weebly.com/'

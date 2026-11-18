@@ -3,6 +3,7 @@ locale: fi
 name: 'Mikko Särelä'
 order: 28
 photo: '../../assets/team/Mikko-Särelä.jpg'
+card: '../../assets/team/cards/Mikko-Särelä.jpg'
 links:
 ---
 

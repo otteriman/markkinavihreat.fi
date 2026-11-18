@@ -3,6 +3,7 @@ locale: fi
 name: 'Joel Himanen'
 order: 6
 photo: '../../assets/team/Joel-Himanen.jpg'
+card: '../../assets/team/cards/Joel-Himanen.jpg'
 links:
   - type: linkedin
     url: 'https://www.linkedin.com/in/joel-himanen-784a24137/'

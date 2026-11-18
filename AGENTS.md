@@ -42,4 +42,5 @@ markkinavihreat.fi is the home base for Markkinavihreät (Market Greens), a mark
 - Ask before adding external dependencies.
 - Static output only — never introduce SSR without discussion.
 - Don't guess on ambiguous copy or translations — ask, or leave a clearly marked TODO rather than inventing facts (this is a real political site).
+- Everything Markkinavihreät publishes (site, social posts, videos) is non-commercial political communication by politicians, not marketing or commercial activity — judge material, quotes and clips by that, not by advertising rules, and weigh them against the European Court of Human Rights (ECtHR) case law on freedom of expression.
 - Every content collection entry needs fi + sv + en; run `npm run validate:translations` before committing content changes.

@@ -3,7 +3,9 @@ locale: sv
 name: 'Susanna Sielo'
 order: 26
 photo: '../../assets/team/Susanna-Sielo.jpg'
+card: '../../assets/team/cards/Susanna-Sielo.jpg'
 candidateBadge: 'Riksdagsvalskandidat i Nyland'
+district: uusimaa
 donationUrl: 'https://www.vihreat.fi/eduskuntavaaliehdokkaat-2027/?kieli=se&vaali=eduskuntavaalit-2027&alue=vp2&ehdokas=sielo-susanna-10157&valilehti=donate'
 links:
   - type: website

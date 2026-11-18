@@ -3,6 +3,7 @@ locale: en
 name: 'Olli-Pekka Paasivirta'
 order: 21
 photo: '../../assets/team/Olli-Pekka-Paasivirta.jpg'
+card: '../../assets/team/cards/Olli-Pekka-Paasivirta.jpg'
 links:
   - type: linkedin
     url: 'https://www.linkedin.com/in/olli-pekka-paasivirta-6ab450b1/'

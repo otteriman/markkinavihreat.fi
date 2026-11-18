@@ -3,6 +3,7 @@ locale: sv
 name: 'Lauri Nevanperä'
 order: 20
 photo: '../../assets/team/Lauri-Nevanperä.jpg'
+card: '../../assets/team/cards/Lauri-Nevanperä.jpg'
 links:
   - type: website
     url: 'https://www.laurinevanpera.fi'

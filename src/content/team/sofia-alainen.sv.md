@@ -3,6 +3,7 @@ locale: sv
 name: 'Sofia Alainen'
 order: 2
 photo: '../../assets/team/Sofia-Alainen.jpg'
+card: '../../assets/team/cards/Sofia-Alainen.jpg'
 links:
   - type: instagram
     url: 'https://www.instagram.com/sofia.alainen'

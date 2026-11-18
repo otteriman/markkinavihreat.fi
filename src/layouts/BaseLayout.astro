@@ -121,9 +121,9 @@ const ogImage = ogUrlFor(locale, path)
       referrerpolicy="no-referrer"
     />
   </head>
-  <body>
+  <body class="flex min-h-dvh flex-col">
     <Nav locale={locale} path={path} />
-    <main>
+    <main class="flex-1">
       <slot />
     </main>
     <Footer locale={locale} />

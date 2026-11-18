@@ -3,6 +3,7 @@ locale: fi
 name: 'Vilju A.K. Parviainen'
 order: 22
 photo: '../../assets/team/Vilju-A.K.-Parviainen.jpg'
+card: '../../assets/team/cards/Vilju-A.K.-Parviainen.jpg'
 links:
   - type: linkedin
     url: 'https://www.linkedin.com/in/vilju-allen-kira-parviainen-96096b314'

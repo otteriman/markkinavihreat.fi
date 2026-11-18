@@ -3,6 +3,7 @@ locale: sv
 name: 'Juho Salmi'
 order: 24
 photo: '../../assets/team/Juho-Salmi.jpg'
+card: '../../assets/team/cards/Juho-Salmi.jpg'
 links:
   - type: linkedin
     url: 'https://www.linkedin.com/in/juhosalmi/'

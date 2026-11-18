@@ -3,6 +3,7 @@ locale: sv
 name: 'Kalle Euro'
 order: 4
 photo: '../../assets/team/Kalle-Euro.jpeg'
+card: '../../assets/team/cards/Kalle-Euro.jpg'
 links:
   - type: website
     url: 'https://atl.fi/'

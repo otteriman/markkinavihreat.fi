@@ -3,7 +3,9 @@ locale: fi
 name: 'Ulla Santti'
 order: 31
 photo: '../../assets/team/Ulla-Santti.jpeg'
+card: '../../assets/team/cards/Ulla-Santti.jpg'
 candidateBadge: 'Eduskuntavaaliehdokas Savo-Karjalassa'
+district: savo-karjala
 donationUrl: 'https://www.vihreat.fi/eduskuntavaaliehdokkaat-2027/?kieli=fi&vaali=eduskuntavaalit-2027&alue=vp9&ehdokas=santti-ulla-10143&valilehti=donate'
 links:
   - type: website

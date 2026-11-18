@@ -1,6 +1,7 @@
 import { defineCollection } from 'astro:content'
 import { glob } from 'astro/loaders'
 import { z } from 'zod'
+import { DISTRICTS } from './lib/districts'
 
 const locale = z.enum(['fi', 'sv', 'en'])
 
@@ -47,7 +48,20 @@ const team = defineCollection({
       // frame as everyone else's, for small round thumbnails (a program's
       // creators). The full photo's framing varies too much to crop by CSS.
       avatar: image().optional(),
+      // The photo pre-cropped to the gallery's 3:4 card so every face sits at
+      // the same size and height (face box ~60% of the frame height, centred
+      // at 43%). The size is the tightest original's, so every crop lies
+      // inside its photo — nothing is extended. Falls back to `photo`.
+      card: image().optional(),
       candidateBadge: z.string().optional(),
+      // A one-line teaser for the gallery card, when the person wants something
+      // other than the bio's opening sentence there. The person page and its
+      // JSON-LD still use the bio.
+      summary: z.string().optional(),
+      // Language-neutral key of the candidate's electoral district, for the
+      // about page's candidate count and district filter. Required alongside
+      // `candidateBadge` (checked in AboutBody.astro).
+      district: z.enum(DISTRICTS).optional(),
       // The candidate's donation form on vihreat.fi, deep-linked to the
       // donate tab in this entry's language (the gallery's `kieli` is fi/se/en).
       donationUrl: z.url().optional(),

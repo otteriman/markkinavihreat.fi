@@ -12,14 +12,22 @@ interface Props {
 }
 
 const { name, photo, quote, href, class: className } = Astro.props
+// With a person page the photo links there too. The name next to it is the
+// same link, so the photo stays out of tab order and the accessibility tree.
+const Photo = href ? 'a' : 'div'
+const photoLink = href ? { href, tabindex: -1, 'aria-hidden': 'true' as const } : {}
 ---
 
 <div class:list={['bg-musta text-kerma px-8 py-20 text-center', className]}>
   <div
     class="content-max mx-auto flex flex-col items-center gap-8 md:flex-row md:items-center md:text-left"
   >
-    <div
-      class="rounded-card h-[clamp(140px,85vw,280px)] w-[clamp(93px,56.7vw,187px)] flex-shrink-0 overflow-hidden"
+    <Photo
+      {...photoLink}
+      class:list={[
+        'rounded-card block h-[clamp(140px,85vw,280px)] w-[clamp(93px,56.7vw,187px)] flex-shrink-0 overflow-hidden',
+        href && 'transition-opacity hover:opacity-85',
+      ]}
     >
       <!-- The box is at most 187×280 CSS px; object-cover on a ~3:4 photo
            needs ~210px of width to fill that height. -->
@@ -34,7 +42,7 @@ const { name, photo, quote, href, class: className } = Astro.props
         pictureAttributes={{ class: 'contents' }}
         class="block h-full w-full object-cover object-top"
       />
-    </div>
+    </Photo>
     <div>
       <blockquote
         class="mx-auto mb-4 max-w-[44ch] text-[clamp(20px,3vw,26px)] leading-[1.35] font-semibold italic md:mx-0"

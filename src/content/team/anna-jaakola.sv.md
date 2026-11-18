@@ -3,6 +3,7 @@ locale: sv
 name: 'Anna Jaakola'
 order: 9
 photo: '../../assets/team/Anna-Jaakola.jpg'
+card: '../../assets/team/cards/Anna-Jaakola.jpg'
 links:
   - type: instagram
     url: 'https://www.instagram.com/karhuryhma_'

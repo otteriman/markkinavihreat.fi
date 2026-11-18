@@ -3,8 +3,10 @@ locale: fi
 name: 'Lauri Lavanti'
 order: 16
 photo: '../../assets/team/Lauri-Lavanti.jpg'
+card: '../../assets/team/cards/Lauri-Lavanti.jpg'
 avatar: '../../assets/team/avatars/Lauri-Lavanti.jpg'
 candidateBadge: 'Eduskuntavaaliehdokas Uudellamaalla'
+district: uusimaa
 donationUrl: 'https://www.vihreat.fi/eduskuntavaaliehdokkaat-2027/?kieli=fi&vaali=eduskuntavaalit-2027&alue=vp2&ehdokas=lavanti-lauri-10202&valilehti=donate'
 profileUrl: 'https://lavanti.fi/fi/laurista/'
 wikidata: 'Q139711658'

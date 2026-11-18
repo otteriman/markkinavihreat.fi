@@ -3,7 +3,9 @@ locale: sv
 name: 'Essi Lindberg'
 order: 33
 photo: '../../assets/team/Essi-Lindberg.jpg'
+card: '../../assets/team/cards/Essi-Lindberg.jpg'
 candidateBadge: 'Riksdagsvalskandidat i Egentliga Finland'
+district: varsinais-suomi
 donationUrl: 'https://www.vihreat.fi/eduskuntavaaliehdokkaat-2027/?kieli=se&vaali=eduskuntavaalit-2027&alue=vp3&ehdokas=lindberg-essi-10221&valilehti=donate'
 links:
   - type: tiktok
@@ -14,6 +16,8 @@ links:
     url: 'https://bsky.app/profile/essilindberg.bsky.social'
   - type: facebook
     url: 'https://www.facebook.com/share/1DEGY581Gf/'
+  - type: instagram
+    url: 'https://www.instagram.com/essilindberg/'
 ---
 
 Essi Lindberg är Egentliga Finlands Grönas riksdagsvalskandidat från Åbo, stadsfullmäktigeledamot i Åbo, fullmäktigeledamot i välfärdsområdet Varha och medlem av De Grönas partifullmäktige. Till yrket leder hon kommunikationen vid ett nationalekonomiskt forskningsinstitut.

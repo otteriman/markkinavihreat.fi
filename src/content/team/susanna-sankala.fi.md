@@ -3,6 +3,7 @@ locale: fi
 name: 'Susanna Sankala'
 order: 25
 photo: '../../assets/team/Susanna-Sankala.jpg'
+card: '../../assets/team/cards/Susanna-Sankala.jpg'
 links:
   - type: threads
     url: 'https://www.threads.com/@susannasankala'

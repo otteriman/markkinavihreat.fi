@@ -2,6 +2,7 @@
 import { getCollection, getEntry } from 'astro:content'
 import BaseLayout from '../../layouts/BaseLayout.astro'
 import QuoteBand from '../QuoteBand.astro'
+import QuoteSlot from '../QuoteSlot.astro'
 import RandomizeQuotes from '../RandomizeQuotes.astro'
 import { forLocale, localePath, newestFirst, type Locale } from '../../lib/content'
 import { home } from '../../i18n/pages'
@@ -18,7 +19,7 @@ const WHATSAPP_URL = 'https://chat.whatsapp.com/DFBhxqTOmLRHqGgUzupy7L'
 
 // Pool of quote bands drawn from every listed program's citations (see
 // content.config.ts). RandomizeQuotes picks a random distinct subset per load
-// to fill the fixed slots below, so the quotes vary between visits. The first
+// to fill the fixed slots below and then rotates through the rest. The first
 // `slots` entries are also rendered server-side as the no-JS fallback.
 const allPrograms = await getCollection('programs')
 const pool = (
@@ -61,13 +62,7 @@ const pool = (
     </div>
   </section>
 
-  {
-    pool[0] && (
-      <div class="js-quote-slot">
-        <QuoteBand {...pool[0]} />
-      </div>
-    )
-  }
+  {pool[0] && <QuoteSlot locale={locale} entry={pool[0]} />}
 
   <section class="bg-surface-greige px-4 py-16 sm:px-6">
     <div class="content-max mx-auto">
@@ -125,13 +120,7 @@ const pool = (
     </div>
   </section>
 
-  {
-    pool[1] && (
-      <div class="js-quote-slot">
-        <QuoteBand {...pool[1]} />
-      </div>
-    )
-  }
+  {pool[1] && <QuoteSlot locale={locale} entry={pool[1]} />}
 
   <section class="content-max mx-auto px-4 py-16 text-center sm:px-6">
     <h2 class="text-3xl">{copy.joinTitle}</h2>

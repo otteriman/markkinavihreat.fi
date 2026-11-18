@@ -7,11 +7,17 @@ interface Props {
    */
   poolSelector: string
   /**
-   * Selector matching the fixed on-page slots to fill. On each load we pick a
-   * random distinct subset of the pool (one per slot) and drop it in, so the
-   * *set* of quotes varies between visits — not just their order (which is all
+   * Selector matching the fixed on-page slots (QuoteSlot) to fill. On load we
+   * pick a random distinct subset of the pool (one per slot), so the *set* of
+   * quotes varies between visits — not just their order (which is all
    * ShuffleOnLoad, permuting in place, can do). Slots keep their fixed page
    * positions and their server-rendered fallback shows when JS is off.
+   *
+   * When the pool holds more quotes than there are slots, each slot then
+   * crossfades to the next unshown quote after it has been on screen long
+   * enough to read (dwellMs). A slot only counts time while it is in view and
+   * the tab is visible, waits while hovered or focused, and has a pause toggle
+   * (WCAG 2.2.2). With prefers-reduced-motion nothing rotates.
    */
   slotSelector: string
 }
@@ -20,8 +26,18 @@ const { poolSelector, slotSelector } = Astro.props
 ---
 
 <script is:inline define:vars={{ poolSelector, slotSelector }}>
+  const FADE_MS = 500
+  const IMAGE_WAIT_MS = 1500
+
+  // Reading time at a calm ~3.5 words/s plus a moment to notice the change,
+  // clamped so short quotes don't flash by and long ones don't stall.
+  const dwellMs = (band) => {
+    const words = (band.querySelector('blockquote')?.textContent ?? '').split(/\s+/).length
+    return Math.min(14000, Math.max(8000, 2000 + words * 300))
+  }
+
   const template = document.querySelector(poolSelector)
-  const slots = document.querySelectorAll(slotSelector)
+  const slots = Array.from(document.querySelectorAll(slotSelector))
   if (template && slots.length > 0) {
     const pool = Array.from(template.content.children)
     if (pool.length >= slots.length) {
@@ -29,9 +45,95 @@ const { poolSelector, slotSelector } = Astro.props
         const j = Math.floor(Math.random() * (i + 1))
         ;[pool[i], pool[j]] = [pool[j], pool[i]]
       }
-      slots.forEach((slot, i) => {
-        slot.replaceChildren(pool[i].cloneNode(true))
+      const contentOf = (slot) => slot.querySelector('[data-quote-content]') ?? slot
+      const shown = slots.map((slot, i) => {
+        contentOf(slot).replaceChildren(pool[i].cloneNode(true))
+        return i
       })
+
+      const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches
+      if (pool.length > slots.length && !reducedMotion) {
+        let cursor = slots.length
+        const takeNext = () => {
+          while (shown.includes(cursor % pool.length)) cursor++
+          return cursor++ % pool.length
+        }
+
+        const rotators = slots.map((slot, i) => {
+          const content = contentOf(slot)
+          const toggle = slot.querySelector('[data-quote-toggle]')
+          const state = { visible: false, hovered: false, paused: false, busy: false }
+          let timer
+
+          const advance = async () => {
+            state.busy = true
+            const index = takeNext()
+            const band = pool[index].cloneNode(true)
+            band.querySelectorAll('img').forEach((img) => (img.loading = 'eager'))
+            content.style.opacity = '0'
+            await new Promise((resolve) => setTimeout(resolve, FADE_MS))
+            content.replaceChildren(band)
+            shown[i] = index
+            const images = Array.from(band.querySelectorAll('img'), (img) =>
+              img.decode().catch(() => {}),
+            )
+            await Promise.race([
+              Promise.all(images),
+              new Promise((resolve) => setTimeout(resolve, IMAGE_WAIT_MS)),
+            ])
+            content.style.opacity = ''
+            state.busy = false
+            schedule()
+          }
+
+          const schedule = () => {
+            clearTimeout(timer)
+            if (state.busy) return
+            if (state.visible && !state.hovered && !state.paused && !document.hidden) {
+              timer = setTimeout(advance, dwellMs(content))
+            }
+          }
+
+          const set = (key, value) => {
+            if (state[key] === value) return
+            state[key] = value
+            schedule()
+          }
+
+          slot.addEventListener('mouseenter', () => set('hovered', true))
+          slot.addEventListener('mouseleave', () => set('hovered', false))
+          // Focus on the toggle itself doesn't hold the quote, or pressing
+          // play would seem to do nothing until the button lost focus.
+          slot.addEventListener('focusin', (event) => {
+            if (event.target !== toggle) set('hovered', true)
+          })
+          slot.addEventListener('focusout', (event) => {
+            if (!slot.contains(event.relatedTarget)) set('hovered', false)
+          })
+          if (toggle) {
+            toggle.hidden = false
+            toggle.addEventListener('click', () => {
+              set('paused', !state.paused)
+              toggle.setAttribute('aria-pressed', String(state.paused))
+            })
+          }
+
+          return { slot, set, schedule }
+        })
+
+        const observer = new IntersectionObserver(
+          (entries) => {
+            entries.forEach((entry) => {
+              rotators
+                .find((r) => r.slot === entry.target)
+                ?.set('visible', entry.intersectionRatio >= 0.5)
+            })
+          },
+          { threshold: [0, 0.5] },
+        )
+        rotators.forEach((r) => observer.observe(r.slot))
+        document.addEventListener('visibilitychange', () => rotators.forEach((r) => r.schedule()))
+      }
     }
   }
 </script>

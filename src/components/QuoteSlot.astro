@@ -1,0 +1,45 @@
+---
+import type { ComponentProps } from 'astro/types'
+import QuoteBand from './QuoteBand.astro'
+import { t } from '../i18n/ui'
+import type { Locale } from '../lib/content'
+
+interface Props {
+  locale: Locale
+  /** The server-rendered fallback quote, shown until RandomizeQuotes runs. */
+  entry: ComponentProps<typeof QuoteBand>
+}
+
+const { locale, entry } = Astro.props
+---
+
+<!-- A fixed spot RandomizeQuotes fills and rotates. The toggle stays hidden
+     unless the script actually starts rotating this slot. -->
+<div class="js-quote-slot relative">
+  <div data-quote-content class="transition-opacity duration-500">
+    <QuoteBand {...entry} />
+  </div>
+  <button
+    type="button"
+    data-quote-toggle
+    hidden
+    aria-pressed="false"
+    aria-label={t(locale, 'quotes.pause')}
+    class="group text-kerma/70 hover:text-kerma focus-visible:text-kerma absolute right-4 bottom-4 rounded-full p-2"
+  >
+    <svg
+      aria-hidden="true"
+      viewBox="0 0 24 24"
+      class="h-5 w-5 fill-current group-aria-pressed:hidden"
+    >
+      <path d="M7 5h3v14H7zM14 5h3v14h-3z"></path>
+    </svg>
+    <svg
+      aria-hidden="true"
+      viewBox="0 0 24 24"
+      class="hidden h-5 w-5 fill-current group-aria-pressed:block"
+    >
+      <path d="M8 5v14l11-7z"></path>
+    </svg>
+  </button>
+</div>

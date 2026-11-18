@@ -3,6 +3,7 @@ locale: en
 name: 'Eeva Ylikoski'
 order: 30
 photo: '../../assets/team/Eeva-Ylikoski.jpg'
+card: '../../assets/team/cards/Eeva-Ylikoski.jpg'
 links:
 ---
 

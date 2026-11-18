@@ -41,6 +41,15 @@ interface AboutCopy {
   profileLink: string
   /** Heading of the section for members with a `candidateBadge`. */
   candidatesTitle: string
+  /**
+   * Line under the candidates heading. Only the candidate count is shown —
+   * never the size of the whole network.
+   */
+  candidatesSummary: (candidates: number, districts: number) => string
+  /** Accessible label of the district filter buttons. */
+  districtFilterLabel: string
+  /** Filter button that shows every candidate. */
+  districtFilterAll: string
   /** Heading of the section for everyone else, shown only when candidates exist. */
   othersTitle: string
 }
@@ -278,6 +287,10 @@ export const about: Record<Locale, AboutCopy> = {
       'Markkinavihreät on joukko Vihreiden jäseniä, luottamushenkilöitä ja aktiiveja, joita yhdistää usko markkinatalouden ja kunnianhimoisen ympäristöpolitiikan yhteensopivuuteen.',
     profileLink: 'Esittely',
     candidatesTitle: 'Eduskuntavaaliehdokkaat',
+    candidatesSummary: (candidates, districts) =>
+      `${candidates} ${candidates === 1 ? 'ehdokas' : 'ehdokasta'} ${districts} vaalipiirissä`,
+    districtFilterLabel: 'Rajaa vaalipiirin mukaan',
+    districtFilterAll: 'Kaikki',
     othersTitle: 'Muut markkinavihreät',
   },
   sv: {
@@ -288,6 +301,10 @@ export const about: Record<Locale, AboutCopy> = {
       'Markkinavihreät (de marknadsgröna) är en grupp medlemmar, förtroendevalda och aktiva inom De Gröna som förenas av tron att marknadsekonomi och ambitiös miljöpolitik går hand i hand.',
     profileLink: 'Presentation',
     candidatesTitle: 'Riksdagsvalskandidater',
+    candidatesSummary: (candidates, districts) =>
+      `${candidates} ${candidates === 1 ? 'kandidat' : 'kandidater'} i ${districts} ${districts === 1 ? 'valkrets' : 'valkretsar'}`,
+    districtFilterLabel: 'Filtrera efter valkrets',
+    districtFilterAll: 'Alla',
     othersTitle: 'Övriga marknadsgröna',
   },
   en: {
@@ -298,6 +315,10 @@ export const about: Record<Locale, AboutCopy> = {
       'Markkinavihreät is a group of Green League members, elected officials, and activists united by a belief that market economics and ambitious environmental policy belong together.',
     profileLink: 'About',
     candidatesTitle: 'Parliamentary election candidates',
+    candidatesSummary: (candidates, districts) =>
+      `${candidates} ${candidates === 1 ? 'candidate' : 'candidates'} in ${districts} electoral ${districts === 1 ? 'district' : 'districts'}`,
+    districtFilterLabel: 'Filter by electoral district',
+    districtFilterAll: 'All',
     othersTitle: 'Other market greens',
   },
 }

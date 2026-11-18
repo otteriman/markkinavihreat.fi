@@ -3,6 +3,7 @@ locale: en
 name: 'Samuel Tammekann'
 order: 29
 photo: '../../assets/team/Samuel-Tammekann.jpg'
+card: '../../assets/team/cards/Samuel-Tammekann.jpg'
 links:
   - type: threads
     url: 'https://www.threads.com/@stammekann'

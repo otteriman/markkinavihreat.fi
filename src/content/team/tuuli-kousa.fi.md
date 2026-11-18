@@ -3,6 +3,7 @@ locale: fi
 name: 'Tuuli Kousa'
 order: 14
 photo: '../../assets/team/Tuuli-Kousa.jpg'
+card: '../../assets/team/cards/Tuuli-Kousa.jpg'
 links:
   - type: website
     url: 'https://www.tuulikousa.com'

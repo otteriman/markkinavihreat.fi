@@ -3,8 +3,10 @@ locale: fi
 name: 'Taru Hallikainen'
 order: 32
 photo: '../../assets/team/Taru-Hallikainen.jpg'
+card: '../../assets/team/cards/Taru-Hallikainen.jpg'
 avatar: '../../assets/team/avatars/Taru-Hallikainen.jpg'
-candidateBadge: 'Eduskuntavaaliehdokas Oulussa'
+candidateBadge: 'Eduskuntavaaliehdokas Oulun vaalipiirissä'
+district: oulu
 links:
   - type: website
     url: 'https://taruhallikainen.weebly.com/'

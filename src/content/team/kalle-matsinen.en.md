@@ -3,6 +3,7 @@ locale: en
 name: 'Kalle Matsinen'
 order: 18
 photo: '../../assets/team/Kalle-Matsinen.jpg'
+card: '../../assets/team/cards/Kalle-Matsinen.jpg'
 links:
   - type: threads
     url: 'https://www.threads.com/@kalakalmari'

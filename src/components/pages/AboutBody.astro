@@ -8,6 +8,7 @@ import { firstSentenceOfBio, personPath } from '../../lib/team'
 import { t } from '../../i18n/ui'
 import { SITE_URL, teamCollectionNode } from '../../lib/structuredData'
 import { about } from '../../i18n/pages'
+import { DISTRICTS, districtNames } from '../../lib/districts'
 
 interface Props {
   locale: Locale
@@ -33,6 +34,21 @@ const sections = [
   },
 ].filter((section) => section.people.length > 0)
 
+// The candidates section states how many candidates there are and in how many
+// districts, with a filter per district. Only candidates are counted — the
+// size of the whole network is deliberately not shown.
+for (const person of candidates) {
+  if (!person.data.district) throw new Error(`Candidate "${person.id}" has no district`)
+}
+const districts = DISTRICTS.map((key) => ({
+  key,
+  name: districtNames[locale][key],
+  count: candidates.filter((person) => person.data.district === key).length,
+}))
+  .filter((district) => district.count > 0)
+  // Stable sort: equal counts keep DISTRICTS order.
+  .sort((a, b) => b.count - a.count)
+
 const people = team.map((person) => {
   const { slug } = parseLocalizedId(person.id)
   return { slug, name: person.data.name, url: `${SITE_URL}${personPath(locale, slug)}` }
@@ -49,7 +65,8 @@ const jsonLd = [
   path="/ketka/"
   jsonLd={jsonLd}
 >
-  <section class="content-max mx-auto px-4 py-16 sm:px-6">
+  <!-- Wider than content-max so the compact gallery fits five cards a row. -->
+  <section class="mx-auto max-w-[1100px] px-4 py-16 sm:px-6">
     <h1 class="text-4xl sm:text-5xl">{copy.title}</h1>
     <p class="text-harmaa mt-4 max-w-2xl">{copy.intro}</p>
 
@@ -61,19 +78,52 @@ const jsonLd = [
               {section.title}
             </h2>
           )}
+          {section.id === 'about-candidates' && (
+            <>
+              <p class="text-harmaa mt-2">
+                {copy.candidatesSummary(candidates.length, districts.length)}
+              </p>
+              {districts.length > 1 && (
+                // Hidden until the filter script runs, so no-JS visitors
+                // don't get buttons that do nothing.
+                <div
+                  id="district-filter"
+                  role="group"
+                  aria-label={copy.districtFilterLabel}
+                  class="mt-4 flex flex-wrap gap-2"
+                  hidden
+                >
+                  {[
+                    { key: '', label: copy.districtFilterAll },
+                    ...districts.map((d) => ({ key: d.key, label: `${d.name} ${d.count}` })),
+                  ].map((option) => (
+                    <button
+                      type="button"
+                      data-district-filter={option.key}
+                      aria-pressed={option.key === '' ? 'true' : 'false'}
+                      class="border-vihrea-tumma text-vihrea-tumma aria-pressed:bg-vihrea-tumma aria-pressed:text-kerma cursor-pointer rounded-[20px] border px-[14px] py-[6px] text-[14px] font-semibold"
+                    >
+                      {option.label}
+                    </button>
+                  ))}
+                </div>
+              )}
+            </>
+          )}
           <div
             id={section.id}
-            class="mt-6 grid grid-cols-[repeat(auto-fill,minmax(300px,1fr))] gap-[28px]"
+            class="mt-6 grid grid-cols-1 gap-3 sm:grid-cols-[repeat(auto-fill,minmax(190px,1fr))] sm:gap-4"
           >
             {section.people.map((person) => (
               <PersonCard
                 name={person.data.name}
                 href={personPath(locale, parseLocalizedId(person.id).slug)}
-                photo={person.data.photo}
+                photo={person.data.card ?? person.data.photo}
                 candidateBadge={person.data.candidateBadge}
+                district={person.data.district}
                 donationUrl={person.data.donationUrl}
                 donateLabel={t(locale, 'team.donate')}
-                summary={firstSentenceOfBio(person.body ?? '')}
+                summary={person.data.summary ?? firstSentenceOfBio(person.body ?? '')}
                 cta={t(locale, 'blog.readMore')}
               />
             ))}
@@ -83,4 +133,25 @@ const jsonLd = [
     }
   </section>
   {sections.map((section) => <ShuffleOnLoad selector={`#${section.id} > *`} />)}
+  <script is:inline>
+    // ShuffleOnLoad swaps innerHTML between the grid's slots, so a slot's own
+    // attributes don't follow its card: read the district from inside the
+    // slot (PersonCard's badge carries it) at click time, after the shuffle.
+    const filter = document.getElementById('district-filter')
+    if (filter) {
+      const buttons = filter.querySelectorAll('[data-district-filter]')
+      const slots = document.querySelectorAll('#about-candidates > *')
+      buttons.forEach((button) => {
+        button.addEventListener('click', () => {
+          const selected = button.dataset.districtFilter
+          buttons.forEach((other) => other.setAttribute('aria-pressed', String(other === button)))
+          slots.forEach((slot) => {
+            const district = slot.querySelector('[data-district]')?.dataset.district
+            slot.hidden = selected !== '' && district !== selected
+          })
+        })
+      })
+      filter.hidden = false
+    }
+  </script>
 </BaseLayout>
