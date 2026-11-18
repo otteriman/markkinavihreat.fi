@@ -23,6 +23,12 @@ Arbetslöshetsgraden bland 15–24-åringar har under Orpos period stigit från 
 
 Oppositionen och medierna grillade Marins regering hårt för bristen på ”sysselsättningsåtgärder”, trots att sysselsättningen under Marins period steg till den högsta nivån på [över 30 år](https://stat.fi/til/tyti/2018/16/tyti_2018_16_2019-12-03_tie_001_fi.html). I slutet av den förra regeringsperioden fanns det omkring 110 000 fler sysselsatta än i början. Under Orpos period finns det i dag omkring 47 000 färre sysselsatta än när regeringen tillträdde.
 
+> ”Samlingspartiet lovar att det under den kommande valperioden uppstår 100 000 nya arbetsplatser i finländska företag.”
+>
+> — Yles valdebatt 2023 (vår översättning)
+
+Hej Samlingspartiet, hur tycker ni själva att det gick?
+
 Och hur gick det med att bryta skuldsättningen?
 
 [kuvaaja: julkinen-velka]

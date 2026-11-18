@@ -23,6 +23,12 @@ Among 15–24-year-olds, the unemployment rate has risen during Orpo’s term fr
 
 The opposition and the media grilled Marin’s government relentlessly over a lack of “employment measures”, even though during Marin’s term employment rose to its highest level in [over 30 years](https://stat.fi/til/tyti/2018/16/tyti_2018_16_2019-12-03_tie_001_fi.html). By the end of the previous government’s term there were about 110,000 more people in work than at its start. During Orpo’s term, there are now about 47,000 fewer people in work than when it took office.
 
+> “The National Coalition promises that 100,000 new jobs will be created in Finnish companies during the coming parliamentary term.”
+>
+> — Yle election debate, 2023 (our translation)
+
+Hey, National Coalition, how do you think that went?
+
 And what about halting the growth of debt?
 
 [kuvaaja: julkinen-velka]

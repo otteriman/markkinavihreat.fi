@@ -23,6 +23,12 @@ Orpon hallitus on täysin kiistatta epäonnistunut toteuttamaan [lupaustaan 100 
 
 Oppositio ja media grillasivat Marinin hallitusta todella paljon ”työllisyystoimien” puutteesta, vaikka Marinin kaudella työllisyys nousi korkeimmalle tasolle [yli 30 vuoteen](https://stat.fi/til/tyti/2018/16/tyti_2018_16_2019-12-03_tie_001_fi.html). Edellisen hallituskauden lopussa työllisiä oli noin 110 000 enemmän kuin sen alussa. Orpon kaudella työllisiä on nyt noin 47 000 vähemmän kuin hallituksen aloittaessa.
 
+> ”Kokoomus lupaa, että tulevalla vaalikaudella suomalaisiin yrityksiin syntyy 100 000 uutta työpaikkaa.”
+>
+> — Ylen vaalitentti 2023
+
+Hei kokoomus, miten meni omasta mielestä?
+
 Entä se velkaantumisen taittaminen?
 
 [kuvaaja: julkinen-velka]
