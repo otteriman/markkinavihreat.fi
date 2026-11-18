@@ -68,9 +68,8 @@ describe('figures quoted in "Orpon hallitus on epäonnistunut"', () => {
     expect(Math.round(periodMean(data, '2023M07'))).toBe(312)
   })
 
-  it('children in low-income families: about 137 000 in 2024, up about 14 000, rate at a series high', () => {
+  it('children in low-income families: up about 14 000 in 2024, rate at a series high', () => {
     const obs = DATASETS.lapsikoyhyys.observations
-    expect(Math.round(valueAt(obs, '2024') / 1000)).toBe(137)
     expect(Math.round((valueAt(obs, '2024') - valueAt(obs, '2023')) / 1000)).toBe(14)
     const rates = Object.values(CHILD_LOW_INCOME_RATE)
     expect(CHILD_LOW_INCOME_RATE[2024]).toBe(13.8)

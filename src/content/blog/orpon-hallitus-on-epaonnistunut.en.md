@@ -49,7 +49,7 @@ And how do things look for those who have it hardest?
 
 [kuvaaja: lapsikoyhyys]
 
-In 2024, about 137,000 children lived in low-income families, about 14,000 more than a year earlier. The low-income rate among children rose to 13.8 per cent, the highest in the whole series, which begins in 2010. And according to the forecasts, child poverty will grow significantly further. [Yle reports](https://yle.fi/a/74-20184705) (our translation):
+In 2024, about 14,000 more children lived in low-income families than a year earlier. The low-income rate among children was the highest since the statistics began in 2010. And according to the forecasts, child poverty will grow significantly further. [Yle reports](https://yle.fi/a/74-20184705) (our translation):
 
 > Experts are worried about how the government’s social security cuts affect Finnish children and their development.
 >

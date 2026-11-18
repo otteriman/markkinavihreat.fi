@@ -49,7 +49,7 @@ Och hur ser läget ut för dem som har det svårast?
 
 [kuvaaja: lapsikoyhyys]
 
-År 2024 levde omkring 137 000 barn i låginkomstfamiljer, omkring 14 000 fler än året innan. Låginkomstgraden bland barn steg till 13,8 procent, den högsta i hela statistiken som börjar 2010. Och enligt prognoserna kommer barnfamiljsfattigdomen att öka ytterligare betydligt. [Yle rapporterar](https://yle.fi/a/74-20184705) (vår översättning):
+År 2024 levde omkring 14 000 fler barn i låginkomstfamiljer än året innan. Låginkomstgraden bland barn var den högsta i statistiken, som började 2010. Och enligt prognoserna kommer barnfamiljsfattigdomen att öka ytterligare betydligt. [Yle rapporterar](https://yle.fi/a/74-20184705) (vår översättning):
 
 > Experterna är oroade över hur regeringens nedskärningar i den sociala tryggheten påverkar finländska barn och deras utveckling.
 >

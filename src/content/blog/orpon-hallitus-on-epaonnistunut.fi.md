@@ -49,7 +49,7 @@ Entä miltä tilanne näyttää heikoimmassa asemassa olevien kannalta?
 
 [kuvaaja: lapsikoyhyys]
 
-Pienituloisissa perheissä eläviä lapsia oli vuonna 2024 noin 137 000, noin 14 000 enemmän kuin vuotta aiemmin. Lasten pienituloisuusaste nousi 13,8 prosenttiin, mikä on korkein lukema koko vuodesta 2010 alkavassa tilastossa. Ja ennusteen mukaan lapsiperheköyhyys kasvaa vielä merkittävästi. [Yle kertoo](https://yle.fi/a/74-20184705):
+Pienituloisissa perheissä eläviä lapsia oli vuonna 2024 noin 14 000 enemmän kuin vuotta aiemmin. Lasten pienituloisuus oli korkeimmissa lukemissa koko vuonna 2010 alkaneen tilaston historiassa. Ja ennusteen mukaan lapsiperheköyhyys kasvaa vielä merkittävästi. [Yle kertoo](https://yle.fi/a/74-20184705):
 
 > Asiantuntijat ovat huolissaan siitä, miten hallituksen sosiaaliturvaleikkaukset vaikuttavat suomalaislapsiin ja heidän kehitykseensä.
 >
