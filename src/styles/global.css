@@ -16,6 +16,9 @@
   --color-terra: #c95b3d;
   --color-aurinko: #e8b931;
   --color-taivas: #8ab6d6;
+  /* Chart series color, paired with terra: the two-color palette (terra/meri)
+     passes the dataviz CVD and contrast checks against the kerma background. */
+  --color-meri: #1d5fb0;
   --color-musta: #161a14;
   --color-harmaa: #6b6f66;
   --color-vihreat-brand: #006845;

@@ -1,0 +1,402 @@
+---
+import {
+  DATASETS,
+  plottedSeries,
+  type DatasetId,
+  type Government,
+} from '../../lib/charts/hallituskaudet'
+import { COMPACT, WIDE, layoutChart } from '../../lib/charts/hallituskausiLayout'
+import { formatChartValue, formatPeriod } from '../../lib/format'
+import type { Locale } from '../../lib/content'
+import { t, type UiKey } from '../../i18n/ui'
+
+interface Props {
+  locale: Locale
+  dataset: DatasetId
+}
+
+const { locale, dataset: datasetId } = Astro.props
+const dataset = DATASETS[datasetId]
+
+// The table's moving-average column header says "6 kk"; keep it honest.
+if (dataset.movingAverage && dataset.movingAverage !== 6) {
+  throw new Error(
+    `Chart "${datasetId}" uses a ${dataset.movingAverage}-period average, but its labels say 6`,
+  )
+}
+
+const COLORS: Record<Government, string> = {
+  rinneMarin: 'var(--color-terra)',
+  orpo: 'var(--color-meri)',
+}
+
+const title = t(locale, `chart.${datasetId}.title` as UiKey)
+const subtitle = t(locale, `chart.${datasetId}.subtitle` as UiKey)
+const source = t(locale, `chart.${datasetId}.source` as UiKey)
+const desc = t(locale, 'chart.gov.desc')
+const regionLabels: Record<Government, string> = {
+  rinneMarin: t(locale, 'chart.gov.rinneMarinShort'),
+  orpo: t(locale, 'chart.gov.orpoShort'),
+}
+const legend: Array<{ government: Government; label: string }> = [
+  { government: 'rinneMarin', label: t(locale, 'chart.gov.rinneMarin') },
+  { government: 'orpo', label: t(locale, 'chart.gov.orpo') },
+]
+
+// Two renderings of the same chart: a wide one for tablets and up and a
+// compact one for phones (see lib/charts/hallituskausiLayout.ts). Only one is
+// displayed at a time, so only one is ever exposed to assistive tech.
+const rendered = (
+  [
+    { key: 'wide', size: WIDE, className: 'hidden sm:block' },
+    { key: 'compact', size: COMPACT, className: 'mx-auto max-w-[460px] sm:hidden' },
+  ] as const
+).map((entry) => ({ ...entry, layout: layoutChart(dataset, entry.size, locale) }))
+
+// Table view: every raw observation, plus the plotted average when there is one.
+const averages = new Map(plottedSeries(dataset).map((o) => [o.period, o.value]))
+const rows = dataset.observations.map((obs) => ({
+  period: formatPeriod(obs.period, locale),
+  value: formatChartValue(obs.value, dataset.format, dataset.decimals, locale),
+  average: averages.has(obs.period)
+    ? formatChartValue(averages.get(obs.period)!, dataset.format, dataset.decimals, locale)
+    : '–',
+}))
+const idBase = `gov-chart-${datasetId}`
+---
+
+<figure class="my-10" data-gov-chart>
+  <figcaption>
+    <p id={`${idBase}-title`} class="text-xl leading-snug font-extrabold">{title}</p>
+    <p class="text-harmaa mt-1 text-sm">{subtitle}</p>
+    <ul class="mt-3 flex flex-wrap gap-x-5 gap-y-1 text-sm">
+      {
+        legend.map((item) => (
+          <li class="flex items-center gap-2">
+            {/* The legend key mirrors the mark: a block for bars, a stroke for lines. */}
+            <span
+              aria-hidden="true"
+              class:list={[
+                'inline-block shrink-0',
+                dataset.kind === 'bar' ? 'h-2.5 w-2.5 rounded-[2px]' : 'h-[3px] w-4 rounded-full',
+              ]}
+              style={`background: ${COLORS[item.government]}`}
+            />
+            {item.label}
+          </li>
+        ))
+      }
+    </ul>
+  </figcaption>
+
+  {
+    rendered.map(({ key, size, className, layout }) => (
+      <div class:list={['relative mt-3', className]}>
+        <svg
+          viewBox={`0 0 ${layout.width} ${layout.height}`}
+          role="img"
+          aria-labelledby={`${idBase}-title ${idBase}-${key}-desc`}
+          preserveAspectRatio="xMidYMid meet"
+          class="focus-visible:outline-vihrea-tumma block h-auto w-full overflow-visible rounded-sm focus-visible:outline-2 focus-visible:outline-offset-4"
+          font-size={size.fontSize}
+          data-gov-svg
+          data-kind={dataset.kind}
+          data-points={JSON.stringify(
+            layout.points.map((p) => [
+              p.x,
+              p.y,
+              p.valueLabel,
+              p.periodLabel,
+              COLORS[p.government === 'split' ? 'orpo' : p.government],
+            ]),
+          )}
+        >
+          <desc id={`${idBase}-${key}-desc`}>{`${subtitle}. ${desc}`}</desc>
+
+          {/* Government bands: a ~10% wash of each period's colour, with the label strip on top. */}
+          {layout.regions.map((region) => (
+            <g>
+              <rect
+                x={region.x}
+                y={layout.regionTop}
+                width={region.width}
+                height={layout.plot.bottom - layout.regionTop}
+                fill={COLORS[region.government]}
+                fill-opacity="0.1"
+              />
+              <text
+                x={region.labelX}
+                y={layout.regionLabelY}
+                fill="var(--color-musta)"
+                fill-opacity="0.8"
+                font-weight="700"
+              >
+                {regionLabels[region.government]}
+              </text>
+            </g>
+          ))}
+
+          {layout.yTicks.map((tick, i) => (
+            <g>
+              <line
+                x1={layout.plot.left}
+                x2={layout.plot.right}
+                y1={tick.y}
+                y2={tick.y}
+                stroke="var(--color-harmaa)"
+                stroke-opacity={i === 0 || tick.isZero ? 0.7 : 0.22}
+                stroke-width="1"
+                vector-effect="non-scaling-stroke"
+                shape-rendering="crispEdges"
+              />
+              <text
+                x={layout.plot.left - 8}
+                y={tick.y}
+                dy="0.32em"
+                text-anchor="end"
+                fill="var(--color-harmaa)"
+                style="font-variant-numeric: tabular-nums"
+              >
+                {tick.label}
+              </text>
+            </g>
+          ))}
+
+          {layout.xTicks.map((x) => (
+            <line
+              x1={x}
+              x2={x}
+              y1={layout.plot.bottom}
+              y2={layout.plot.bottom + 5}
+              stroke="var(--color-harmaa)"
+              stroke-opacity="0.7"
+              vector-effect="non-scaling-stroke"
+            />
+          ))}
+          {layout.xLabels.map((label) => (
+            <text
+              x={label.x}
+              y={layout.plot.bottom + size.fontSize + 8}
+              text-anchor="middle"
+              fill="var(--color-harmaa)"
+            >
+              {label.label}
+            </text>
+          ))}
+
+          {layout.bars.map((bar) => (
+            <g data-bar style="transition: opacity 150ms">
+              {bar.parts.map((part) => (
+                <path d={part.d} fill={COLORS[part.government]} />
+              ))}
+            </g>
+          ))}
+
+          {layout.lines.map((line) => (
+            <path
+              d={line.d}
+              fill="none"
+              stroke={COLORS[line.government]}
+              stroke-width="2"
+              stroke-linejoin="round"
+              stroke-linecap="round"
+              vector-effect="non-scaling-stroke"
+            />
+          ))}
+
+          {/* Hover layer, driven by the script below; hidden until the pointer or focus arrives. */}
+          {dataset.kind === 'line' && (
+            <line
+              data-crosshair
+              visibility="hidden"
+              y1={layout.regionTop}
+              y2={layout.plot.bottom}
+              stroke="var(--color-musta)"
+              stroke-opacity="0.45"
+              stroke-width="1"
+              vector-effect="non-scaling-stroke"
+            />
+          )}
+
+          {layout.annotations.map((a) => (
+            <g>
+              {a.dot && (
+                <circle
+                  cx={a.x}
+                  cy={a.y}
+                  r={layout.dotRadius}
+                  fill={COLORS[a.government]}
+                  stroke="var(--color-kerma)"
+                  stroke-width="2"
+                />
+              )}
+              <text
+                x={a.labelX}
+                y={a.labelY}
+                text-anchor={a.anchor}
+                fill="var(--color-musta)"
+                font-weight="700"
+                stroke="var(--color-kerma)"
+                stroke-width="3"
+                stroke-linejoin="round"
+                paint-order="stroke"
+              >
+                {a.text}
+              </text>
+            </g>
+          ))}
+
+          {dataset.kind === 'line' && (
+            <circle
+              data-hover-dot
+              visibility="hidden"
+              r={layout.dotRadius}
+              stroke="var(--color-kerma)"
+              stroke-width="2"
+            />
+          )}
+        </svg>
+        <div
+          data-tooltip
+          hidden
+          class="bg-musta text-kerma pointer-events-none absolute top-0 left-0 z-10 rounded-lg px-3 py-2 text-sm leading-tight whitespace-nowrap shadow-lg"
+        >
+          <strong data-tooltip-value class="block text-base" />
+          <span data-tooltip-period class="block opacity-80" />
+        </div>
+      </div>
+    ))
+  }
+
+  <p class="text-harmaa mt-3 text-sm">
+    {t(locale, 'chart.gov.source')}:
+    <a href={dataset.sourceUrl} class="text-vihrea-tumma underline">{source}</a>
+  </p>
+
+  <details class="mt-2 text-sm">
+    <summary class="text-vihrea-tumma cursor-pointer font-semibold">
+      {t(locale, 'chart.gov.showTable')}
+    </summary>
+    <div class="mt-2 max-h-80 overflow-y-auto">
+      <table class="w-full text-left" style="font-variant-numeric: tabular-nums">
+        <caption class="sr-only">{`${title}. ${subtitle}`}</caption>
+        <thead>
+          <tr class="border-b border-black/15">
+            <th scope="col" class="py-1 pr-4 font-semibold">{t(locale, 'chart.gov.period')}</th>
+            <th scope="col" class="py-1 pr-4 text-right font-semibold">
+              {t(locale, dataset.movingAverage ? 'chart.gov.monthValue' : 'chart.gov.value')}
+            </th>
+            {
+              dataset.movingAverage && (
+                <th scope="col" class="py-1 text-right font-semibold">
+                  {t(locale, 'chart.gov.movingAverage')}
+                </th>
+              )
+            }
+          </tr>
+        </thead>
+        <tbody>
+          {
+            rows.map((row) => (
+              <tr class="border-b border-black/5">
+                <th scope="row" class="py-1 pr-4 font-normal">
+                  {row.period}
+                </th>
+                <td class="py-1 pr-4 text-right">{row.value}</td>
+                {dataset.movingAverage && <td class="py-1 text-right">{row.average}</td>}
+              </tr>
+            ))
+          }
+        </tbody>
+      </table>
+    </div>
+  </details>
+</figure>
+
+<script>
+  // Progressive enhancement: a crosshair (lines) or a highlighted bar plus a
+  // tooltip, on pointer and on keyboard focus (arrow keys step through the
+  // points). Without JS the chart is a static image with direct labels, and
+  // every value stays in the table — the tooltip never gates a number.
+  type Point = [x: number, y: number, value: string, period: string, color: string]
+
+  for (const svg of document.querySelectorAll<SVGSVGElement>('[data-gov-svg]')) {
+    const wrapper = svg.parentElement!
+    const points = JSON.parse(svg.dataset.points ?? '[]') as Point[]
+    const tooltip = wrapper.querySelector<HTMLElement>('[data-tooltip]')!
+    const valueEl = tooltip.querySelector<HTMLElement>('[data-tooltip-value]')!
+    const periodEl = tooltip.querySelector<HTMLElement>('[data-tooltip-period]')!
+    const crosshair = svg.querySelector<SVGLineElement>('[data-crosshair]')
+    const hoverDot = svg.querySelector<SVGCircleElement>('[data-hover-dot]')
+    const bars = svg.querySelectorAll<SVGGElement>('[data-bar]')
+    const viewWidth = svg.viewBox.baseVal.width
+    let active = -1
+
+    const show = (index: number) => {
+      active = index
+      const [x, y, value, period, color] = points[index]
+      valueEl.textContent = value
+      periodEl.textContent = period
+      tooltip.hidden = false
+
+      const scale = svg.getBoundingClientRect().width / viewWidth
+      const width = tooltip.offsetWidth
+      const height = tooltip.offsetHeight
+      const left = Math.min(Math.max(x * scale - width / 2, 0), wrapper.clientWidth - width)
+      const above = y * scale - height - 14
+      tooltip.style.left = `${left}px`
+      tooltip.style.top = `${above >= 0 ? above : y * scale + 14}px`
+
+      if (crosshair) {
+        crosshair.setAttribute('x1', String(x))
+        crosshair.setAttribute('x2', String(x))
+        crosshair.setAttribute('visibility', 'visible')
+      }
+      if (hoverDot) {
+        hoverDot.setAttribute('cx', String(x))
+        hoverDot.setAttribute('cy', String(y))
+        hoverDot.setAttribute('fill', color)
+        hoverDot.setAttribute('visibility', 'visible')
+      }
+      bars.forEach((bar, i) => {
+        bar.style.opacity = i === index ? '1' : '0.45'
+      })
+    }
+
+    const hide = () => {
+      tooltip.hidden = true
+      crosshair?.setAttribute('visibility', 'hidden')
+      hoverDot?.setAttribute('visibility', 'hidden')
+      bars.forEach((bar) => (bar.style.opacity = '1'))
+    }
+
+    const nearest = (clientX: number) => {
+      const rect = svg.getBoundingClientRect()
+      const x = ((clientX - rect.left) * viewWidth) / rect.width
+      let best = 0
+      points.forEach(([px], i) => {
+        if (Math.abs(px - x) < Math.abs(points[best][0] - x)) best = i
+      })
+      return best
+    }
+
+    svg.addEventListener('pointermove', (event) => show(nearest(event.clientX)))
+    svg.addEventListener('pointerdown', (event) => show(nearest(event.clientX)))
+    svg.addEventListener('pointerleave', hide)
+    svg.addEventListener('focus', () => show(active < 0 ? points.length - 1 : active))
+    svg.addEventListener('blur', hide)
+    svg.addEventListener('keydown', (event) => {
+      const step: Record<string, number> = {
+        ArrowLeft: active - 1,
+        ArrowRight: active + 1,
+        Home: 0,
+        End: points.length - 1,
+      }
+      if (!(event.key in step)) return
+      event.preventDefault()
+      show(Math.min(Math.max(step[event.key], 0), points.length - 1))
+    })
+    svg.setAttribute('tabindex', '0')
+    svg.style.cursor = 'crosshair'
+  }
+</script>
