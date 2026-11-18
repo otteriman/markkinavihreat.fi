@@ -1,4 +1,4 @@
-import { expect, test } from '@playwright/test'
+import { devices, expect, test } from '@playwright/test'
 
 const POST_PATH = '/blogi/2026-11-18/orpon-hallitus-on-epaonnistunut/'
 
@@ -37,6 +37,19 @@ test('blog post chart shows a tooltip on hover', async ({ page }) => {
   const box = (await svg.boundingBox())!
   await page.mouse.move(box.x + box.width - 2, box.y + box.height / 2)
   await expect(chart.locator('[data-tooltip]:visible')).toContainText('90,3 %')
+})
+
+test('blog post chart readout stays closed on touch', async ({ browser }) => {
+  // A tap (or a scroll brushing the chart) on a phone mustn't open it.
+  const context = await browser.newContext({ ...devices['Pixel 7'] })
+  const page = await context.newPage()
+  await page.goto(POST_PATH)
+  const chart = page.locator('figure[data-gov-chart]').first()
+  const svg = chart.locator('svg:visible')
+  await svg.scrollIntoViewIfNeeded()
+  await svg.tap()
+  await expect(chart.locator('[data-tooltip]:visible')).toHaveCount(0)
+  await context.close()
 })
 
 test('blog post charts are localized', async ({ page }) => {

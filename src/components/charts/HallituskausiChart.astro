@@ -316,7 +316,7 @@ const idBase = `gov-chart-${datasetId}`
 
 <script>
   // Progressive enhancement: a crosshair (lines) or a highlighted bar plus a
-  // tooltip, on pointer and on keyboard focus (arrow keys step through the
+  // tooltip, on mouse hover and on keyboard focus (arrow keys step through the
   // points). Without JS the chart is a static image, and every value stays
   // in the table — the tooltip never gates a number.
   type Point = [x: number, y: number, value: string, period: string, color: string]
@@ -381,10 +381,17 @@ const idBase = `gov-chart-${datasetId}`
       return best
     }
 
-    svg.addEventListener('pointermove', (event) => show(nearest(event.clientX)))
-    svg.addEventListener('pointerdown', (event) => show(nearest(event.clientX)))
+    // Mouse only: on a phone a tap or a scroll that brushes the chart would
+    // open the readout by accident, which annoys more than it helps.
+    svg.addEventListener('pointermove', (event) => {
+      if (event.pointerType === 'mouse') show(nearest(event.clientX))
+    })
     svg.addEventListener('pointerleave', hide)
-    svg.addEventListener('focus', () => show(active < 0 ? points.length - 1 : active))
+    // Keyboard focus only (:focus-visible); a tap also focuses the chart,
+    // since it's focusable, and that mustn't open the readout either.
+    svg.addEventListener('focus', () => {
+      if (svg.matches(':focus-visible')) show(active < 0 ? points.length - 1 : active)
+    })
     svg.addEventListener('blur', hide)
     svg.addEventListener('keydown', (event) => {
       const step: Record<string, number> = {
@@ -398,6 +405,6 @@ const idBase = `gov-chart-${datasetId}`
       show(Math.min(Math.max(step[event.key], 0), points.length - 1))
     })
     svg.setAttribute('tabindex', '0')
-    svg.style.cursor = 'crosshair'
+    if (matchMedia('(pointer: fine)').matches) svg.style.cursor = 'crosshair'
   }
 </script>
