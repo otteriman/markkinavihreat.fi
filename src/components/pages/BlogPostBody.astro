@@ -7,6 +7,8 @@ import { ogUrlFor } from '../../lib/og'
 import { personPath } from '../../lib/team'
 import { articleNode, breadcrumbNode, SITE_URL } from '../../lib/structuredData'
 import { blogPage } from '../../i18n/pages'
+import { splitChartMarkers } from '../../lib/blogBody'
+import { chartFor } from '../charts/registry'
 
 interface Props {
   locale: Locale
@@ -15,6 +17,16 @@ interface Props {
 
 const { locale, post } = Astro.props
 const { Content } = await render(post)
+
+// A post with "[kuvaaja: <id>]" markers renders from its HTML, split around
+// the charts (see lib/blogBody.ts); one without renders as usual. The raw HTML
+// still holds Astro's unresolved placeholders for local markdown images, so a
+// post can't combine the two until that's handled — fail loudly, not silently.
+const segments = splitChartMarkers(post.rendered?.html ?? '')
+const hasCharts = segments.some((segment) => segment.type === 'chart')
+if (hasCharts && post.rendered?.metadata?.imagePaths?.length) {
+  throw new Error(`Blog post "${post.id}" combines charts with local images, which isn't supported`)
+}
 const path = `/blogi/${dateSlug(post.data.date)}/${parseLocalizedId(post.id).slug}/`
 const authors = await Promise.all(
   post.data.authors.map(async (slug) => {
@@ -68,7 +80,17 @@ const jsonLd = [
     </p>
     <h1 class="mt-2 text-4xl sm:text-5xl">{post.data.title}</h1>
     <div class="prose-body mt-8 space-y-5 text-lg leading-relaxed">
-      <Content />
+      {
+        hasCharts ? (
+          segments.map((segment) => {
+            if (segment.type === 'html') return <Fragment set:html={segment.html} />
+            const { component: Chart, props } = chartFor(segment.id, `Blog post "${post.id}"`)
+            return <Chart locale={locale} {...props} />
+          })
+        ) : (
+          <Content />
+        )
+      }
     </div>
   </article>
 </BaseLayout>

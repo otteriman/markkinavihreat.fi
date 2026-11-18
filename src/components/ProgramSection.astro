@@ -2,19 +2,11 @@
 import { renderInlineMarkdown } from '../lib/markdown'
 import type { Locale } from '../lib/content'
 import type { ProgramParagraph } from '../lib/programSections'
-import RuokaostostukiAlvChart from './charts/RuokaostostukiAlvChart.astro'
+import { chartFor } from './charts/registry'
 import YouTubeEmbed from './YouTubeEmbed.astro'
 import ProgramImage from './ProgramImage.astro'
 import ProgramDisclosure from './ProgramDisclosure.astro'
 import type { UiKey } from '../i18n/ui'
-
-// Charts registered for the "[kuvaaja: <id>]" marker (see lib/programSections.ts).
-// Add new chart components here as they're built — a program body referencing
-// an id not listed here fails the build, the same way an unknown citation
-// person does in ProgramDetailBody.astro.
-const CHARTS = {
-  'ruokaostostuki-alv': RuokaostostukiAlvChart,
-} as const
 
 // Images registered for the "[kuva: <id>]" marker (see lib/programSections.ts).
 const IMAGES: Record<string, { src: string; altKey: UiKey }> = {
@@ -78,10 +70,8 @@ const styles = TONE_STYLES[tone]
       {
         paragraphs.map((paragraph, i) => {
           if (paragraph.type === 'chart') {
-            const Chart = CHARTS[paragraph.text as keyof typeof CHARTS]
-            if (!Chart)
-              throw new Error(`Program body references unknown chart id "${paragraph.text}"`)
-            return <Chart locale={locale} />
+            const { component: Chart, props } = chartFor(paragraph.text, 'Program body')
+            return <Chart locale={locale} {...props} />
           }
           if (paragraph.type === 'video') {
             return <YouTubeEmbed videoId={paragraph.text} locale={locale} />
