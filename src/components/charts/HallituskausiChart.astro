@@ -30,8 +30,9 @@ const COLORS: Record<Government, string> = {
   orpo: 'var(--color-meri)',
 }
 
-// The headline states the conclusion; the statistic's own name and unit follow
-// it as a muted reference for readers who want to know what it's drawn from.
+// The headline states the conclusion; the statistic's own name and unit sit
+// under the chart with its source, as a muted reference for readers who want
+// to know what it's drawn from.
 const headline = t(locale, `chart.${datasetId}.headline` as UiKey)
 const title = t(locale, `chart.${datasetId}.title` as UiKey)
 const subtitle = t(locale, `chart.${datasetId}.subtitle` as UiKey)
@@ -76,10 +77,9 @@ const idBase = `gov-chart-${datasetId}`
 <figure class="my-10" data-gov-chart>
   <figcaption>
     <h2 id={`${idBase}-title`} class="mt-0 text-2xl leading-tight sm:text-3xl">{headline}</h2>
-    <p class="text-harmaa mt-2 text-sm">{`${title} · ${subtitle}`}</p>
     {
       invertedNote && (
-        <p class="text-musta mt-1 flex items-center gap-1.5 text-sm font-semibold">
+        <p class="text-musta mt-2 flex items-center gap-1.5 text-sm font-semibold">
           <span aria-hidden="true">↓</span>
           {invertedNote}
         </p>
@@ -269,7 +269,10 @@ const idBase = `gov-chart-${datasetId}`
     ))
   }
 
+  {/* The statistic the headline is drawn from, and its source, as one muted reference. */}
   <p class="text-harmaa mt-3 text-sm">
+    {`${title} · ${subtitle}`}
+    <br />
     {t(locale, 'chart.gov.source')}:
     <a href={dataset.sourceUrl} class="text-vihrea-tumma underline">{source}</a>
   </p>
