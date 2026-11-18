@@ -28,7 +28,7 @@ export interface ChartSize {
 
 export const WIDE: ChartSize = {
   width: 720,
-  height: 380,
+  height: 480,
   margin: { top: 4, right: 12, bottom: 30, left: 56 },
   stripHeight: 30,
   fontSize: 13,
@@ -36,16 +36,18 @@ export const WIDE: ChartSize = {
 
 export const COMPACT: ChartSize = {
   width: 400,
-  height: 320,
+  height: 420,
   margin: { top: 4, right: 8, bottom: 28, left: 48 },
   stripHeight: 28,
   fontSize: 12,
 }
 
-/** Mark specs: bars at most 24 px wide with a 4 px rounded data-end; 4 px dot radius. */
-const MAX_BAR_WIDTH = 24
+/** Mark specs: bars at most 44 px wide with a 4 px rounded data-end; 5 px dot radius. */
+const MAX_BAR_WIDTH = 44
 const BAR_RADIUS = 4
-const DOT_RADIUS = 4
+const DOT_RADIUS = 5
+/** Stroke width of the data line, in px (non-scaling, so the same on every screen). */
+export const LINE_WIDTH = 3.5
 
 export interface ChartPoint {
   period: string
@@ -124,25 +126,30 @@ export function yDomain(dataset: Dataset, values: number[]) {
   return { yMin, yMax, step }
 }
 
-/** Rounded top corners only — the data-end — and square at the baseline. */
+/**
+ * A bar from `baseY` (the zero line) to `endY` (the value), rounded only at
+ * the data-end and square at the baseline. Grows up when `endY` is above
+ * `baseY`, and down on an inverted axis.
+ */
 export function barPath(
   x: number,
-  y: number,
   width: number,
-  height: number,
+  baseY: number,
+  endY: number,
   radiusLeft: number,
   radiusRight: number,
 ): string {
+  const dir = endY < baseY ? -1 : 1
+  const height = Math.abs(endY - baseY)
   const rl = Math.min(radiusLeft, height, width)
   const rr = Math.min(radiusRight, height, width)
-  const b = y + height
   return [
-    `M${round(x)},${round(b)}`,
-    `V${round(y + rl)}`,
-    `Q${round(x)},${round(y)} ${round(x + rl)},${round(y)}`,
+    `M${round(x)},${round(baseY)}`,
+    `V${round(endY - dir * rl)}`,
+    `Q${round(x)},${round(endY)} ${round(x + rl)},${round(endY)}`,
     `H${round(x + width - rr)}`,
-    `Q${round(x + width)},${round(y)} ${round(x + width)},${round(y + rr)}`,
-    `V${round(b)}`,
+    `Q${round(x + width)},${round(endY)} ${round(x + width)},${round(endY - dir * rr)}`,
+    `V${round(baseY)}`,
     'Z',
   ].join(' ')
 }
@@ -188,7 +195,11 @@ export function layoutChart(dataset: Dataset, size: ChartSize, locale: Locale): 
     dataset,
     series.map((o) => o.value),
   )
-  const y = linear(yMin, yMax, plot.bottom, plot.top)
+  // An inverted axis runs downward, so that for every chart "down" means
+  // "worse": a rise in debt or bankruptcies is drawn as a fall.
+  const y = dataset.invert
+    ? linear(yMin, yMax, plot.top, plot.bottom)
+    : linear(yMin, yMax, plot.bottom, plot.top)
 
   const yTicks: ChartLayout['yTicks'] = []
   for (let v = yMin; v <= yMax + step / 1000; v += step) {
@@ -211,15 +222,15 @@ export function layoutChart(dataset: Dataset, size: ChartSize, locale: Locale): 
 
   if (dataset.kind === 'bar') {
     const band = (plot.right - plot.left) / series.length
-    const barWidth = Math.min(MAX_BAR_WIDTH, band * 0.6)
+    const barWidth = Math.min(MAX_BAR_WIDTH, band * 0.62)
+    const baseY = y(0)
     const orpoYear = String(ORPO_START.getUTCFullYear())
     const split = yearFraction(ORPO_START)
     boundaryX = plot.left
     points = series.map((obs, i) => {
       const center = plot.left + band * (i + 0.5)
       const left = center - barWidth / 2
-      const top = y(obs.value)
-      const height = plot.bottom - top
+      const end = y(obs.value)
       let government: ChartPoint['government']
       if (obs.period === orpoYear) {
         government = 'split'
@@ -230,11 +241,11 @@ export function layoutChart(dataset: Dataset, size: ChartSize, locale: Locale): 
           parts: [
             {
               government: 'rinneMarin',
-              d: barPath(left, top, splitX - left, height, BAR_RADIUS, 0),
+              d: barPath(left, splitX - left, baseY, end, BAR_RADIUS, 0),
             },
             {
               government: 'orpo',
-              d: barPath(splitX, top, left + barWidth - splitX, height, 0, BAR_RADIUS),
+              d: barPath(splitX, left + barWidth - splitX, baseY, end, 0, BAR_RADIUS),
             },
           ],
         })
@@ -242,14 +253,14 @@ export function layoutChart(dataset: Dataset, size: ChartSize, locale: Locale): 
         government = obs.period < orpoYear ? 'rinneMarin' : 'orpo'
         bars.push({
           period: obs.period,
-          parts: [{ government, d: barPath(left, top, barWidth, height, BAR_RADIUS, BAR_RADIUS) }],
+          parts: [{ government, d: barPath(left, barWidth, baseY, end, BAR_RADIUS, BAR_RADIUS) }],
         })
       }
       xLabels.push({ x: round(center), label: obs.period })
       return {
         period: obs.period,
         x: round(center),
-        y: round(top),
+        y: round(end),
         government,
         valueLabel: valueLabel(obs.value),
         periodLabel: formatPeriod(obs.period, locale),
@@ -305,7 +316,16 @@ export function layoutChart(dataset: Dataset, size: ChartSize, locale: Locale): 
     const point = points[i]
     const isBar = dataset.kind === 'bar'
     const gap = isBar ? 8 : DOT_RADIUS + 8
-    const roomAbove = point.y - gap - lineHeight >= plot.top
+    // A bar's label sits just past its data-end (below it on an inverted
+    // axis). A line's goes on the side of its dot the line doesn't run
+    // through — judged from the neighbouring points — and stays in the plot.
+    const neighbours = points
+      .slice(Math.max(0, i - 3), i + 4)
+      .filter((_, j, arr) => arr[j] !== point)
+    const lineAbove = neighbours.reduce((sum, p) => sum + p.y, 0) / neighbours.length < point.y
+    const fitsAbove = point.y - gap - lineHeight >= plot.top
+    const fitsBelow = point.y + gap + size.fontSize <= plot.bottom
+    const below = isBar ? Boolean(dataset.invert) : (lineAbove && fitsBelow) || !fitsAbove
     const anchor = isBar ? 'middle' : i === 0 ? 'start' : i === points.length - 1 ? 'end' : 'middle'
     const government: Government =
       point.government === 'split' ? 'orpo' : (point.government as Government)
@@ -313,7 +333,7 @@ export function layoutChart(dataset: Dataset, size: ChartSize, locale: Locale): 
       x: point.x,
       y: point.y,
       labelX: point.x,
-      labelY: round(roomAbove ? point.y - gap : point.y + gap + size.fontSize),
+      labelY: round(below ? point.y + gap + size.fontSize : point.y - gap),
       anchor,
       text: point.valueLabel,
       government,

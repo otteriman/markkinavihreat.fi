@@ -11,7 +11,7 @@ Petteri Orpo’s government took office on 20 June 2023. The next parliamentary 
 
 Not everything is in a government’s hands. The previous term was overshadowed by the coronavirus pandemic and Russia’s war of aggression, and interest rates and the world economy affect every government. That is why we look at the direction rather than at individual months. On three of the measures, the direction has turned for the worse during Orpo’s term, and on the fourth the recovery has stalled halfway.
 
-The background colour of the charts changes on the day the Orpo government took office. Below each chart you will find its source and the exact figures.
+The background colour of the charts changes on the day the Orpo government took office. In every chart, down means worse: the scales for homelessness, debt and bankruptcies are inverted, so an increase shows as a fall. Below each chart you will find its source and the exact figures.
 
 ## Homelessness is rising again
 

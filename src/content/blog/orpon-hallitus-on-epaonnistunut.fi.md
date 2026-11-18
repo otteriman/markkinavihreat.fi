@@ -11,7 +11,7 @@ Petteri Orpon hallitus aloitti 20. kesäkuuta 2023. Seuraavat eduskuntavaalit k�
 
 Kaikki ei ole hallituksen käsissä. Edellistä kautta varjostivat koronapandemia ja Venäjän hyökkäyssota, ja korot ja maailmantalous vaikuttavat jokaiseen hallitukseen. Siksi katsomme suuntaa emmekä yksittäisiä kuukausia. Kolmessa mittarissa suunta on Orpon kaudella kääntynyt huonompaan, ja neljännessä toipuminen on jäänyt kesken.
 
-Kaavioiden taustaväri vaihtuu päivänä, jolloin Orpon hallitus aloitti. Jokaisen kaavion alta löytyvät lähde ja tarkat luvut.
+Kaavioiden taustaväri vaihtuu päivänä, jolloin Orpon hallitus aloitti. Kaikissa kaavioissa alaspäin tarkoittaa huonompaa: asunnottomuuden, velan ja konkurssien asteikot on käännetty, joten niiden kasvu näkyy laskuna. Jokaisen kaavion alta löytyvät lähde ja tarkat luvut.
 
 ## Asunnottomuus on kääntynyt kasvuun
 

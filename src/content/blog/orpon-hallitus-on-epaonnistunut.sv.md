@@ -11,7 +11,7 @@ Petteri Orpos regering tillträdde den 20 juni 2023. Nästa riksdagsval hålls i
 
 Allt ligger inte i regeringens händer. Den förra perioden präglades av coronapandemin och Rysslands anfallskrig, och räntorna och världsekonomin påverkar varje regering. Därför tittar vi på riktningen och inte på enskilda månader. I tre av måtten har riktningen under Orpos period vänt till det sämre, och i det fjärde har återhämtningen stannat halvvägs.
 
-Diagrammens bakgrundsfärg byts den dag regeringen Orpo tillträdde. Under varje diagram finns källan och de exakta siffrorna.
+Diagrammens bakgrundsfärg byts den dag regeringen Orpo tillträdde. I alla diagram betyder nedåt sämre: skalorna för bostadslösheten, skulden och konkurserna är omvända, så att en ökning syns som en nedgång. Under varje diagram finns källan och de exakta siffrorna.
 
 ## Bostadslösheten har börjat öka
 

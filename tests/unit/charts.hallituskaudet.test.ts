@@ -112,7 +112,11 @@ describe('layout helpers', () => {
   })
 
   it('rounds only the data-end of a bar', () => {
-    expect(barPath(0, 10, 24, 90, 4, 4)).toBe('M0,100 V14 Q0,10 4,10 H20 Q24,10 24,14 V100 Z')
+    expect(barPath(0, 24, 100, 10, 4, 4)).toBe('M0,100 V14 Q0,10 4,10 H20 Q24,10 24,14 V100 Z')
+  })
+
+  it('rounds the bottom end of a bar that grows down an inverted axis', () => {
+    expect(barPath(0, 24, 10, 100, 4, 4)).toBe('M0,10 V96 Q0,100 4,100 H20 Q24,100 24,96 V10 Z')
   })
 
   it('picks nice steps', () => {
@@ -147,11 +151,27 @@ describe('layoutChart', () => {
     }
   }
 
-  it('keeps every bar value label above its bar, never inside it', () => {
+  it('keeps every bar value label past its bar end (below, on the inverted axis), never inside it', () => {
     for (const size of [WIDE, COMPACT]) {
       const layout = layoutChart(DATASETS.asunnottomuus, size, 'fi')
-      for (const a of layout.annotations) expect(a.labelY).toBeLessThan(a.y)
+      for (const a of layout.annotations) {
+        expect(a.labelY - size.fontSize).toBeGreaterThan(a.y)
+        expect(a.labelY).toBeLessThanOrEqual(layout.plot.bottom)
+      }
     }
+  })
+
+  it('draws "worse" as down in every chart', () => {
+    // Homelessness, debt and bankruptcies rose under Orpo; consumer
+    // confidence is already "higher is better". The latest point must sit
+    // below the handover point in all four.
+    const handover = { asunnottomuus: '2023', 'julkinen-velka': '2023Q2', konkurssit: '2023M06' }
+    for (const [id, period] of Object.entries(handover)) {
+      const layout = layoutChart(DATASETS[id as keyof typeof handover], WIDE, 'fi')
+      const at = layout.points.find((p) => p.period === period)!
+      expect(layout.points.at(-1)!.y).toBeGreaterThan(at.y)
+    }
+    expect(DATASETS['kuluttajien-luottamus'].invert).toBeFalsy()
   })
 
   it('splits the 2023 bar between the two governments', () => {

@@ -37,6 +37,12 @@ export interface Dataset {
   /** Decimals shown in labels, tooltips and the table. */
   decimals: number
   movingAverage?: number
+  /**
+   * Higher is worse (homelessness, debt, bankruptcies): the y-axis runs
+   * downward, so that in every chart "down" means "worse". The values and
+   * axis labels stay true — only the direction flips.
+   */
+  invert?: boolean
   /** Explicit y-axis range; left out, a "nice" range around the data is derived. */
   yMin?: number
   yMax?: number
@@ -140,10 +146,11 @@ export const DATASETS: Record<DatasetId, Dataset> = {
     id: 'asunnottomuus',
     kind: 'bar',
     frequency: 'year',
+    invert: true,
     format: 'count',
     decimals: 0,
     yMin: 0,
-    yMax: 6000,
+    yMax: 5000,
     yStep: 1000,
     sourceUrl: 'https://julkaisut.valtioneuvosto.fi/items/3e1a9858-cde4-4996-b5a9-50df819fbd27',
     observations: [
@@ -160,6 +167,7 @@ export const DATASETS: Record<DatasetId, Dataset> = {
   'julkinen-velka': {
     id: 'julkinen-velka',
     kind: 'line',
+    invert: true,
     frequency: 'quarter',
     format: 'percent',
     decimals: 1,
@@ -179,6 +187,7 @@ export const DATASETS: Record<DatasetId, Dataset> = {
   konkurssit: {
     id: 'konkurssit',
     kind: 'line',
+    invert: true,
     frequency: 'month',
     format: 'count',
     decimals: 0,
