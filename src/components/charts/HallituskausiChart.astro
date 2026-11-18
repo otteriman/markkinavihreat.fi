@@ -63,10 +63,12 @@ const LABEL_COLORS: Record<Government, string> = {
 // Two renderings of the same chart: a wide one for tablets and up and a
 // compact one for phones (see lib/charts/hallituskausiLayout.ts). Only one is
 // displayed at a time, so only one is ever exposed to assistive tech.
+// On phones the compact chart runs edge to edge: -mx-4 cancels the 16px side
+// padding of the page it sits in (BlogPostBody's px-4).
 const rendered = (
   [
     { key: 'wide', size: WIDE, className: 'hidden sm:block' },
-    { key: 'compact', size: COMPACT, className: 'mx-auto max-w-[460px] sm:hidden' },
+    { key: 'compact', size: COMPACT, className: '-mx-4 sm:hidden' },
   ] as const
 ).map((entry) => ({ ...entry, layout: layoutChart(dataset, entry.size, locale) }))
 
@@ -163,11 +165,14 @@ const idBase = `gov-chart-${datasetId}`
                 shape-rendering="crispEdges"
               />
               <text
-                x={layout.plot.left - 8}
-                y={tick.y}
-                dy="0.32em"
-                text-anchor="end"
+                x={tick.labelX}
+                y={tick.labelY}
+                text-anchor={tick.anchor}
                 fill="var(--color-harmaa)"
+                stroke="var(--color-kerma)"
+                stroke-width={size.yLabelsInside ? 3 : 0}
+                stroke-linejoin="round"
+                paint-order="stroke"
                 style="font-variant-numeric: tabular-nums"
               >
                 {tick.label}

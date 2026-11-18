@@ -9,7 +9,7 @@ authors: []
 
 Orpon johtama kokoomus nousi valtaan lupaamalla taittaa julkisen velkaantumisen sekä luoda 100 000 työpaikkaa. Samalla se haukkui voimakkaasti edellistä hallitusta näiden asioiden tiimoilta.
 
-Joten ajattelin tarkastella näiden kahden hallituksen suoriutumista tilastojen valossa. Kaikissa kaavioissa alaspäin tarkoittaa huonompaa suuntaa. Katsotaan ensin mainittuja työpaikkoja. Ensin työllisyys.
+Joten ajattelin tarkastella näiden kahden hallituksen suoriutumista tilastojen valossa. Kuvaajat on selkeyden vuoksi yhtenäistetty niin, että alaspäin menevä arvo tarkoittaa tilanteen huonontumista. Katsotaan ensin mainittuja työpaikkoja. Ensin työllisyys.
 
 [kuvaaja: tyollisyys]
 

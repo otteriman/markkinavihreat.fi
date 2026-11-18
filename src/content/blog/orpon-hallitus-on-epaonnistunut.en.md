@@ -9,7 +9,7 @@ authors: []
 
 Orpo’s National Coalition Party came to power promising to halt the growth of public debt and to create 100,000 jobs. At the same time, it fiercely attacked the previous government over exactly these issues.
 
-So I thought I would look at how the two governments have performed in the light of the statistics. In every chart, down means worse. Let’s start with the promised jobs, beginning with employment.
+So I thought I would look at how the two governments have performed in the light of the statistics. For clarity, the charts have been made consistent so that a value going down means things are getting worse. Let’s start with the promised jobs, beginning with employment.
 
 [kuvaaja: tyollisyys]
 

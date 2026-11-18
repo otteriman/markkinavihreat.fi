@@ -9,7 +9,7 @@ authors: []
 
 Samlingspartiet under Orpos ledning kom till makten med löften om att bryta den offentliga skuldsättningen och skapa 100 000 jobb. Samtidigt kritiserade partiet den förra regeringen hårt just för de här sakerna.
 
-Därför tänkte jag granska hur de två regeringarna har klarat sig i ljuset av statistiken. I alla diagram betyder nedåt sämre. Vi börjar med de utlovade jobben, först sysselsättningen.
+Därför tänkte jag granska hur de två regeringarna har klarat sig i ljuset av statistiken. Diagrammen har för tydlighetens skull gjorts enhetliga, så att ett värde som går nedåt betyder att läget försämras. Vi börjar med de utlovade jobben, först sysselsättningen.
 
 [kuvaaja: tyollisyys]
 
