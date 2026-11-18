@@ -13,13 +13,9 @@ Kaikki ei ole hallituksen käsissä. Edellistä kautta varjostivat koronapandemi
 
 Kaavioiden taustaväri vaihtuu päivänä, jolloin Orpon hallitus aloitti. Kaikissa kaavioissa alaspäin tarkoittaa huonompaa: asunnottomuuden, velan ja konkurssien asteikot on käännetty, joten niiden kasvu näkyy laskuna. Jokaisen kaavion alta löytyvät lähde ja tarkat luvut.
 
-## Asunnottomuus on kääntynyt kasvuun
-
 [kuvaaja: asunnottomuus]
 
 Yksinelävien asunnottomien määrä laski Rinteen ja Marinin kaudella 4 600:sta 3 429:ään eli noin neljänneksellä. Sen jälkeen suunta kääntyi: vuonna 2025 asunnottomia oli 4 579, noin kolmannes enemmän kuin vuonna 2023 ja lähes yhtä paljon kuin vuonna 2019. Edellisellä kaudella saavutettu lasku on kumoutunut kahdessa vuodessa lähes kokonaan.
-
-## Velka kasvaa nopeammin kuin edellisellä kaudella
 
 [kuvaaja: julkinen-velka]
 
@@ -27,15 +23,11 @@ Julkisyhteisöjen velka oli kesäkuun 2019 lopussa 67,2 prosenttia bruttokansant
 
 Orpon kaudella velkasuhde on noussut joka vuosi, ja kesäkuun 2026 lopussa se oli 90,3 prosenttia. Kolmessa vuodessa nousua on kertynyt 15,5 prosenttiyksikköä. Se on noin kaksi kertaa niin paljon kuin koko edellisellä nelivuotiskaudella, jolloin velkasuhde nousi pandemia mukaan lukien 7,6 prosenttiyksikköä.
 
-## Konkursseja on lähes puolet enemmän
-
 [kuvaaja: konkurssit]
 
 Rinteen ja Marinin kaudella, kesäkuusta 2019 toukokuuhun 2023, konkursseja pantiin vireille keskimäärin noin 212 kuukaudessa. Orpon kaudella, heinäkuusta 2023 alkaen, keskiarvo on noussut noin 312:een eli lähes puolet korkeammaksi.
 
 Ero ei selity koronavuosien poikkeuksellisen pienillä luvuilla. Jo ennen pandemiaa, kesä–joulukuussa 2019, konkursseja oli keskimäärin noin 214 kuukaudessa. Vuonna 2025 konkursseja pantiin vireille 3 906, ja tämän vuoden kymmenen ensimmäisen kuukauden aikana jo 3 411.
-
-## Kuluttajien luottamus ei ole palautunut
 
 [kuvaaja: kuluttajien-luottamus]
 

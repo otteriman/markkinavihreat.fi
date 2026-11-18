@@ -13,13 +13,9 @@ Allt ligger inte i regeringens händer. Den förra perioden präglades av corona
 
 Diagrammens bakgrundsfärg byts den dag regeringen Orpo tillträdde. I alla diagram betyder nedåt sämre: skalorna för bostadslösheten, skulden och konkurserna är omvända, så att en ökning syns som en nedgång. Under varje diagram finns källan och de exakta siffrorna.
 
-## Bostadslösheten har börjat öka
-
 [kuvaaja: asunnottomuus]
 
 Antalet ensamstående bostadslösa minskade under Rinnes och Marins period från 4 600 till 3 429, alltså med ungefär en fjärdedel. Sedan vände riktningen: år 2025 var de bostadslösa 4 579, ungefär en tredjedel fler än 2023 och nästan lika många som 2019. Den minskning som uppnåddes under den förra perioden har nästan helt gått förlorad på två år.
-
-## Skulden växer snabbare än under förra perioden
 
 [kuvaaja: julkinen-velka]
 
@@ -27,15 +23,11 @@ De offentliga samfundens skuld var 67,2 procent av bruttonationalprodukten i slu
 
 Under Orpos period har skuldkvoten stigit varje år, och i slutet av juni 2026 var den 90,3 procent. På tre år har den stigit med 15,5 procentenheter. Det är ungefär dubbelt så mycket som under hela den förra fyraårsperioden, då skuldkvoten steg med 7,6 procentenheter, pandemin inräknad.
 
-## Nästan hälften fler konkurser
-
 [kuvaaja: konkurssit]
 
 Under Rinnes och Marins period, från juni 2019 till maj 2023, inleddes i genomsnitt cirka 212 konkurser i månaden. Under Orpos period, från juli 2023, har genomsnittet stigit till cirka 312, alltså nästan hälften högre.
 
 Skillnaden förklaras inte av de exceptionellt låga siffrorna under coronaåren. Redan före pandemin, i juni–december 2019, var konkurserna i genomsnitt cirka 214 i månaden. År 2025 inleddes 3 906 konkurser, och under årets första tio månader redan 3 411.
-
-## Konsumenternas förtroende har inte återhämtat sig
 
 [kuvaaja: kuluttajien-luottamus]
 

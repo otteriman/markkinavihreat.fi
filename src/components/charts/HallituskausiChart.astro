@@ -30,6 +30,9 @@ const COLORS: Record<Government, string> = {
   orpo: 'var(--color-meri)',
 }
 
+// The headline states the conclusion; the statistic's own name and unit follow
+// it as a muted reference for readers who want to know what it's drawn from.
+const headline = t(locale, `chart.${datasetId}.headline` as UiKey)
 const title = t(locale, `chart.${datasetId}.title` as UiKey)
 const subtitle = t(locale, `chart.${datasetId}.subtitle` as UiKey)
 const source = t(locale, `chart.${datasetId}.source` as UiKey)
@@ -72,8 +75,8 @@ const idBase = `gov-chart-${datasetId}`
 
 <figure class="my-10" data-gov-chart>
   <figcaption>
-    <p id={`${idBase}-title`} class="text-xl leading-snug font-extrabold">{title}</p>
-    <p class="text-harmaa mt-1 text-sm">{subtitle}</p>
+    <h2 id={`${idBase}-title`} class="mt-0 text-2xl leading-tight sm:text-3xl">{headline}</h2>
+    <p class="text-harmaa mt-2 text-sm">{`${title} · ${subtitle}`}</p>
     {
       invertedNote && (
         <p class="text-musta mt-1 flex items-center gap-1.5 text-sm font-semibold">
@@ -106,7 +109,7 @@ const idBase = `gov-chart-${datasetId}`
             ]),
           )}
         >
-          <desc id={`${idBase}-${key}-desc`}>{`${subtitle}. ${desc}`}</desc>
+          <desc id={`${idBase}-${key}-desc`}>{`${title}. ${subtitle}. ${desc}`}</desc>
 
           {/* Government bands: a ~10% wash of each period's colour, labelled in a strip on top. */}
           {layout.regions.map((region) => (

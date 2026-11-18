@@ -13,13 +13,9 @@ Not everything is in a government’s hands. The previous term was overshadowed 
 
 The background colour of the charts changes on the day the Orpo government took office. In every chart, down means worse: the scales for homelessness, debt and bankruptcies are inverted, so an increase shows as a fall. Below each chart you will find its source and the exact figures.
 
-## Homelessness is rising again
-
 [kuvaaja: asunnottomuus]
 
 The number of single homeless people fell during Rinne’s and Marin’s term from 4,600 to 3,429, or by about a quarter. Then the direction turned: in 2025 there were 4,579 homeless people, about a third more than in 2023 and almost as many as in 2019. The fall achieved in the previous term has been almost entirely undone in two years.
-
-## Debt is growing faster than in the previous term
 
 [kuvaaja: julkinen-velka]
 
@@ -27,15 +23,11 @@ General government debt was 67.2 per cent of gross domestic product at the end o
 
 During Orpo’s term, the debt ratio has risen every year, and at the end of June 2026 it stood at 90.3 per cent. In three years it has risen by 15.5 percentage points. That is about twice as much as over the whole previous four-year term, when the debt ratio rose by 7.6 percentage points, the pandemic included.
 
-## Bankruptcies are up by almost half
-
 [kuvaaja: konkurssit]
 
 During Rinne’s and Marin’s term, from June 2019 to May 2023, an average of about 212 bankruptcies were filed a month. During Orpo’s term, from July 2023 onwards, the average has risen to about 312, almost 50 per cent higher.
 
 The difference is not explained by the exceptionally low figures of the pandemic years. Even before the pandemic, from June to December 2019, there were on average about 214 bankruptcies a month. In 2025, 3,906 bankruptcies were filed, and in the first ten months of this year already 3,411.
-
-## Consumer confidence has not recovered
 
 [kuvaaja: kuluttajien-luottamus]
 
