@@ -26,7 +26,7 @@ if (dataset.movingAverage && dataset.movingAverage !== 6) {
 }
 
 const COLORS: Record<Government, string> = {
-  rinneMarin: 'var(--color-terra)',
+  rinneMarin: 'var(--color-lehti)',
   orpo: 'var(--color-meri)',
 }
 
@@ -36,14 +36,15 @@ const source = t(locale, `chart.${datasetId}.source` as UiKey)
 const invertedNote = dataset.invert ? t(locale, 'chart.gov.invertedNote') : ''
 const desc = [t(locale, 'chart.gov.desc'), invertedNote].filter(Boolean).join(' ')
 // The government labels on top of the chart are the only key to the colours,
-// so they wear them: two lines each ("Orpon" / "hallitus"). Terra is darkened
-// a step for text — on its own 10% wash it would fall short of 4.5:1.
+// so they wear them: two lines each ("Orpon" / "hallitus"). The green is
+// darkened for text — on its own 10% wash the mark colour is only 2.7:1;
+// 70% of it mixed with black reaches 4.9:1.
 const regionLabels: Record<Government, string[]> = {
   rinneMarin: t(locale, 'chart.gov.rinneMarinLabel').split('\n'),
   orpo: t(locale, 'chart.gov.orpoLabel').split('\n'),
 }
 const LABEL_COLORS: Record<Government, string> = {
-  rinneMarin: 'color-mix(in oklab, var(--color-terra) 78%, black)',
+  rinneMarin: 'color-mix(in srgb, var(--color-lehti) 70%, black)',
   orpo: 'var(--color-meri)',
 }
 
@@ -125,10 +126,9 @@ const idBase = `gov-chart-${datasetId}`
                 font-size={size.labelFontSize}
                 font-weight="800"
               >
+                {/* set:text keeps formatter whitespace out of the tspan, where it would shift the line. */}
                 {regionLabels[region.government].map((line, i) => (
-                  <tspan x={region.labelX} dy={i === 0 ? 0 : '1.1em'}>
-                    {line}
-                  </tspan>
+                  <tspan x={region.labelX} dy={i === 0 ? 0 : '1.1em'} set:text={line} />
                 ))}
               </text>
             </g>

@@ -39,6 +39,7 @@ test('blog post charts are localized', async ({ page }) => {
   await page.goto(`/en${POST_PATH}`)
   // The government labels on the chart itself are the only key to its colours.
   const labels = page.locator('figure[data-gov-chart]').first().locator('svg:visible tspan')
-  await expect(labels.filter({ hasText: /^government$/ })).toHaveCount(1)
-  await expect(labels.filter({ hasText: /^Rinne and Marin$/ })).toHaveCount(1)
+  await expect(labels.filter({ hasText: /^Previous$/ })).toHaveCount(1)
+  await expect(labels.filter({ hasText: /^Orpo$/ })).toHaveCount(1)
+  await expect(labels.filter({ hasText: /^government$/ })).toHaveCount(2)
 })
