@@ -26,11 +26,6 @@ export interface ChartSize {
   fontSize: number
   /** Size of the two-line government labels in the strip. */
   labelFontSize: number
-  /**
-   * Phones: the y-axis values sit inside the plot, on their gridlines, instead
-   * of in a margin of their own, so the chart can run edge to edge.
-   */
-  yLabelsInside?: boolean
 }
 
 export const WIDE: ChartSize = {
@@ -45,11 +40,10 @@ export const WIDE: ChartSize = {
 export const COMPACT: ChartSize = {
   width: 400,
   height: 420,
-  margin: { top: 4, right: 0, bottom: 28, left: 0 },
+  margin: { top: 4, right: 2, bottom: 28, left: 50 },
   stripHeight: 58,
   fontSize: 12,
   labelFontSize: 16,
-  yLabelsInside: true,
 }
 
 /** Mark specs: bars at most 44 px wide with a 4 px rounded data-end; 5 px dot radius. */
@@ -81,14 +75,7 @@ export interface ChartLayout {
   regions: Array<{ government: Government; x: number; width: number; labelX: number }>
   regionTop: number
   regionLabelY: number
-  yTicks: Array<{
-    y: number
-    label: string
-    isZero: boolean
-    labelX: number
-    labelY: number
-    anchor: 'start' | 'end'
-  }>
+  yTicks: Array<{ y: number; label: string; isZero: boolean }>
   xTicks: number[]
   xLabels: Array<{ x: number; label: string }>
   lines: Array<{ government: Government; d: string }>
@@ -207,19 +194,10 @@ export function layoutChart(dataset: Dataset, size: ChartSize, locale: Locale): 
   const yTicks: ChartLayout['yTicks'] = []
   for (let v = yMin; v <= yMax + step / 1000; v += step) {
     const value = round(v)
-    const tickY = round(y(value))
-    // Inside the plot a value sits just above its gridline, except the top
-    // one, which goes just below so it stays clear of the label strip.
-    const atTop = tickY <= plot.top
     yTicks.push({
-      y: tickY,
+      y: round(y(value)),
       label: formatChartValue(value, dataset.format, 0, locale),
       isZero: value === 0 && value !== yMin,
-      labelX: size.yLabelsInside ? plot.left + 6 : plot.left - 8,
-      labelY: size.yLabelsInside
-        ? round(atTop ? tickY + size.fontSize + 3 : tickY - 5)
-        : round(tickY + size.fontSize * 0.32),
-      anchor: size.yLabelsInside ? 'start' : 'end',
     })
   }
 
