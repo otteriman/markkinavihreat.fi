@@ -40,7 +40,7 @@ export const WIDE: ChartSize = {
 export const COMPACT: ChartSize = {
   width: 400,
   height: 420,
-  margin: { top: 4, right: 2, bottom: 28, left: 50 },
+  margin: { top: 4, right: 14, bottom: 28, left: 50 },
   stripHeight: 58,
   fontSize: 12,
   labelFontSize: 16,
