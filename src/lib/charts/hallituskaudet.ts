@@ -11,6 +11,10 @@
  * `movingAverage`, the chart plots a trailing average over that many periods
  * and only from the first period with a full window — the leading
  * observations exist to feed that first window, not to be plotted on their own.
+ *
+ * The three Tilastokeskus series were checked against its PxWeb tables
+ * (kony/13fb, kbar/11cc, jyev/12sy) on 18 November 2026; the debt series
+ * reflects the revision published on 25 September 2026.
  */
 
 export type DatasetId = 'asunnottomuus' | 'julkinen-velka' | 'konkurssit' | 'kuluttajien-luottamus'
@@ -164,10 +168,10 @@ export const DATASETS: Record<DatasetId, Dataset> = {
     yStep: 5,
     sourceUrl: 'https://stat.fi/fi/indikaattori/julkinenvelka',
     observations: quarterly(
-      '2019Q3',
+      '2019Q2',
       [
-        65.8, 65.3, 70.0, 74.5, 72.7, 75.3, 76.1, 75.2, 74.5, 73.1, 73.0, 73.2, 72.5, 74.0, 73.6,
-        74.7, 74.6, 77.1, 78.5, 80.6, 82.2, 82.5, 84.1, 88.3, 86.6, 88.5, 89.8, 90.3,
+        67.2, 65.8, 65.3, 70.0, 74.5, 72.7, 75.3, 76.2, 75.2, 74.5, 73.1, 73.0, 73.2, 72.5, 74.1,
+        73.7, 74.8, 74.7, 77.2, 78.6, 80.6, 82.2, 82.5, 84.1, 88.2, 86.5, 88.4, 89.6, 90.3,
       ],
     ),
   },
@@ -185,10 +189,10 @@ export const DATASETS: Record<DatasetId, Dataset> = {
     sourceUrl:
       'https://pxdata.stat.fi/PXWeb/pxweb/fi/StatFin/StatFin__kony/statfin_kony_pxt_13fb.px',
     observations: monthly(
-      '2019-06',
+      '2019-01',
       [
-        // 2019 (from June)
-        224, 202, 188, 235, 254, 230, 164,
+        // 2019
+        249, 208, 222, 231, 216, 224, 202, 188, 235, 254, 230, 164,
         // 2020
         296, 268, 219, 218, 200, 154, 115, 130, 150, 144, 151, 90,
         // 2021
@@ -201,8 +205,8 @@ export const DATASETS: Record<DatasetId, Dataset> = {
         298, 342, 274, 295, 327, 252, 225, 306, 274, 339, 288, 268,
         // 2025
         381, 328, 350, 333, 366, 305, 251, 274, 289, 348, 321, 360,
-        // 2026 (to October)
-        385, 379, 392, 357, 320, 332, 243, 296, 344, 364,
+        // 2026
+        385, 379, 391, 357, 320, 332, 243, 296, 344, 364,
       ],
     ),
   },
@@ -220,10 +224,10 @@ export const DATASETS: Record<DatasetId, Dataset> = {
     sourceUrl:
       'https://pxdata.stat.fi/PxWeb/pxweb/fi/StatFin/StatFin__kbar/statfin_kbar_pxt_11cc.px',
     observations: monthly(
-      '2019-06',
+      '2019-01',
       [
-        // 2019 (from June)
-        -4.6, -3.9, -4.5, -4.2, -6.6, -5.0, -4.2,
+        // 2019
+        -2.4, -2.4, -2.3, -1.7, -1.8, -4.6, -3.9, -4.5, -4.2, -6.6, -5.0, -4.2,
         // 2020
         -4.6, -4.5, -7.1, -13.9, -9.0, -3.9, -1.6, -5.1, -5.9, -6.9, -4.8, -4.6,
         // 2021
@@ -236,8 +240,8 @@ export const DATASETS: Record<DatasetId, Dataset> = {
         -9.1, -9.5, -9.4, -12.6, -10.3, -7.6, -7.2, -7.2, -8.1, -6.8, -7.4, -8.6,
         // 2025
         -8.4, -9.0, -8.2, -7.4, -8.4, -8.6, -6.4, -7.6, -6.6, -7.6, -6.5, -7.3,
-        // 2026 (to October)
-        -8.7, -10.5, -11.5, -12.5, -12.5, -5.3, -5.3, -3.0, -4.9, -9.7,
+        // 2026
+        -8.7, -10.5, -11.5, -12.5, -10.5, -5.3, -5.3, -3.0, -4.9, -9.7,
       ],
     ),
   },

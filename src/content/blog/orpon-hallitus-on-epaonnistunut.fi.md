@@ -23,9 +23,9 @@ Yksinelävien asunnottomien määrä laski Rinteen ja Marinin kaudella 4 600:sta
 
 [kuvaaja: julkinen-velka]
 
-Julkisyhteisöjen velka oli vuoden 2019 kolmannella neljänneksellä 65,8 prosenttia bruttokansantuotteesta ja kesäkuun 2023 lopussa 74,7 prosenttia. Edellisen kauden velkaantuminen keskittyi koronavuoteen 2020, ja vuoden 2021 alun jälkeen velkasuhde kääntyi loivaan laskuun.
+Julkisyhteisöjen velka oli kesäkuun 2019 lopussa 67,2 prosenttia bruttokansantuotteesta ja kesäkuun 2023 lopussa 74,8 prosenttia. Edellisen kauden velkaantuminen keskittyi koronavuoteen 2020, ja vuoden 2021 alun jälkeen velkasuhde kääntyi laskuun.
 
-Orpon kaudella velkasuhde on noussut joka vuosi, ja kesäkuun 2026 lopussa se oli 90,3 prosenttia. Kolmessa vuodessa nousua on kertynyt 15,6 prosenttiyksikköä. Se on selvästi enemmän kuin koko edellisellä nelivuotiskaudella pandemia mukaan lukien.
+Orpon kaudella velkasuhde on noussut joka vuosi, ja kesäkuun 2026 lopussa se oli 90,3 prosenttia. Kolmessa vuodessa nousua on kertynyt 15,5 prosenttiyksikköä. Se on noin kaksi kertaa niin paljon kuin koko edellisellä nelivuotiskaudella, jolloin velkasuhde nousi pandemia mukaan lukien 7,6 prosenttiyksikköä.
 
 ## Konkursseja on lähes puolet enemmän
 
@@ -33,13 +33,13 @@ Orpon kaudella velkasuhde on noussut joka vuosi, ja kesäkuun 2026 lopussa se ol
 
 Rinteen ja Marinin kaudella, kesäkuusta 2019 toukokuuhun 2023, konkursseja pantiin vireille keskimäärin noin 212 kuukaudessa. Orpon kaudella, heinäkuusta 2023 alkaen, keskiarvo on noussut noin 312:een eli lähes puolet korkeammaksi.
 
-Ero ei selity koronavuosien poikkeuksellisen pienillä luvuilla. Jo ennen pandemiaa, kesä–joulukuussa 2019, konkursseja oli keskimäärin noin 214 kuukaudessa. Vuonna 2025 konkursseja pantiin vireille 3 906, ja tämän vuoden kymmenen ensimmäisen kuukauden aikana jo 3 412.
+Ero ei selity koronavuosien poikkeuksellisen pienillä luvuilla. Jo ennen pandemiaa, kesä–joulukuussa 2019, konkursseja oli keskimäärin noin 214 kuukaudessa. Vuonna 2025 konkursseja pantiin vireille 3 906, ja tämän vuoden kymmenen ensimmäisen kuukauden aikana jo 3 411.
 
 ## Kuluttajien luottamus ei ole palautunut
 
 [kuvaaja: kuluttajien-luottamus]
 
-Kuluttajien luottamus romahti vuonna 2022, kun Venäjä hyökkäsi Ukrainaan ja energian hinta ja inflaatio nousivat. Ennen romahdusta, kesäkuusta 2019 joulukuuhun 2021, luottamusindikaattori oli keskimäärin −2,7. Orpon kaudella se on ollut keskimäärin −8,7, ja kuuden kuukauden keskiarvo on yhä −6,8.
+Kuluttajien luottamus romahti vuonna 2022, kun Venäjä hyökkäsi Ukrainaan ja energian hinta ja inflaatio nousivat. Ennen romahdusta, kesäkuusta 2019 joulukuuhun 2021, luottamusindikaattori oli keskimäärin −2,7. Orpon kaudella se on ollut keskimäärin −8,6, ja kuuden kuukauden keskiarvo on yhä −6,5.
 
 Luottamus on siis kohentunut vuoden 2022 pohjalukemista, mutta se ei ole kolmessa vuodessa palannut lähellekään kriisiä edeltänyttä tasoa. Kun kuluttajat eivät luota talouteen, he lykkäävät hankintojaan, ja se tuntuu kotimarkkinoista elävissä yrityksissä.
 

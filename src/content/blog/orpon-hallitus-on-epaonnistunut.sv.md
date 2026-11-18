@@ -23,9 +23,9 @@ Antalet ensamstående bostadslösa minskade under Rinnes och Marins period från
 
 [kuvaaja: julkinen-velka]
 
-De offentliga samfundens skuld var 65,8 procent av bruttonationalprodukten under tredje kvartalet 2019 och 74,7 procent i slutet av juni 2023. Under den förra perioden koncentrerades skuldsättningen till coronaåret 2020, och efter början av 2021 vände skuldkvoten till en svag nedgång.
+De offentliga samfundens skuld var 67,2 procent av bruttonationalprodukten i slutet av juni 2019 och 74,8 procent i slutet av juni 2023. Under den förra perioden koncentrerades skuldsättningen till coronaåret 2020, och efter början av 2021 vände skuldkvoten nedåt.
 
-Under Orpos period har skuldkvoten stigit varje år, och i slutet av juni 2026 var den 90,3 procent. På tre år har den stigit med 15,6 procentenheter. Det är klart mer än under hela den förra fyraårsperioden, pandemin inräknad.
+Under Orpos period har skuldkvoten stigit varje år, och i slutet av juni 2026 var den 90,3 procent. På tre år har den stigit med 15,5 procentenheter. Det är ungefär dubbelt så mycket som under hela den förra fyraårsperioden, då skuldkvoten steg med 7,6 procentenheter, pandemin inräknad.
 
 ## Nästan hälften fler konkurser
 
@@ -33,13 +33,13 @@ Under Orpos period har skuldkvoten stigit varje år, och i slutet av juni 2026 v
 
 Under Rinnes och Marins period, från juni 2019 till maj 2023, inleddes i genomsnitt cirka 212 konkurser i månaden. Under Orpos period, från juli 2023, har genomsnittet stigit till cirka 312, alltså nästan hälften högre.
 
-Skillnaden förklaras inte av de exceptionellt låga siffrorna under coronaåren. Redan före pandemin, i juni–december 2019, var konkurserna i genomsnitt cirka 214 i månaden. År 2025 inleddes 3 906 konkurser, och under årets första tio månader redan 3 412.
+Skillnaden förklaras inte av de exceptionellt låga siffrorna under coronaåren. Redan före pandemin, i juni–december 2019, var konkurserna i genomsnitt cirka 214 i månaden. År 2025 inleddes 3 906 konkurser, och under årets första tio månader redan 3 411.
 
 ## Konsumenternas förtroende har inte återhämtat sig
 
 [kuvaaja: kuluttajien-luottamus]
 
-Konsumenternas förtroende rasade 2022, när Ryssland anföll Ukraina och energipriserna och inflationen steg. Före raset, från juni 2019 till december 2021, var förtroendeindikatorn i genomsnitt −2,7. Under Orpos period har den i genomsnitt varit −8,7, och det glidande medelvärdet över sex månader är fortfarande −6,8.
+Konsumenternas förtroende rasade 2022, när Ryssland anföll Ukraina och energipriserna och inflationen steg. Före raset, från juni 2019 till december 2021, var förtroendeindikatorn i genomsnitt −2,7. Under Orpos period har den i genomsnitt varit −8,6, och det glidande medelvärdet över sex månader är fortfarande −6,5.
 
 Förtroendet har alltså förbättrats från bottennivåerna 2022, men på tre år har det inte kommit i närheten av nivån före krisen. När konsumenterna inte litar på ekonomin skjuter de upp sina inköp, och det märks i de företag som lever på hemmamarknaden.
 

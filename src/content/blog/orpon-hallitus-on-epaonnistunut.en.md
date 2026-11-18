@@ -23,9 +23,9 @@ The number of single homeless people fell during Rinne’s and Marin’s term fr
 
 [kuvaaja: julkinen-velka]
 
-General government debt was 65.8 per cent of gross domestic product in the third quarter of 2019 and 74.7 per cent at the end of June 2023. In the previous term, borrowing was concentrated in the pandemic year of 2020, and after early 2021 the debt ratio turned into a gentle decline.
+General government debt was 67.2 per cent of gross domestic product at the end of June 2019 and 74.8 per cent at the end of June 2023. In the previous term, borrowing was concentrated in the pandemic year of 2020, and after early 2021 the debt ratio turned downwards.
 
-During Orpo’s term, the debt ratio has risen every year, and at the end of June 2026 it stood at 90.3 per cent. In three years it has risen by 15.6 percentage points. That is clearly more than over the whole previous four-year term, the pandemic included.
+During Orpo’s term, the debt ratio has risen every year, and at the end of June 2026 it stood at 90.3 per cent. In three years it has risen by 15.5 percentage points. That is about twice as much as over the whole previous four-year term, when the debt ratio rose by 7.6 percentage points, the pandemic included.
 
 ## Bankruptcies are up by almost half
 
@@ -33,13 +33,13 @@ During Orpo’s term, the debt ratio has risen every year, and at the end of Jun
 
 During Rinne’s and Marin’s term, from June 2019 to May 2023, an average of about 212 bankruptcies were filed a month. During Orpo’s term, from July 2023 onwards, the average has risen to about 312, almost 50 per cent higher.
 
-The difference is not explained by the exceptionally low figures of the pandemic years. Even before the pandemic, from June to December 2019, there were on average about 214 bankruptcies a month. In 2025, 3,906 bankruptcies were filed, and in the first ten months of this year already 3,412.
+The difference is not explained by the exceptionally low figures of the pandemic years. Even before the pandemic, from June to December 2019, there were on average about 214 bankruptcies a month. In 2025, 3,906 bankruptcies were filed, and in the first ten months of this year already 3,411.
 
 ## Consumer confidence has not recovered
 
 [kuvaaja: kuluttajien-luottamus]
 
-Consumer confidence collapsed in 2022, when Russia invaded Ukraine and energy prices and inflation rose. Before the collapse, from June 2019 to December 2021, the confidence indicator averaged −2.7. During Orpo’s term it has averaged −8.7, and its six-month moving average still stands at −6.8.
+Consumer confidence collapsed in 2022, when Russia invaded Ukraine and energy prices and inflation rose. Before the collapse, from June 2019 to December 2021, the confidence indicator averaged −2.7. During Orpo’s term it has averaged −8.6, and its six-month moving average still stands at −6.5.
 
 Confidence has improved from its 2022 lows, then, but in three years it has not come anywhere near its pre-crisis level. When consumers don’t trust the economy, they put off purchases, and businesses that live off the domestic market feel it.
 

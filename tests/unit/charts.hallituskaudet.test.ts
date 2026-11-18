@@ -35,13 +35,14 @@ describe('figures quoted in "Orpon hallitus on epäonnistunut"', () => {
     expect(pct(3429, 4579)).toBe(34)
   })
 
-  it('debt ratio: +8.9 pp in the previous term, +15.6 pp under Orpo', () => {
+  it('debt ratio: +7.6 pp in the previous term, +15.5 pp (about twice that) under Orpo', () => {
     const obs = DATASETS['julkinen-velka'].observations
-    expect(valueAt(obs, '2019Q3')).toBe(65.8)
-    expect(valueAt(obs, '2023Q2')).toBe(74.7)
+    expect(valueAt(obs, '2019Q2')).toBe(67.2)
+    expect(valueAt(obs, '2023Q2')).toBe(74.8)
     expect(valueAt(obs, '2026Q2')).toBe(90.3)
-    expect(90.3 - 74.7).toBeCloseTo(15.6, 5)
-    expect(90.3 - 74.7).toBeGreaterThan(74.7 - 65.8)
+    expect(74.8 - 67.2).toBeCloseTo(7.6, 5)
+    expect(90.3 - 74.8).toBeCloseTo(15.5, 5)
+    expect((90.3 - 74.8) / (74.8 - 67.2)).toBeCloseTo(2, 0)
     // "risen every year": each year-end above the previous one, from the handover on.
     const ends = ['2023Q2', '2023Q4', '2024Q4', '2025Q4', '2026Q2'].map((p) => valueAt(obs, p))
     ends.slice(1).forEach((v, i) => expect(v).toBeGreaterThan(ends[i]))
@@ -55,14 +56,17 @@ describe('figures quoted in "Orpon hallitus on epäonnistunut"', () => {
     const total = (year: string) =>
       data.observations.filter((o) => o.period.startsWith(year)).reduce((s, o) => s + o.value, 0)
     expect(total('2025')).toBe(3906)
-    expect(total('2026')).toBe(3412)
+    expect(total('2026')).toBe(3411)
   })
 
-  it('consumer confidence: −2.7 before 2022, −8.7 under Orpo, latest average −6.8', () => {
+  it('consumer confidence: −2.7 before 2022, −8.6 under Orpo, latest average −6.5', () => {
     const data = DATASETS['kuluttajien-luottamus']
     expect(periodMean(data, '2019M06', '2021M12')).toBeCloseTo(-2.7, 1)
-    expect(periodMean(data, '2023M07')).toBeCloseTo(-8.7, 1)
-    expect(valueAt(plottedSeries(data), '2026M10')).toBeCloseTo(-6.8, 1)
+    expect(periodMean(data, '2023M07')).toBeCloseTo(-8.6, 1)
+    // Shown as −6,5 in the chart's end label, so the text says −6,5 too.
+    expect(formatChartValue(valueAt(plottedSeries(data), '2026M10'), 'balance', 1, 'fi')).toBe(
+      '−6,5',
+    )
   })
 })
 

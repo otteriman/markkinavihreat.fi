@@ -279,7 +279,7 @@ export function layoutChart(dataset: Dataset, size: ChartSize, locale: Locale): 
     ].filter((line) => line.d !== '')
 
     // Ticks on each 1 January; the year's label centred on the part of the
-    // year the plot shows, if that's at least half a year (so a stub of
+    // year the plot shows, if that's at least 40 % of the year (so a stub of
     // November–December at the start doesn't get a label of its own).
     const firstYear = new Date(t0).getUTCFullYear()
     const lastYear = new Date(t1).getUTCFullYear()
@@ -289,7 +289,7 @@ export function layoutChart(dataset: Dataset, size: ChartSize, locale: Locale): 
       if (start > t0) xTicks.push(round(x(start)))
       const visibleStart = Math.max(start, t0)
       const visibleEnd = Math.min(end, t1)
-      if ((visibleEnd - visibleStart) / (end - start) >= 0.5) {
+      if ((visibleEnd - visibleStart) / (end - start) >= 0.4) {
         xLabels.push({ x: round(x((visibleStart + visibleEnd) / 2)), label: String(year) })
       }
     }
