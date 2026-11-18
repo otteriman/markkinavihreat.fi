@@ -19,7 +19,7 @@ test('blog post chart figures are readable as a table without JavaScript', async
   const page = await context.newPage()
   await page.goto(POST_PATH)
   const chart = page.locator('figure[data-gov-chart]', {
-    has: page.getByRole('heading', { name: 'Asunnottomuus on lisääntynyt' }),
+    has: page.getByRole('heading', { name: 'Asunnottomuustilanne on pahentunut' }),
   })
   await chart.getByText('Näytä luvut taulukkona').click()
   const table = chart.getByRole('table')
@@ -30,7 +30,7 @@ test('blog post chart figures are readable as a table without JavaScript', async
 test('blog post chart shows a tooltip on hover', async ({ page }) => {
   await page.goto(POST_PATH)
   const chart = page.locator('figure[data-gov-chart]', {
-    has: page.getByRole('heading', { name: 'Velkaantuminen on kiihtynyt' }),
+    has: page.getByRole('heading', { name: 'Velkatilanne on heikentynyt' }),
   })
   const svg = chart.locator('svg:visible')
   await svg.scrollIntoViewIfNeeded()
